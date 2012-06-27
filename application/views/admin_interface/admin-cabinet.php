@@ -8,7 +8,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('admin-panel/actions/control','Панель управления');?>
+						<?=anchor('admin-panel/actions/cabinet','Личный кабинет');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>

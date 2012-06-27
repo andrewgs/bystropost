@@ -172,9 +172,9 @@ class Users_interface extends CI_Controller{
 						break;
 			case 4 : 	redirect('');
 						break;
-			case 5 : 	redirect('admin/control-panel');
+			case 5 : 	redirect('admin-panel/actions/control');
 						break;
-			default: 	show_404();
+			default: 	show_404(); break;
 		endswitch;
 	}
 	

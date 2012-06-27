@@ -10,6 +10,7 @@ class Admin_interface extends CI_Controller{
 		
 		parent::__construct();
 		$this->load->model('mdusers');
+		$this->load->model('mdunion');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -39,7 +40,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Bystropost.ru - Панель администрирования',
+					'title'			=> 'Администрирование | Панель управления',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -51,22 +52,130 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
 	
-	public function admin_cabinet(){
+	public function actions_cabinet(){
 		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Личный кабинет',
+					'title'			=> 'Администрирование | Личный кабинет',
 					'baseurl' 		=> base_url(),
-					'userinfo'		=> $this->user
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
 			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
 		$this->load->view("admin_interface/admin-cabinet",$pagevar);
 	}
-
-	public function admin_logoff(){
+	
+	public function management_users(){
 		
-		$this->session->sess_destroy();
-        redirect('');
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Пользователи | ',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'users'			=> array(),
+					'count'			=> 0,
+					'pages'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$from = intval($this->uri->segment(6));
+		switch ($this->uri->segment(4)):
+			case 'webmasters' 	:	$pagevar['title'] .= 'Группа "Вебмастера"';
+									$pagevar['users'] = $this->mdunion->read_users_group_webmasters(15,$from);
+									$pagevar['count'] = $this->mdunion->count_users_group_webmasters();
+									break;
+			case 'optimizators' :	$pagevar['title'] .= 'Группа "Оптимизаторы"';
+									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(15,$from);
+									$pagevar['count'] = $this->mdunion->count_users_group_optimizators();
+									break;
+			case 'manegers' 	:	$pagevar['title'] .= 'Группа "Менеджеры"';
+									$pagevar['users'] = $this->mdunion->read_users_group_manegers(15,$from);
+									$pagevar['count'] = $this->mdunion->count_users_group_manegers();
+									break;
+			case 'admin' 		:	$pagevar['title'] .= 'Группа "Администраторы"';
+									$pagevar['users'] = $this->mdunion->read_users_group_admin(15,$from);
+									$pagevar['count'] = $this->mdunion->count_users_group_admin();
+									break;
+			default 			:	$pagevar['title'] .= 'Все группы';
+									$pagevar['users'] = $this->mdunion->read_users_group_all(15,$from);
+									$pagevar['count'] = $this->mdunion->count_users_group_all();
+									break;
+		endswitch;
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/users/'.$this->uri->segment(4).'/from/';
+		$config['uri_segment'] 		= 6;
+		$config['total_rows'] 		= $pagevar['count']; 
+        $config['per_page'] 		= 15;
+        $config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<span class="actpage">';
+		$config['cur_tag_close'] 	= '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		for($i=0;$i<count($pagevar['users']);$i++):
+			$pagevar['users'][$i]['signdate'] = $this->operation_dot_date($pagevar['users'][$i]['signdate']);
+		endfor;
+		
+		$this->load->view("admin_interface/management-users",$pagevar);
+	}
+	
+	public function management_platforms(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Площадки',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->load->view("admin_interface/management-platforms",$pagevar);
+	}
+
+	public function messages_support(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Сообщения поддержки',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->load->view("admin_interface/messages-support",$pagevar);
+	}
+
+	public function messages_tickets(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Тикеты',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->load->view("admin_interface/messages-tickets",$pagevar);
 	}
 
 	/******************************************************** functions ******************************************************/	

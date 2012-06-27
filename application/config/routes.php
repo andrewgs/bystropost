@@ -28,4 +28,13 @@ $route['users/logoff']					= "users_interface/logoff";
 
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
-$route['admin/control-panel']			= "admin_interface/control_panel";
+$route['admin-panel/actions/control']			= "admin_interface/control_panel";
+$route['admin-panel/actions/cabinet']			= "admin_interface/actions_cabinet";
+
+$route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
+$route['admin-panel/management/users/:any']				= "admin_interface/management_users";
+
+$route['admin-panel/management/platforms']		= "admin_interface/management_platforms";
+
+$route['admin-panel/messages/support']			= "admin_interface/messages_support";
+$route['admin-panel/messages/tickets']			= "admin_interface/messages_tickets";
