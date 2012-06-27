@@ -84,6 +84,7 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
 		$from = intval($this->uri->segment(6));
 		switch ($this->uri->segment(4)):
 			case 'webmasters' 	:	$pagevar['title'] .= 'Группа "Вебмастера"';

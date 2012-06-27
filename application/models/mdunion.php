@@ -89,7 +89,7 @@ class Mdunion extends CI_Model{
 	
 	function count_users_group_all(){
 		
-		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE TRUE GROUP BY users.id ORDER BY users.id ASC LIMIT $from,$count";
+		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE users.type = 5 GROUP BY users.id ORDER BY users.id ASC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
