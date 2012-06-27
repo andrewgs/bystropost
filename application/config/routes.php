@@ -12,6 +12,8 @@ $route['regulations']					= "users_interface/regulations";
 $route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
 
+$route['users/cabinet']					= "users_interface/access_cabinet";
+
 $route['users/registering']				= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
 $route['users/logoff']					= "users_interface/logoff";
@@ -26,3 +28,4 @@ $route['users/logoff']					= "users_interface/logoff";
 
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
+$route['admin/control-panel']			= "admin_interface/control_panel";

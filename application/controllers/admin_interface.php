@@ -2,7 +2,7 @@
 
 class Admin_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','uemail'=>'','utype'=>'');
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'');
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -16,7 +16,7 @@ class Admin_interface extends CI_Controller{
 			$this->user['uid'] = $this->session->userdata('userid');
 			if($this->user['uid']):
 				$userinfo = $this->mdusers->read_record($this->user['uid']);
-				if($userinfo):
+				if($userinfo['type'] == 5):
 					$this->user['ulogin'] 			= $userinfo['login'];
 					$this->user['uname'] 			= $userinfo['fio'];
 					$this->user['utype'] 			= $userinfo['type'];
@@ -25,8 +25,7 @@ class Admin_interface extends CI_Controller{
 					redirect('');
 				endif;
 			endif;
-			
-			if($this->session->userdata('logon') != md5($userinfo['login'])):
+			if($this->session->userdata('logon') != md5($userinfo['login'].$userinfo['password'])):
 				$this->loginstatus['status'] = FALSE;
 				redirect('');
 			endif;
@@ -35,12 +34,12 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	public function admin_panel(){
+	public function control_panel(){
 		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Панель администрирования',
+					'title'			=> 'Bystropost.ru - Панель администрирования',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -49,7 +48,7 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		$this->load->view("admin_interface/admin-panel",$pagevar);
+		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
 	
 	public function admin_cabinet(){

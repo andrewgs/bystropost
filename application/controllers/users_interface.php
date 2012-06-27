@@ -157,6 +157,27 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/faq",$pagevar);
 	}
 	
+	public function access_cabinet(){
+		
+		if(!$this->user['uid']):
+			show_404();
+		endif;
+		
+		switch ($this->user['utype']):
+			case 1 : 	redirect('');
+						break;
+			case 2 : 	redirect('');
+						break;
+			case 3 : 	redirect('');
+						break;
+			case 4 : 	redirect('');
+						break;
+			case 5 : 	redirect('admin/control-panel');
+						break;
+			default: 	show_404();
+		endswitch;
+	}
+	
 	public function registering(){
 		
 		$pagevar = array(
