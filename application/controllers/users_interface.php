@@ -11,6 +11,7 @@ class Users_interface extends CI_Controller{
 		parent::__construct();
 		$this->load->model('mdusers');
 		$this->load->model('mdunion');
+		$this->load->model('mdmarkets');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -320,5 +321,17 @@ class Users_interface extends CI_Controller{
 		
 		$this->session->sess_destroy();
 		redirect('');
-	}	
+	}
+
+	function viewimage(){
+		
+		$section = $this->uri->segment(1);
+		$id = $this->uri->segment(3);
+		switch ($section):
+			case 'markets'	:	$image = $this->mdmarkets->get_image($id); break;
+			default			: 	show_404();break;
+		endswitch;
+		header('Content-type: image/gif');
+		echo $image;
+	}
 }

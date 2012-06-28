@@ -41,7 +41,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Администрирование | Панель управления',
+					'title'			=> 'Кабинет Вебмастера | Панель управления',
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
@@ -64,6 +64,62 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
+	public function control_platforms(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Управление площадками',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$this->load->view("clients_interface/control-platforms",$pagevar);
+	}
+	
+	public function control_add_platform(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Управление площадками | Добавление площадки',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$this->load->view("clients_interface/control-add-platform",$pagevar);
+	}
+	
 	public function actions_cabinet(){
 		
 		$pagevar = array(
@@ -80,55 +136,6 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("admin_interface/admin-cabinet",$pagevar);
 	}
 	
-	public function management_users_deleting(){
-		
-		$uid = $this->uri->segment(5);
-		if($uid):
-			$result = $this->mdusers->delete_record($uid);
-			if($result):
-				$this->mdmessages->delete_records_by_user($uid);
-				$this->session->set_userdata('msgs','Пользователь удален успешно.');
-			else:
-				$this->session->set_userdata('msgr','Пользователь не удален.');
-			endif;
-			redirect($_SERVER['HTTP_REFERER']);
-		else:
-			show_404();
-		endif;
-	}
-	
-	public function management_platforms(){
-		
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> 'Администрирование | Площадки',
-					'baseurl' 		=> base_url(),
-					'userinfo'		=> $this->user,
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr')
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		$this->load->view("admin_interface/management-platforms",$pagevar);
-	}
-
-	public function messages_tickets(){
-		
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> 'Администрирование | Тикеты',
-					'baseurl' 		=> base_url(),
-					'userinfo'		=> $this->user,
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr')
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		$this->load->view("admin_interface/messages-tickets",$pagevar);
-	}
-
 	/******************************************************** functions ******************************************************/	
 	
 	public function fileupload($userfile,$overwrite,$catalog){

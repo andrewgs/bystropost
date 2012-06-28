@@ -4,6 +4,7 @@
 			<li class="nav-header">Управление</li>
 			<li num="users"><?=anchor('admin-panel/management/users/all','Пользователи');?></li>
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Площадки');?></li>
+			<li num="platforms"><?=anchor('admin-panel/management/markets','Биржи');?></li>
 			<li class="nav-header">Сообщения</li>
 			<li num="support"><?=anchor('admin-panel/messages/support','Поддержка');?></li>
 			<li num="tickets"><?=anchor('admin-panel/messages/tickets','	Тикеты');?></li>

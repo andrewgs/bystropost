@@ -18,8 +18,14 @@ $route['users/registering']				= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
 $route['users/logoff']					= "users_interface/logoff";
 
+$route[':any/viewimage/:num']			= "users_interface/viewimage";
+
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
-$route['webmaster-panel/actions/control']			= "clients_interface/control_panel";
+$route['webmaster-panel/actions/control']				= "clients_interface/control_panel";
+$route['webmaster-panel/actions/platforms']				= "clients_interface/control_platforms";
+$route['webmaster-panel/actions/platforms/add-platform']= "clients_interface/control_add_platform";
+
+
 $route['webmaster-panel/actions/cabinet']			= "clients_interface/actions_cabinet";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
@@ -36,7 +42,10 @@ $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/managem
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
 
-$route['admin-panel/management/platforms']		= "admin_interface/management_platforms";
+$route['admin-panel/management/platforms']				= "admin_interface/management_platforms";
+$route['admin-panel/management/markets']				= "admin_interface/management_markets";
+$route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
+
 
 $route['admin-panel/messages/support']			= "admin_interface/messages_support";
 $route['admin-panel/messages/tickets']			= "admin_interface/messages_tickets";

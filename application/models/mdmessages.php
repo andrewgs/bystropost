@@ -2,15 +2,15 @@
 
 class Mdmessages extends CI_Model{
 
-    var $id   		= 0;
-    var $sender 	= 0;
-    var $recipient 	= 0;
-    var $date 		= '';
-    var $text 		= '';
-
-    function __construct(){
-        parent::__construct();
-    }
+	var $id   		= 0;
+	var $sender 	= 0;
+	var $recipient 	= 0;
+	var $date 		= '';
+	var $text 		= '';
+	
+	function __construct(){
+		parent::__construct();
+	}
 	
 	function insert_record($iud,$data){
 			

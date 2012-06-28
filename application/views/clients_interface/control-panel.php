@@ -9,14 +9,14 @@
 		<div id="stable">
 			<div id="panel_segments">
 				<div class="panel_segment">
-					<big><?=anchor('#','Готовые задания (6)');?></big>
+					<big><?=anchor('#','Готовые задания (0)');?></big>
 					<img src="<?=$baseurl;?>images/panel_pic1.jpg">
 					<div class="text">
 						Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 					</div>
 				</div>
 				<div class="panel_segment">
-					<big><?=anchor('#','Площадки (0)');?></big>
+					<big><?=anchor('webmaster-panel/actions/platforms','Площадки (0)');?></big>
 					<img src="<?=$baseurl;?>images/panel_pic2.jpg">
 					<div class="text">
 						Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей

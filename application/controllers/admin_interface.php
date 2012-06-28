@@ -12,6 +12,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdusers');
 		$this->load->model('mdunion');
 		$this->load->model('mdmessages');
+		$this->load->model('mdmarkets');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -200,6 +201,78 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/management-platforms",$pagevar);
 	}
 
+	public function management_markets(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Биржи',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'markets'		=> $this->mdmarkets->read_records(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('amsubmit')):
+			$_POST['amsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('url',' ','required|prep_url|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				if($_FILES['icon']['error'] != 4):
+					$_POST['icon'] = file_get_contents($_FILES['icon']['tmp_name']);
+				else:
+					$_POST['icon'] = file_get_contents(base_url().'images/markets/other.jpg');
+				endif;
+				$result = $this->mdmarkets->insert_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Биржа добавлена успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->input->post('emsubmit')):
+			$_POST['emsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('url',' ','required|prep_url|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				if($_FILES['icon']['error'] != 4):
+					$_POST['icon'] = file_get_contents($_FILES['icon']['tmp_name']);
+				endif;
+				$result = $this->mdmarkets->update_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Биржа изменена успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		$this->load->view("admin_interface/management-markets",$pagevar);
+	}
+	
+	public function management_markets_deleting(){
+		
+		$mid = $this->uri->segment(5);
+		if($mid):
+			$result = $this->mdmarkets->delete_record($mid);
+			if($result):
+				$this->session->set_userdata('msgs','Биржа удалена успешно');
+			else:
+				$this->session->set_userdata('msgr','Биржа не удалена');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
 	public function messages_support(){
 		
 		$pagevar = array(

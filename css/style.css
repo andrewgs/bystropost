@@ -346,15 +346,15 @@ BORDER:0px;
 }
 
 #panel_menu{
-WIDTH:100%;
-FLOAT:left;
-MARGIN-BOTTOM:10px;
+	WIDTH:100%;
+	FLOAT:left;
+	MARGIN:0 0 10px 150px;
 }
 
 #panel_menu a{
-DISPLAY:block;
-PADDING:8px;
-FLOAT:left;
+	DISPLAY:block;
+	PADDING:8px;
+	FLOAT:left;
 }
 
 #panel_menu select{
@@ -365,9 +365,12 @@ MARGIN-TOP:5px;
 }
 
 #panel_menu a:hover{
-BACKGROUND-IMAGE:url('../images/panel_a.jpg');
-BACKGROUND-REPEAT:repeat-x;
-COLOR:#FFFFFF;
+	background-color: #3ec3e6;
+	color:#000040;
+	text-decoration:none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 #content{
@@ -482,7 +485,11 @@ BACKGROUND-REPEAT:repeat-x;
 }
 
 .panel_segment big a{
-COLOR:#FFFFFF;
+	COLOR:#FFFFFF;
+}
+.panel_segment big a:hover{
+	color:#000040;
+	text-decoration:underline;
 }
 
 #content tr td{
@@ -654,8 +661,22 @@ LINE-HEIGHT:170%;
 }
 
 #not_found #left big, #not_found #right big{
-FONT-SIZE:24px;
-FONT-FAMILY:Georgia;
+	FONT-SIZE:24px;
+	FONT-FAMILY:Georgia;
+}
+
+#new_platform{
+	display: block;
+	float: left;
+	margin-top: 20px;
+	background-color: #3ec3e6;
+	color:#000040;
+	width: 155px;
+	padding: 10px;
+	text-decoration:none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .ErrImg{
@@ -664,4 +685,36 @@ FONT-FAMILY:Georgia;
 }
 .UserPanel{
 	margin-left:25px;
+}
+
+.platform_td{
+	width:30px;
+	text-align:center;
+}
+
+.w100{width: 100px;}
+.w50{width: 50px;}
+.w85{width: 85px;}
+
+.megaselectlistcolumn {width: 23%;margin: 0 1%;	float: left;}
+.megaselectlist .currentitem {padding: 0;border: 0.1em dotted Green;color: Black;}
+.megaselectlist {padding: 5px;}
+.megaselectlistcolumn > h2 {font-size: 1em;	background-color: #ECECEC;text-align: center;padding: 2px 0;margin: 0;}
+.megaselectlist > p {margin: 0.2em;}
+.megaselectlistcolumn > ul {padding-left: 1em;margin: 0;color: Gray;}
+.megaselectlistcolumn > ul > li {cursor: pointer;padding: 0.1em;font-size: small;text-align: left;}
+.megaselectlistcolumn > ul > li:hover {background-color: #ECECEC;color: Black;}
+#megaselectlist .megaselectlistoptions {display: none;}
+#megaselectlist:hover .megaselectlistoptions {display: block;}
+#megaselectlist1 p span{font-weight:bold;padding-left: 50px;}
+
+#panel_table {background-color: #FFFFFF; float: left; width: 100%;}
+table.sel {background: none repeat scroll 0 0 transparent !important;padding: 5px;}
+#panel_table tr td {color: #000000;padding: 8px;text-align: center;}
+table.sel td {border: 1px dotted #999999;font-size: 14px;}
+#panel_table input{
+	height: 20px;
+	font: normal 18px/24px serif;
+	filter: alpha(opacity=80);
+	opacity:0.8;
 }
