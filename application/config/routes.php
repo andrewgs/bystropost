@@ -32,6 +32,7 @@ $route['admin-panel/actions/control']			= "admin_interface/control_panel";
 $route['admin-panel/actions/cabinet']			= "admin_interface/actions_cabinet";
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
+$route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
 
 $route['admin-panel/management/platforms']		= "admin_interface/management_platforms";

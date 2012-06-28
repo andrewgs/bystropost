@@ -11,6 +11,7 @@ class Admin_interface extends CI_Controller{
 		parent::__construct();
 		$this->load->model('mdusers');
 		$this->load->model('mdunion');
+		$this->load->model('mdmessages');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -85,26 +86,61 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
+		if($this->input->post('eusubmit')):
+			$_POST['eusubmit'] = NULL;
+			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('balance',' ','required|trim');
+			$this->form_validation->set_rules('type',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdusers->update_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Информация успешно сохранена.');
+				else:
+					$this->session->set_userdata('msgr','Информация не изменилась.');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
 		$from = intval($this->uri->segment(6));
 		switch ($this->uri->segment(4)):
 			case 'webmasters' 	:	$pagevar['title'] .= 'Группа "Вебмастера"';
-									$pagevar['users'] = $this->mdunion->read_users_group_webmasters(15,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_webmasters(3,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_webmasters();
 									break;
 			case 'optimizators' :	$pagevar['title'] .= 'Группа "Оптимизаторы"';
-									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(15,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(3,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_optimizators();
 									break;
 			case 'manegers' 	:	$pagevar['title'] .= 'Группа "Менеджеры"';
-									$pagevar['users'] = $this->mdunion->read_users_group_manegers(15,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_manegers(3,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_manegers();
 									break;
 			case 'admin' 		:	$pagevar['title'] .= 'Группа "Администраторы"';
-									$pagevar['users'] = $this->mdunion->read_users_group_admin(15,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_admin(3,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_admin();
 									break;
 			default 			:	$pagevar['title'] .= 'Все группы';
-									$pagevar['users'] = $this->mdunion->read_users_group_all(15,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_all(3,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_all();
 									break;
 		endswitch;
@@ -112,7 +148,7 @@ class Admin_interface extends CI_Controller{
 		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/users/'.$this->uri->segment(4).'/from/';
 		$config['uri_segment'] 		= 6;
 		$config['total_rows'] 		= $pagevar['count']; 
-        $config['per_page'] 		= 15;
+        $config['per_page'] 		= 3;
         $config['num_links'] 		= 4;
 		$config['first_link']		= 'В начало';
 		$config['last_link'] 		= 'В конец';
@@ -129,6 +165,23 @@ class Admin_interface extends CI_Controller{
 		endfor;
 		
 		$this->load->view("admin_interface/management-users",$pagevar);
+	}
+	
+	public function management_users_deleting(){
+		
+		$uid = $this->uri->segment(5);
+		if($uid):
+			$result = $this->mdusers->delete_record($uid);
+			if($result):
+				$this->mdmessages->delete_records_by_user($uid);
+				$this->session->set_userdata('msgs','Пользователь удален успешно.');
+			else:
+				$this->session->set_userdata('msgr','Пользователь не удален.');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
 	}
 	
 	public function management_platforms(){

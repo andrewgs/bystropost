@@ -36,9 +36,8 @@ function isValidPhone(phoneNumber){
 			}
 		};
 		if(!err){
-			if($("#password").val() != $("#confpass").val()){
-				$("#password").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
-				$("#confpass").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
+			if($("#wmid").val().length != 12){
+				$("#wmid").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Должно быть 12 цифр">');
 				err = true;
 			}
 		};

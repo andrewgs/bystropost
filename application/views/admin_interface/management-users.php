@@ -34,22 +34,25 @@
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr></center></th>
 							<th><center>WMID</center></th>
 							<th>Регистр.</th>
-							<th>Действия</th>
+							<th>Управл.</th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0,$num=1;$i<count($users);$i++):?>
+					<?php for($i=0,$num=$this->uri->segment(6)+1;$i<count($users);$i++):?>
 						<tr class="align-center">
-							<td class="short"><center><?=$num;?></center></td>
-							<td style="min-width:110px;"><nobr><i><b><?=$users[$i]['login'];?></b></i></nobr><br/><?=$users[$i]['fio'];?></td>
-							<td><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
-							<td><center><nobr><?=$users[$i]['torders'];?> / <?=$users[$i]['uporders'];?></nobr></center></td>
-							<td><nobr><?=$users[$i]['wmid'];?></nobr></td>
-							<td><nobr><?=$users[$i]['signdate'];?></nobr></td>
-							<td style="max-width:80px;">
-								<a class="btn btn-success discbtn" data-userid="<?=$users[$i]['id'];?>" title="Редактировать пользователя"><nobr>&nbsp;&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-info SendMail" data-userid="<?=$users[$i]['id'];?>" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteOrder" data-toggle="modal" href="#deleteUser" title="Удалить пользователя" data-userid="<?=$users[$i]['id'];?>"><nobr>&nbsp;&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;&nbsp;</nobr></a>
+							<td style="min-width:35px;"><center><?=$num;?></center></td>
+							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i></nobr><br/><?=$users[$i]['fio'];?></td>
+							<td style="min-width:50px;"><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
+							<td style="min-width:100px;"><center><nobr><?=$users[$i]['torders'];?> / <?=$users[$i]['uporders'];?></nobr></center></td>
+							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
+							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?></nobr></td>
+							<td style="max-width:58px;">
+							<?php if($userinfo['uid']!=$users[$i]['id']):?>
+								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>"></div>
+								<a class="btn btn-success editUser" data-param="<?=$i;?>" data-toggle="modal" href="#editUser" title="Редактировать пользователя"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<a class="btn btn-danger deleteUser" data-param="<?=$i;?>" data-toggle="modal" href="#deleteUser" title="Удалить пользователя"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php endif;?>
 							</td>
 						</tr>
 						<?php $num++; ?>
@@ -61,12 +64,72 @@
 				<?php endif;?>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
+		<?php $this->load->view('admin_interface/modal/admin-edit-users');?>
+		<?php $this->load->view('admin_interface/modal/admin-mail-users');?>
+		<?php $this->load->view('admin_interface/modal/admin-delete-users');?>
 		</div>
 	</div>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			var uID = 0; var uType = 0;
 			$("li[tnum='<?=$this->uri->segment(4);?>']").addClass('active');
+			
+			$(".editUser").click(function(){
+				var Param = $(this).attr('data-param'); uID = $("div[id = params"+Param+"]").attr("data-uid");
+				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
+				var	uBalance = $("div[id = params"+Param+"]").attr("data-balance"); var	uWmid = $("div[id = params"+Param+"]").attr("data-wmid");
+				uType = $("div[id = params"+Param+"]").attr("data-utype");
+				$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);$("#eBalance").val(uBalance);$("#eWMID").val(uWmid);$("#eType").val(uType);
+			});
+			$("#eusend").click(function(event){
+				var err = false;
+				$(".control-group").removeClass('error');
+				$(".help-inline").hide();
+				$(".euinput").each(function(i,element){
+					if($(this).val()==''){
+						$(this).parents(".control-group").addClass('error');
+						$(this).siblings(".help-inline").html("Поле не может быть пустым").show();
+						err = true;
+					}
+				});
+				if(!err){
+					if($("#eWMID").val().length != 12){
+						$("#eWMID").parents(".control-group").addClass('error');
+						$("#eWMID").siblings(".help-inline").html("Должно быть 12 цифр").show();
+						err = true;
+					}
+				};
+				if(err){event.preventDefault();}
+			});
+			$(".mailUser").click(function(){
+				var Param = $(this).attr('data-param'); uID = $("div[id = params"+Param+"]").attr("data-uid");
+				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
+				$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);
+			});
+			$("#mtsend").click(function(event){
+				var err = false;
+				$(".control-group").removeClass('error');
+				$(".help-inline").hide();
+				if($("#mailText").val() == ''){
+					$("#mailText").parents(".control-group").addClass('error');
+					$("#mailText").siblings(".help-inline").html("Поле не может быть пустым").show();
+					event.preventDefault();
+				}
+			});
+			$("#editUser").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide();});
+			$("#mailUser").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide();$("#mailText").val('');$("#sendMail").removeAttr('checked');});
+			$("#eType").change(function(){
+				if(uType != $(this).val()){
+					$(this).parents(".control-group").addClass('error');
+					$(this).siblings(".help-inline").html("Тип пользователя изменился!").show();
+				}else{
+					$(this).parents(".control-group").removeClass('error');
+					$(this).siblings(".help-inline").html('').hide();
+				}
+			});
+			$(".deleteUser").click(function(){var Param = $(this).attr('data-param'); uID = $("div[id = params"+Param+"]").attr("data-uid");});
+			$("#DelUser").click(function(){location.href='<?=$baseurl;?>admin-panel/management/users/userid/'+uID;});
 		});
 	</script>
 </body>
