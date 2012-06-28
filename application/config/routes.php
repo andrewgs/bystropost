@@ -19,7 +19,8 @@ $route['users/registering/successfull']	= "users_interface/reg_successfull";
 $route['users/logoff']					= "users_interface/logoff";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
-
+$route['webmaster-panel/actions/control']			= "clients_interface/control_panel";
+$route['webmaster-panel/actions/cabinet']			= "clients_interface/actions_cabinet";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 

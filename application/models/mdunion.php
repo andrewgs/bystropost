@@ -6,6 +6,15 @@ class Mdunion extends CI_Model{
 		parent::__construct();
 	}
 	
+	function read_user_webmaster($uid){
+		
+		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE users.type = 1 AND users.id = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data[0];
+		return NULL;
+	}
+	
 	function read_users_group_webmasters($count,$from){
 		
 		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE users.type = 1 GROUP BY users.id ORDER BY users.id DESC LIMIT $from,$count";
@@ -14,7 +23,7 @@ class Mdunion extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
-	
+
 	function count_users_group_webmasters(){
 		
 		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE users.type = 1 GROUP BY users.id ORDER BY users.id DESC";

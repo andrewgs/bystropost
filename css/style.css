@@ -380,9 +380,9 @@ BACKGROUND-POSITION:top center;
 }
 
 #stable{
-FLOAT:left;
-WIDTH:1005px;
-MARGIN-TOP:200px;
+	FLOAT:left;
+	WIDTH:1005px;
+	MARGIN-TOP:150px;
 }
 
 #new_ticket{

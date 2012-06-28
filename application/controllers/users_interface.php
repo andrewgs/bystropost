@@ -10,6 +10,7 @@ class Users_interface extends CI_Controller{
 		
 		parent::__construct();
 		$this->load->model('mdusers');
+		$this->load->model('mdunion');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -42,6 +43,17 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
 		if($this->input->post('submit_x')):
 			$login = trim($this->input->post('login'));
 			$pass = trim($this->input->post('password'));
@@ -73,7 +85,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/about",$pagevar);
 	}
 	
@@ -89,7 +109,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/webmasters",$pagevar);
 	}
 	
@@ -105,7 +133,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/optimizers",$pagevar);
 	}
 	
@@ -121,7 +157,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/regulations",$pagevar);
 	}
 	
@@ -137,7 +181,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/support",$pagevar);
 	}
 	
@@ -153,7 +205,15 @@ class Users_interface extends CI_Controller{
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
 		$this->load->view("users_interface/faq",$pagevar);
 	}
 	
@@ -164,7 +224,7 @@ class Users_interface extends CI_Controller{
 		endif;
 		
 		switch ($this->user['utype']):
-			case 1 : 	redirect('');
+			case 1 : 	redirect('webmaster-panel/actions/control');
 						break;
 			case 2 : 	redirect('');
 						break;
@@ -254,61 +314,6 @@ class Users_interface extends CI_Controller{
 		$this->session->unset_userdata('regsuc');
 		
 		$this->load->view("users_interface/registering-successfull",$pagevar);
-	}
-	
-	public function contacts(){
-		
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> '',
-					'baseurl' 		=> base_url(),
-					'loginstatus'	=> $this->loginstatus['status'],
-					'userinfo'		=> $this->user,
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr'),
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('name',' ','required|trim');
-			$this->form_validation->set_rules('email',' ','required|valid_email|trim');
-			$this->form_validation->set_rules('phone',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','required|trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Повторите ввод.');
-			else:
-				ob_start();
-				?>
-				<p>Сообщение от <?=$_POST['name'];?></p>
-				<p>Email <?=$_POST['email'];?></p>
-				<p>Телефон <?=$_POST['phone'];?></p>
-				<p>
-					<?=$_POST['text'];?>
-				</p>
-				<?
-				$mailtext = ob_get_clean();
-				
-				$this->email->clear(TRUE);
-				$config['smtp_host'] = 'localhost';
-				$config['charset'] = 'utf-8';
-				$config['wordwrap'] = TRUE;
-				$config['mailtype'] = 'html';
-				
-				$this->email->initialize($config);
-				$this->email->to('info@newyork-bar.ru');
-				$this->email->from($_POST['email'],$_POST['name']);
-				$this->email->bcc('');
-				$this->email->subject('Форма обратной связи Newyork Bar');
-				$this->email->message($mailtext);	
-				$this->email->send();
-			endif;
-			redirect($this->uri->uri_string());
-		endif;
-		
-		$this->load->view("users_interface/contacts",$pagevar);
 	}
 	
 	public function logoff(){

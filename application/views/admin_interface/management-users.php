@@ -41,7 +41,7 @@
 					<?php for($i=0,$num=$this->uri->segment(6)+1;$i<count($users);$i++):?>
 						<tr class="align-center">
 							<td style="min-width:35px;"><center><?=$num;?></center></td>
-							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i></nobr><br/><?=$users[$i]['fio'];?></td>
+							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i></nobr><br/><?=$users[$i]['fio'];?><br/><nobr>Телефон:<?=$users[$i]['phones'];?></nobr><br/><nobr>Skype:<?=$users[$i]['skype'];?></nobr><br/><nobr>ICQ:<?=$users[$i]['icq'];?></nobr></td>
 							<td style="min-width:50px;"><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
 							<td style="min-width:100px;"><center><nobr><?=$users[$i]['torders'];?> / <?=$users[$i]['uporders'];?></nobr></center></td>
 							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
