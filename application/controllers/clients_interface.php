@@ -12,6 +12,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdusers');
 		$this->load->model('mdunion');
 		$this->load->model('mdmessages');
+		$this->load->model('mdmarkets');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -101,6 +102,8 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'markets'		=> $this->mdmarkets->read_records(),
+					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -134,6 +137,16 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		$this->load->view("admin_interface/admin-cabinet",$pagevar);
+	}
+	
+	function views(){
+		$type = $this->uri->segment(2);
+		switch ($type):
+			case 'market-profile'	:	$pagevar = array('markets'=>$this->mdmarkets->read_records(),'baseurl'=>base_url());
+										$this->load->view('clients_interface/includes/markets-profile',$pagevar);
+										break;
+					default 		:	show_404();
+		endswitch;
 	}
 	
 	/******************************************************** functions ******************************************************/	

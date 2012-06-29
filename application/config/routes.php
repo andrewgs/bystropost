@@ -25,8 +25,8 @@ $route['webmaster-panel/actions/control']				= "clients_interface/control_panel"
 $route['webmaster-panel/actions/platforms']				= "clients_interface/control_platforms";
 $route['webmaster-panel/actions/platforms/add-platform']= "clients_interface/control_add_platform";
 
-
-$route['webmaster-panel/actions/cabinet']			= "clients_interface/actions_cabinet";
+$route['views/market-profile'] 							= "clients_interface/views";
+$route['webmaster-panel/actions/cabinet']				= "clients_interface/actions_cabinet";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 

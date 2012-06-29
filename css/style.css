@@ -692,10 +692,6 @@ LINE-HEIGHT:170%;
 	text-align:center;
 }
 
-.w100{width: 100px;}
-.w50{width: 50px;}
-.w85{width: 85px;}
-
 .megaselectlistcolumn {width: 23%;margin: 0 1%;	float: left;}
 .megaselectlist .currentitem {padding: 0;border: 0.1em dotted Green;color: Black;}
 .megaselectlist {padding: 5px;}
@@ -712,9 +708,45 @@ LINE-HEIGHT:170%;
 table.sel {background: none repeat scroll 0 0 transparent !important;padding: 5px;}
 #panel_table tr td {color: #000000;padding: 8px;text-align: center;}
 table.sel td {border: 1px dotted #999999;font-size: 14px;}
-#panel_table input{
-	height: 20px;
-	font: normal 18px/24px serif;
-	filter: alpha(opacity=80);
-	opacity:0.8;
+#panel_table input{height: 20px;font: normal 18px/24px serif;filter: alpha(opacity=80);opacity:0.8;}
+.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
+#btnDelMarketLine{display: none;}
+.left {float: left;}
+.label-input, .date-label-input {display: block;font: bold 12px arial,sans-serif;margin: 10px 0 5px;}
+
+.reg-form-input{
+	background: none repeat scroll 0 0 #FAFAFA;
+	border: 1px solid #D0D0D0;
+	border-radius: 5px 5px 5px 5px;
+	font: 12px arial,sans-serif;
+	letter-spacing: 1px;
+	margin: 2px 5px 0 0;
+	padding: 7px;
+	width: 280px;
 }
+
+.goog-button {
+	background: -moz-linear-gradient(center top , #FFFFFF, #DDDDDD) repeat scroll 0 0 transparent;
+	border-color: #BBBBBB #999999 #999999 #BBBBBB;
+	border-radius: 2px 2px 2px 2px;
+	border-style: solid;
+	border-width: 1px;
+	color: #000000;
+	cursor: pointer;
+	display: inline-block;
+	outline-style: none;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+
+input.mb10 {margin-bottom: 10px;}
+input.mt7 {margin-top: 7px;}
+
+.w100{width: 100px;}
+.w250{width: 250px;}
+.w205{width: 205px;}
+.w270{width: 270px;}
+.w195{width: 195px;}
+.w700{width: 700px;}
+.w50{width: 50px;}
+.w85{width: 85px;}
