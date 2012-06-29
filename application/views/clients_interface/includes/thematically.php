@@ -1,6 +1,6 @@
 <p style="margin:0px;">
-	<label for="thematically">Выберите тематику</label>
-	<select name="thematically" id="thematically">
+	<label for="subject">Выберите тематику</label>
+	<select name="subject" id="subject">
 		<option value="0" selected>Выбрать</option>
 		<optgroup label="Hi-Tech">
 			<option value="1" >Hardware</option>

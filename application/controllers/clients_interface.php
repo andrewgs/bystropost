@@ -13,6 +13,8 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdunion');
 		$this->load->model('mdmessages');
 		$this->load->model('mdmarkets');
+		$this->load->model('mdplatforms');
+		$this->load->model('mdmkplatform');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -46,6 +48,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -62,6 +65,8 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
@@ -74,12 +79,14 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'platforms'		=> $this->mdplatforms->read_records_by_webmaster($this->user['uid']),
+					'markets'		=> $this->mdunion->read_mkplatform_by_webmaster($this->user['uid']),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
+//		print_r($pagevar['markets']);exit;
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -118,6 +125,47 @@ class Clients_interface extends CI_Controller{
 				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
 				unset($userdata);
 			endif;
+		endif;
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('url',' ','required|trim');
+			$this->form_validation->set_rules('subject',' ','required|trim');
+			$this->form_validation->set_rules('cms',' ','required|trim');
+			$this->form_validation->set_rules('adminpanel',' ','required|trim');
+			$this->form_validation->set_rules('aplogin',' ','required|trim');
+			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('amount',' ','trim');
+			$this->form_validation->set_rules('reviews',' ','trim');
+			$this->form_validation->set_rules('thematically',' ','trim');
+			$this->form_validation->set_rules('illegal',' ','trim');
+			$this->form_validation->set_rules('criteria',' ','trim');
+			$this->form_validation->set_rules('requests',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
+				if($platform):
+					$cntmarkets = count($_POST['markets']);
+					$marketslist = array();
+					if($cntmarkets > 0):
+						for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+							if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
+							$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
+							$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
+							$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+							$j++;
+						endfor;
+					endif;
+					if(count($marketslist)):
+						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
+					endif;
+					$this->session->set_userdata('msgs','Платформа успешно создана.');
+				else:
+					$this->session->set_userdata('msgr','Платформа не создана.');
+				endif;
+			endif;
+			redirect('webmaster-panel/actions/platforms');
 		endif;
 		
 		$this->load->view("clients_interface/control-add-platform",$pagevar);

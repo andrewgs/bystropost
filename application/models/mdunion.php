@@ -104,4 +104,13 @@ class Mdunion extends CI_Model{
 		if(count($data)) return count($data);
 		return NULL;
 	}
+
+	function read_mkplatform_by_webmaster($uid){
+		
+		$query = "SELECT markets.id,markets.title,markets.url,mkplatform.platform FROM markets INNER JOIN mkplatform ON mkplatform.market=markets.id WHERE mkplatform.webmaster = $uid GROUP BY markets.id ORDER BY markets.title";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }

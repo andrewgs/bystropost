@@ -6,11 +6,10 @@
 	<?php $this->load->view("clients_interface/includes/header");?>
 	<div id="main">
 		<?php $this->load->view("clients_interface/includes/navigation");?>
-		
 		<div id="stable">
 			<div id="panel_menu">
 				<?=anchor('#','Готовые задания (0)');?>
-				<?=anchor('webmaster-panel/actions/platforms','Площадки (0)');?>
+				<?=anchor('webmaster-panel/actions/platforms','Площадки ('.count($platforms).')');?>
 				<?=anchor('#','Почта (0)');?>
 				<?=anchor('#','Тикеты (0)');?>
 				<?=anchor('#','Дополнительные услуги');?>
@@ -24,24 +23,20 @@
 					<td class="w100">Заявки:<br/> Всего / <nobr>Не оплаченые</nobr></td>
 					<td class="w50"><nobr>Дата</nobr></td>
 				</tr>
+			<?php for($i=0;$i<count($platforms);$i++):?>
 				<tr>
-					<td><a href="">tester.ru</a></td>
-					<td class="platform_td"><img src="/images/gogetlinks.ico" width="16" heigth="16" alt="gogetlinks" title="gogetlinks"> <img src="/images/rotapost.ico" width="16" heigth="16" alt="rotapost" title="rotapost"> </td>
+					<td><?=anchor('#',$platforms[$i]['url']);?></td>
+					<td class="platform_td">
+				<?php for($j=0;$j<count($markets);$j++):?>
+					<?php if($platforms[$i]['id'] == $markets[$j]['platform']):?>
+						<?=anchor($markets[$j]['url'],'<img src="'.$baseurl.'markets/viewimage/'.$markets[$j]['id'].'" alt="'.$markets[$j]['title'].'" title="'.$markets[$j]['title'].'"/>',array("class"=>'','target'=>'_blank'));?>
+					<?php endif;?>
+				<?php endfor;?>
+					</td>
 					<td class="platform_td">0/0</td>
 					<td class="platform_td"><a href="#">0/0</a></td>
 				</tr>
-				<tr>
-					<td><a href="site.php?id=8">divnom.ru</a></td>
-					<td class="platform_td"><img src="/images/gogetlinks.ico" width="16" heigth="16" alt="gogetlinks" title="gogetlinks"> <img src="/images/rotapost.ico" width="16" heigth="16" alt="rotapost" title="rotapost"> </td>
-					<td class="platform_td">0/0</td>
-					<td class="platform_td"><a href="#">0/0</a></td>
-				</tr>
-				<tr>
-					<td><a href="site.php?id=7">hideme.ru</a></td>
-					<td class="platform_td"><img src="/images/gogetlinks.ico" width="16" heigth="16" alt="gogetlinks" title="gogetlinks"> <img src="/images/rotapost.ico" width="16" heigth="16" alt="rotapost" title="rotapost"> </td>
-					<td class="platform_td">0/0</td>
-					<td class="platform_td"><a href="#">0/0</a></td>
-				</tr>
+			<?php endfor;?>
 			</table>
 			<?=anchor('webmaster-panel/actions/platforms/add-platform','Добавить платформу',array('id'=>'new_platform'));?>
 		</div>

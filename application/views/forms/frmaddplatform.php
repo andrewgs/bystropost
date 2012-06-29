@@ -2,7 +2,7 @@
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">url (без http://):</td>
-			<td><input name="url" class="reg-form-input w700" type="text" size="80" value="" placeholder="Введите URL прощадки"></td>
+			<td><input name="url" class="reg-form-input w700 inpval" type="text" size="80" value="" placeholder="Введите URL прощадки"></td>
 		</tr>
 	</table>
 	<?php $this->load->view("clients_interface/includes/thematically");?>
@@ -10,15 +10,15 @@
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td>Укажите вашу CMS:</td>
-			<td><input name="cms" class="reg-form-input w700" type="text" size="80" value="" placeholder="Укажите название CMS (если используете)"></td>
+			<td><input name="cms" class="reg-form-input w700 inpval" type="text" size="80" value="" placeholder="Укажите название CMS (если используете)"></td>
 		</tr>
 		<tr>
 			<td>URL админки:</td>
-			<td><input name="admin_url" class="reg-form-input w700" type="text" size="80" value="" placeholder="Укажите URL для доступа к панели администрирования"></td>
+			<td><input name="adminpanel" class="reg-form-input w700 inpval" type="text" size="80" value="" placeholder="Укажите URL для доступа к панели администрирования"></td>
 		</tr>
 		<tr>
 			<td>Доступ к админке:</td>
-			<td>Логин: <input name="login" class="reg-form-input" type="text" size="30" value="" placeholder="Укажите логин"> Пароль <input name="pass" type="text" class="reg-form-input" size="30" value="" placeholder="Укажите пароль"></td>
+			<td>Логин: <input name="aplogin" class="reg-form-input inpval" type="text" size="30" value="" placeholder="Укажите логин"> Пароль <input name="appassword" type="text" class="reg-form-input inpval" size="30" value="" placeholder="Укажите пароль"></td>
 		</tr>
 		<tr>
 			<td>Биржи:</td>
@@ -36,7 +36,7 @@
 		<tr>
 			<td>Объем знаков: </td>
 			<td>
-				<select name="characters">
+				<select name="amount">
 					<option value="1" >от 1000-1500 – 23 руб.</option>
 					<option value="2" >от 1500-2000 – 30 руб.</option>
 				</select>
@@ -45,7 +45,7 @@
 		<tr>
 			<td>Обзоры:</td>
 			<td>
-				<select name="review">
+				<select name="reviews">
 					<option value="1">да</option>
 					<option value="0">нет</option>
 				</select>
@@ -54,7 +54,7 @@
 		<tr>
 			<td>Тематичность:</td>
 			<td>
-				<select name="theme">
+				<select name="thematically">
 					<option value="0">нет</option>
 					<option value="1">да</option>
 				</select>
@@ -63,7 +63,7 @@
 		<tr>
 			<td width="200">Размещать задания которые противоречат законам РФ <nobr>(порно, казино и т.п)</nobr>: </td>
 			<td>
-				<select name="legality">
+				<select name="illegal">
 					<option value="0">Нет, не размещать</option>
 					<option value="1">Да, размещать</option>
 				</select>
@@ -79,7 +79,7 @@
 		</tr>
 		<tr>
 				<td>&nbsp;</td>
-				<td><input name="submit" style="height: 40px; cursor:pointer;" type="submit" value="Добавить площадку"></td>
+				<td><input name="submit" id="addMarket" style="height: 40px; cursor:pointer;" type="submit" value="Добавить площадку"></td>
 		</tr>
 	</table>
 <?= form_close(); ?>

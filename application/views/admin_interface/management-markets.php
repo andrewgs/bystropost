@@ -39,7 +39,14 @@
 						<?php endif;?>
 						<td style="width:20px;">&nbsp;</td>
 						<?php if(isset($markets[$i+1]['id'])):?>
-							<td class="w85"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i+1]['id'];?>" alt=""/>&nbsp;<i><b><?=$markets[$i+1]['title'];?></b></i></nobr></td>
+							<td class="w85">
+							<?php for($j=0;$j<count($markets);$j++):?>	
+								<nobr>
+									<img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i+1]['id'];?>" alt=""/>&nbsp;
+									<i><b><?=$markets[$i+1]['title'];?></b></i>
+								</nobr>
+							<?php endfor;?>
+							<td>
 							<td class="w85"><i><b><a href="<?=$markets[$i+1]['url'];?>"><?=$markets[$i+1]['url'];?></a></b></i></td>
 							<td class="w85">
 								<div id="params<?=$i+1;?>" style="display:none" data-mid="<?=$markets[$i+1]['id'];?>" data-title="<?=$markets[$i+1]['title'];?>" data-url="<?=$markets[$i+1]['url'];?>"></div>
