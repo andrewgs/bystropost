@@ -19,22 +19,29 @@
 				<tr id="titles">
 					<td class="w100">URL площадки</td>
 					<td class="w100">Биржи</td>
-					<td class="50">тиц/pr</td>
-					<td class="w100">Заявки:<br/> Всего / <nobr>Не оплаченые</nobr></td>
+					<td class="50">тиц / pr</td>
+					<td class="w100">Задания:<br/> Всего / <nobr>Не оплаченые</nobr></td>
 					<td class="w50"><nobr>Дата</nobr></td>
 				</tr>
 			<?php for($i=0;$i<count($platforms);$i++):?>
 				<tr>
-					<td><?=anchor('#',$platforms[$i]['url']);?></td>
+					<td><?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],$platforms[$i]['url']);?></td>
 					<td class="platform_td">
-				<?php for($j=0;$j<count($markets);$j++):?>
+				<?php for($j=0,$cnt=0;$j<count($markets);$j++):?>
 					<?php if($platforms[$i]['id'] == $markets[$j]['platform']):?>
+						<?php if($cnt>=1):?>
+							<?php if($markets[$j]['id'] == $markets[$j-1]['id']):?>
+								<?php continue;?>
+							<?php endif;?>
+						<?php endif;?>
 						<?=anchor($markets[$j]['url'],'<img src="'.$baseurl.'markets/viewimage/'.$markets[$j]['id'].'" alt="'.$markets[$j]['title'].'" title="'.$markets[$j]['title'].'"/>',array("class"=>'','target'=>'_blank'));?>
+						<?php $cnt++;?>
 					<?php endif;?>
 				<?php endfor;?>
 					</td>
-					<td class="platform_td">0/0</td>
-					<td class="platform_td"><a href="#">0/0</a></td>
+					<td class="platform_td"><?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?></td>
+					<td class="platform_td"><?=anchor('#','0 / 0');?></td>
+					<td class="platform_td"><?=$platforms[$i]['date'];?></td>
 				</tr>
 			<?php endfor;?>
 			</table>

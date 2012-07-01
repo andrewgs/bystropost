@@ -17,6 +17,8 @@ class Mdplatforms extends CI_Model{
 	var $illegal 		= 0;
 	var $criteria 		= '';
 	var $requests 		= '';
+	var $tic 			= 0;
+	var $pr 			= 0;
 	var $date 			= '';
 	
 	function __construct(){
@@ -44,7 +46,7 @@ class Mdplatforms extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
-	function update_record($data){
+	function update_record($id,$uid,$data){
 		
 		$this->db->set('url',$data['url']);
 		$this->db->set('subject',$data['subject']);
@@ -59,7 +61,8 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('criteria',$data['criteria']);
 		$this->db->set('requests',$data['requests']);
 		
-		$this->db->where('id',$data['id']);
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
 		$this->db->update('platforms');
 		return $this->db->affected_rows();
 	}
@@ -116,5 +119,15 @@ class Mdplatforms extends CI_Model{
 		$this->db->where('id',$id);
 		$this->db->delete('platforms');
 		return $this->db->affected_rows();
+	}
+
+	function ownew_platform($webmaster,$id){
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$webmaster);
+		$query = $this->db->get('platforms',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
 	}
 }

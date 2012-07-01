@@ -86,7 +86,6 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-//		print_r($pagevar['markets']);exit;
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -96,7 +95,9 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
-		
+		for($i=0;$i<count($pagevar['platforms']);$i++):
+			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
+		endfor;
 		$this->load->view("clients_interface/control-platforms",$pagevar);
 	}
 	
@@ -145,7 +146,7 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
-				if($platform):
+				if($platform && isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
 					if($cntmarkets > 0):
@@ -169,6 +170,86 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$this->load->view("clients_interface/control-add-platform",$pagevar);
+	}
+	
+	public function control_edit_platform(){
+		
+		$platform = $this->uri->segment(5);
+		if(!$this->mdplatforms->ownew_platform($this->user['uid'],$platform)):
+			show_404();
+		endif;
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Управление площадками | Редактирование площадки',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'platform'		=> $this->mdplatforms->read_record($platform),
+					'markets'		=> $this->mdmarkets->read_records(),
+					'mymarkets'		=> $this->mdmkplatform->read_records_by_platform($platform,$this->user['uid']),
+					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('url',' ','required|trim');
+			$this->form_validation->set_rules('subject',' ','required|trim');
+			$this->form_validation->set_rules('cms',' ','required|trim');
+			$this->form_validation->set_rules('adminpanel',' ','required|trim');
+			$this->form_validation->set_rules('aplogin',' ','required|trim');
+			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('amount',' ','trim');
+			$this->form_validation->set_rules('reviews',' ','trim');
+			$this->form_validation->set_rules('thematically',' ','trim');
+			$this->form_validation->set_rules('illegal',' ','trim');
+			$this->form_validation->set_rules('criteria',' ','trim');
+			$this->form_validation->set_rules('requests',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
+				else:
+					$this->session->set_userdata('msgr','Платформа не сохранена.');
+				endif;
+				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
+				if(isset($_POST['markets'])):
+					$cntmarkets = count($_POST['markets']);
+					$marketslist = array();
+					if($cntmarkets > 0):
+						for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+							if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
+							$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
+							$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
+							$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+							$j++;
+						endfor;
+					endif;
+					if(count($marketslist)):
+						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
+					endif;
+				endif;
+			endif;
+			redirect('webmaster-panel/actions/platforms');
+		endif;
+		
+		$this->load->view("clients_interface/control-edit-platform",$pagevar);
 	}
 	
 	public function actions_cabinet(){

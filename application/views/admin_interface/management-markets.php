@@ -79,6 +79,7 @@
 				var	mTitle = $("div[id = params"+Param+"]").attr("data-title"); var	mURL = $("div[id = params"+Param+"]").attr("data-url");
 				$(".idMarket").val(mID);$("#emTitle").val(mTitle);$("#emURL").val(mURL);
 			});
+			
 			$("#emsend").click(function(event){
 				var err = false;
 				$(".control-group").removeClass('error');

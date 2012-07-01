@@ -45,6 +45,16 @@ class Mdmkplatform extends CI_Model{
 		return NULL;
 	}
 	
+	function read_records_by_platform($platform,$uid){
+		
+		$this->db->where('platform',$platform);
+		$this->db->where('webmaster',$uid);
+		$query = $this->db->get('mkplatform');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_records_by_webmaster($uid){
 		
 		$this->db->where('webmaster',$uid);
@@ -75,6 +85,14 @@ class Mdmkplatform extends CI_Model{
 	function delete_record($id){
 	
 		$this->db->where('id',$id);
+		$this->db->delete('mkplatform');
+		return $this->db->affected_rows();
+	}
+	
+	function delete_records_by_platform($platform,$uid){
+	
+		$this->db->where('platform',$platform);
+		$this->db->where('webmaster',$uid);
 		$this->db->delete('mkplatform');
 		return $this->db->affected_rows();
 	}
