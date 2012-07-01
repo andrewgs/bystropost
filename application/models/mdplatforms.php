@@ -93,7 +93,7 @@ class Mdplatforms extends CI_Model{
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
-		return NULL;
+		return 0;
 	}
 	
 	function read_record($id){

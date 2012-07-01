@@ -66,8 +66,106 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid']);
 		
 		$this->load->view("clients_interface/control-panel",$pagevar);
+	}
+	
+	public function control_mails(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Управление входящими сообщениями',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'platforms'		=> $this->mdplatforms->count_records_by_webmaster($this->user['uid']),
+					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid']),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		for($i=0;$i<count($pagevar['mails']);$i++):
+			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+		endfor;
+		$this->load->view("clients_interface/control-mails",$pagevar);
+	}
+	
+	public function control_reply_mail(){
+		
+		$mlid = $this->uri->segment(6);
+		$mail = $this->mdmessages->read_record($mlid);
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Отправка сообщения',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'mltext'		=> $mail['text'],
+					'sender'		=> $this->mdusers->read_small_info($mail['sender']),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					
+				endif;
+			endif;
+			redirect('webmaster-panel/actions/mails');
+		endif;
+		
+		$this->load->view("clients_interface/control-reply-mail",$pagevar);
+	}
+	
+	public function control_delete_mail(){
+		
+		$mid = $this->uri->segment(6);
+		if($mid):
+			$result = $this->mdmessages->delete_record($mid);
+			if($result):
+				$this->session->set_userdata('msgs','Сообшение удалено успешно');
+			else:
+				$this->session->set_userdata('msgr','Сообшение не удалено');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
 	}
 	
 	public function control_platforms(){
@@ -81,6 +179,7 @@ class Clients_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'platforms'		=> $this->mdplatforms->read_records_by_webmaster($this->user['uid']),
 					'markets'		=> $this->mdunion->read_mkplatform_by_webmaster($this->user['uid']),
+					'mails'			=> $this->mdmessages->count_records_by_recipient($this->user['uid']),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);

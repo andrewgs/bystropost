@@ -22,9 +22,14 @@ $route[':any/viewimage/:num']			= "users_interface/viewimage";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
 $route['webmaster-panel/actions/control']						= "clients_interface/control_panel";
+
 $route['webmaster-panel/actions/platforms']						= "clients_interface/control_platforms";
 $route['webmaster-panel/actions/platforms/add-platform']		= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']	= "clients_interface/control_edit_platform";
+
+$route['webmaster-panel/actions/mails']							= "clients_interface/control_mails";
+$route['webmaster-panel/actions/platforms/reply/mail-id/:num']= "clients_interface/control_reply_mail";
+$route['webmaster-panel/actions/platforms/delete/mail-id/:num']	= "clients_interface/control_delete_mail";
 
 $route['views/market-profile'] 							= "clients_interface/views";
 $route['webmaster-panel/actions/cabinet']				= "clients_interface/actions_cabinet";
@@ -48,5 +53,12 @@ $route['admin-panel/management/markets']				= "admin_interface/management_market
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 
 
-$route['admin-panel/messages/support']			= "admin_interface/messages_support";
-$route['admin-panel/messages/tickets']			= "admin_interface/messages_tickets";
+$route['admin-panel/messages/support']									= "admin_interface/messages_support";
+$route['admin-panel/messages/private-messages']							= "admin_interface/messages_private";
+$route['admin-panel/messages/private-messages/from']					= "admin_interface/messages_private";
+$route['admin-panel/messages/private-messages/from/:num']				= "admin_interface/messages_private";
+
+$route['admin-panel/messages/system-message']				= "admin_interface/messages_system";
+
+$route['admin-panel/messages/private-messages/delete-mail/mailid/:num']	= "admin_interface/messages_private_delete";
+$route['admin-panel/messages/tickets']									= "admin_interface/messages_tickets";

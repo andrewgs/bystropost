@@ -1,5 +1,5 @@
 <?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
-	<input type="hidden" class="idUser" value="" name="uid" />
+	<input type="hidden" class="idUser" value="" name="recipient" />
 	<div id="mailUser" class="modal hide fade dmodal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>

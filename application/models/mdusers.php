@@ -21,12 +21,11 @@ class Mdusers extends CI_Model{
 	var $type	  		= 1;
 
 	function __construct(){
-        
 		parent::__construct();
-    }
+	}
 	
 	function insert_record($data){
-			
+
 		$this->login 			= $data['login'];
 		$this->cryptpassword	= $this->encrypt->encode($data['password']);
 		$this->password			= md5($data['password']);
@@ -92,6 +91,16 @@ class Mdusers extends CI_Model{
 	
 	function read_record($id){
 		
+		$this->db->where('id',$id);
+		$query = $this->db->get('users',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
+	function read_small_info($id){
+		
+		$this->db->select('id,login,fio,phones,icq,skype,balance,signdate');
 		$this->db->where('id',$id);
 		$query = $this->db->get('users',1);
 		$data = $query->result_array();

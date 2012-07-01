@@ -113,4 +113,31 @@ class Mdunion extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
+	
+	function read_mails_by_recipient($recipient){
+		
+		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient ORDER BY messages.date DESC,messages.id DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_mails_by_recipient_pages($recipient,$count,$from){
+		
+		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_mails_by_recipient_pages($recipient){
+		
+		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
+		return NULL;
+	}
 }

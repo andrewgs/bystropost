@@ -10,7 +10,7 @@
 			<div id="panel_menu">
 				<?=anchor('#','Готовые задания (0)');?>
 				<?=anchor('webmaster-panel/actions/platforms','Площадки ('.count($platforms).')');?>
-				<?=anchor('#','Почта (0)');?>
+				<?=anchor('webmaster-panel/actions/mails','Почта ('.$mails.')');?>
 				<?=anchor('#','Тикеты (0)');?>
 				<?=anchor('#','Дополнительные услуги');?>
 				<?=anchor('#','Форум');?>
@@ -45,7 +45,7 @@
 				</tr>
 			<?php endfor;?>
 			</table>
-			<?=anchor('webmaster-panel/actions/platforms/add-platform','Добавить платформу',array('id'=>'new_platform'));?>
+			<?=anchor('webmaster-panel/actions/platforms/add-platform','Добавить платформу',array('class'=>'btn-action'));?>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>

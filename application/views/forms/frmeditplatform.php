@@ -87,16 +87,16 @@
 			</td>
 		</tr>
 		<tr>
-				<td width="200">Критерии к публикации фотографий к контенту (если поле не заполнено – фотографии будут отсутствовать). Укажите размер фотографий, напишите желательно о всех ньансах при публикации фото. Если cms обычная, можете просто написать – стандарт.:</td>
-				<td><textarea class="redactor" name="criteria" cols="79" rows="12"><?=$platform['criteria']?></textarea></td>
+			<td width="200">Критерии к публикации фотографий к контенту (если поле не заполнено – фотографии будут отсутствовать). Укажите размер фотографий, напишите желательно о всех ньансах при публикации фото. Если cms обычная, можете просто написать – стандарт.:</td>
+			<td><textarea class="redactor" name="criteria" cols="79" rows="12"><?=$platform['criteria']?></textarea></td>
 		</tr>
 		<tr>
-				<td width="200">Ваши пожелания по работе с площадкой (опциональное поле, не обязательное к заполнению)</td>
-				<td><textarea class="redactor" name="requests" cols="79" rows="12"><?=$platform['requests']?></textarea></td>
+			<td width="200">Ваши пожелания по работе с площадкой (опциональное поле, не обязательное к заполнению)</td>
+			<td><textarea class="redactor" name="requests" cols="79" rows="12"><?=$platform['requests']?></textarea></td>
 		</tr>
 		<tr>
-				<td>&nbsp;</td>
-				<td><input name="submit" id="addMarket" style="height: 40px; cursor:pointer;" type="submit" value="Сохранить"></td>
+			<td>&nbsp;</td>
+			<td><input name="submit" id="addMarket" style="height: 40px; cursor:pointer;" type="submit" value="Сохранить"></td>
 		</tr>
 	</table>
 <?= form_close(); ?>

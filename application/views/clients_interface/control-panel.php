@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="panel_segment">
-					<big><?=anchor('#','Почта (0)');?></big>
+					<big><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails'].')');?></big>
 					<img src="<?=$baseurl;?>images/panel_pic4.jpg">
 					<div class="text">
 						Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей

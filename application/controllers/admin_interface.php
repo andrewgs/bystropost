@@ -20,10 +20,10 @@ class Admin_interface extends CI_Controller{
 			if($this->user['uid']):
 				$userinfo = $this->mdusers->read_record($this->user['uid']);
 				if($userinfo['type'] == 5):
-					$this->user['ulogin'] 			= $userinfo['login'];
-					$this->user['uname'] 			= $userinfo['fio'];
-					$this->user['utype'] 			= $userinfo['type'];
-					$this->loginstatus['status'] 	= TRUE;
+					$this->user['ulogin'] 		= $userinfo['login'];
+					$this->user['uname'] 		= $userinfo['fio'];
+					$this->user['utype'] 		= $userinfo['type'];
+					$this->loginstatus['status']= TRUE;
 				else:
 					redirect('');
 				endif;
@@ -107,11 +107,12 @@ class Admin_interface extends CI_Controller{
 		
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
 			$this->form_validation->set_rules('text',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
-				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST);
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
@@ -149,8 +150,8 @@ class Admin_interface extends CI_Controller{
 		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/users/'.$this->uri->segment(4).'/from/';
 		$config['uri_segment'] 		= 6;
 		$config['total_rows'] 		= $pagevar['count']; 
-        $config['per_page'] 		= 3;
-        $config['num_links'] 		= 4;
+		$config['per_page'] 		= 3;
+		$config['num_links'] 		= 4;
 		$config['first_link']		= 'В начало';
 		$config['last_link'] 		= 'В конец';
 		$config['next_link'] 		= 'Далее &raquo;';
@@ -288,7 +289,115 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		$this->load->view("admin_interface/messages-support",$pagevar);
 	}
-
+	
+	public function messages_system(){
+		
+		$from = intval($this->uri->segment(5));
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Отправка системного сообщения сообщения',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		$this->load->view("admin_interface/messages-system",$pagevar);
+	}
+	
+	public function messages_private(){
+		
+		$from = intval($this->uri->segment(5));
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Личные сообщения',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'mails'			=> $this->mdunion->read_mails_by_recipient_pages($this->user['uid'],5,$from),
+					'count'			=> $this->mdunion->count_mails_by_recipient_pages($this->user['uid']),
+					'pages'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		for($i=0;$i<count($pagevar['mails']);$i++):
+			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+		endfor;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/private-messages/from/';
+		$config['uri_segment'] 	= 5;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		$this->load->view("admin_interface/messages-private",$pagevar);
+	}
+	
+	public function messages_private_delete(){
+		
+		$mid = $this->uri->segment(6);
+		if($mid):
+			$result = $this->mdmessages->delete_record($mid);
+			if($result):
+				$this->session->set_userdata('msgs','Сообшение удалено успешно');
+			else:
+				$this->session->set_userdata('msgr','Сообшение не удалено');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
 	public function messages_tickets(){
 		
 		$pagevar = array(

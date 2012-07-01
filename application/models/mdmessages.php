@@ -2,7 +2,7 @@
 
 class Mdmessages extends CI_Model{
 
-	var $id   		= 0;
+	var $id			= 0;
 	var $sender 	= 0;
 	var $recipient 	= 0;
 	var $date 		= '';
@@ -12,12 +12,12 @@ class Mdmessages extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($iud,$data){
+	function insert_record($uid,$recipient,$text){
 			
-		$this->sender 		= $iud;
-		$this->recipient 	= $data['uid'];
+		$this->sender 		= $uid;
+		$this->recipient	= $recipient;
+		$this->text 		= $text;
 		$this->date 		= date("Y-m-d");
-		$this->text 		= strip_tags($data['text']);
 		
 		$this->db->insert('messages',$this);
 		return $this->db->insert_id();
@@ -28,18 +28,46 @@ class Mdmessages extends CI_Model{
 		$this->db->order_by('date');
 		$query = $this->db->get('messages');
 		$data = $query->result_array();
-		if(count($data)>0) return $data;
+		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function read_date(){
+	function read_records_by_sender($sender){
 		
-		$this->db->select('date');
-		$this->db->order_by('date');
+		$this->db->where('sender',$sender);
 		$query = $this->db->get('messages');
 		$data = $query->result_array();
-		if(count($data)>0) return $data;
+		if(count($data)) return $data;
 		return NULL;
+	}
+	
+	function count_records_by_sender($sender){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('sender',$sender);
+		$query = $this->db->get('messages');
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function read_records_by_recipient($recipient){
+		
+		$this->db->where('recipient',$recipient);
+		$query = $this->db->get('messages');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_records_by_recipient($recipient){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('recipient',$recipient);
+		$query = $this->db->get('messages');
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
 	}
 	
 	function read_record($id){
@@ -72,14 +100,5 @@ class Mdmessages extends CI_Model{
 		$this->db->where('recipient',$recipient);
 		$this->db->delete('messages');
 		return $this->db->affected_rows();
-	}
-	
-	function exist_date($date){
-		
-		$this->db->where('date',$date);
-		$query = $this->db->get('messages',1);
-		$data = $query->result_array();
-		if(count($data)) return TRUE;
-		return FALSE;
-	}
+	}	
 }
