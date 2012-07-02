@@ -114,9 +114,27 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_mails_by_recipient($recipient){
+	function read_mails_by_recipient($recipient,$utype){
 		
-		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient ORDER BY messages.date DESC,messages.id DESC";
+		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1) ORDER BY messages.date DESC,messages.id DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_tickets_by_recipient($recipient){
+		
+		$query = "SELECT tickets.*, users.fio,users.login FROM tickets INNER JOIN users ON tickets.sender=users.id WHERE tickets.recipient = $recipient ORDER BY tickets.date DESC,tickets.id DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_tickets_by_sender($sender){
+		
+		$query = "SELECT tickets.*, users.fio,users.login,tkmsgs.text FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

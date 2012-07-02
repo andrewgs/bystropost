@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class="panel_segment">
-					<big><?=anchor('#','Тикеты (0)');?></big>
+					<big><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></big>
 					<img src="<?=$baseurl;?>images/panel_pic3.jpg">
 					<div class="text">
 						Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей

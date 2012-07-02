@@ -21,18 +21,24 @@ $route['users/logoff']					= "users_interface/logoff";
 $route[':any/viewimage/:num']			= "users_interface/viewimage";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
-$route['webmaster-panel/actions/control']						= "clients_interface/control_panel";
+$route['webmaster-panel/actions/control']							= "clients_interface/control_panel";
 
-$route['webmaster-panel/actions/platforms']						= "clients_interface/control_platforms";
-$route['webmaster-panel/actions/platforms/add-platform']		= "clients_interface/control_add_platform";
-$route['webmaster-panel/actions/platforms/edit-platform/:num']	= "clients_interface/control_edit_platform";
+$route['webmaster-panel/actions/platforms']							= "clients_interface/control_platforms";
+$route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
+$route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
 
-$route['webmaster-panel/actions/mails']							= "clients_interface/control_mails";
-$route['webmaster-panel/actions/platforms/reply/mail-id/:num']= "clients_interface/control_reply_mail";
-$route['webmaster-panel/actions/platforms/delete/mail-id/:num']	= "clients_interface/control_delete_mail";
+$route['webmaster-panel/actions/tickets']							= "clients_interface/control_tickets";
+$route['webmaster-panel/actions/tickets/view-ticket/:num']			= "clients_interface/control_view_ticket";
+$route['webmaster-panel/actions/tickets/view-ticket/:num/from']		= "clients_interface/control_view_ticket";
+$route['webmaster-panel/actions/tickets/view-ticket/:num/from/:num']= "clients_interface/control_view_ticket";
+$route['webmaster-panel/actions/tickets/delete/ticket-id/:num']		= "clients_interface/control_delete_tickets";
 
-$route['views/market-profile'] 							= "clients_interface/views";
-$route['webmaster-panel/actions/cabinet']				= "clients_interface/actions_cabinet";
+$route['webmaster-panel/actions/mails']								= "clients_interface/control_mails";
+$route['webmaster-panel/actions/platforms/reply/mail-id/:num']		= "clients_interface/control_reply_mail";
+$route['webmaster-panel/actions/platforms/delete/mail-id/:num']		= "clients_interface/control_delete_mail";
+
+$route['views/market-profile'] 										= "clients_interface/views";
+$route['webmaster-panel/actions/cabinet']							= "clients_interface/actions_cabinet";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 

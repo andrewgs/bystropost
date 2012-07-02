@@ -384,36 +384,36 @@ BACKGROUND-POSITION:top center;
 
 #stable{
 	FLOAT:left;
-	WIDTH:1005px;
+	WIDTH:960px;
 	MARGIN-TOP:150px;
 }
 
 #new_ticket{
-DISPLAY:block;
-FLOAT:left;
-BACKGROUND-IMAGE:url('../images/new_ticket.jpg');
-BACKGROUND-REPEAT:no-repeat;
-WIDTH:129px;
-HEIGHT:42px;
-MARGIN-TOP:10px;
+	DISPLAY:block;
+	FLOAT:left;
+	BACKGROUND-IMAGE:url('../images/new_ticket.jpg');
+	BACKGROUND-REPEAT:no-repeat;
+	WIDTH:129px;
+	HEIGHT:42px;
+	MARGIN-TOP:10px;
 }
 
 #select_pages{
-MARGIN-TOP:10px;
-FLOAT:left;
-WIDTH:100%;
-PADDING:0px;
-BACKGROUND-COLOR:#FFFFFF;
+	MARGIN-TOP:10px;
+	FLOAT:left;
+	WIDTH:100%;
+	PADDING:0px;
+	BACKGROUND-COLOR:#FFFFFF;
 }
 
 #select_pages a{
-DISPLAY:block;
-FLOAT:left;
-PADDING:5px;
-PADDING-LEFT:9px;
-PADDING-RIGHT:9px;
-MARGIN:5px;
-COLOR:#524a44;
+	DISPLAY:block;
+	FLOAT:left;
+	PADDING:5px;
+	PADDING-LEFT:9px;
+	PADDING-RIGHT:9px;
+	MARGIN:5px;
+	COLOR:#524a44;
 }
 
 #select_pages a:hover{
@@ -724,7 +724,7 @@ table.sel td {border: 1px dotted #999999;font-size: 14px;}
 	padding: 2px 4px;
 	text-decoration: none;
 }
-.btn-action{display: block;float: left;	margin-top: 20px;background-color: #3ec3e6;	color:#000040;width: 155px;padding: 10px;text-decoration:none;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
+.btn-action{display: block;float: left;	margin-top: 20px;background-color: #3ec3e6;	color:#000040;padding: 10px;text-decoration:none;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
 .small{width:63px; margin:0 3px;;}
 
 input.mb10 {margin-bottom: 10px;}

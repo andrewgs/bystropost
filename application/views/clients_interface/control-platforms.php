@@ -11,7 +11,7 @@
 				<?=anchor('#','Готовые задания (0)');?>
 				<?=anchor('webmaster-panel/actions/platforms','Площадки ('.count($platforms).')');?>
 				<?=anchor('webmaster-panel/actions/mails','Почта ('.$mails.')');?>
-				<?=anchor('#','Тикеты (0)');?>
+				<?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$tickets.')');?>
 				<?=anchor('#','Дополнительные услуги');?>
 				<?=anchor('#','Форум');?>
 			</div>

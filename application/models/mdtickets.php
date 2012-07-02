@@ -1,49 +1,36 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Mdmessages extends CI_Model{
+class Mdtickets extends CI_Model{
 
 	var $id			= 0;
-	var $system		= 0;
-	var $group		= 1;
-	var $type		= 1;
 	var $sender 	= 0;
 	var $recipient 	= 0;
+	var $title 		= '';
 	var $date 		= '';
-	var $text 		= '';
+	var $status 	= 0;
+	var $type 		= 1;
 	
 	function __construct(){
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$recipient,$text){
+	function insert_record($uid,$recipient,$data){
 			
 		$this->sender 		= $uid;
 		$this->recipient	= $recipient;
-		$this->text 		= $text;
+		$this->title		= $data['title'];
 		$this->date 		= date("Y-m-d");
+		$this->type 		= $data['type'];
 		
-		$this->db->insert('messages',$this);
+		$this->db->insert('tickets',$this);
 		return $this->db->insert_id();
 	}
 	
-	function send_system_message($uid,$data){
-			
-		$this->sender 	= $uid;
-		$this->system 	= 1;
-		$this->type		= $data['type'];
-		$this->group 	= $data['group'];
-		$this->text 	= $data['text'];
-		$this->date 	= date("Y-m-d");
+	function is_replied($tid){
 		
-		$this->db->insert('messages',$this);
-		return $this->db->insert_id();
-	}
-	
-	function is_system($mid){
-		
-		$this->db->where('system',1);
-		$this->db->where('id',$mid);
-		$query = $this->db->get('messages');
+		$this->db->where('status',1);
+		$this->db->where('id',$tid);
+		$query = $this->db->get('tickets');
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
@@ -52,7 +39,7 @@ class Mdmessages extends CI_Model{
 	function read_records(){
 		
 		$this->db->order_by('date');
-		$query = $this->db->get('messages');
+		$query = $this->db->get('tickets');
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
@@ -61,7 +48,7 @@ class Mdmessages extends CI_Model{
 	function read_records_by_sender($sender){
 		
 		$this->db->where('sender',$sender);
-		$query = $this->db->get('messages');
+		$query = $this->db->get('tickets');
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
@@ -71,7 +58,7 @@ class Mdmessages extends CI_Model{
 		
 		$this->db->select('COUNT(*) AS cnt');
 		$this->db->where('sender',$sender);
-		$query = $this->db->get('messages');
+		$query = $this->db->get('tickets');
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return 0;
@@ -80,15 +67,16 @@ class Mdmessages extends CI_Model{
 	function read_records_by_recipient($recipient){
 		
 		$this->db->where('recipient',$recipient);
-		$query = $this->db->get('messages');
+		$this->db->where('sender',$recipient);
+		$query = $this->db->get('tickets');
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function count_records_by_recipient($recipient,$utype){
+	function count_records_by_recipient($user){
 		
-		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE (messages.recipient = $recipient AND messages.system = 0) OR (messages.group = $utype AND messages.system = 1)";
+		$query = "SELECT COUNT(*) AS cnt FROM tickets WHERE tickets.sender = $user";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
@@ -98,7 +86,7 @@ class Mdmessages extends CI_Model{
 	function read_record($id){
 		
 		$this->db->where('id',$id);
-		$query = $this->db->get('messages',1);
+		$query = $this->db->get('tickets',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];
 		return NULL;
@@ -107,7 +95,7 @@ class Mdmessages extends CI_Model{
 	function read_field($id,$field){
 			
 		$this->db->where('id',$id);
-		$query = $this->db->get('messages',1);
+		$query = $this->db->get('tickets',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0][$field];
 		return FALSE;
@@ -116,14 +104,24 @@ class Mdmessages extends CI_Model{
 	function delete_record($id){
 	
 		$this->db->where('id',$id);
-		$this->db->delete('messages');
+		$this->db->delete('tickets');
 		return $this->db->affected_rows();
 	}
 	
 	function delete_records_by_user($recipient){
 	
 		$this->db->where('recipient',$recipient);
-		$this->db->delete('messages');
+		$this->db->delete('tickets');
 		return $this->db->affected_rows();
-	}	
+	}
+
+	function ownew_ticket($sender,$id){
+		
+		$this->db->where('id',$id);
+		$this->db->where('sender',$sender);
+		$query = $this->db->get('tickets',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
 }

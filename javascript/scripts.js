@@ -18,6 +18,7 @@ function isValidPhone(phoneNumber){
 	$("#msgeclose").click(function(){$("#msgdealert").fadeOut(1000,function(){$(this).remove();});});
 	$("#msgsclose").click(function(){$("#msgdsalert").fadeOut(1000,function(){$(this).remove();});});
 	$(".digital").keypress(function(e){if(e.which!=8 && e.which!=46 && e.which!=0 && (e.which<48 || e.which>57)){return false;}});
+	$(".none").click(function(event){event.preventDefault();});
 	
 	$("#userRegister").click(function(event){
 		var err = false;

@@ -306,14 +306,16 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		if($this->input->post('mtsubmit')):
-			$_POST['mtsubmit'] = NULL;
-			$this->form_validation->set_rules('recipient',' ','required|trim');
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+//			print_r($_POST);exit;
+			$this->form_validation->set_rules('group',' ','required|trim');
+			$this->form_validation->set_rules('type',' ','required|trim');
 			$this->form_validation->set_rules('text',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
-				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+				$id = $this->mdmessages->send_system_message($this->user['uid'],$_POST);
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
