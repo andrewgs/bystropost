@@ -19,14 +19,13 @@
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
 	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
-	<script src="<?=$baseurl;?>javascript/scrollto-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#SendMail").click(function(event){
 				var err = false;
 				$(".ErrImg").remove();
-				if($("#text").val()==''){
+				if($("#text").val()=='' && $("#closeTicket").attr("checked") == undefined){
 					$("#SendMail").after('<img class="ErrImg" src="<?=$baseurl;?>images/icons/exclamation.png" title="Текс сообщения не может быть пустым">');
 					event.preventDefault();
 				}

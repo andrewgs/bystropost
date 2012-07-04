@@ -26,8 +26,8 @@
 						<tr class="align-center">
 							<td class="w100"><?=$mails[$i]['fio'];?><br/><i><b><?=$mails[$i]['login'];?></b></i></td>
 							<td class="w400"><?=$mails[$i]['text'];?></td>
-							<td class="w50">
-								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$mails[$i]['id'];?>" data-fio="<?=$mails[$i]['fio'];?>" data-login="<?=$mails[$i]['login'];?>"></div>
+							<td class="w50" style="text-align:center; vertical-align:middle;">
+								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$mails[$i]['id'];?>" data-uid="<?=$mails[$i]['uid'];?>" data-fio="<?=$mails[$i]['fio'];?>" data-login="<?=$mails[$i]['login'];?>"></div>
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
@@ -50,9 +50,9 @@
 		$(document).ready(function(){
 			var mID = 0;
 			$(".mailUser").click(function(){
-				var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");
+				var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
-				$(".idUser").val(mID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);
+				$(".idMail").val(mID);$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);
 			});
 			$("#mtsend").click(function(event){
 				var err = false;

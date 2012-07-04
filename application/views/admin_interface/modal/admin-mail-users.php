@@ -1,4 +1,5 @@
 <?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
+	<input type="hidden" class="idMail" value="" name="mid" />
 	<input type="hidden" class="idUser" value="" name="recipient" />
 	<div id="mailUser" class="modal hide fade dmodal">
 		<div class="modal-header">
@@ -32,7 +33,7 @@
 					<label class="control-label" for="sendmail"></label>
 						<div class="controls">
 							<label class="checkbox">
-							<input id="sendMail" name="sendmail" type="checkbox" value="1">
+							<input id="sendMail" name="sendmail" type="checkbox" value="1" checked="checked">
 								Установите если нужно уведомить по почте
 							</label>
 						</div>

@@ -32,11 +32,12 @@
 						<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
 					<?php endif;?>
 						<?=$tkmsgs[$i]['text'];?>
+						<div class="clear"></div>
 					<?php if(isset($tkmsgs[$i]['fio'])):?>
-						<div style="float:left;">
+						<div style="float:left; margin-top:10px;" >
 							<?=anchor('webmaster-panel/actions/tickets/ticket-id/'.$this->uri->segment(5).'/reply/message-id/'.$tkmsgs[$i]['id'],'Ответить',array('class'=>'btn-action small'));?>
 						</div>
-						<div style="float:right;">
+						<div style="float:right;margin-top:10px;">
 							<nobr><?=$tkmsgs[$i]['fio'];?></nobr><br/>
 							<nobr><i><b><?=$tkmsgs[$i]['email'];?></b></i></nobr><br/>
 						</div>
@@ -53,7 +54,6 @@
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
 	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
-	<script src="<?=$baseurl;?>javascript/scrollto-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("td[data-incoming='incoming']").each(function(e){

@@ -15,7 +15,7 @@ class Mdtkmsgs extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$ticket,$sender,$recipient,$reply,$data){
+	function insert_record($uid,$ticket,$sender,$recipient,$reply,$text){
 			
 		$this->ticket 	= $ticket;
 		$this->owner 	= $uid;
@@ -23,7 +23,7 @@ class Mdtkmsgs extends CI_Model{
 		$this->recipient= $recipient;
 		$this->reply	= $reply;
 		$this->date 	= date("Y-m-d");
-		$this->text 	= $data['text'];
+		$this->text 	= $text;
 		
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();
@@ -119,5 +119,15 @@ class Mdtkmsgs extends CI_Model{
 		$this->db->where('owner',$owner);
 		$this->db->delete('tkmsgs');
 		return $this->db->affected_rows();
-	}	
+	}
+
+	function ownew_message($recipient){
+		
+		$this->db->where('recipient',$recipient);
+		$this->db->or_where('recipient',0);
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
 }

@@ -416,7 +416,7 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
 				if($ticket):
-					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST);
+					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
@@ -526,7 +526,7 @@ class Clients_interface extends CI_Controller{
 	public function control_reply_ticket(){
 		
 		$tkmsg = $this->uri->segment(8);
-		$ticket = $this->mdtkmsgs->read_field($tkmsg,'ticket');
+		$ticket = $this->uri->segment(5);
 		if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
 			show_404();
 		endif;
@@ -548,7 +548,6 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -562,19 +561,24 @@ class Clients_interface extends CI_Controller{
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('recipient',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
-				$tkrec = $this->mdtkmsgs->read_field($tkmsg,'recipient');
-				if(!$tkrec):
-					$_POST['recipient'] = 0;
-				endif;
+				$tuser = $this->mdtickets->read_field($_POST['recipient'],'type');
+				switch($tuser):
+					case 1 : redirect($this->uri->uri_string()); break;
+					case 2 : TRUE; break;
+					case 3 : redirect($this->uri->uri_string()); break;
+					case 4 : redirect($this->uri->uri_string()); break;
+					case 5 : $_POST['recipient'] = 0; break;
+				endswitch;
+				$_POST['recipient'] = 0;
 				if(isset($_POST['closeticket'])):
-					$_POST['text'] = 'Cпасибо за информацию. Тикет закрыт!<br/><br/>'.$_POST['text'];
+					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
-				$id = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$tkmsg,$_POST);
+				$id = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$tkmsg,$_POST['text']);
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;

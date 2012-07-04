@@ -1,5 +1,5 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'frmreplyticket')); ?>
-	<input type="hidden" value="<?=$tkmsg['id'];?>" name="recipient" />
+	<input type="hidden" value="<?=$tkmsg['sender'];?>" name="recipient" />
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td>Получатель:</td>

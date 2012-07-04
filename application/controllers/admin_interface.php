@@ -459,19 +459,37 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'ticket'		=> $this->mdtickets->read_record($ticket),
-					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_owner_pages($this->user['uid'],$ticket,5,$from),
-					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_owner_pages($this->user['uid'],$ticket),
+					'tktitle'		=> $this->mdtickets->read_field($ticket,'title'),
+					'tkmsgs'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
+					'count'			=> $this->mdunion->count_messages_by_ticket($ticket),
 					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-
-		$this->session->set_userdata('backpath',$this->uri->uri_string());
-		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/view-ticket/'.$this->uri->segment(5).'/from/';
-		$config['uri_segment'] 	= 7;
+	
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('mid',' ','required|trim');
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdtkmsgs->insert_record($_POST['recipient'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					//уведомление по почте
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/tickets/view-ticket/ticket-id/'.$this->uri->segment(6).'/from/';
+		$config['uri_segment'] 	= 8;
 		$config['total_rows'] 	= $pagevar['count'];
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
@@ -484,34 +502,31 @@ class Admin_interface extends CI_Controller{
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
-		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('url',' ','required|trim');
-			$this->form_validation->set_rules('subject',' ','required|trim');
-			$this->form_validation->set_rules('cms',' ','required|trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
-			else:
-				$result = $this->mdtkmsgs->insert_record($ticket,$this->user['uid'],$_POST);
-				if($result):
-					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Платформа не сохранена.');
-				endif;
-				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
-			endif;
-			redirect('webmaster-panel/actions/tickets');
-		endif;
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date($pagevar['tkmsgs'][$i]['date']);
-			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
-				$pagevar['tkmsgs'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'fio');
-				$pagevar['tkmsgs'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'login');
-			endif;
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
 		endfor;
 		$this->load->view("admin_interface/messages-view-tickets",$pagevar);
 	}
+
+	public function control_delete_msg_ticket(){
+		
+		$message = $this->uri->segment(6);
+		if($message):
+			if(!$this->mdtkmsgs->ownew_message($this->user['uid'])):
+				redirect($_SERVER['HTTP_REFERER']);
+			endif;
+			$result = $this->mdtkmsgs->delete_record($message);
+			if($result):
+				$this->session->set_userdata('msgs','Сообшение удалено успешно');
+			else:
+				$this->session->set_userdata('msgr','Сообшение не удалено');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
 	
 	/******************************************************** functions ******************************************************/	
 	
