@@ -138,6 +138,11 @@ tr .align-center td{
 	margin: 0 3px 0 7px;
 }
 
+.vc{
+	text-align:center;
+	vertical-align:middle;
+}
+
 .w100{width: 100px;}
 .w250{width: 250px;}
 .w205{width: 205px;}

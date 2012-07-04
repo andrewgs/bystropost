@@ -13,6 +13,8 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdunion');
 		$this->load->model('mdmessages');
 		$this->load->model('mdmarkets');
+		$this->load->model('mdtkmsgs');
+		$this->load->model('mdtickets');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -331,7 +333,6 @@ class Admin_interface extends CI_Controller{
 	public function messages_private(){
 		
 		$from = intval($this->uri->segment(5));
-		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -402,20 +403,116 @@ class Admin_interface extends CI_Controller{
 	
 	public function messages_tickets(){
 		
+		$from = intval($this->uri->segment(5));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
 					'title'			=> 'Администрирование | Тикеты',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'tickets'		=> $this->mdunion->read_all_tickets(10,$from),
+					'count'			=> $this->mdunion->count_all_tickets(),
+					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		for($i=0;$i<count($pagevar['tickets']);$i++):
+			$pagevar['tickets'][$i]['date'] = $this->operation_date($pagevar['tickets'][$i]['date']);
+			if($pagevar['tickets'][$i]['recipient']):
+				$pagevar['tickets'][$i]['user'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'fio');
+				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'login');
+			else:
+				$pagevar['tickets'][$i]['user'] = '<em><strong><font style="color:#ff0000;">Администратору</font></strong></em>';
+				$pagevar['tickets'][$i]['email'] = '';
+			endif;
+		endfor;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/private-messages/from/';
+		$config['uri_segment'] 	= 5;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
 		$this->load->view("admin_interface/messages-tickets",$pagevar);
 	}
+	
+	public function messages_view_ticket(){
+		
+		$ticket = $this->uri->segment(6);
+		$from = intval($this->uri->segment(8));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Тикеты | Просмотр',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'ticket'		=> $this->mdtickets->read_record($ticket),
+					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_owner_pages($this->user['uid'],$ticket,5,$from),
+					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_owner_pages($this->user['uid'],$ticket),
+					'pages'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
 
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
+		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/view-ticket/'.$this->uri->segment(5).'/from/';
+		$config['uri_segment'] 	= 7;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('url',' ','required|trim');
+			$this->form_validation->set_rules('subject',' ','required|trim');
+			$this->form_validation->set_rules('cms',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdtkmsgs->insert_record($ticket,$this->user['uid'],$_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
+				else:
+					$this->session->set_userdata('msgr','Платформа не сохранена.');
+				endif;
+				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
+			endif;
+			redirect('webmaster-panel/actions/tickets');
+		endif;
+		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date($pagevar['tkmsgs'][$i]['date']);
+			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
+				$pagevar['tkmsgs'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'fio');
+				$pagevar['tkmsgs'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'login');
+			endif;
+		endfor;
+		$this->load->view("admin_interface/messages-view-tickets",$pagevar);
+	}
+	
 	/******************************************************** functions ******************************************************/	
 	
 	public function fileupload($userfile,$overwrite,$catalog){

@@ -32,6 +32,7 @@ $route['webmaster-panel/actions/tickets/view-ticket/:num']			= "clients_interfac
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from']		= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from/:num']= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/delete/ticket-id/:num']		= "clients_interface/control_delete_tickets";
+$route['webmaster-panel/actions/tickets/ticket-id/:num/reply/message-id/:num']= "clients_interface/control_reply_ticket";
 
 $route['webmaster-panel/actions/mails']								= "clients_interface/control_mails";
 $route['webmaster-panel/actions/platforms/reply/mail-id/:num']		= "clients_interface/control_reply_mail";
@@ -64,7 +65,13 @@ $route['admin-panel/messages/private-messages']							= "admin_interface/message
 $route['admin-panel/messages/private-messages/from']					= "admin_interface/messages_private";
 $route['admin-panel/messages/private-messages/from/:num']				= "admin_interface/messages_private";
 
-$route['admin-panel/messages/system-message']				= "admin_interface/messages_system";
+$route['admin-panel/messages/system-message']							= "admin_interface/messages_system";
 
 $route['admin-panel/messages/private-messages/delete-mail/mailid/:num']	= "admin_interface/messages_private_delete";
 $route['admin-panel/messages/tickets']									= "admin_interface/messages_tickets";
+$route['admin-panel/messages/tickets/from']								= "admin_interface/messages_tickets";
+$route['admin-panel/messages/tickets/from/:num']						= "admin_interface/messages_tickets";
+
+$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num']		= "admin_interface/messages_view_ticket";
+$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from']	= "admin_interface/messages_view_ticket";
+$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from/:num']	= "admin_interface/messages_view_ticket";

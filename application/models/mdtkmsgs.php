@@ -6,6 +6,7 @@ class Mdtkmsgs extends CI_Model{
 	var $ticket		= 0;
 	var $reply		= 0;
 	var $owner 		= 0;
+	var $sender		= 0;
 	var $recipient 	= 0;
 	var $date 		= '';
 	var $text 		= 1;
@@ -14,13 +15,15 @@ class Mdtkmsgs extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$ticket,$recipient,$data){
+	function insert_record($uid,$ticket,$sender,$recipient,$reply,$data){
 			
-		$this->ticket 		= $ticket;
-		$this->owner 		= $uid;
-		$this->recipient	= $recipient;
-		$this->date 		= date("Y-m-d");
-		$this->text 		= $data['text'];
+		$this->ticket 	= $ticket;
+		$this->owner 	= $uid;
+		$this->sender	= $sender;
+		$this->recipient= $recipient;
+		$this->reply	= $reply;
+		$this->date 	= date("Y-m-d");
+		$this->text 	= $data['text'];
 		
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();
@@ -56,6 +59,8 @@ class Mdtkmsgs extends CI_Model{
 	
 	function read_tkmsgs_by_owner_pages($owner,$ticket,$count,$from){
 		
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
 		$this->db->where('owner',$owner);
 		$this->db->where('ticket',$ticket);
 		$this->db->limit($count,$from);
@@ -76,9 +81,10 @@ class Mdtkmsgs extends CI_Model{
 		return 0;
 	}
 	
-	function read_record($id){
+	function read_record($id,$uid){
 		
 		$this->db->where('id',$id);
+		$this->db->where('owner',$uid);
 		$query = $this->db->get('tkmsgs',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];

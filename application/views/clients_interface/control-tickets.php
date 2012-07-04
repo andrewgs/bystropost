@@ -24,15 +24,19 @@
 			<?php for($i=0;$i<count($tickets);$i++):?>
 				<tr>
 					<td style="text-align:left; font-size: 10px;" class="w275">
-						<nobr><?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title']);?></nobr><br/><br/>
+						<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title']);?><br/><br/>
 						<u>Направлено на расмотрение:</u><br/>
 						<nobr><?=$tickets[$i]['fio'];?></nobr><br/>
-						<nobr><i><b><?=$tickets[$i]['login'];?></b></i></nobr><br/><br/>
+						<nobr><i><b><?=$tickets[$i]['email'];?></b></i></nobr><br/><br/>
 						Дата создания:<br/>
 						<nobr><?=$tickets[$i]['date'];?></nobr>
 					</td>
 					<td style="text-align:left; font-size: 12px;" class="w700"><?=$tickets[$i]['text'];?></td>
+				<?php if($tickets[$i]['status']):?>
+					<td class="w100" data-closed="closed">
+				<?php else:?>
 					<td class="w100">
+				<?php endif;?>
 						<?=anchor('webmaster-panel/actions/tickets/delete/ticket-id/'.$tickets[$i]['id'],'Удалить',array('class'=>'btn-action small delTicket'));?>
 					</td>
 				</tr>
@@ -49,6 +53,9 @@
 	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			$("td[data-closed='closed']").each(function(e){
+				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
+			});
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#InsTicket").click(function(){
 				$(".ErrImg").remove();
@@ -62,7 +69,6 @@
 						$("#frmInsTicket").hide();
 						$("#InsTicket").html('Создать тикет');
 						$("#TitleTicket").val('');
-						$("html, body").animate({scrollTop:'0'},"slow");
 						return false;
 					 });
 				}

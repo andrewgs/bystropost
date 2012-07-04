@@ -393,6 +393,13 @@ class Clients_interface extends CI_Controller{
 		endif;
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			if($pagevar['tickets'][$i]['recipient']):
+				$pagevar['tickets'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'fio');
+				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'login');
+			else:
+				$pagevar['tickets'][$i]['fio'] = '<em><strong>Администратору</strong></em>';
+				$pagevar['tickets'][$i]['email'] = '';
+			endif;
 		endfor;
 		
 		if($this->input->post('submit')):
@@ -409,7 +416,7 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
 				if($ticket):
-					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$recipient,$_POST);
+					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST);
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
@@ -417,7 +424,6 @@ class Clients_interface extends CI_Controller{
 			endif;
 			redirect('webmaster-panel/actions/tickets');
 		endif;
-		
 		$this->load->view("clients_interface/control-tickets",$pagevar);
 	}
 	
@@ -453,7 +459,7 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
-		
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/view-ticket/'.$this->uri->segment(5).'/from/';
 		$config['uri_segment'] 	= 7;
 		$config['total_rows'] 	= $pagevar['count'];
@@ -489,9 +495,9 @@ class Clients_interface extends CI_Controller{
 		endif;
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
 			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date($pagevar['tkmsgs'][$i]['date']);
-			if($pagevar['tkmsgs'][$i]['recipient']):
-				$pagevar['tkmsgs'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'fio');
-				$pagevar['tkmsgs'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'login');
+			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
+				$pagevar['tkmsgs'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'fio');
+				$pagevar['tkmsgs'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'login');
 			endif;
 		endfor;
 		$this->load->view("clients_interface/control-view-ticket",$pagevar);
@@ -515,6 +521,80 @@ class Clients_interface extends CI_Controller{
 		else:
 			show_404();
 		endif;
+	}
+	
+	public function control_reply_ticket(){
+		
+		$tkmsg = $this->uri->segment(8);
+		$ticket = $this->mdtkmsgs->read_field($tkmsg,'ticket');
+		if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
+			show_404();
+		endif;
+		$sender = $this->mdtkmsgs->read_field($tkmsg,'sender');
+		if($sender == $this->user['uid']):
+			redirect($this->session->userdata('backpath'));
+		endif;
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Отправка сообщения',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'tkmsg'			=> $this->mdtkmsgs->read_record($tkmsg,$this->user['uid']),
+					'backpath'		=> $this->session->userdata('backpath'),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$tkrec = $this->mdtkmsgs->read_field($tkmsg,'recipient');
+				if(!$tkrec):
+					$_POST['recipient'] = 0;
+				endif;
+				if(isset($_POST['closeticket'])):
+					$_POST['text'] = 'Cпасибо за информацию. Тикет закрыт!<br/><br/>'.$_POST['text'];
+					$this->mdtickets->update_field($ticket,'status',1);
+				endif;
+				$id = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$tkmsg,$_POST);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					//уведомление по почте
+				endif;
+			endif;
+			redirect($pagevar['backpath']);
+		endif;
+		
+		$ktrcp = $this->mdtickets->read_field($ticket,'recipient');
+		if($ktrcp):
+			$pagevar['tkmsg']['fio'] = $this->mdusers->read_field($pagevar['tkmsg']['sender'],'fio');
+			$pagevar['tkmsg']['email'] = $this->mdusers->read_field($pagevar['tkmsg']['sender'],'login');
+		else:
+			$pagevar['tkmsg']['fio'] = '<em><strong>Администратор</strong></em>';
+			$pagevar['tkmsg']['email'] = '';
+		endif;
+		
+		$this->load->view("clients_interface/control-reply-ticket",$pagevar);
 	}
 	
 	/******************************************************** other ******************************************************/	

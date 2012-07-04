@@ -1,4 +1,4 @@
-<?=form_open($this->uri->uri_string(),array('id'=>'frmaddplatform')); ?>
+<?=form_open($this->uri->uri_string(),array('id'=>'frmreplyticket')); ?>
 	<input type="hidden" value="<?=$sender['id'];?>" name="recipient" />
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>

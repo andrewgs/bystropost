@@ -134,7 +134,7 @@ class Mdunion extends CI_Model{
 	
 	function read_tickets_by_sender($sender){
 		
-		$query = "SELECT tickets.*, users.fio,users.login,tkmsgs.text FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
+		$query = "SELECT tickets.*,	tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -153,6 +153,24 @@ class Mdunion extends CI_Model{
 	function count_mails_by_recipient_pages($recipient){
 		
 		$query = "SELECT messages.*, users.fio,users.login FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
+		return NULL;
+	}
+
+	function read_all_tickets($count,$from){
+		
+		$query = "SELECT tickets.*, users.fio,users.login FROM tickets INNER JOIN users ON tickets.sender=users.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_all_tickets(){
+		
+		$query = "SELECT tickets.*, users.fio,users.login FROM tickets INNER JOIN users ON tickets.sender=users.id";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);

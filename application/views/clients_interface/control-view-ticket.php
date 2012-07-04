@@ -23,16 +23,18 @@
 				<tr>
 					<td><nobr><?=$tkmsgs[$i]['id'];?></nobr></td>
 					<td><nobr><?=$tkmsgs[$i]['date'];?></nobr></td>
-					<?php if($tkmsgs[$i]['reply']):?>
-					<td style="text-align:left;" data-reply="replay">
-						<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
-					<?php else:?>
+				<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>
+					<td style="text-align:left;" data-incoming="incoming">
+				<?php else:?>
 					<td style="text-align:left;">
+				<?php endif;?>
+					<?php if($tkmsgs[$i]['reply']):?>
+						<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
 					<?php endif;?>
 						<?=$tkmsgs[$i]['text'];?>
 					<?php if(isset($tkmsgs[$i]['fio'])):?>
 						<div style="float:left;">
-							<?=anchor('webmaster-panel/actions/tickets/reply/ticket-id/'.$tkmsgs[$i]['id'],'Ответить',array('class'=>'btn-action small'));?>
+							<?=anchor('webmaster-panel/actions/tickets/ticket-id/'.$this->uri->segment(5).'/reply/message-id/'.$tkmsgs[$i]['id'],'Ответить',array('class'=>'btn-action small'));?>
 						</div>
 						<div style="float:right;">
 							<nobr><?=$tkmsgs[$i]['fio'];?></nobr><br/>
@@ -43,6 +45,9 @@
 				</tr>
 			<?php endfor;?>	
 			</table>
+			<?php if($pages): ?>
+				<?=$pages;?>
+			<?php endif;?>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
@@ -51,7 +56,7 @@
 	<script src="<?=$baseurl;?>javascript/scrollto-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("td[data-reply='replay']").each(function(e){
+			$("td[data-incoming='incoming']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
