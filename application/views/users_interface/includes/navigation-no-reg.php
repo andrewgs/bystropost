@@ -1,9 +1,9 @@
 <div id="navigation">
 	<a href="<?=$baseurl;?>" id="logo"></a>
 	<div id="top_links">
-		<?=anchor("#","Правила");?> &nbsp;&nbsp;&nbsp;
-		<?=anchor("#","Поддержка");?> &nbsp;&nbsp;&nbsp;
-		<?=anchor("#","FAQ");?>
+		<?=anchor("regulations","Правила");?> &nbsp;&nbsp;&nbsp;
+		<?=anchor("support","Поддержка");?> &nbsp;&nbsp;&nbsp;
+		<?=anchor("faq","FAQ");?>
 	</div>
 	<div id="white_line">
 		<span><i>Автоматизация работы в:</i></span>

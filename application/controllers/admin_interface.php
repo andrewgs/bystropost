@@ -65,11 +65,55 @@ class Admin_interface extends CI_Controller{
 					'title'			=> 'Администрирование | Личный кабинет',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'user'			=> $this->mdusers->read_record($this->user['uid']),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('fio',' ','required|trim');
+			$this->form_validation->set_rules('oldpas',' ','required|trim');
+			$this->form_validation->set_rules('password',' ','required|trim');
+			$this->form_validation->set_rules('confpass',' ','required|trim');
+			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('phones',' ','trim');
+			$this->form_validation->set_rules('icq',' ','trim');
+			$this->form_validation->set_rules('skype',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				redirect($this->uri->uri_string());
+			else:
+				if($this->mdusers->user_exist('password',md5($_POST['oldpas']))):
+					$this->session->set_userdata('msgr','Ошибка. Не верный старый пароль!');
+				elseif($_POST['password']!=$_POST['confpass']):
+					$this->session->set_userdata('msgr','Ошибка. Пароли не совпадают.');
+				else:
+					$this->mdusers->update_field($this->user['uid'],'password',md5($_POST['password']));
+					$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
+					$this->session->set_userdata('msgs','Пароль успешно изменен');
+					$this->session->set_userdata('logon',md5($this->user['login'].$_POST['password']));
+				endif;
+				
+				if(!isset($_POST['sendmail'])):
+					$_POST['sendmail'] = 0;
+				endif;
+				unset($_POST['password']);unset($_POST['login']);
+				$_POST['uid'] = $this->user['uid'];
+				$result = $this->mdusers->update_record($data);
+				if($result):
+					$msgs = $this->session->userdata('msgs').'<br/>Личные данные успешно сохранены';
+					$this->session->set_userdata('msgs',$msgs);
+				else:
+					$msgr = $this->session->userdata('msgr').'<br/>Личные данные не сохранены';
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
 		$this->load->view("admin_interface/admin-cabinet",$pagevar);
 	}
 	
@@ -262,30 +306,30 @@ class Admin_interface extends CI_Controller{
 					$platform = $this->mdplatforms->read_field($_POST['pid'],'url');
 					$curdate = $this->operation_date(date("Y-m-d"));
 					if(!$prevman && $_POST['manager']):
-						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
+//						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
+//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							//Высылать письмо-уведомление
-						endif;
+//						endif;
 					elseif($prevman && !$_POST['manager']):
-						$text = 'Здравствуйте! C Вашей площадки '.$platform.'<br/> был снят менеджер. Дата снятия: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
+//						$text = 'Здравствуйте! C Вашей площадки '.$platform.'<br/> был снят менеджер. Дата снятия: '.$curdate;
+//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							//Высылать письмо-уведомление
-						endif;
+//						endif;
 					elseif($prevman != $_POST['manager']):
-						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
+//						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
+//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
@@ -296,10 +340,9 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							//Высылать письмо-уведомление
-						endif;
-						
+//						endif;
 					endif;
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором. Дата блокировки: '.$curdate;

@@ -13,6 +13,7 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<?php $this->load->view('forms/frmuserprofile');?>
 				
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
