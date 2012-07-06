@@ -71,16 +71,15 @@ class Users_interface extends CI_Controller{
 				$user = $this->mdusers->auth_user($login,$pass);
 				if(!$user):
 					$this->session->set_userdata('msgauth','Не верные данные для авторизации');
+					redirect($_SERVER['HTTP_REFERER']);
 				else:
 					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
 					$this->mdusers->update_field($user['id'],'lastlogin',date("Y-m-d"));
+					redirect('users/cabinet');
 				endif;
-				redirect('users/cabinet');
-//				redirect($_SERVER['HTTP_REFERER']);
 			endif;
-		else:
-			redirect('/');
 		endif;
+		show_404();
 	}
 	
 	public function about(){

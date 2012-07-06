@@ -16,7 +16,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdtkmsgs');
 		$this->load->model('mdtickets');
 		$this->load->model('mdplatforms');
-		
+
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
 			$this->user['uid'] = $this->session->userdata('userid');
@@ -76,10 +76,10 @@ class Admin_interface extends CI_Controller{
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('fio',' ','required|trim');
-			$this->form_validation->set_rules('oldpas',' ','required|trim');
-			$this->form_validation->set_rules('password',' ','required|trim');
-			$this->form_validation->set_rules('confpass',' ','required|trim');
-			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('oldpas',' ','trim');
+			$this->form_validation->set_rules('password',' ','trim');
+			$this->form_validation->set_rules('confpass',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','trim');
 			$this->form_validation->set_rules('phones',' ','trim');
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
@@ -87,28 +87,27 @@ class Admin_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
-				if($this->mdusers->user_exist('password',md5($_POST['oldpas']))):
-					$this->session->set_userdata('msgr','Ошибка. Не верный старый пароль!');
-				elseif($_POST['password']!=$_POST['confpass']):
-					$this->session->set_userdata('msgr','Ошибка. Пароли не совпадают.');
-				else:
-					$this->mdusers->update_field($this->user['uid'],'password',md5($_POST['password']));
-					$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
-					$this->session->set_userdata('msgs','Пароль успешно изменен');
-					$this->session->set_userdata('logon',md5($this->user['login'].$_POST['password']));
+				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
+					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
+						$this->session->set_userdata('msgr',' Не верный старый пароль!');
+					elseif($_POST['password']!=$_POST['confpass']):
+						$this->session->set_userdata('msgr',' Пароли не совпадают.');
+					else:
+						$this->mdusers->update_field($this->user['uid'],'password',$_POST['password']);
+						$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
+						$this->session->set_userdata('msgs',' Пароль успешно изменен');
+						$this->session->set_userdata('logon',md5($this->user['ulogin'].$_POST['password']));
+					endif;
 				endif;
-				
 				if(!isset($_POST['sendmail'])):
 					$_POST['sendmail'] = 0;
 				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $this->user['uid'];
-				$result = $this->mdusers->update_record($data);
+				$result = $this->mdusers->update_record($_POST);
 				if($result):
-					$msgs = $this->session->userdata('msgs').'<br/>Личные данные успешно сохранены';
+					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
 					$this->session->set_userdata('msgs',$msgs);
-				else:
-					$msgr = $this->session->userdata('msgr').'<br/>Личные данные не сохранены';
 				endif;
 				redirect($this->uri->uri_string());
 			endif;
@@ -306,30 +305,18 @@ class Admin_interface extends CI_Controller{
 					$platform = $this->mdplatforms->read_field($_POST['pid'],'url');
 					$curdate = $this->operation_date(date("Y-m-d"));
 					if(!$prevman && $_POST['manager']):
-//						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
-//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
-							//Высылать письмо-уведомление
-//						endif;
 					elseif($prevman && !$_POST['manager']):
-//						$text = 'Здравствуйте! C Вашей площадки '.$platform.'<br/> был снят менеджер. Дата снятия: '.$curdate;
-//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
-							//Высылать письмо-уведомление
-//						endif;
 					elseif($prevman != $_POST['manager']):
-//						$text = 'Здравствуйте! За Вашей площадкой '.$platform.'<br/> закреплен менеджер: '.$fio.' ('.$email.'). Дата закрепления: '.$curdate;
-//						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
 						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
 						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
 						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
@@ -340,9 +327,6 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
-//						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
-							//Высылать письмо-уведомление
-//						endif;
 					endif;
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором. Дата блокировки: '.$curdate;

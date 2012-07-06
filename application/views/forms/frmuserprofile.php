@@ -11,6 +11,7 @@
 			<label for="fio" class="control-label">Полное имя:</label>
 			<div class="controls">
 				<input type="text" id="fio" class="input-xlarge" name="fio" value="<?=$user['fio'];?>">
+				<span class="help-inline" style="display:none;">&nbsp;</span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -24,18 +25,21 @@
 			<label for="oldpas" class="control-label">Старый пароль:</label>
 			<div class="controls">
 				<input type="password" id="oldpas" class="input-medium" name="oldpas" value="">
+				<span class="help-inline" style="display:none;">&nbsp;</span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label for="password" class="control-label">Новый пароль:</label>
 			<div class="controls">
 				<input type="password" id="password" class="input-medium" name="password" value="">
+				<span class="help-inline" style="display:none;">&nbsp;</span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label for="confpass" class="control-label">Повторите пароль:</label>
 			<div class="controls">
 				<input type="password" id="confpass" class="input-medium" name="confpass" value="">
+				<span class="help-inline" style="display:none;">&nbsp;</span>
 			</div>
 		</div>
 		<legend>Личные данные</legend>
@@ -67,13 +71,13 @@
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">
-					<input type="checkbox" value="sendmail" id="sendmail" value="" <?= ($user['sendmail'] == 1)? 'checked="checked"': '';?>>
+					<input type="checkbox" id="sendmail" name="sendmail" value="1" <?= ($user['sendmail'] == 1)? 'checked="checked"': '';?>>
 					Присылать уведомления и важные новости
 				</label>
 			</div>
 		</div>	
 		<div class="form-actions">
-			<button class="btn btn-primary" type="submit" id="submit" value="submit">Сохранить</button>
+			<button class="btn btn-primary" type="submit" name="submit" id="submit" value="submit">Сохранить</button>
 		</div>
 	</fieldset>
 <?= form_close(); ?>

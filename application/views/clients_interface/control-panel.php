@@ -51,6 +51,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="clear"></div>
+			<div style="float: right; margin-right: 100px;">
+				<?=anchor('webmaster-panel/actions/cabinet','Профиль',array('class'=>'btn-action'));?>
+			</div>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>

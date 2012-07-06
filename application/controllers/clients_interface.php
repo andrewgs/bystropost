@@ -74,6 +74,67 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
+	public function control_cabinet(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Профиль',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'user'			=> $this->mdusers->read_record($this->user['uid']),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('fio',' ','required|trim');
+			$this->form_validation->set_rules('oldpas',' ','trim');
+			$this->form_validation->set_rules('password',' ','trim');
+			$this->form_validation->set_rules('confpass',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','trim');
+			$this->form_validation->set_rules('phones',' ','trim');
+			$this->form_validation->set_rules('icq',' ','trim');
+			$this->form_validation->set_rules('skype',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				redirect($this->uri->uri_string());
+			else:
+				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
+					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
+						$this->session->set_userdata('msgr',' Не верный старый пароль!');
+					elseif($_POST['password']!=$_POST['confpass']):
+						$this->session->set_userdata('msgr',' Пароли не совпадают.');
+					else:
+						$this->mdusers->update_field($this->user['uid'],'password',$_POST['password']);
+						$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
+						$this->session->set_userdata('msgs',' Пароль успешно изменен');
+						$this->session->set_userdata('logon',md5($this->user['ulogin'].$_POST['password']));
+					endif;
+				endif;
+				if(!isset($_POST['sendmail'])):
+					$_POST['sendmail'] = 0;
+				endif;
+				unset($_POST['password']);unset($_POST['login']);
+				$_POST['uid'] = $this->user['uid'];
+				$result = $this->mdusers->update_record($_POST);
+				if($result):
+					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
+					$this->session->set_userdata('msgs',$msgs);
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		$this->load->view("clients_interface/control-cabinet",$pagevar);
+	}
+	
 	/******************************************************** mails *********************************************************/	
 	
 	public function control_mails(){
