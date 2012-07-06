@@ -120,10 +120,11 @@ class Mdmessages extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function delete_records_by_user($recipient){
+	function delete_records_by_user($uid){
 	
-		$this->db->where('recipient',$recipient);
+		$this->db->where('recipient',$uid);
+		$this->db->or_where('sender',$uid);
 		$this->db->delete('messages');
 		return $this->db->affected_rows();
-	}	
+	}
 }

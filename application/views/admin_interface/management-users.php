@@ -33,7 +33,7 @@
 							<th><center><nobr>Баланс</nobr></center></th>
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr></center></th>
 							<th><center>WMID</center></th>
-							<th>Регистр.</th>
+							<th><center><nobr>Дата рег.<br/>Посл.вход</nobr></center></th>
 							<th>Управл.</th>
 						</tr>
 					</thead>
@@ -45,7 +45,7 @@
 							<td style="min-width:50px;"><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
 							<td style="min-width:100px;"><center><nobr><?=$users[$i]['torders'];?> / <?=$users[$i]['uporders'];?></nobr></center></td>
 							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
-							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?></nobr></td>
+							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><font style="color:#2fec13"><?=$users[$i]['lastlogin'];?></font></nobr></td>
 							<td style="max-width:58px;">
 							<?php if($userinfo['uid']!=$users[$i]['id']):?>
 								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>"></div>

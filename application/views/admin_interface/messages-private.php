@@ -13,7 +13,7 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
-				<table class="table table-striped table-bordered">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th><center>Отправитель</center></th>

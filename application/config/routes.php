@@ -5,6 +5,7 @@ $route['404_override'] = '';
 
 /***************************************************	USERS INTRERFACE	***********************************************/
 $route['']								= "users_interface/index";
+$route['users/login']					= "users_interface/loginin";
 $route['about']							= "users_interface/about";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
@@ -14,7 +15,8 @@ $route['faq']							= "users_interface/faq";
 
 $route['users/cabinet']					= "users_interface/access_cabinet";
 
-$route['users/registering']				= "users_interface/registering";
+$route['users/registering/webmaster']	= "users_interface/registering";
+$route['users/registering/optimizer']	= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
 $route['users/logoff']					= "users_interface/logoff";
 
@@ -43,22 +45,44 @@ $route['webmaster-panel/actions/cabinet']							= "clients_interface/actions_cab
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
+$route['manager-panel/actions/control']								= "managers_interface/control_panel";
+
+$route['manager-panel/actions/platforms']							= "managers_interface/control_platforms";
+$route['manager-panel/actions/platforms/add-platform']				= "managers_interface/control_add_platform";
+$route['manager-panel/actions/platforms/edit-platform/:num']		= "managers_interface/control_edit_platform";
+
+$route['manager-panel/actions/tickets']								= "managers_interface/control_tickets";
+$route['manager-panel/actions/tickets/view-ticket/:num']			= "managers_interface/control_view_ticket";
+$route['manager-panel/actions/tickets/view-ticket/:num/from']		= "managers_interface/control_view_ticket";
+$route['manager-panel/actions/tickets/view-ticket/:num/from/:num']	= "managers_interface/control_view_ticket";
+$route['manager-panel/actions/tickets/delete/ticket-id/:num']		= "managers_interface/control_delete_tickets";
+$route['manager-panel/actions/tickets/ticket-id/:num/reply/message-id/:num']= "managers_interface/control_reply_ticket";
+
+$route['manager-panel/actions/mails']								= "managers_interface/control_mails";
+$route['manager-panel/actions/platforms/reply/mail-id/:num']		= "managers_interface/control_reply_mail";
+$route['manager-panel/actions/platforms/delete/mail-id/:num']		= "managers_interface/control_delete_mail";
+
+$route['manager-panel/actions/cabinet']								= "managers_interface/actions_cabinet";
 
 /*************************************************** OPTIMIZATORS INTRERFACE	*******************************************/
 
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
-$route['admin-panel/actions/control']			= "admin_interface/control_panel";
-$route['admin-panel/actions/cabinet']			= "admin_interface/actions_cabinet";
+$route['admin-panel/actions/control']					= "admin_interface/control_panel";
+$route['admin-panel/actions/cabinet']					= "admin_interface/actions_cabinet";
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
 
 $route['admin-panel/management/platforms']				= "admin_interface/management_platforms";
+$route['admin-panel/management/platforms/from']			= "admin_interface/management_platforms";
+$route['admin-panel/management/platforms/from/:num']	= "admin_interface/management_platforms";
+$route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
+
+
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
-
 
 $route['admin-panel/messages/support']									= "admin_interface/messages_support";
 $route['admin-panel/messages/private-messages']							= "admin_interface/messages_private";

@@ -55,6 +55,12 @@ class Users_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		
+		$this->load->view("users_interface/index",$pagevar);
+	}
+	
+	public function loginin(){
+		
 		if($this->input->post('submit_x')):
 			$login = trim($this->input->post('login'));
 			$pass = trim($this->input->post('password'));
@@ -67,11 +73,14 @@ class Users_interface extends CI_Controller{
 					$this->session->set_userdata('msgauth','Не верные данные для авторизации');
 				else:
 					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
+					$this->mdusers->update_field($user['id'],'lastlogin',date("Y-m-d"));
 				endif;
-				redirect($_SERVER['HTTP_REFERER']);
+				redirect('users/cabinet');
+//				redirect($_SERVER['HTTP_REFERER']);
 			endif;
+		else:
+			redirect('/');
 		endif;
-		$this->load->view("users_interface/index",$pagevar);
 	}
 	
 	public function about(){
@@ -227,7 +236,7 @@ class Users_interface extends CI_Controller{
 		switch ($this->user['utype']):
 			case 1 : 	redirect('webmaster-panel/actions/control');
 						break;
-			case 2 : 	redirect('');
+			case 2 : 	redirect('manager-panel/actions/control');
 						break;
 			case 3 : 	redirect('');
 						break;
@@ -241,15 +250,23 @@ class Users_interface extends CI_Controller{
 	
 	public function registering(){
 		
+		$usertype = $this->uri->segment(3);
+		switch ($usertype):
+			case 'webmaster': $tutype = 'вебмастера';$utype = 1; break;
+			case 'optimizer': $tutype = 'оптимизатора';$utype = 3; break;
+			default			: redirect($_SERVER['HTTP_REFERER']);break;
+		endswitch;
+		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация пользователей',
-			'description'	=> '',
-			'author'		=> '',
-			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
-			'msgs'			=> $this->session->userdata('msgs'),
-			'msgr'			=> $this->session->userdata('msgr')
+				'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация пользователей',
+				'description'	=> '',
+				'author'		=> '',
+				'baseurl' 		=> base_url(),
+				'loginstatus'	=> $this->loginstatus['status'],
+				'userinfo'		=> $this->user,
+				'usertype'		=> $tutype,
+				'msgs'			=> $this->session->userdata('msgs'),
+				'msgr'			=> $this->session->userdata('msgr')
 		);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
@@ -280,8 +297,7 @@ class Users_interface extends CI_Controller{
 					$_POST['sendmail'] = 0;
 				endif;
 				
-				$this->mdusers->insert_record($_POST);
-				
+				$this->mdusers->insert_record($_POST,$utype);
 				$user = $this->mdusers->auth_user($_POST['login'],$_POST['password']);
 				if(!$user):
 					redirect('');

@@ -116,9 +116,10 @@ class Mdtickets extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function delete_records_by_user($recipient){
+	function delete_records_by_user($uid){
 	
-		$this->db->where('recipient',$recipient);
+		$this->db->where('sender',$uid);
+		$this->db->or_where('recipient',$uid);
 		$this->db->delete('tickets');
 		return $this->db->affected_rows();
 	}

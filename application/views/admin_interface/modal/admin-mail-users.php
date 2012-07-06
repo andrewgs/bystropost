@@ -31,12 +31,12 @@
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="sendmail"></label>
-						<div class="controls">
-							<label class="checkbox">
-							<input id="sendMail" name="sendmail" type="checkbox" value="1" checked="checked">
-								Установите если нужно уведомить по почте
-							</label>
-						</div>
+					<div class="controls">
+						<label class="checkbox">
+						<input id="sendMail" name="sendmail" type="checkbox" value="1" checked="checked">
+							Установите если нужно уведомить по почте
+						</label>
+					</div>
 				</div>
 			</fieldset>
 		</div>

@@ -1,4 +1,4 @@
-<?=form_open('',array('id'=>'login')); ?>
+<?=form_open('users/login',array('id'=>'login')); ?>
 	<?php $this->load->view('alert_messages/alert-auth-error');?>
 	<input type="text" id="login" class="input inpval" name="login" placeholder="Введите логин" />
 	<input type="password" id="password" class="input inpval" name="password" placeholder="Введите пароль" />

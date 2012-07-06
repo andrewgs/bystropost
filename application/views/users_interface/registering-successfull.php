@@ -23,7 +23,7 @@
 				<td width="100%" valign="top">
 					<big><center>Через несколько секунд, Вас автоматически перенаправит на главную страницу</center></big>
 					<br>
-					<big><center><a href="/">Переход на главную страницу</a></center></big>
+					<big><center><?=anchor('users/cabinet','Панель управления');?></center></big>
 				</td>
 			</tr>
 		</table>
@@ -33,7 +33,7 @@
 	<?php $this->load->view("users_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			window.setTimeout("window.location='<?=$baseurl;?>'",5000);
+			window.setTimeout("window.location='<?=$baseurl;?>/users/cabinet'",5000);
 		});
 	</script>
 </body>

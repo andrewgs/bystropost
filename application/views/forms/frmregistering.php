@@ -1,6 +1,6 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'registration')); ?>
 	<?php $this->load->view('alert_messages/alert-error');?>
-	<big> Форма регистрации пользователя</big><br/>
+	<big> Форма регистрации <?=$usertype;?></big><br/>
 	<input name="fio" type="text" class="inpval" value="" placeholder="Введите полное имя (обязательно)" /><br/>
 	<input name="login" id="email" type="text" class="inpval" value="" placeholder="Введите Email (обязательно)" /><br/>
 	<input name="password" id="password" type="password" class="inpval checkpass" placeholder="Введите пароль (обязательно)" value="" /><br/>

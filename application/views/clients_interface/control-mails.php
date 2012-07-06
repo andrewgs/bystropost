@@ -30,7 +30,7 @@
 					</td>
 					<td style="text-align:left; font-size: 12px;" data-system="<?=$mails[$i]['system'];?>" data-type="<?=$mails[$i]['type'];?>"><?=$mails[$i]['text'];?></td>
 				<?php if(!$mails[$i]['system']):?>	
-					<td style="text-align:left;">
+					<td style="text-align:center;">
 						<?=anchor('webmaster-panel/actions/platforms/reply/mail-id/'.$mails[$i]['id'],'Ответить',array('class'=>'btn-action small'));?>
 						<?=anchor('webmaster-panel/actions/platforms/delete/mail-id/'.$mails[$i]['id'],'Удалить',array('class'=>'btn-action small delMails'));?>
 					</td>

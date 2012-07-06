@@ -13,7 +13,7 @@
 					<span><big>bystropost.ru</big><br>— Система <br>управления продажами</span><br><br>Сайт должен приносить доход – именно из этого принципа мы исходили при разработке сервиса GoGetLinks. Сервис позволяет зарабатывать на собственных сайтах, размещая на них заметки и контекстные ссылки.
 				</td>
 				<td width="375px" valign=top>
-					<?=anchor('users/registering','<img src="'.$baseurl.'images/spacer.gif" width="375px" height="330px" border="0">');?>
+					&nbsp;
 				</td>
 				<td width="315px" valign="top">
 					<span>Статистика</span><br><br>Сайтов:<br>9998<hr>Сайтов в каталоге DMOZ:<br>1915<hr>Сайтов в каталоге Яндекса:<br>2056<hr>

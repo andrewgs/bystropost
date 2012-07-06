@@ -5,7 +5,7 @@ class Mdusers extends CI_Model{
 	var $id   			= 0;
 	var $login 			= '';
 	var $cryptpassword 	= '';
-	var $password 	= '';
+	var $password 		= '';
 	var $fio  			= '';
 	var $wmid  			= '';
 	var $knowus			= '';
@@ -15,8 +15,9 @@ class Mdusers extends CI_Model{
 	var $forum	  		= '';
 	var $balance  		= 0;
 	var $logo			= '';
-	var $signdate  		= '';
-	var $closedate  	= '';
+	var $signdate  		= '0000-00-00';
+	var $lastlogin 		= '0000-00-00';
+	var $closedate  	= '0000-00-00';
 	var $sendmail 	 	= 0;
 	var $type	  		= 1;
 
@@ -24,7 +25,7 @@ class Mdusers extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($data){
+	function insert_record($data,$utype){
 
 		$this->login 			= $data['login'];
 		$this->cryptpassword	= $this->encrypt->encode($data['password']);
@@ -32,11 +33,9 @@ class Mdusers extends CI_Model{
 		$this->fio 				= $data['fio'];
 		$this->wmid 			= $data['wmid'];
 		$this->knowus 			= $data['knowus'];
-		$this->balance 			= 0;
 		$this->signdate 		= date("Y-m-d");
-		$this->closedate		= "0000-00-00";
 		$this->sendmail 		= $data['sendmail'];
-		$this->type 			= 1;
+		$this->type 			= $utype;
 		
 		$this->db->insert('users',$this);
 		return $this->db->insert_id();
@@ -98,6 +97,15 @@ class Mdusers extends CI_Model{
 		return NULL;
 	}
 	
+	function read_users_by_type($type){
+		
+		$this->db->where('type',$type);
+		$query = $this->db->get('users');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_small_info($id){
 		
 		$this->db->select('id,login,fio,phones,icq,skype,balance,signdate');
@@ -143,6 +151,14 @@ class Mdusers extends CI_Model{
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0][$field];
 		return FALSE;
+	}
+	
+	function update_field($id,$field,$value){
+			
+		$this->db->set($field,$value);
+		$this->db->where('id',$id);
+		$this->db->update('users');
+		return $this->db->affected_rows();
 	}
 	
 	function delete_record($id){

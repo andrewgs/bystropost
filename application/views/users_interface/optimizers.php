@@ -6,15 +6,9 @@
 	<?php $this->load->view("users_interface/includes/header");?>
 	<div id="main">
 		<?php $this->load->view("users_interface/includes/navigation");?>
-		<table id="content" border="0">
-			<tr>
-				
-			</tr>
-			<tr>
-				
-			</tr>
-		</table>
-		<?php $this->load->view("users_interface/includes/social");?>
+		<div id="register_tree">
+			<?=anchor('users/registering/optimizer','<img src="'.$baseurl.'images/spacer.gif" width="500px" height="450px" border="0">');?>
+		</div>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

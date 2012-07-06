@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<td>Доступ к админке:</td>
-			<td>Логин: <input name="aplogin" class="reg-form-input inpval" type="text" size="30" value="" placeholder="Укажите логин"> Пароль <input name="appassword" type="text" class="reg-form-input inpval" size="30" value="" placeholder="Укажите пароль"></td>
+			<td>Логин: <input name="aplogin" class="reg-form-input inpval" type="text" value="" placeholder="Укажите логин"> Пароль <input name="appassword" type="text" class="reg-form-input inpval" value="" placeholder="Укажите пароль"></td>
 		</tr>
 		<tr>
 			<td>Биржи:</td>

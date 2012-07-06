@@ -270,17 +270,32 @@ MARGIN-BOTTOM:10px;
 BORDER-BOTTOM:1px #38bedf solid;
 }
 
+#register_tree{
+	WIDTH:515px;
+	FLOAT:left;
+	MARGIN-TOP:200px;
+	MARGIN-LEFT:245px;
+	BACKGROUND-IMAGE:url('../images/register.png');
+	BACKGROUND-REPEAT:no-repeat;
+	BACKGROUND-POSITION:top center;
+	COLOR:#60696d;
+	min-height: 500px;
+	FONT-FAMILY:Verdana;
+	FONT-SIZE:14px;
+}
+
 #registration{
-WIDTH:515px;
-FLOAT:left;
-MARGIN-TOP:200px;
-MARGIN-LEFT:245px;
-BACKGROUND-IMAGE:url('../images/tree.png');
-BACKGROUND-REPEAT:no-repeat;
-BACKGROUND-POSITION:top center;
-COLOR:#60696d;
-FONT-FAMILY:Verdana;
-FONT-SIZE:14px;
+	WIDTH:515px;
+	FLOAT:left;
+	MARGIN-TOP:200px;
+	MARGIN-LEFT:245px;
+	BACKGROUND-IMAGE:url('../images/tree.png');
+	BACKGROUND-REPEAT:no-repeat;
+	BACKGROUND-POSITION:top center;
+	COLOR:#60696d;
+	min-height: 500px;
+	FONT-FAMILY:Verdana;
+	FONT-SIZE:14px;
 }
 
 #registration input{
@@ -374,12 +389,12 @@ MARGIN-TOP:5px;
 }
 
 #content{
-FLOAT:left;
-WIDTH:1005px;
-MARGIN-TOP:180px;
-BACKGROUND-IMAGE:url('../images/register.png');
-BACKGROUND-REPEAT:no-repeat;
-BACKGROUND-POSITION:top center;
+	FLOAT:left;
+	WIDTH:1005px;
+	MARGIN-TOP:180px;
+	BACKGROUND-IMAGE:url('../images/tree.png');
+	BACKGROUND-REPEAT:no-repeat;
+	BACKGROUND-POSITION:top center;
 }
 
 #stable{
@@ -732,8 +747,10 @@ input.mt7 {margin-top: 7px;}
 
 .w100{width: 100px;}
 .w250{width: 250px;}
+.w230{width: 230px;}
 .w205{width: 205px;}
 .w275{width: 275px;}
+.w260{width: 260px;}
 .w195{width: 195px;}
 .w700{width: 700px;}
 .w50{width: 50px;}

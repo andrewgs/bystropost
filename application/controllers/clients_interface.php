@@ -608,7 +608,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Администрирование | Личный кабинет',
+					'title'			=> 'Кабинет Вебмастера | Личный кабинет',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -616,10 +616,11 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		$this->load->view("admin_interface/admin-cabinet",$pagevar);
+		$this->load->view("clients_interface/admin-cabinet",$pagevar);
 	}
 	
 	function views(){
+	
 		$type = $this->uri->segment(2);
 		switch ($type):
 			case 'market-profile'	:	$pagevar = array('markets'=>$this->mdmarkets->read_records(),'baseurl'=>base_url());

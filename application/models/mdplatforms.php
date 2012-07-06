@@ -19,7 +19,17 @@ class Mdplatforms extends CI_Model{
 	var $requests 		= '';
 	var $tic 			= 0;
 	var $pr 			= 0;
+	var $ccontext 		= 0;
+	var $mcontext 		= 0;
+	var $cnotice 		= 0;
+	var $mnotice 		= 0;
+	var $creview 		= 0;
+	var $mreview 		= 0;
+	var $cnews 			= 0;
+	var $mnews 			= 0;
+	var $price 			= '';
 	var $date 			= '';
+	var $locked			= 0;
 	
 	function __construct(){
 		parent::__construct();
@@ -67,6 +77,35 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function update_price($id,$uid,$data){
+		
+		$this->db->set('ccontext',$data['ccontext']);
+		$this->db->set('mcontext',$data['mcontext']);
+		$this->db->set('cnotice',$data['cnotice']);
+		$this->db->set('mnotice',$data['mnotice']);
+		$this->db->set('creview',$data['creview']);
+		$this->db->set('mreview',$data['mreview']);
+		$this->db->set('cnews',$data['cnews']);
+		$this->db->set('mnews',$data['mnews']);
+		$this->db->set('manager',$data['manager']);
+		$this->db->set('locked',$data['locked']);
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
+	function close_platform_by_user($uid){
+		
+		$this->db->set('locked',1);
+		$this->db->set('webmaster',0);
+		
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
 	function read_records(){
 		
 		$this->db->order_by('title');
@@ -79,6 +118,7 @@ class Mdplatforms extends CI_Model{
 	function read_records_by_webmaster($uid){
 		
 		$this->db->order_by('date');
+		$this->db->where('locked',0);
 		$this->db->where('webmaster',$uid);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
@@ -90,6 +130,7 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->select('COUNT(*) AS cnt');
 		$this->db->where('webmaster',$uid);
+		$this->db->where('locked',0);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
@@ -125,6 +166,7 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->where('id',$id);
 		$this->db->where('webmaster',$webmaster);
+		$this->db->where('locked',0);
 		$query = $this->db->get('platforms',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
