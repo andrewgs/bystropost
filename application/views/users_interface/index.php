@@ -24,21 +24,21 @@
 				<td colspan=3 height="100%" valign="top">
 					<div id="webmaster">
 						<img src="<?=$baseurl;?>images/webmaster.png"><br>
-						<big><i>Оптимизаторам</i></big>
-						<ul>
-							<li>Публикуйте заметки об интернет-проектах и контекстные ссылки на страницах своих сайтов</li>
-							<li>Получайте за это деньги</li>
-						</ul>
-						<?=anchor('optimizers','&nbsp;',array('class'=>'more'));?>
-					</div>
-					<div id="optimizator">
-						<img src="<?=$baseurl;?>images/optimizator.png"><br>
 						<big><i>Вебмастерам</i></big>
 						<ul>
 							<li>Публикуйте заметки об интернет-проектах и контекстные ссылки на страницах своих сайтов</li>
 							<li>Получайте за это деньги</li>
 						</ul>
 						<?=anchor('webmasters','&nbsp;',array('class'=>'more'));?>
+					</div>
+					<div id="optimizator">
+						<img src="<?=$baseurl;?>images/optimizator.png"><br>
+						<big><i>Оптимизаторам</i></big>
+						<ul>
+							<li>Публикуйте заметки об интернет-проектах и контекстные ссылки на страницах своих сайтов</li>
+							<li>Получайте за это деньги</li>
+						</ul>
+						<?=anchor('optimizers','&nbsp;',array('class'=>'more'));?>
 					</div>
 				</td>
 			</tr>

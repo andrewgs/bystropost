@@ -131,7 +131,7 @@ class Mdusers extends CI_Model{
 		$this->db->where($field,$parameter);
 		$query = $this->db->get('users',1);
 		$data = $query->result_array();
-		if(count($data) > 0) return $data[0]['id'];
+		if(count($data)) return $data[0]['id'];
 		return FALSE;
 	}
 	

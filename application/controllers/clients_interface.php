@@ -112,10 +112,10 @@ class Clients_interface extends CI_Controller{
 					elseif($_POST['password']!=$_POST['confpass']):
 						$this->session->set_userdata('msgr',' Пароли не совпадают.');
 					else:
-						$this->mdusers->update_field($this->user['uid'],'password',$_POST['password']);
+						$this->mdusers->update_field($this->user['uid'],'password',md5($_POST['password']));
 						$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
 						$this->session->set_userdata('msgs',' Пароль успешно изменен');
-						$this->session->set_userdata('logon',md5($this->user['ulogin'].$_POST['password']));
+						$this->session->set_userdata('logon',md5($this->user['ulogin'].md5($_POST['password'])));
 					endif;
 				endif;
 				if(!isset($_POST['sendmail'])):
@@ -283,7 +283,7 @@ class Clients_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'markets'		=> $this->mdmarkets->read_records(),
-					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
+					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Убедительная просьба тщательно заполнить все поля представленные ниже. Чем больше вы дадите нам информации, тем меньше ошибок будет совершено при публикации.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);

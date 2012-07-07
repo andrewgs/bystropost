@@ -24,8 +24,9 @@
 			<?php for($i=0;$i<count($mails);$i++):?>
 				<tr>
 					<td style="text-align:left; font-size: 10px;">
-						<nobr><?=$mails[$i]['fio'];?></nobr><br/>
-						<nobr><i><b><?=$mails[$i]['login'];?></b></i></nobr><br/>
+						<nobr><i><b><?=$mails[$i]['position'];?></b></i></nobr><br/>
+						<!--<nobr><?=$mails[$i]['fio'];?></nobr><br/>
+						<nobr><i><b><?=$mails[$i]['login'];?></b></i></nobr><br/>-->
 						<nobr><?=$mails[$i]['date'];?></nobr>
 					</td>
 					<td style="text-align:left; font-size: 12px;" data-system="<?=$mails[$i]['system'];?>" data-type="<?=$mails[$i]['type'];?>"><?=$mails[$i]['text'];?></td>
@@ -57,7 +58,7 @@
 				}
 			});
 			$(".delMails").click(function(event){
-				if(!confirm("Удалить тикет?")){
+				if(!confirm("Удалить сообщение?")){
 					event.preventDefault();
 				}
 			});

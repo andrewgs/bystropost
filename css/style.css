@@ -567,7 +567,7 @@ FONT-SIZE:14px;
 #webmaster{
 FLOAT:left;
 WIDTH:315px;
-MARGIN-LEFT:100px;
+MARGIN-LEFT:50px;
 }
 
 #webmaster big, #optimizator big{
@@ -606,7 +606,7 @@ HEIGHT:68px;
 #optimizator{
 FLOAT:right;
 WIDTH:315px;
-MARGIN-RIGHT:100px;
+MARGIN-RIGHT:50px;
 }
 
 #social_network{
