@@ -2,7 +2,7 @@
 	<div class="well sidebar-nav">
 		<ul class="nav nav-list">
 			<li class="nav-header">Списки</li>
-			<li num="users">z</li>
+			<li num="users"><?=anchor('admin-panel/management/users/all','Список пользователей');?></li>
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Список площадок');?></li>
 			<li num="markets"><?=anchor('admin-panel/management/markets','Список биржи');?></li>
 			<li class="nav-header">Сообщения</li>

@@ -2,7 +2,7 @@
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
-			<td><input name="url" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
+			<td><input name="url" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
 		</tr>
 		<tr>
 			<td>Тематика площадки:<br/>(сменить не возможно)</td>
@@ -13,11 +13,11 @@
 		</tr>
 		<tr>
 			<td>Укажите вашу CMS:</td>
-			<td><input name="cms" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['cms']?>" placeholder="Укажите название CMS (если используете)"></td>
+			<td><input name="cms" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['cms']?>" placeholder="Укажите название CMS (если используете)"></td>
 		</tr>
 		<tr>
 			<td>URL админки:</td>
-			<td><input name="adminpanel" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['adminpanel']?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
+			<td><input name="adminpanel" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['adminpanel']?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
 		</tr>
 		<tr>
 			<td>Доступ к админке:</td>
