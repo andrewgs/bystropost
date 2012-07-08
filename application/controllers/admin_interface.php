@@ -57,7 +57,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
 	
-	public function actions_cabinet(){
+	public function actions_profile(){
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -113,7 +113,7 @@ class Admin_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		$this->load->view("admin_interface/admin-cabinet",$pagevar);
+		$this->load->view("admin_interface/admin-profile",$pagevar);
 	}
 	
 	public function management_users(){
@@ -497,12 +497,12 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	public function messages_support(){
+	public function actions_forum(){
 		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Администрирование | Сообщения поддержки',
+					'title'			=> 'Администрирование | Форум',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -510,7 +510,23 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		$this->load->view("admin_interface/messages-support",$pagevar);
+		$this->load->view("admin_interface/actions-forum",$pagevar);
+	}
+	
+	public function actions_balance(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Баланс',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->load->view("admin_interface/actions-balance",$pagevar);
 	}
 	
 	public function messages_system(){
@@ -746,6 +762,12 @@ class Admin_interface extends CI_Controller{
 		else:
 			show_404();
 		endif;
+	}
+	
+	public function actions_logoff(){
+		
+		$this->session->sess_destroy();
+		redirect('');
 	}
 	
 	/******************************************************** functions ******************************************************/	

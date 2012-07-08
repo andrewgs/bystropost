@@ -5,26 +5,7 @@
 		<?=anchor("support","Поддержка");?> &nbsp;&nbsp;&nbsp;
 		<?=anchor("faq","FAQ");?>
 	</div>
-	<?php if(!$loginstatus):?>
-		<?php $this->load->view("forms/frmlogin");?>
-	<?php elseif($userinfo['utype']):?>
-		<div class="UserPanel">
-			<div class="top_status">
-			<?php switch ($userinfo['utype']):
-					case 1 : 	$this->load->view('users_interface/includes/topblok/clients'); break;
-					case 2 : 	$this->load->view('users_interface/includes/topblok/managers');break;
-					case 3 : 	$this->load->view('users_interface/includes/topblok/optimizators');break;
-					case 4 : 	$this->load->view("forms/frmlogin");break;
-					case 5 : 	$this->load->view('users_interface/includes/topblok/admins');break;
-					default: 	$this->load->view("forms/frmlogin");
-				endswitch; ?>
-			</div>
-		</div>
-	<?php else:?>
-		<div class="top_status">
-			<span style="float:right;">Произошла ошибка!  (<?=anchor('users/logoff','Очистить сесию');?>)</span></div>
-		</div>
-	<?php endif; ?>
+	<?php $this->load->view("forms/frmlogin");?>
 	<div id="white_line">
 		<span><i>Автоматизация работы в:</i></span>
 		<table border=0>

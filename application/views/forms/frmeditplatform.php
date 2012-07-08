@@ -1,11 +1,11 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'frmaddplatform')); ?>
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
-			<td width="200">url (без http://):</td>
-			<td><input name="url" class="reg-form-input w700 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
+			<td width="200">URL площадки:</td>
+			<td><input name="url" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
 		</tr>
 		<tr>
-			<td>Тематика платормы:<br/>(сменить не возможно)</td>
+			<td>Тематика площадки:<br/>(сменить не возможно)</td>
 			<td style="text-align:left;"><span id="tsbj" style="margin-left: 20px;"></span></td>
 			<div style="display:none;">
 				<?php $this->load->view("clients_interface/includes/thematically");?>
@@ -13,15 +13,18 @@
 		</tr>
 		<tr>
 			<td>Укажите вашу CMS:</td>
-			<td><input name="cms" class="reg-form-input w700 inpval" type="text" size="80" value="<?=$platform['cms']?>" placeholder="Укажите название CMS (если используете)"></td>
+			<td><input name="cms" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['cms']?>" placeholder="Укажите название CMS (если используете)"></td>
 		</tr>
 		<tr>
 			<td>URL админки:</td>
-			<td><input name="adminpanel" class="reg-form-input w700 inpval" type="text" size="80" value="<?=$platform['adminpanel']?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
+			<td><input name="adminpanel" class="reg-form-input w670 inpval" type="text" size="80" value="<?=$platform['adminpanel']?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
 		</tr>
 		<tr>
 			<td>Доступ к админке:</td>
-			<td>Логин: <input name="aplogin" class="reg-form-input inpval" type="text" size="30" value="<?=$platform['aplogin']?>" placeholder="Укажите логин"> Пароль <input name="appassword" type="text" class="reg-form-input inpval" size="30" value="<?=$platform['appassword']?>" placeholder="Укажите пароль"></td>
+			<td style="text-align: left;">
+				<span style="margin-left:10px;">Логин:</span><input name="aplogin" class="reg-form-input w230 inpval" type="text" value="<?=$platform['aplogin']?>" placeholder="Укажите логин" style="margin-left:10px;">
+				<span style="margin-left:15px;">Пароль:</span><input name="appassword" type="text" class="reg-form-input w230 inpval" value="<?=$platform['appassword']?>" placeholder="Укажите пароль" style="margin-left:10px;">
+			</td>
 		</tr>
 		<tr>
 			<td>Биржи:</td>
@@ -31,16 +34,16 @@
 				<?php for($j=0;$j<count($mymarkets);$j++):?>
 					<div list="MarketLine">
 						<label class="label-input left w205">Название биржи</label>
-						<label class="label-input left w275">Логин</label>
+						<label class="label-input left w250">Логин</label>
 						<label class="label-input left w85">Пароль</label>
 						<div class="clear"></div>
-						<select class="reg-form-input w195" name="markets[]">
+						<select class="reg-form-input w195 h30" name="markets[]" style="vertical-align:top;padding: 5px;">
 						<?php for($i=0;$i<count($markets);$i++):?>
 							<option value="<?=$markets[$i]['id'];?>" <?php if($markets[$i]['id'] == $mymarkets[$j]['market']) echo 'selected="selected"';?>><?=$markets[$i]['title'];?></option>
 						<?php endfor; ?>
 						</select>
-						<input class="reg-form-input w250 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>"/>
-						<input class="reg-form-input w250 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>"/>
+						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>"/>
+						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>"/>
 						<div class="clear"></div>
 					</div>
 				<?php endfor;?>
@@ -53,7 +56,7 @@
 		<tr>
 			<td>Объем знаков: </td>
 			<td>
-				<select name="amount" id="amount">
+				<select name="amount" id="amount" class="reg-form-input w195 h35">
 					<option value="1" >от 1000-1500 – 23 руб.</option>
 					<option value="2" >от 1500-2000 – 30 руб.</option>
 				</select>
@@ -62,7 +65,7 @@
 		<tr>
 			<td>Обзоры:</td>
 			<td>
-				<select name="reviews" id="reviews">
+				<select name="reviews" id="reviews" class="reg-form-input w195 h35">
 					<option value="1">да</option>
 					<option value="0">нет</option>
 				</select>
@@ -71,7 +74,7 @@
 		<tr>
 			<td>Тематичность:</td>
 			<td>
-				<select name="thematically" id="thematically">
+				<select name="thematically" id="thematically" class="reg-form-input w195 h35">
 					<option value="0">нет</option>
 					<option value="1">да</option>
 				</select>
@@ -80,7 +83,7 @@
 		<tr>
 			<td width="200">Размещать задания которые противоречат законам РФ <nobr>(порно, казино и т.п)</nobr>: </td>
 			<td>
-				<select name="illegal" id="illegal">
+				<select name="illegal" id="illegal" class="reg-form-input w195 h35">
 					<option value="0">Нет, не размещать</option>
 					<option value="1">Да, размещать</option>
 				</select>
@@ -96,7 +99,10 @@
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
-			<td><input name="submit" id="addMarket" style="height: 40px; cursor:pointer;" type="submit" value="Сохранить"></td>
+			<td>
+				<input name="submit" class="btn btn-primary" id="addMarket" style="height: 40px; cursor:pointer;" type="submit" value="Сохранить">
+				<input class="btn btn-inverse" id="reset" style="height: 40px; cursor:pointer;" type="button" value="Отменить">
+			</td>
 		</tr>
 	</table>
 <?= form_close(); ?>

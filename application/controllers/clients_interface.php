@@ -43,6 +43,11 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_panel(){
 		
+		if($this->session->userdata('regsuc')):
+			$this->reg_successfull();
+			return FALSE;
+		endif;
+		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -74,7 +79,30 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
-	public function control_cabinet(){
+	public function reg_successfull(){
+		
+		if(!$this->session->userdata('regsuc')):
+			show_404();
+		endif;
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация завершена',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->session->unset_userdata('regsuc');
+		
+		$this->load->view("clients_interface/successfull",$pagevar);
+	}
+	
+	public function control_profile(){
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -139,6 +167,7 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_mails(){
 		
+		$from = intval($this->uri->segment(7));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -146,14 +175,32 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'platforms'		=> $this->mdplatforms->count_records_by_webmaster($this->user['uid']),
-					'tickets'		=> $this->mdtickets->count_records_by_recipient($this->user['uid'],$this->user['utype']),
-					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype']),
+					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype'],5,$from),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+				if($id):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+				if(isset($_POST['sendmail'])):
+					//Отослать письмо подьзователю
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -166,57 +213,27 @@ class Clients_interface extends CI_Controller{
 		for($i=0;$i<count($pagevar['mails']);$i++):
 			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
 		endfor;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/mails/from/';
+		$config['uri_segment'] 	= 5;
+		$config['total_rows'] 	= $this->mdunion->count_mails_by_recipient($this->user['uid'],$this->user['utype']);
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		
 		$this->load->view("clients_interface/control-mails",$pagevar);
-	}
-	
-	public function control_reply_mail(){
-		
-		$mlid = $this->uri->segment(6);
-		$mail = $this->mdmessages->read_record($mlid);
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> 'Кабинет Вебмастера | Отправка сообщения',
-					'baseurl' 		=> base_url(),
-					'loginstatus'	=> $this->loginstatus['status'],
-					'userinfo'		=> $this->user,
-					'mltext'		=> $mail['text'],
-					'sender'		=> $this->mdusers->read_small_info($mail['sender']),
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr')
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('recipient',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','required|trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
-			else:
-				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
-				if($id):
-					$this->session->set_userdata('msgs','Сообщение отправлено');
-				endif;
-				if(isset($_POST['sendmail'])):
-					
-				endif;
-			endif;
-			redirect('webmaster-panel/actions/mails');
-		endif;
-		
-		$this->load->view("clients_interface/control-reply-mail",$pagevar);
 	}
 	
 	public function control_delete_mail(){
@@ -249,15 +266,35 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'platforms'		=> $this->mdplatforms->read_records_by_webmaster($this->user['uid']),
 					'markets'		=> $this->mdunion->read_mkplatform_by_webmaster($this->user['uid']),
-					'mails'			=> $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']),
-					'tickets'		=> $this->mdtickets->count_records_by_recipient($this->user['uid'],$this->user['utype']),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('epsubmit')):
+			$_POST['epsubmit'] = NULL;
+			$this->form_validation->set_rules('pid',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$status = 0;
+				if(isset($_POST['status'])):
+					$status = $_POST['status'];
+				endif;
+				$result = $this->mdplatforms->update_stutus($_POST['pid'],$this->user['uid'],$status);
+				if($result):
+					$this->session->set_userdata('msgs','Информация успешно сохранена.');
+				else:
+					$this->session->set_userdata('msgr','Информация не изменилась.');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -267,6 +304,11 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
 		endfor;
@@ -395,11 +437,7 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
-				if($result):
-					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Платформа не сохранена.');
-				endif;
+				$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
@@ -428,6 +466,7 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_tickets(){
 		
+		$from = intval($this->uri->segment(5));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -435,34 +474,13 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'platforms'		=> $this->mdplatforms->count_records_by_webmaster($this->user['uid']),
-					'mails'			=> $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']),
-					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid']),
+					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		for($i=0;$i<count($pagevar['tickets']);$i++):
-			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
-			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'fio');
-				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'login');
-			else:
-				$pagevar['tickets'][$i]['fio'] = '<em><strong>Администратору</strong></em>';
-				$pagevar['tickets'][$i]['email'] = '';
-			endif;
-		endfor;
-		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('title',' ','required|trim');
@@ -485,6 +503,44 @@ class Clients_interface extends CI_Controller{
 			endif;
 			redirect('webmaster-panel/actions/tickets');
 		endif;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/from/';
+		$config['uri_segment'] 	= 5;
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		
+		for($i=0;$i<count($pagevar['tickets']);$i++):
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			if($pagevar['tickets'][$i]['recipient']):
+				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
+			else:
+				$pagevar['tickets'][$i]['position'] = '<em><strong>Администратору</strong></em>';
+			endif;
+		endfor;
 		$this->load->view("clients_interface/control-tickets",$pagevar);
 	}
 	
@@ -506,11 +562,49 @@ class Clients_interface extends CI_Controller{
 					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_owner_pages($this->user['uid'],$ticket,5,$from),
 					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_owner_pages($this->user['uid'],$ticket),
 					'pages'			=> array(),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('mid',' ','required|trim');
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
+			else:
+				$tuser = $this->mdtickets->read_field($_POST['recipient'],'type');
+				switch($tuser):
+					case 1 : redirect($this->uri->uri_string()); break;
+					case 2 : TRUE; break;
+					case 3 : redirect($this->uri->uri_string()); break;
+					case 4 : redirect($this->uri->uri_string()); break;
+					case 5 : $_POST['recipient'] = 0; break;
+				endswitch;
+				if(isset($_POST['closeticket'])):
+					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
+					$this->mdtickets->update_field($ticket,'status',1);
+				endif;
+				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
+				if($result):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
+				if($pagevar['tkmsgs'][$i]['sender']):
+					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
+				else:
+					$pagevar['tkmsgs'][$i]['position'] = '<b>Администратор</b>';
+				endif;
+			endif;
+		endfor;
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
 				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
@@ -536,31 +630,10 @@ class Clients_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('url',' ','required|trim');
-			$this->form_validation->set_rules('subject',' ','required|trim');
-			$this->form_validation->set_rules('cms',' ','required|trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
-			else:
-				$result = $this->mdtkmsgs->insert_record($ticket,$this->user['uid'],$_POST);
-				if($result):
-					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Платформа не сохранена.');
-				endif;
-				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
-			endif;
-			redirect('webmaster-panel/actions/tickets');
-		endif;
-		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date($pagevar['tkmsgs'][$i]['date']);
-			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
-				$pagevar['tkmsgs'][$i]['fio'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'fio');
-				$pagevar['tkmsgs'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'login');
-			endif;
-		endfor;
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		
 		$this->load->view("clients_interface/control-view-ticket",$pagevar);
 	}
 	
@@ -618,6 +691,10 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
@@ -689,6 +766,24 @@ class Clients_interface extends CI_Controller{
 										break;
 					default 		:	show_404();
 		endswitch;
+	}
+
+	public function actions_logoff(){
+		
+		$this->session->sess_destroy();
+		redirect('');
+	}
+
+	function viewimage(){
+		
+		$section = $this->uri->segment(1);
+		$id = $this->uri->segment(3);
+		switch ($section):
+			case 'markets'	:	$image = $this->mdmarkets->get_image($id); break;
+			default			: 	show_404();break;
+		endswitch;
+		header('Content-type: image/gif');
+		echo $image;
 	}
 	
 	/******************************************************** functions ******************************************************/	

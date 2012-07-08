@@ -18,19 +18,20 @@ $route['users/cabinet']					= "users_interface/access_cabinet";
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
-$route['users/logoff']					= "users_interface/logoff";
-
-$route[':any/viewimage/:num']			= "users_interface/viewimage";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
 $route['webmaster-panel/actions/control']							= "clients_interface/control_panel";
-$route['webmaster-panel/actions/cabinet']							= "clients_interface/control_cabinet";
+$route['webmaster-panel/actions/profile']							= "clients_interface/control_profile";
+$route['webmaster-panel/actions/logoff']							= "clients_interface/actions_logoff";
 
 $route['webmaster-panel/actions/platforms']							= "clients_interface/control_platforms";
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
 
 $route['webmaster-panel/actions/tickets']							= "clients_interface/control_tickets";
+$route['webmaster-panel/actions/tickets/from']						= "clients_interface/control_tickets";
+$route['webmaster-panel/actions/tickets/from/:num']					= "clients_interface/control_tickets";
+
 $route['webmaster-panel/actions/tickets/view-ticket/:num']			= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from']		= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from/:num']= "clients_interface/control_view_ticket";
@@ -38,10 +39,12 @@ $route['webmaster-panel/actions/tickets/delete/ticket-id/:num']		= "clients_inte
 $route['webmaster-panel/actions/tickets/ticket-id/:num/reply/message-id/:num']= "clients_interface/control_reply_ticket";
 
 $route['webmaster-panel/actions/mails']								= "clients_interface/control_mails";
-$route['webmaster-panel/actions/platforms/reply/mail-id/:num']		= "clients_interface/control_reply_mail";
-$route['webmaster-panel/actions/platforms/delete/mail-id/:num']		= "clients_interface/control_delete_mail";
+$route['webmaster-panel/actions/mails/from']						= "clients_interface/control_mails";
+$route['webmaster-panel/actions/mails/from/:num']					= "clients_interface/control_mails";
+$route['webmaster-panel/actions/mails/delete/mail-id/:num']			= "clients_interface/control_delete_mail";
 
 $route['views/market-profile'] 										= "clients_interface/views";
+
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
@@ -66,10 +69,15 @@ $route['manager-panel/actions/cabinet']								= "managers_interface/actions_cab
 
 /*************************************************** OPTIMIZATORS INTRERFACE	*******************************************/
 
+/*************************************************** GENERAL INTRERFACE	*******************************************/
+
+$route[':any/viewimage/:num']										= "general_interface/viewimage";
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
-$route['admin-panel/actions/control']					= "admin_interface/control_panel";
-$route['admin-panel/actions/cabinet']					= "admin_interface/actions_cabinet";
+$route['admin-panel/actions/profile']					= "admin_interface/actions_profile";
+$route['admin-panel/actions/forum']						= "admin_interface/actions_forum";
+$route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
+$route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
@@ -80,11 +88,9 @@ $route['admin-panel/management/platforms/from']			= "admin_interface/management_
 $route['admin-panel/management/platforms/from/:num']	= "admin_interface/management_platforms";
 $route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
 
-
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 
-$route['admin-panel/messages/support']									= "admin_interface/messages_support";
 $route['admin-panel/messages/private-messages']							= "admin_interface/messages_private";
 $route['admin-panel/messages/private-messages/from']					= "admin_interface/messages_private";
 $route['admin-panel/messages/private-messages/from/:num']				= "admin_interface/messages_private";

@@ -5,22 +5,7 @@
 		<?=anchor("support","Поддержка");?> &nbsp;&nbsp;&nbsp;
 		<?=anchor("faq","FAQ");?>
 	</div>
-	<?php if(!$loginstatus):?>
-		<?php $this->load->view("forms/frmlogin");?>
-	<?php else:?>
-		<div class="UserPanel">
-			<div class="top_status">
-				<div class="top5"><?=anchor('users/cabinet','vkharseev@gmail.com');?><span style="float:right;">(<?=anchor('users/logoff','выход');?>)</span></div>
-				<div class="top5">Баланс: <span style="float:right;"><?=anchor('users/balance','- 226.00 руб.');?></span></div>
-				<div class="top5">
-					<hr/>
-					Заявки:
-					<span style="float:right;">Всего: <?=anchor('users/orders/total','14');?></span><br/>
-					<span style="float:right;">Оплаченые: <?=anchor('users/orders/paid','11');?></span>
-				</div>
-			</div>
-		</div>
-	<?php endif; ?>
+	<?php $this->load->view("forms/frmlogin");?>
 	<div id="white_line">
 		<span><i>Автоматизация работы в:</i></span>
 		<table border=0>

@@ -1,21 +1,14 @@
-<table id="menu" border="0" cellpadding="0" cellspacing="0">
-<tr>
-	<td width="50%" background="<?=$baseurl;?>images/left_menu_bg.png"></td>
-	<td background="<?=$baseurl;?>images/center_menu_bg.png" style="min-width:1185px;">
-		<div id="links">
-			<table border=0 width="530px">
-				<tr>
-					<td width="100px" align=center><?=anchor('','Главная');?></td>
-					<td width="140px" align=center><?=anchor('about','О проекте');?></td>
-					<td width="135px" align=center><?=anchor('webmasters','Вебмастерам');?></td>
-					<td width="155px" align=center><?=anchor('optimizers','Оптимизаторам');?></td>
-				</tr>
-			</table>
-			<div id="banner">
-				<a href="#"><img src="<?=$baseurl;?>images/banner.jpg" border=0></a>
+<header class="admin">
+	<div class="container">
+		<div class="row">
+			<div class="span7">
+				<?=anchor("webmaster-panel/actions/control",'<span>Система управления продажами<br/><br/>Профиль "Вебмастера"</span>',array('id'=>'logo'));?>
+			</div>
+			<div class="span5">
+				<div class="authorized-user">
+					<?php $this->load->view("topblock/clients");?>
+				</div>
 			</div>
 		</div>
-	</td>
-	<td width="50%" background="<?=$baseurl;?>images/right_bg_menu.png"></td>
-</tr>
-</table>
+	</div>
+</header>

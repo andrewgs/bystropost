@@ -4,17 +4,24 @@
 
 <body>
 	<?php $this->load->view("clients_interface/includes/header");?>
-	<div id="main">
-		<?php $this->load->view("clients_interface/includes/navigation");?>
-		
-		<div id="stable">
-			<div id="panel_menu" style="margin-left:0;">
-				<?=anchor('webmaster-panel/actions/platforms','&larr; Вернуться назад');?>
+	
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<ul class="breadcrumb">
+					<li>
+						<?=anchor("webmaster-panel/actions/platforms","Все площадки");?><span class="divider">/</span>
+					</li>
+					<li class="active">
+						<?=anchor("webmaster-panel/actions/platforms/add-platform","Добавление площадки");?>
+					</li>
+				</ul>
+				<?php $this->load->view("alert_messages/alert-error");?>
+				<?php $this->load->view("alert_messages/alert-success");?>
 			</div>
-			<?php $this->load->view('alert_messages/alert-error');?>
-			<div class="clear"></div>
-			<?php $this->load->view('alert_messages/alert-info');?>
-			<?php $this->load->view("forms/frmaddplatform");?>
+			<div class="span12">
+				<?php $this->load->view("forms/frmaddplatform");?>
+			</div>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
@@ -32,23 +39,26 @@
 				$(".ErrImg").remove();
 				$(".inpval").each(function(i,element){
 					if($(this).val()==''){
+						$(this).css('border-color','#ff8080');
 						$(this).after('<img class="ErrImg" src="<?=$baseurl;?>images/icons/exclamation.png" title="Поле не может быть пустым">');
 						err = true;
 					}
 				});
 				if($("#subject").val() == 0){
-						alert("Не указана тематика");
-						err = true;
+					$("#mgselect").css('background-color','#ff8080');
+					err = true;
 				}
 				if(err){
-						event.preventDefault();
-						$.scrollTo(400,500);
+					event.preventDefault();
+					$.scrollTo(0,500);
 				}
 			});
-			
+			$("#mgselect").click(function(){$(this).css('background-color','#ffffff');})
+			$("#reset").click(function(){
+				window.location="<?=$baseurl;?>webmaster-panel/actions/platforms"
+			})
 			$("#btnAddMarketLine").click(function(){var lastObj = $("div[list='MarketLine']:last");$(lastObj).after('<div list="MarketLine"></div>');lastObj = $("div[list='MarketLine']:last");$(lastObj).load("<?=$baseurl;?>views/market-profile",function(){var cnt = $("div[list='MarketLine']").size();if(cnt > 1) $("#btnDelMarketLine").show();});});
 			$("#btnDelMarketLine").click(function(){$("div[list='MarketLine']:last").remove();var cnt = $("div[list='MarketLine']").size();if(cnt <= 1) $("#btnDelMarketLine").hide();});
-			
 		});
 	</script>
 </body>

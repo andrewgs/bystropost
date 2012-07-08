@@ -50,7 +50,7 @@
 							<td class="w50" style="text-align: center; vertical-align: middle;">
 								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-uid="<?=$platforms[$i]['uid'];?>" data-fio="<?=$platforms[$i]['fio'];?>" data-login="<?=$platforms[$i]['login'];?>" data-ccontext="<?=$platforms[$i]['ccontext'];?>" data-mcontext="<?=$platforms[$i]['mcontext'];?>" data-cnotice="<?=$platforms[$i]['cnotice'];?>" data-mnotice="<?=$platforms[$i]['mnotice'];?>" data-creview="<?=$platforms[$i]['creview'];?>" data-mreview="<?=$platforms[$i]['mreview'];?>" data-cnews="<?=$platforms[$i]['cnews'];?>" data-mnews="<?=$platforms[$i]['mnews'];?>" data-locked="<?=$platforms[$i]['locked'];?>" data-manager="<?=$platforms[$i]['manager'];?>"></div>
 							<?php if(!empty($platforms[$i]['fio'])):?>
-								<a class="btn btn-success editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editUser" title="Редактировать данные"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<a class="btn btn-success editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Редактировать данные"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо владельцу"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>	
 								<a class="btn btn-danger deletePlatform" data-param="<?=$i;?>" data-toggle="modal" href="#deletePlatform" title="Удалить площадку"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>

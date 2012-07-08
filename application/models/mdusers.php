@@ -20,6 +20,7 @@ class Mdusers extends CI_Model{
 	var $closedate  	= '0000-00-00';
 	var $sendmail 	 	= 0;
 	var $type	  		= 1;
+	var $position	  	= '';
 
 	function __construct(){
 		parent::__construct();
@@ -36,6 +37,15 @@ class Mdusers extends CI_Model{
 		$this->signdate 		= date("Y-m-d");
 		$this->sendmail 		= $data['sendmail'];
 		$this->type 			= $utype;
+		
+		switch ($utype):
+			case 1 : $this->position = 'Вебмастер';break;
+			case 2 : $this->position = 'Менеджер';break;
+			case 3 : $this->position = 'Оптимизатор';break;
+			case 4 : $this->position = 'Резерв';break;
+			case 5 : $this->position = 'Администратор';break;
+			default: $this->position = 'Не определен';break;
+		endswitch;
 		
 		$this->db->insert('users',$this);
 		return $this->db->insert_id();
@@ -83,6 +93,16 @@ class Mdusers extends CI_Model{
 		if(isset($_POST['type'])):
 			$this->db->set('type',$_POST['type']);
 		endif;
+		
+		switch ($_POST['type']):
+			case 1 : $this->db->set('position','Вебмастер');break;
+			case 2 : $this->db->set('position','Менеджер');break;
+			case 3 : $this->db->set('position','Оптимизатор');break;
+			case 4 : $this->db->set('position','Резерв');break;
+			case 5 : $this->db->set('position','Администратор');break;
+			default: $this->db->set('position','Не определен');break;
+		endswitch;
+		
 		$this->db->where('id',$_POST['uid']);
 		$this->db->update('users');
 		return $this->db->affected_rows();

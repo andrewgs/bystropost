@@ -30,6 +30,7 @@ class Mdplatforms extends CI_Model{
 	var $price 			= '';
 	var $date 			= '';
 	var $locked			= 0;
+	var $status			= 1;
 	
 	function __construct(){
 		parent::__construct();
@@ -96,6 +97,16 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function update_stutus($id,$uid,$status){
+		
+		$this->db->set('status',$status);
+
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
 	function close_platform_by_user($uid){
 		
 		$this->db->set('locked',1);
@@ -118,7 +129,6 @@ class Mdplatforms extends CI_Model{
 	function read_records_by_webmaster($uid){
 		
 		$this->db->order_by('date');
-		$this->db->where('locked',0);
 		$this->db->where('webmaster',$uid);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
@@ -130,7 +140,6 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->select('COUNT(*) AS cnt');
 		$this->db->where('webmaster',$uid);
-		$this->db->where('locked',0);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];

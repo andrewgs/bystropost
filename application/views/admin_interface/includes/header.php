@@ -2,12 +2,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="span7">
-				<?=anchor($this->uri->uri_string(),'<span>Система управления продажами<br/><br/>Администрирование</span>',array("id"=>"logo"));?>
+				<div id="logo"><span>Система управления продажами<br/><br/>Администрирование</span></div>
 			</div>
 			<div class="span5">
 				<p class="authorized-user">
-					<i><?= $userinfo['ulogin']; ?></i>
-					<?=anchor('users/logoff','Завершить сеанс', array('class'=>'auth-link'));?> 
+					Здавствуйте, <?=$userinfo['uname'];?><br/>
+					<i><?=$userinfo['ulogin'];?></i>
 				</p>
 			</div>
 		</div>

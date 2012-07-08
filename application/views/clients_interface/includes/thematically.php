@@ -1,4 +1,4 @@
-<p style="margin:0px;">
+<p style="margin:0px;" id="mgselect">
 	<label for="subject">Выберите тематику</label>
 	<select name="subject" id="subject">
 		<option value="0" selected>Выбрать</option>

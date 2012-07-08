@@ -30,9 +30,9 @@ function isValidPhone(phoneNumber){
 			}
 		});
 		if(!err ){
-			if($("#password").val() != $("#confpass").val()){
-				$("#password").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
-				$("#confpass").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
+			if($("#registration #password").val() != $("#registration #confpass").val()){
+				$("#registration #password").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
+				$("#registration #confpass").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
 				err = true;
 			}
 		};

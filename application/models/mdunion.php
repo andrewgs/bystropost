@@ -114,12 +114,21 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_mails_by_recipient($recipient,$utype){
+	function read_mails_by_recipient($recipient,$utype,$count,$from){
 		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1) ORDER BY messages.date DESC,messages.id DESC";
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_mails_by_recipient($recipient,$utype){
+		
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1)";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
 		return NULL;
 	}
 	
@@ -132,12 +141,21 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_tickets_by_sender($sender){
+	function read_tickets_by_sender($sender,$count,$from){
+		
+		$query = "SELECT tickets.*,	tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_tickets_by_sender($sender){
 		
 		$query = "SELECT tickets.*,	tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
-		if(count($data)) return $data;
+		if(count($data)) return count($data);
 		return NULL;
 	}
 	

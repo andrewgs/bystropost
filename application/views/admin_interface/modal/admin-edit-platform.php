@@ -1,7 +1,7 @@
 <?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 	<input type="hidden" class="idPlatform" value="" name="pid" />
 	<input type="hidden" class="idUser" value="" name="uid" />
-	<div id="editUser" class="modal hide fade dmodal">
+	<div id="editPlatform" class="modal hide fade dmodal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
 			<h3>Редактирование информации о площадке</h3>

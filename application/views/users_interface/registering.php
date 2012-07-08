@@ -4,9 +4,8 @@
 
 <body>
 	<?php $this->load->view("users_interface/includes/header");?>
-	
 	<div id="main">
-		<?php $this->load->view("users_interface/includes/navigation-no-reg");?>
+		<?php $this->load->view("users_interface/includes/navigation");?>
 		<?php $this->load->view('alert_messages/alert-success');?>
 		<?php $this->load->view("forms/frmregistering");?>
 		

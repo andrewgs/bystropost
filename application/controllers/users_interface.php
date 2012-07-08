@@ -2,10 +2,6 @@
 
 class Users_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'');
-	var $loginstatus = array('status'=>FALSE);
-	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
-	
 	function __construct(){
 		
 		parent::__construct();
@@ -15,19 +11,12 @@ class Users_interface extends CI_Controller{
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
-			$this->user['uid'] = $this->session->userdata('userid');
-			if($this->user['uid']):
-				$userinfo = $this->mdusers->read_record($this->user['uid']);
+			$uid = $this->session->userdata('userid');
+			if($uid):
+				$userinfo = $this->mdusers->read_record($uid);
 				if($userinfo):
-					$this->user['ulogin'] 			= $userinfo['login'];
-					$this->user['uname'] 			= $userinfo['fio'];
-					$this->user['utype'] 			= $userinfo['type'];
-					$this->loginstatus['status'] 	= TRUE;
+					$this->access_cabinet($userinfo['id'],$userinfo['type']);
 				endif;
-			endif;
-			if($this->session->userdata('logon') != md5($userinfo['login'].$userinfo['password'])):
-				$this->loginstatus['status'] = FALSE;
-				$this->user = array();
 			endif;
 		endif;
 	}
@@ -39,23 +28,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
-		
 		$this->load->view("users_interface/index",$pagevar);
 	}
 	
@@ -75,7 +50,7 @@ class Users_interface extends CI_Controller{
 				else:
 					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
 					$this->mdusers->update_field($user['id'],'lastlogin',date("Y-m-d"));
-					redirect('users/cabinet');
+					$this->access_cabinet($user['id'],$user['type']);
 				endif;
 			endif;
 		endif;
@@ -89,20 +64,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/about",$pagevar);
 	}
 	
@@ -113,20 +77,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/webmasters",$pagevar);
 	}
 	
@@ -137,20 +90,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/optimizers",$pagevar);
 	}
 	
@@ -161,20 +103,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/regulations",$pagevar);
 	}
 	
@@ -185,20 +116,9 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/support",$pagevar);
 	}
 	
@@ -209,41 +129,25 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$this->load->view("users_interface/faq",$pagevar);
 	}
 	
-	public function access_cabinet(){
+	public function access_cabinet($uid,$utype){
 		
-		if(!$this->user['uid']):
+		if(!$uid || !$utype):
 			show_404();
 		endif;
 		
-		switch ($this->user['utype']):
-			case 1 : 	redirect('webmaster-panel/actions/control');
-						break;
-			case 2 : 	redirect('manager-panel/actions/control');
-						break;
-			case 3 : 	redirect('');
-						break;
-			case 4 : 	redirect('');
-						break;
-			case 5 : 	redirect('admin-panel/actions/control');
-						break;
-			default: 	show_404(); break;
+		switch ($utype):
+			case 1 : redirect('webmaster-panel/actions/control');break;
+			case 2 : redirect('manager-panel/actions/control');break;
+			case 3 : redirect('');break;
+			case 4 : redirect('');break;
+			case 5 : redirect('admin-panel/management/users/all');break;
+			default: show_404(); break;
 		endswitch;
 	}
 	
@@ -261,17 +165,14 @@ class Users_interface extends CI_Controller{
 				'description'	=> '',
 				'author'		=> '',
 				'baseurl' 		=> base_url(),
-				'loginstatus'	=> $this->loginstatus['status'],
-				'userinfo'		=> $this->user,
 				'usertype'		=> $tutype,
 				'msgs'			=> $this->session->userdata('msgs'),
-				'msgr'			=> $this->session->userdata('msgr')
+				'msgr'			=> $this->session->userdata('msgr'),
+				'msgauth'		=> $this->session->userdata('msgauth')
 		);
+		$this->session->unset_userdata('msgauth');
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		if($pagevar['loginstatus']):
-			redirect('');
-		endif;
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('fio',' ','required|trim');
@@ -303,50 +204,9 @@ class Users_interface extends CI_Controller{
 				endif;
 				$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
 				$this->session->set_userdata('regsuc',TRUE);
-				redirect('users/registering/successfull');
+				$this->access_cabinet($user['id'],$user['type']);
 			endif;
 		endif;
 		$this->load->view("users_interface/registering",$pagevar);
-	}
-	
-	public function reg_successfull(){
-		
-		if(!$this->session->userdata('regsuc')):
-			show_404();
-		endif;
-		
-		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация завершена',
-			'description'	=> '',
-			'author'		=> '',
-			'baseurl' 		=> base_url(),
-			'loginstatus'	=> $this->loginstatus['status'],
-			'userinfo'		=> $this->user,
-			'msgs'			=> $this->session->userdata('msgs'),
-			'msgr'			=> $this->session->userdata('msgr')
-		);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		$this->session->unset_userdata('regsuc');
-		
-		$this->load->view("users_interface/registering-successfull",$pagevar);
-	}
-	
-	public function logoff(){
-		
-		$this->session->sess_destroy();
-		redirect('');
-	}
-
-	function viewimage(){
-		
-		$section = $this->uri->segment(1);
-		$id = $this->uri->segment(3);
-		switch ($section):
-			case 'markets'	:	$image = $this->mdmarkets->get_image($id); break;
-			default			: 	show_404();break;
-		endswitch;
-		header('Content-type: image/gif');
-		echo $image;
 	}
 }
