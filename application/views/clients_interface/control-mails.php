@@ -19,7 +19,7 @@
 						<tr>
 							<th class="w100"><center>Отправитель</center></th>
 							<th class="w500"><center><nobr>Текс сообщения</nobr></center></th>
-							<th class="w50">Управл.</th>
+							<th class="w50"><center>Управ.</center></th>
 						</tr>
 					</thead>
 					<tbody>

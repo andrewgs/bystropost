@@ -300,27 +300,34 @@ class Admin_interface extends CI_Controller{
 				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
 				$result = $this->mdplatforms->update_price($_POST['pid'],$_POST['uid'],$_POST);
 				if($result):
-					$fio = $this->mdusers->read_field($_POST['manager'],'fio');
-					$email = $this->mdusers->read_field($_POST['manager'],'login');
 					$platform = $this->mdplatforms->read_field($_POST['pid'],'url');
-					$curdate = $this->operation_date(date("Y-m-d"));
 					if(!$prevman && $_POST['manager']):
-						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' принята к работе';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],4,1,$text);
+						$text = 'Здравствуйте! За Вами закреплена площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
 					elseif($prevman && !$_POST['manager']):
-						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' снята с работы';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
+						$text = 'Здравствуйте! С Ваc снята площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$prevman,1,2,$text);
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
 					elseif($prevman != $_POST['manager']):
-						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform.'<br/>Дата закрепления: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
-						$text = 'Здравствуйте! С Ваc снята площадка '.$platform.'<br/>Дата снятия: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$prevman,$text);
+						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+						$text = 'Здравствуйте! С Ваc снята площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$prevman,1,2,$text);
 						if($this->mdusers->read_field($prevman,'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
@@ -329,11 +336,11 @@ class Admin_interface extends CI_Controller{
 						endif;
 					endif;
 					if(!$prevlock && $_POST['locked']):
-						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором. Дата блокировки: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
 						if($_POST['manager']):
-							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' заблокирована администратором. Дата блокировки: '.$curdate;
-							$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
+							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' заблокирована администратором';
+							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],1,2,$text);
 							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 								//Высылать письмо-уведомление
 							endif;
@@ -342,11 +349,11 @@ class Admin_interface extends CI_Controller{
 							//Высылать письмо-уведомление
 						endif;
 					elseif($prevlock && !$_POST['locked']):
-						$text = 'Здравствуйте! Ваша площадка '.$platform.' разблокирована администратором. Дата разблокировки: '.$curdate;
-						$this->mdmessages->insert_record($this->user['uid'],$_POST['uid'],$text);
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' разблокирована администратором';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],4,1,$text);
 						if($_POST['manager']):
-							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' разблокирована администратором. Дата разблокировки: '.$curdate;
-							$this->mdmessages->insert_record($this->user['uid'],$_POST['manager'],$text);
+							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' разблокирована администратором';
+							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
 							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 								//Высылать письмо-уведомление
 							endif;
@@ -401,19 +408,14 @@ class Admin_interface extends CI_Controller{
 		$pid = $this->uri->segment(6);
 		if($pid):
 			$info = $this->mdplatforms->read_record($pid);
-			$fio = $this->mdusers->read_field($info['webmaster'],'fio');
-			$email = $this->mdusers->read_field($info['webmaster'],'login');
-			if(empty($fio)):
-				$email = $fio = 'не определен';
-			endif;
 			$result = $this->mdplatforms->delete_record($pid);
 			if($result):
-				$text = 'Площадка '.$info['url'].'. Владелец: '.$fio.' ('.$email.'). Удалена администратором. Дата удаления: '.$this->operation_date(date("Y-m-d"));
+				$text = 'Площадка '.$info['url'].'. Удалена администратором';
 				if($info['webmaster']):
-					$this->mdmessages->insert_record($this->user['uid'],$info['webmaster'],$text);
+					$this->mdmessages->send_noreply_message($this->user['uid'],$info['webmaster'],1,1,$text);
 				endif;
 				if($info['manager']):
-					$this->mdmessages->insert_record($this->user['uid'],$info['manager'],$text);
+					$this->mdmessages->send_noreply_message($this->user['uid'],$info['manager'],1,2,$text);
 				endif;
 				$this->session->set_userdata('msgs','Площадка удалена успешно.');
 			else:

@@ -2,13 +2,13 @@
 <html lang="en">
 <?php $this->load->view('admin_interface/includes/head');?>
 <body>
-	<?php $this->load->view('clients_interface/includes/header-cabinet');?>
+	<?php $this->load->view('clients_interface/includes/header');?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('webmaster-panel/actions/control','&larr; Вернутся назад');?>
+						<?=anchor('webmaster-panel/actions/control','&larr; На главную');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -16,6 +16,7 @@
 				<?php $this->load->view('forms/frmuserprofile');?>
 				
 			</div>
+			<?php $this->load->view("clients_interface/includes/rightbar");?>
 		</div>
 	</div>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
@@ -49,6 +50,7 @@
 					}
 				}
 			});
+			$("#reset").click(function(){window.location="<?=$baseurl;?>webmaster-panel/actions/control"});
 		});
 	</script>
 </body>

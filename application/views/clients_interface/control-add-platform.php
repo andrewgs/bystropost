@@ -54,9 +54,7 @@
 				}
 			});
 			$("#mgselect").click(function(){$(this).css('background-color','#ffffff');})
-			$("#reset").click(function(){
-				window.location="<?=$baseurl;?>webmaster-panel/actions/platforms"
-			})
+			$("#reset").click(function(){window.location="<?=$baseurl;?>webmaster-panel/actions/platforms"});
 			$("#btnAddMarketLine").click(function(){var lastObj = $("div[list='MarketLine']:last");$(lastObj).after('<div list="MarketLine"></div>');lastObj = $("div[list='MarketLine']:last");$(lastObj).load("<?=$baseurl;?>views/market-profile",function(){var cnt = $("div[list='MarketLine']").size();if(cnt > 1) $("#btnDelMarketLine").show();});});
 			$("#btnDelMarketLine").click(function(){$("div[list='MarketLine']:last").remove();var cnt = $("div[list='MarketLine']").size();if(cnt <= 1) $("#btnDelMarketLine").hide();});
 		});

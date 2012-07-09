@@ -6,8 +6,7 @@
 			</div>
 			<div class="span5">
 				<p class="authorized-user">
-					Здавствуйте, <?=$userinfo['uname'];?><br/>
-					<i><?=$userinfo['ulogin'];?></i>
+					<?php $this->load->view("topblock/admins");?>
 				</p>
 			</div>
 		</div>

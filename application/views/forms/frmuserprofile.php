@@ -78,6 +78,7 @@
 		</div>	
 		<div class="form-actions">
 			<button class="btn btn-primary" type="submit" name="submit" id="submit" value="submit">Сохранить</button>
+			<input class="btn btn-inverse" id="reset" style="height: 28px; cursor:pointer;" type="button" value="Отменить">
 		</div>
 	</fieldset>
 <?= form_close(); ?>

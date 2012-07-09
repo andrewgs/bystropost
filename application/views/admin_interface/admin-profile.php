@@ -50,6 +50,7 @@
 					}
 				}
 			});
+			$("#reset").click(function(){window.location="<?=$baseurl;?>admin-panel/management/platforms"});
 		});
 	</script>
 </body>

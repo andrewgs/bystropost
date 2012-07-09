@@ -116,7 +116,7 @@ class Mdunion extends CI_Model{
 	
 	function read_mails_by_recipient($recipient,$utype,$count,$from){
 		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient OR (messages.group = $utype AND messages.system = 1) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -125,7 +125,7 @@ class Mdunion extends CI_Model{
 	
 	function count_mails_by_recipient($recipient,$utype){
 		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient && messages.system = 0) OR (messages.group = $utype AND messages.system = 1)";
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient OR (messages.group = $utype AND messages.system = 1)";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);

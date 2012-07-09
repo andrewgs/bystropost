@@ -160,6 +160,20 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		
 		$this->load->view("clients_interface/control-cabinet",$pagevar);
 	}
 	
@@ -175,7 +189,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype'],5,$from),
+					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype'],10,$from),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -217,7 +231,7 @@ class Clients_interface extends CI_Controller{
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/mails/from/';
 		$config['uri_segment'] 	= 5;
 		$config['total_rows'] 	= $this->mdunion->count_mails_by_recipient($this->user['uid'],$this->user['utype']);
-		$config['per_page'] 	= 5;
+		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';

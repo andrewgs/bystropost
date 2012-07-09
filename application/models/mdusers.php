@@ -92,17 +92,15 @@ class Mdusers extends CI_Model{
 		endif;
 		if(isset($_POST['type'])):
 			$this->db->set('type',$_POST['type']);
+			switch ($_POST['type']):
+				case 1 : $this->db->set('position','Вебмастер');break;
+				case 2 : $this->db->set('position','Менеджер');break;
+				case 3 : $this->db->set('position','Оптимизатор');break;
+				case 4 : $this->db->set('position','Резерв');break;
+				case 5 : $this->db->set('position','Администратор');break;
+				default: $this->db->set('position','Не определен');break;
+			endswitch;
 		endif;
-		
-		switch ($_POST['type']):
-			case 1 : $this->db->set('position','Вебмастер');break;
-			case 2 : $this->db->set('position','Менеджер');break;
-			case 3 : $this->db->set('position','Оптимизатор');break;
-			case 4 : $this->db->set('position','Резерв');break;
-			case 5 : $this->db->set('position','Администратор');break;
-			default: $this->db->set('position','Не определен');break;
-		endswitch;
-		
 		$this->db->where('id',$_POST['uid']);
 		$this->db->update('users');
 		return $this->db->affected_rows();

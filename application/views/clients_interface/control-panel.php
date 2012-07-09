@@ -10,6 +10,10 @@
 			<div class="span12">
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
+				<div style="float:right;">
+					<?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?>
+				</div>
+				<div class="clear"></div>
 				<div id="stable">
 					<div id="panel_segments">
 						<div class="panel_segment">

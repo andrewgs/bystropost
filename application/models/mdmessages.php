@@ -26,6 +26,20 @@ class Mdmessages extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
+	function send_noreply_message($uid,$recipient,$type,$group,$text){
+			
+		$this->sender 		= $uid;
+		$this->recipient	= $recipient;
+		$this->system 		= 1;
+		$this->type			= $type;
+		$this->group 		= $group;
+		$this->text 		= $text;
+		$this->date 		= date("Y-m-d");
+		
+		$this->db->insert('messages',$this);
+		return $this->db->insert_id();
+	}
+	
 	function send_system_message($uid,$data){
 			
 		$this->sender 	= $uid;
