@@ -23,7 +23,7 @@ header.admin { margin: 10px 0 20px; }
 	border-radius: 3px;
 	padding: 10px;
 	margin-top: 10px;
-	min-height: 90px;
+	min-height: 30px;
 }
 .authorized-user i { font-weight: bold; font-size: 16px;}
 .authorized-user a:hover {text-decoration: none;}

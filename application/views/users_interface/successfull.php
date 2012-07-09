@@ -10,7 +10,7 @@
 		<table id="content" border="0" style="background-image:none;">
 			<tr>
 				<td width="100%" valign=top>
-					<big><center>Вы удачно зарегестировались на сайте.<br/>На почту высланы данные рагистрации. Спасибо что пользуетесь нашим сайтом.</center></big>
+					<big><center>На указынный Вами адрес высланы данные рагистрации. Спасибо что пользуетесь нашим сайтом.</center></big>
 				</td>
 			</tr>
 			<tr>
@@ -18,7 +18,7 @@
 			</tr>
 			<tr>
 				<td width="100%" valign="top">
-					<big><center>Через несколько секунд, Вас автоматически перенаправит "Мой профиль"</center></big>
+					<big><center>Через несколько секунд, Вас автоматически перенаправит на главную страницу</center></big>
 				</td>
 			</tr>
 		</table>
@@ -28,7 +28,7 @@
 	<?php $this->load->view("users_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			window.setTimeout("window.location='<?=$baseurl;?><?=$this->uri->uri_string();?>'",5000);
+			window.setTimeout("window.location='<?=$baseurl;?>'",5000);
 		});
 	</script>
 </body>

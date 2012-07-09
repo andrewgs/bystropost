@@ -106,6 +106,17 @@ class Mdusers extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function read_email_record($email){
+		
+		$this->db->select('id,login,fio,cryptpassword,signdate,closedate');
+		$this->db->where('login',$email);
+		$this->db->where('closedate =','0000-00-00');
+		$query = $this->db->get('users');
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
 	function read_record($id){
 		
 		$this->db->where('id',$id);

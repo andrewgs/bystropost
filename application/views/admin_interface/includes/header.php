@@ -5,9 +5,9 @@
 				<div id="logo"><span>Система управления продажами<br/><br/>Администрирование</span></div>
 			</div>
 			<div class="span5">
-				<p class="authorized-user">
+				<div class="authorized-user">
 					<?php $this->load->view("topblock/admins");?>
-				</p>
+				</div>
 			</div>
 		</div>
 	</div>

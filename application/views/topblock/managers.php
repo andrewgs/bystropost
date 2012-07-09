@@ -1,5 +1,1 @@
-<div class="top5"><?=anchor('users/cabinet','Личный кабинет');?><span style="float:right;">(<?=anchor('users/logoff','выход');?>)</span></div>
-<div class="top5">
-	<hr/>
-	Вы зашли как менеджер
-</div>
+<?=anchor('manager-panel/actions/profile','<i>Мой профиль</i>');?><span style="float:right;">(<?=$userinfo['ulogin'];?>)</span></div>

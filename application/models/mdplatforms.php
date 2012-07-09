@@ -146,6 +146,26 @@ class Mdplatforms extends CI_Model{
 		return 0;
 	}
 	
+	function read_records_by_manager($uid){
+		
+		$this->db->order_by('date');
+		$this->db->where('manager',$uid);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_records_by_manager($uid){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('manager',$uid);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_record($id){
 		
 		$this->db->where('id',$id);
@@ -175,6 +195,18 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->where('id',$id);
 		$this->db->where('webmaster',$webmaster);
+		$this->db->where('locked',0);
+		$query = $this->db->get('platforms',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+
+	function ownew_manager_platform($manager,$id){
+		
+		$this->db->where('id',$id);
+		$this->db->where('manager',$manager);
+		$this->db->where('status',1);
 		$this->db->where('locked',0);
 		$query = $this->db->get('platforms',1);
 		$data = $query->result_array();

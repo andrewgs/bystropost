@@ -13,11 +13,12 @@ $route['regulations']					= "users_interface/regulations";
 $route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
 
-$route['users/cabinet']					= "users_interface/access_cabinet";
-
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
+
+
+$route['users/restore-password']		= "users_interface/restore_password";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
 $route['webmaster-panel/actions/control']							= "clients_interface/control_panel";
@@ -49,10 +50,10 @@ $route['views/market-profile'] 										= "clients_interface/views";
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
 $route['manager-panel/actions/control']								= "managers_interface/control_panel";
+$route['manager-panel/actions/logoff']								= "managers_interface/actions_logoff";
 
 $route['manager-panel/actions/platforms']							= "managers_interface/control_platforms";
-$route['manager-panel/actions/platforms/add-platform']				= "managers_interface/control_add_platform";
-$route['manager-panel/actions/platforms/edit-platform/:num']		= "managers_interface/control_edit_platform";
+$route['manager-panel/actions/platforms/view-platform/:num']		= "managers_interface/control_view_platform";
 
 $route['manager-panel/actions/tickets']								= "managers_interface/control_tickets";
 $route['manager-panel/actions/tickets/view-ticket/:num']			= "managers_interface/control_view_ticket";

@@ -57,6 +57,89 @@ class Users_interface extends CI_Controller{
 		show_404();
 	}
 	
+	public function restore_password(){
+		
+		if($this->session->userdata('ressuc')):
+			$this->restore_successfull();
+			return FALSE;
+		endif;
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Восстановление пароля',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		if(isset($_POST['rsubmit'])):
+			$_POST['rsubmit'] == NULL;
+			$this->form_validation->set_rules('email',' ','required|valid_email|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка не верно заполнены необходимые поля.');
+			else:
+				$user = $this->mdusers->read_email_record($_POST['email']);
+				if(!$user):
+					if(isset($_SERVER['HTTP_REFERER'])):
+						redirect($_SERVER['HTTP_REFERER']);
+					else:
+						redirect('/');
+					endif;
+				else:
+					ob_start();
+					?>
+					<p><strong>Здравствуйте,  <?=$user['fio'];?></strong></p>
+					<p>Вами был произведен запрос на восстановления данных для аторизации:</p>
+					<p><strong>Логин: <span style="font-size: 18px;"><?=$user['login'];?></span><br/>Пароль: <span style="font-size: 18px;"><?=$this->encrypt->decode($user['cryptpassword']);?></span></strong></p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($user['login']);
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Данные для доступа к профилю');
+					$this->email->message($mailtext);	
+					$this->email->send();
+					$this->session->set_userdata('ressuc',TRUE);
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		$this->load->view("users_interface/restore-password",$pagevar);
+	}
+	
+	public function restore_successfull(){
+		
+		if(!$this->session->userdata('ressuc')):
+			show_404();
+		endif;
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Восстановление пароля',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$this->session->unset_userdata('ressuc');
+		
+		$this->load->view("users_interface/successfull",$pagevar);
+	}
+	
 	public function about(){
 		
 		$pagevar = array(

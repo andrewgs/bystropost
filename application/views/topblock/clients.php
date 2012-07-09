@@ -7,4 +7,4 @@
 	Заявки:
 	<span style="float:right;">Всего: <b><?=anchor('users/orders/total',$userinfo['torders']);?></b></span><br/>
 	<span style="float:right;">Оплаченые: <b><?=anchor('users/orders/paid',$userinfo['uporders']);?></b></span>
-</div>
+</div><br/>

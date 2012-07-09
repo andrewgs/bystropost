@@ -57,6 +57,9 @@
 							<?php if($platforms[$i]['locked']):?>
 								<i class="icon-lock" title="Заблокировано" style="margin-top:10px;"></i>
 							<?php endif;?>
+							<?php if(!$platforms[$i]['status']):?>
+								<i class="icon-exclamation-sign" title="Не активна" style="margin-top:10px;"></i>
+							<?php endif;?>
 							</td>
 						</tr>
 					<?php endfor; ?>
@@ -82,7 +85,6 @@
 			$("td[data-noowner='noowner']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
-			
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
