@@ -140,7 +140,7 @@
 			$("#thematically [value='<?=$platform['thematically'];?>']").attr("selected", "selected");
 			$("#illegal [value='<?=$platform['illegal'];?>']").attr("selected", "selected");
 			$("#reset").click(function(){
-				window.location="<?=$baseurl;?>manager-panel/actions/platforms"
+				window.history.back();
 			})
 		});
 	</script>

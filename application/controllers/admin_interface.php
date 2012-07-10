@@ -66,12 +66,12 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'user'			=> $this->mdusers->read_record($this->user['uid']),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
@@ -113,6 +113,9 @@ class Admin_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
+		
 		$this->load->view("admin_interface/admin-profile",$pagevar);
 	}
 	
@@ -127,6 +130,7 @@ class Admin_interface extends CI_Controller{
 					'users'			=> array(),
 					'count'			=> 0,
 					'pages'			=> array(),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -216,7 +220,7 @@ class Admin_interface extends CI_Controller{
 				$pagevar['users'][$i]['lastlogin'] = '';
 			endif;
 		endfor;
-		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/management-users",$pagevar);
 	}
 	
@@ -252,6 +256,7 @@ class Admin_interface extends CI_Controller{
 					'platforms'		=> $this->mdunion->read_platforms_by_owners_pages(5,$from),
 					'count'			=> $this->mdunion->count_platforms_by_owners(),
 					'pages'			=> array(),
+					'cntunit'		=> array(),
 					'managers'		=> $this->mdusers->read_users_by_type(2),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -399,7 +404,7 @@ class Admin_interface extends CI_Controller{
 				$pagevar['platforms'][$i]['manemail'] = '';
 			endif;
 		endfor;
-		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/management-platforms",$pagevar);
 	}
 
@@ -435,6 +440,7 @@ class Admin_interface extends CI_Controller{
 					'title'			=> 'Администрирование | Биржи',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -479,7 +485,7 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
-		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/management-markets",$pagevar);
 	}
 	
@@ -507,11 +513,13 @@ class Admin_interface extends CI_Controller{
 					'title'			=> 'Администрирование | Форум',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/actions-forum",$pagevar);
 	}
 	
@@ -523,11 +531,13 @@ class Admin_interface extends CI_Controller{
 					'title'			=> 'Администрирование | Баланс',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/actions-balance",$pagevar);
 	}
 	
@@ -541,6 +551,7 @@ class Admin_interface extends CI_Controller{
 					'title'			=> 'Администрирование | Отправка системного сообщения сообщения',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -549,7 +560,6 @@ class Admin_interface extends CI_Controller{
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
-//			print_r($_POST);exit;
 			$this->form_validation->set_rules('group',' ','required|trim');
 			$this->form_validation->set_rules('type',' ','required|trim');
 			$this->form_validation->set_rules('text',' ','required|trim');
@@ -566,10 +576,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-system",$pagevar);
 	}
 	
-	public function messages_private(){
+	public function management_mails(){
 		
 		$from = intval($this->uri->segment(5));
 		$pagevar = array(
@@ -581,29 +592,12 @@ class Admin_interface extends CI_Controller{
 					'mails'			=> $this->mdunion->read_mails_by_recipient_pages($this->user['uid'],5,$from),
 					'count'			=> $this->mdunion->count_mails_by_recipient_pages($this->user['uid']),
 					'pages'			=> array(),
+					'cntunit'		=> array('mails'=>0),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
-		endfor;
-		
-		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/private-messages/from/';
-		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $pagevar['count'];
-		$config['per_page'] 	= 5;
-		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
-		
-		$this->pagination->initialize($config);
-		$pagevar['pages'] = $this->pagination->create_links();
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('recipient',' ','required|trim');
@@ -621,6 +615,24 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		for($i=0;$i<count($pagevar['mails']);$i++):
+			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+		endfor;
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/private-messages/from/';
+		$config['uri_segment'] 	= 5;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		$this->mdmessages->set_read_mails_by_recipient($this->user['uid'],$this->user['utype']);
 		$this->load->view("admin_interface/messages-private",$pagevar);
 	}
 	
@@ -652,17 +664,17 @@ class Admin_interface extends CI_Controller{
 					'tickets'		=> $this->mdunion->read_all_tickets(10,$from),
 					'count'			=> $this->mdunion->count_all_tickets(),
 					'pages'			=> array(),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_date($pagevar['tickets'][$i]['date']);
 			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['user'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'fio');
-				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['recipient'],'login');
+				$pagevar['tickets'][$i]['user'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'fio');
+				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'login');
 			else:
 				$pagevar['tickets'][$i]['user'] = '<em><strong><font style="color:#ff0000;">Администратору</font></strong></em>';
 				$pagevar['tickets'][$i]['email'] = '';
@@ -683,7 +695,7 @@ class Admin_interface extends CI_Controller{
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
-		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-tickets",$pagevar);
 	}
 	
@@ -698,10 +710,11 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tktitle'		=> $this->mdtickets->read_field($ticket,'title'),
+					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
 					'tkmsgs'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
 					'count'			=> $this->mdunion->count_messages_by_ticket($ticket),
 					'pages'			=> array(),
+					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -744,6 +757,7 @@ class Admin_interface extends CI_Controller{
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
 			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
 		endfor;
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-view-tickets",$pagevar);
 	}
 

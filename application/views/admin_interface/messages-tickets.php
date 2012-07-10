@@ -28,7 +28,7 @@
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tickets[$i]['id'];?></td>
 							<td class="w195"><?=$tickets[$i]['fio'];?><br/><i><b><?=$tickets[$i]['login'];?></b></i><br/><?=$tickets[$i]['date'];?></td>
 							<td class="w400">
-								<?=anchor('admin-panel/messages/tickets/view-ticket/ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title']);?><br/>
+								<?=anchor('admin-panel/messages/tickets/view-ticket/ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'].' (<i><b>'.$tickets[$i]['url'].'</b></i>)');?><br/>
 								<u>Направлено на расмотрение:</u><br/>
 								<nobr><?=$tickets[$i]['user'];?></nobr><br/>
 								<nobr><i><b><?=$tickets[$i]['email'];?></b></i></nobr>

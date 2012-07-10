@@ -9,7 +9,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor("managers-panel/actions/platforms","Все площадки");?>
+						<?=anchor("manager-panel/actions/platforms","Все площадки");?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>

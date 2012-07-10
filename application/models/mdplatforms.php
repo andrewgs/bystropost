@@ -136,6 +136,18 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function read_records_by_webmaster_nolock($uid){
+		
+		$this->db->order_by('url','ASC');
+		$this->db->where('webmaster',$uid);
+		$this->db->where('locked',0);
+		$this->db->where('status',1);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_records_by_webmaster($uid){
 		
 		$this->db->select('COUNT(*) AS cnt');

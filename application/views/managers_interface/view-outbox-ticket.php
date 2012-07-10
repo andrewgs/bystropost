@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view('admin_interface/includes/head');?>
+<?php $this->load->view('managers_interface/includes/head');?>
 <body>
-	<?php $this->load->view('admin_interface/includes/header');?>
+	<?php $this->load->view('managers_interface/includes/header');?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('admin-panel/messages/tickets','Тикеты');?> <span class="divider">/</span>
+						<?=anchor('managers-panel/action/tickets','Входящие тикеты');?> <span class="divider">/</span>
 					</li>
 					<li tnum="deactive">
 						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<i><b>'.$ticket['url'].'</b></i>)');?>
@@ -29,7 +29,7 @@
 					<?php for($i=0;$i<count($tkmsgs);$i++):?>
 						<tr class="align-center">
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tkmsgs[$i]['id'];?></td>
-							<td class="w195"><b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><?=$tkmsgs[$i]['fio'];?><br/><i><b><?=$tkmsgs[$i]['login'];?></b></i><br/><?=$tkmsgs[$i]['date'];?></td>
+							<td class="w195"><b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><?=$tkmsgs[$i]['date'];?></td>
 						<?php if(($tkmsgs[$i]['recipient'] == $userinfo['uid']) OR !$tkmsgs[$i]['recipient']):?>
 							<td class="w400" data-incoming="incoming">
 						<?php else:?>
@@ -41,10 +41,9 @@
 								<?=$tkmsgs[$i]['text'];?>
 							</td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$tkmsgs[$i]['id'];?>" data-uid="<?=$tkmsgs[$i]['uid'];?>" data-fio="<?=$tkmsgs[$i]['fio'];?>" data-login="<?=$tkmsgs[$i]['login'];?>"></div>
-							<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>	
-								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Ответить на сообщение"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>
+								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$tkmsgs[$i]['id'];?>" data-uid="<?=$tkmsgs[$i]['sender'];?>" data-position="<?=$tkmsgs[$i]['position'];?>"></div>
+								<a class="btn btn-info mailTicket" data-param="<?=$i;?>" data-toggle="modal" href="#mailTicket" title="Ответить"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>
 							</td>
 						</tr>
@@ -55,7 +54,7 @@
 					<?=$pages;?>
 				<?php endif;?>
 			</div>
-		<?php $this->load->view('admin_interface/includes/rightbar');?>
+		<?php $this->load->view('managers_interface/includes/rightbar');?>
 		<?php $this->load->view('admin_interface/modal/admin-mail-users');?>
 		<?php $this->load->view('admin_interface/modal/admin-delete-mail');?>
 		</div>

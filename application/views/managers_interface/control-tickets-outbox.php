@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view("clients_interface/includes/head");?>
+<?php $this->load->view("managers_interface/includes/head");?>
 
 <body>
-	<?php $this->load->view("clients_interface/includes/header");?>
+	<?php $this->load->view("managers_interface/includes/header");?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
+					<li>
+						<?=anchor("manager-panel/actions/tickets/inbox","Входящие тикеты");?><span class="divider">/</span>
+					</li>
 					<li class="active">
-						<?=anchor("webmaster-panel/actions/tickets","Все тикеты");?>
+						<?=anchor("manager-panel/actions/tickets/outbox","Исходящие тикеты");?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
@@ -26,10 +29,9 @@
 					<?php for($i=0;$i<count($tickets);$i++):?>
 						<tr>
 							<td class="w195 ttpl">
-								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
-								(<i><b><?=$tickets[$i]['url'];?></b></i>)<br/><br/>
+								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title']);?><br/><br/>
 								Направлено:<br/>
-								<i><b><?=$tickets[$i]['position'];?></b></i><br/>
+								<em><strong>Администратору</strong></em><br/>
 								от <?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
@@ -48,7 +50,7 @@
 				<?=$pages;?>
 			<?php endif;?>
 			</div>
-			<?php $this->load->view("clients_interface/includes/rightbar");?>
+			<?php $this->load->view("managers_interface/includes/rightbar");?>
 			<div class="clear"></div>
 			<div class="span12">
 				<div id="frmInsTicket">
@@ -60,8 +62,8 @@
 		<?php $this->load->view('clients_interface/modal/clients-delete-tickets');?>
 		</div>
 	</div>
-	<?php $this->load->view("clients_interface/includes/footer");?>
-	<?php $this->load->view("clients_interface/includes/scripts");?>
+	<?php $this->load->view("managers_interface/includes/footer");?>
+	<?php $this->load->view("managers_interface/includes/scripts");?>
 	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -106,9 +108,15 @@
 					event.preventDefault();
 				}
 			});
+			$(".delTicket").click(function(event){
+				if(!confirm("Удалить тикет?")){
+					event.preventDefault();
+				}
+			});
 			$("#InsTicket").click();
+			
 			$(".deleteTicket").click(function(){var Param = $(this).attr('data-param'); tID = $("div[id = params"+Param+"]").attr("data-tid");});
-			$("#DelTicket").click(function(){location.href='<?=$baseurl;?>webmaster-panel/actions/tickets/delete/ticket-id/'+tID;});
+			$("#DelTicket").click(function(){location.href='<?=$baseurl;?>manager-panel/actions/tickets/delete/ticket-id/'+tID;});
 		});
 	</script>
 </body>

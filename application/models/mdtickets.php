@@ -4,6 +4,7 @@ class Mdtickets extends CI_Model{
 
 	var $id			= 0;
 	var $sender 	= 0;
+	var $platform 	= 0;
 	var $recipient 	= 0;
 	var $title 		= '';
 	var $date 		= '';
@@ -18,6 +19,7 @@ class Mdtickets extends CI_Model{
 			
 		$this->sender 		= $uid;
 		$this->recipient	= $recipient;
+		$this->platform		= $data['platform'];
 		$this->title		= $data['title'];
 		$this->date 		= date("Y-m-d");
 		$this->type 		= $data['type'];
@@ -54,11 +56,10 @@ class Mdtickets extends CI_Model{
 		return NULL;
 	}
 	
-	function count_records_by_sender($sender){
+	function count_records_by_sender($user){
 		
-		$this->db->select('COUNT(*) AS cnt');
-		$this->db->where('sender',$sender);
-		$query = $this->db->get('tickets');
+		$query = "SELECT COUNT(*) AS cnt FROM tickets WHERE tickets.sender = $user";
+		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return 0;
@@ -76,7 +77,7 @@ class Mdtickets extends CI_Model{
 	
 	function count_records_by_recipient($user){
 		
-		$query = "SELECT COUNT(*) AS cnt FROM tickets WHERE tickets.sender = $user";
+		$query = "SELECT COUNT(*) AS cnt FROM tickets WHERE tickets.recipient = $user";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
@@ -129,6 +130,15 @@ class Mdtickets extends CI_Model{
 		$this->db->where('id',$id);
 		$this->db->where('sender',$sender);
 		$query = $this->db->get('tickets',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+	
+	function ownew_ticket_or_recipient($uid,$id){
+		
+		$query = "SELECT * FROM tickets WHERE id = $id AND (sender = $uid OR recipient = $uid) LIMIT 1";
+		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
 		return FALSE;

@@ -9,6 +9,7 @@ class Mdmessages extends CI_Model{
 	var $sender 	= 0;
 	var $recipient 	= 0;
 	var $date 		= '';
+	var $newmail 	= 1;
 	var $text 		= '';
 	
 	function __construct(){
@@ -19,7 +20,7 @@ class Mdmessages extends CI_Model{
 			
 		$this->sender 		= $uid;
 		$this->recipient	= $recipient;
-		$this->text 		= $text;
+		$this->text 		= strip_tags($text);
 		$this->date 		= date("Y-m-d");
 		
 		$this->db->insert('messages',$this);
@@ -107,6 +108,23 @@ class Mdmessages extends CI_Model{
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return 0;
+	}
+	
+	function count_records_by_recipient_new($recipient){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE messages.recipient = $recipient AND newmail = 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function set_read_mails_by_recipient($recipient){
+		
+		$this->db->set('newmail',0);
+		$this->db->where('recipient',$recipient);
+		$this->db->update('messages');
+		return $this->db->affected_rows();
 	}
 	
 	function read_record($id){

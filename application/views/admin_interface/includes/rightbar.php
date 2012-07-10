@@ -6,7 +6,11 @@
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Список площадок');?></li>
 			<li num="markets"><?=anchor('admin-panel/management/markets','Список биржи');?></li>
 			<li class="nav-header">Сообщения</li>
-			<li num="private-messages"><?=anchor('admin-panel/messages/private-messages','Почта');?></li>
+		<?php if($cntunit['mails']):?>
+			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails'].'</b></font>)');?></li>
+		<?php else:?>
+			<li num="private-messages"><?=anchor('admin-panel/management/mails','Почта');?></li>
+		<?php endif;?>
 			<li num="tickets"><?=anchor('admin-panel/messages/tickets','Тикеты');?></li>
 			<li num="system-message"><?=anchor('admin-panel/messages/system-message','Рассылка');?></li>
 			<li class="nav-header">Действия</li>

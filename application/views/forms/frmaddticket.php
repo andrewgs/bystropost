@@ -5,11 +5,23 @@
 			<td class="w100">Тема тикета:</td>
 			<td><input name="title" class="reg-form-input w775" id="TitleTicket" type="text" size="80" value="" placeholder="Введите тему тикета"></td>
 		</tr>
+	<?php if($userinfo['utype'] == 1):?>
 		<tr>
 			<td class="w100"><nobr>Тип тикета</nobr></td>
 			<td style="text-align:left;">
 				<input type="radio" name="type" value="1" checked="ckecked" style="vertical-align:middle;"><span style="margin-left: 10px;">Размещение заявок - вопросы, замечания по выполнению текущих заявок</span><br/>
 				<input type="radio" name="type" value="2" style="vertical-align:middle;"><span style="margin-left: 10px;">Вопросы по работе с <?=$_SERVER['SERVER_NAME'];?>. Связь с администрацией</span>
+			</td>
+		</tr>
+	<?php endif;?>
+		<tr>
+			<td class="w100">Площадка</td>
+			<td style="text-align:left;">
+				<select class="reg-form-input w400 h30" name="platform" style="vertical-align:top;padding: 5px;">
+				<?php for($i=0;$i<count($platforms);$i++): ?>
+					<option value="<?=$platforms[$i]['id'];?>"><?=$platforms[$i]['url'];?></option>
+				<?php endfor; ?>
+				</select>
 			</td>
 		</tr>
 		<tr>

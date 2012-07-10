@@ -4,8 +4,12 @@
 			<li class="nav-header">Меню</li>
 			<li num="already"><?=anchor('#','Задания (0)');?></li>
 			<li num="platforms"><?=anchor('manager-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
-			<li num="mails"><?=anchor('manager-panel/actions/mails','Почта ('.$cntunit['mails'].')');?></li>
-			<li num="tickets"><?=anchor('manager-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></li>
+		<?php if($cntunit['mails']['new']):?>
+			<li num="mails"><?=anchor('manager-panel/actions/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails']['new'].'</b></font>/'.$cntunit['mails']['total'].')');?></li>
+		<?php else:?>
+			<li num="mails"><?=anchor('manager-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')');?></li>
+		<?php endif;?>
+			<li num="tickets"><?=anchor('manager-panel/actions/tickets/inbox','Тикеты ('.$cntunit['tickets']['inbox'].'/'.$cntunit['tickets']['outbox'].')');?></li>
 			<li num="servises"><?=anchor('#','Дополнительные услуги');?></li>
 			<li num="forum"><?=anchor('#','Форум');?></li>
 			<li num="profile"><?=anchor('manager-panel/actions/profile','Мой профиль');?></li>

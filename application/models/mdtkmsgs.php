@@ -81,6 +81,42 @@ class Mdtkmsgs extends CI_Model{
 		return 0;
 	}
 	
+	function read_tkmsgs_by_recipient_pages($uid,$ticket,$count,$from){
+		
+		$query = "SELECT * FROM tkmsgs WHERE recipient = $uid AND ticket = $ticket ORDER BY date DESC,id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return FALSE;
+	}
+	
+	function count_tkmsgs_by_recipient_pages($uid,$ticket){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM tkmsgs WHERE recipient = $uid AND ticket = $ticket";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function read_tkmsgs_by_manager_pages($uid,$ticket,$count,$from){
+		
+		$query = "SELECT * FROM tkmsgs WHERE (recipient = $uid OR sender = $uid) AND ticket = $ticket ORDER BY date DESC,id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return FALSE;
+	}
+	
+	function count_tkmsgs_by_manager_pages($uid,$ticket){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM tkmsgs WHERE (recipient = $uid OR sender = $uid) AND ticket = $ticket";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_record($id,$uid){
 		
 		$this->db->where('id',$id);

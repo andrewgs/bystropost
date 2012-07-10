@@ -132,9 +132,9 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_tickets_by_recipient($recipient){
+	function read_tickets_by_recipient($recipient,$count,$from){
 		
-		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.position FROM tickets INNER JOIN users ON tickets.sender=users.id WHERE tickets.recipient = $recipient ORDER BY tickets.date DESC,tickets.id DESC";
+		$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -143,10 +143,19 @@ class Mdunion extends CI_Model{
 	
 	function read_tickets_by_sender($sender,$count,$from){
 		
-		$query = "SELECT tickets.*,	tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$query = "SELECT tickets.*,	tkmsgs.text,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function view_ticket_info($id){
+		
+		$query = "SELECT tickets.*,platforms.url FROM tickets INNER JOIN platforms ON tickets.platform=platforms.id WHERE tickets.id = $id LIMIT 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
 		return NULL;
 	}
 	
@@ -179,7 +188,7 @@ class Mdunion extends CI_Model{
 
 	function read_all_tickets($count,$from){
 		
-		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.position FROM tickets INNER JOIN users ON tickets.sender=users.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
+		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.position,platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON tickets.platform=platforms.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

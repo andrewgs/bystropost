@@ -12,7 +12,7 @@
 						<?=anchor("webmaster-panel/actions/tickets","Все сообщения");?><span class="divider">/</span>
 					</li>
 					<li class="active">
-						<?=anchor($this->uri->uri_string(),$ticket['title']);?>
+						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<i><b>'.$ticket['url'].'</b></i>)');?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
@@ -40,7 +40,7 @@
 							<td style="text-align:left;" data-incoming="incoming">
 						<?php else:?>
 							<td style="text-align:left;">
-						<?php endif;?>	
+						<?php endif;?>
 							<?php if($tkmsgs[$i]['reply']):?>
 								<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
 								<?=$tkmsgs[$i]['text'];?>
@@ -64,7 +64,7 @@
 			<?php endif;?>
 			</div>
 			<?php $this->load->view("clients_interface/includes/rightbar");?>
-		<?php $this->load->view('clients_interface/modal/clients-ticket-message');?>
+			<?php $this->load->view('clients_interface/modal/clients-ticket-message');?>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
