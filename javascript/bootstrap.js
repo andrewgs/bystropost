@@ -31,7 +31,7 @@
     $.support.transition = (function () {
 
       var transitionEnd = (function () {
-
+        if (jQuery.browser.opera && parseInt(jQuery.browser.version) >= 12) return 'otransitionend';
         var el = document.createElement('bootstrap')
           , transEndEventNames = {
                'WebkitTransition' : 'webkitTransitionEnd'

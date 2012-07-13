@@ -16,6 +16,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdtkmsgs');
 		$this->load->model('mdtickets');
 		$this->load->model('mdplatforms');
+		$this->load->model('mdmkplatform');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -53,8 +54,25 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$this->load->view("admin_interface/control-panel",$pagevar);
+	}
+	
+	public function actions_api(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Интерфейс программирования приложений',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
+		$this->load->view("admin_interface/control-api",$pagevar);
 	}
 	
 	public function actions_profile(){
@@ -432,6 +450,30 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 
+	public function management_view_platform(){
+		
+		$platform = $this->uri->segment(5);
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Площадки | Просмотр площадки',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'platform'		=> $this->mdplatforms->read_record($platform),
+					'markets'		=> $this->mdmarkets->read_records(),
+					'mymarkets'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$pagevar['mymarkets'] = $this->mdmkplatform->read_records_by_platform($platform,$pagevar['platform']['webmaster']);
+		
+		$this->load->view("admin_interface/management-view-platform",$pagevar);
+	}
+
 	public function management_markets(){
 		
 		$pagevar = array(
@@ -670,6 +712,7 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_date($pagevar['tickets'][$i]['date']);
 			if($pagevar['tickets'][$i]['recipient']):
@@ -681,7 +724,7 @@ class Admin_interface extends CI_Controller{
 			endif;
 		endfor;
 		
-		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/private-messages/from/';
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/messages/tickets/from/';
 		$config['uri_segment'] 	= 5;
 		$config['total_rows'] 	= $pagevar['count'];
 		$config['per_page'] 	= 5;
@@ -720,7 +763,7 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-	
+		
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('mid',' ','required|trim');
@@ -784,6 +827,31 @@ class Admin_interface extends CI_Controller{
 		
 		$this->session->sess_destroy();
 		redirect('');
+	}
+	
+	/******************************************************** API ******************************************************/	
+	
+	function actions_exec_onew(){
+
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetBirz','param'=>'');
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
+		curl_setopt($ch,CURLOPT_POST,1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch,CURLOPT_TIMEOUT,30);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		if(!$data):
+			$res = json_decode($data, true);
+			if((int)$res['status']==1):
+				print_r($res['data']);
+			else:
+				print_r($res['error']);
+			endif;
+		else:
+			print_r('Нет данных для загрузки!');
+		endif;
 	}
 	
 	/******************************************************** functions ******************************************************/	

@@ -13,7 +13,6 @@
 				<input type="radio" name="type" value="2" style="vertical-align:middle;"><span style="margin-left: 10px;">Вопросы по работе с <?=$_SERVER['SERVER_NAME'];?>. Связь с администрацией</span>
 			</td>
 		</tr>
-	<?php endif;?>
 		<tr>
 			<td class="w100">Площадка</td>
 			<td style="text-align:left;">
@@ -24,6 +23,7 @@
 				</select>
 			</td>
 		</tr>
+	<?php endif;?>
 		<tr>
 			<td class="w100"><nobr>Текст сообщения</nobr></td>
 			<td><textarea class="redactor" id="TextTicket" name="text" cols="79" rows="12"></textarea></td>

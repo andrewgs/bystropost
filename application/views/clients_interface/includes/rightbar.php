@@ -12,6 +12,7 @@
 			<li num="tickets"><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></li>
 			<li num="servises"><?=anchor('#','Дополнительные услуги');?></li>
 			<li num="forum"><?=anchor('#','Форум');?></li>
+			<li num="balance"><?=anchor('#','Баланс аккаунта');?></li>
 			<li num="profile"><?=anchor('webmaster-panel/actions/profile','Мой профиль');?></li>
 			<li><?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?></li>
 		</ul>

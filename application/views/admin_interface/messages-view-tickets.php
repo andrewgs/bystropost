@@ -11,7 +11,7 @@
 						<?=anchor('admin-panel/messages/tickets','Тикеты');?> <span class="divider">/</span>
 					</li>
 					<li tnum="deactive">
-						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<i><b>'.$ticket['url'].'</b></i>)');?>
+						<?=anchor($this->uri->uri_string(),$ticket);?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>

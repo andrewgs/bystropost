@@ -29,9 +29,7 @@
 					<?php for($i=0;$i<count($tickets);$i++):?>
 						<tr>
 							<td class="w195 ttpl">
-								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title']);?><br/><br/>
-								Направлено:<br/>
-								<em><strong>Администратору</strong></em><br/>
+								<?=anchor('manager-panel/actions/tickets/outbox/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?><br/><br/>
 								от <?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>

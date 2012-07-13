@@ -209,7 +209,6 @@ class Managers_interface extends CI_Controller{
 					'platform'		=> $this->mdplatforms->read_record($platform),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
-					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -319,7 +318,7 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],1,$from),
+					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from),
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -335,7 +334,7 @@ class Managers_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
-				$_POST['type'] = 2;
+				$_POST['type'] = 2; $_POST['platform'] = 0;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],0,$_POST);
 				if($ticket):
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],0,0,$_POST['text']);
@@ -350,7 +349,7 @@ class Managers_interface extends CI_Controller{
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/outbox/from/';
 		$config['uri_segment'] 	= 6;
 		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
-		$config['per_page'] 	= 1;
+		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';
@@ -384,7 +383,7 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_recipient($this->user['uid'],1,$from),
+					'tickets'		=> $this->mdunion->read_tickets_by_recipient($this->user['uid'],5,$from),
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -396,7 +395,7 @@ class Managers_interface extends CI_Controller{
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/inbox/from/';
 		$config['uri_segment'] 	= 6;
 		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
-		$config['per_page'] 	= 1;
+		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';
@@ -430,7 +429,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Кабинет Менеджера | Тикеты | Просмотр тикета',
+					'title'			=> 'Кабинет Менеджера | Входящие тикеты | Просмотр тикета',
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
@@ -494,6 +493,85 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("managers_interface/view-inbox-ticket",$pagevar);
+	}
+	
+	public function control_view_outbox_ticket(){
+		
+		$ticket = $this->uri->segment(6);
+		if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
+			show_404();
+		endif;
+		$from = intval($this->uri->segment(8));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Менеджера | Исходящие тикеты | Просмотр тикета',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'ticket'		=> $this->mdtickets->read_field($ticket,'title'),
+					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_manager_pages($this->user['uid'],$ticket,5,$from),
+					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_manager_pages($this->user['uid'],$ticket),
+					'pages'			=> array(),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('mid',' ','required|trim');
+			$this->form_validation->set_rules('recipient',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
+			else:
+				if(isset($_POST['closeticket'])):
+					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
+					$this->mdtickets->update_field($ticket,'status',1);
+				endif;
+				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
+				if($result):
+					$this->session->set_userdata('msgs','Сообщение отправлено');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
+				if($pagevar['tkmsgs'][$i]['sender']):
+					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
+				else:
+					$pagevar['tkmsgs'][$i]['position'] = '<b>Администратор</b>';
+				endif;
+			else:
+				$pagevar['tkmsgs'][$i]['position'] = 'Вы';
+			endif;
+		endfor;
+		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/'.$this->uri->segment(4).'/view-ticket/'.$this->uri->segment(6).'/from/';
+		$config['uri_segment'] 	= 8;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 5;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['tickets']['inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
+		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		$this->load->view("managers_interface/view-outbox-ticket",$pagevar);
 	}
 	
 	public function control_delete_tickets(){

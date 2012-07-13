@@ -35,8 +35,6 @@
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-tid="<?=$tickets[$i]['id'];?>"></div>
-								<a class="btn btn-danger deleteTicket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteTicket" title="Удалить тикет"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php if($tickets[$i]['status']):?>
 								<i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
 							<?php endif;?>
@@ -50,7 +48,6 @@
 			<?php endif;?>
 			</div>
 		<?php $this->load->view("managers_interface/includes/rightbar");?>
-		<?php $this->load->view('clients_interface/modal/clients-delete-tickets');?>
 		</div>
 	</div>
 	<?php $this->load->view("managers_interface/includes/footer");?>
@@ -61,9 +58,6 @@
 			$("td[data-closed='closed']").each(function(e){
 				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
 			});
-			$("#InsTicket").click();
-			$(".deleteTicket").click(function(){var Param = $(this).attr('data-param'); tID = $("div[id = params"+Param+"]").attr("data-tid");});
-			$("#DelTicket").click(function(){location.href='<?=$baseurl;?>manager-panel/actions/tickets/delete/ticket-id/'+tID;});
 		});
 	</script>
 </body>

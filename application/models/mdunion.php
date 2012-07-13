@@ -188,7 +188,7 @@ class Mdunion extends CI_Model{
 
 	function read_all_tickets($count,$from){
 		
-		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.position,platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON tickets.platform=platforms.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
+		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.type AS utype,users.position,platforms.id AS plid, platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON (tickets.platform=platforms.id || tickets.platform=0) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -197,7 +197,7 @@ class Mdunion extends CI_Model{
 	
 	function count_all_tickets(){
 		
-		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.position FROM tickets INNER JOIN users ON tickets.sender=users.id";
+		$query = "SELECT tickets.* FROM tickets";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
@@ -224,7 +224,7 @@ class Mdunion extends CI_Model{
 	
 	function read_platforms_by_owners_pages($count,$from){
 		
-		$query = "SELECT platforms.*, users.id AS uid,users.fio,users.login,users.position,0 AS torders,0 AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id ORDER BY platforms.date DESC,platforms.id DESC LIMIT $from,$count";
+		$query = "SELECT platforms.*, users.id AS uid,users.fio,users.login,users.position,0 AS torders,0 AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id ORDER BY users.login,platforms.date DESC,platforms.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

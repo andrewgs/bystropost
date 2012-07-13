@@ -33,7 +33,9 @@
 						<?php else:?>
 							<td class="w275">
 						<?php endif;?>
-								<nobr><i><b><?=$platforms[$i]['url'];?></b></i><br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
+								<nobr>
+								<?=anchor('admin-panel/management/platforms/view-platform/'.$platforms[$i]['id'],'<i><b>'.$platforms[$i]['url'].'</b></i>',array('title'=>'Просмотреть площадку'));?>
+								<br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
 								<?=$platforms[$i]['fio'];?><br/><i><b><?=$platforms[$i]['login'];?></b></i><br/><br/>
 								<?=$platforms[$i]['manfio'];?><br/><i><b><?=$platforms[$i]['manemail'];?></b></i></nobr>
 							</td>
