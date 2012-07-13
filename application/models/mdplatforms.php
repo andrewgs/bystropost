@@ -57,6 +57,18 @@ class Mdplatforms extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
+	function read_managers_platform_online($uid){
+		
+		$this->db->select('manager,url');
+		$this->db->where('webmaster',$uid);
+		$this->db->where('locked',0);
+		$this->db->where('status',1);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function update_record($id,$uid,$data){
 		
 		$this->db->set('url',$data['url']);
@@ -97,7 +109,7 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function update_stutus($id,$uid,$status){
+	function update_status($id,$uid,$status){
 		
 		$this->db->set('status',$status);
 
@@ -107,10 +119,28 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function close_platform_by_user($uid){
+	function close_platform_by_user_delete($uid){
 		
 		$this->db->set('locked',1);
 		$this->db->set('webmaster',0);
+		
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
+	function platforms_status_offline($uid){
+		
+		$this->db->set('status',0);
+		
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
+	function platforms_status_online($uid){
+		
+		$this->db->set('status',1);
 		
 		$this->db->where('webmaster',$uid);
 		$this->db->update('platforms');
@@ -202,12 +232,13 @@ class Mdplatforms extends CI_Model{
 		$this->db->delete('platforms');
 		return $this->db->affected_rows();
 	}
-
+	
 	function ownew_platform($webmaster,$id){
 		
 		$this->db->where('id',$id);
 		$this->db->where('webmaster',$webmaster);
 		$this->db->where('locked',0);
+		$this->db->where('status',1);
 		$query = $this->db->get('platforms',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;

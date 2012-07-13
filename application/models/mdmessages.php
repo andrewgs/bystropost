@@ -119,10 +119,28 @@ class Mdmessages extends CI_Model{
 		return 0;
 	}
 	
+	function count_records_by_admin_new($recipient){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE (messages.recipient = $recipient OR messages.recipient = 0) AND newmail = 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function set_read_mails_by_recipient($recipient){
 		
 		$this->db->set('newmail',0);
 		$this->db->where('recipient',$recipient);
+		$this->db->update('messages');
+		return $this->db->affected_rows();
+	}
+	
+	function set_read_mails_by_admin($recipient){
+		
+		$this->db->set('newmail',0);
+		$this->db->where('recipient',$recipient);
+		$this->db->or_where('recipient',0);
 		$this->db->update('messages');
 		return $this->db->affected_rows();
 	}

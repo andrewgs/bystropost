@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'');
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -27,6 +27,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['ulogin'] 			= $userinfo['login'];
 					$this->user['uname'] 			= $userinfo['fio'];
 					$this->user['utype'] 			= $userinfo['type'];
+					$this->user['lock'] 			= $userinfo['locked'];
 					$this->loginstatus['status'] 	= TRUE;
 				else:
 					redirect('');
@@ -157,6 +158,32 @@ class Clients_interface extends CI_Controller{
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
 					$this->session->set_userdata('msgs',$msgs);
 				endif;
+				if(!$this->user['lock'] && isset($_POST['lockprofile'])):
+					$result = $this->mdusers->update_field($this->user['uid'],'locked',1);
+					if($result):
+						$managers = $this->mdplatforms->read_managers_platform_online($this->user['uid']);
+						$this->mdplatforms->platforms_status_offline($this->user['uid']);
+						$msgs = 'Профиль заблокирован. Все площадки не активны.<br/>'.$this->session->userdata('msgs');
+						$this->session->set_userdata('msgs',$msgs);
+						$text = 'Вебмастер '.$this->user['ulogin'].' заблокировал свой профиль.';
+						if(!empty($_POST['reason'])):
+							$text .= ' Причина блокировки: '.$_POST['reason'];
+						endif;
+						$this->mdmessages->insert_record($this->user['uid'],0,$text);
+						for($i=0;$i<count($managers);$i++):
+							$text = 'Площадка '.$managers[$i]['url'].' перешла в состояние - не активна!';
+							$this->mdmessages->insert_record($this->user['uid'],$managers[$i]['manager'],$text);
+						endfor;
+					endif;
+				elseif($this->user['lock'] && isset($_POST['lockprofile'])):
+					$this->mdusers->update_field($this->user['uid'],'locked',0);
+//					$this->mdplatforms->platforms_status_online($this->user['uid']);
+					$msgs = 'Профиль разблокирован.'.$this->session->userdata('msgs');
+					$this->session->set_userdata('msgs',$msgs);
+					$text = 'Вебмастер '.$this->user['ulogin'].' разблокировал свой профиль.';
+					$this->mdmessages->insert_record($this->user['uid'],0,$text);
+				endif;
+				
 				redirect($this->uri->uri_string());
 			endif;
 		endif;
@@ -302,8 +329,18 @@ class Clients_interface extends CI_Controller{
 				if(isset($_POST['status'])):
 					$status = $_POST['status'];
 				endif;
-				$result = $this->mdplatforms->update_stutus($_POST['pid'],$this->user['uid'],$status);
+				$result = $this->mdplatforms->update_status($_POST['pid'],$this->user['uid'],$status);
 				if($result):
+					if($status):
+						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - активна!';
+					else:
+						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - не активна!';
+					endif;
+					$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
+					if($manager):
+						$this->mdmessages->insert_record($this->user['uid'],$manager,$text);
+					endif;
+					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 				else:
 					$this->session->set_userdata('msgr','Информация не изменилась.');
@@ -408,7 +445,7 @@ class Clients_interface extends CI_Controller{
 		
 		$platform = $this->uri->segment(5);
 		if(!$this->mdplatforms->ownew_platform($this->user['uid'],$platform)):
-			show_404();
+			redirect($_SERVER['HTTP_REFERER']);
 		endif;
 		
 		$pagevar = array(

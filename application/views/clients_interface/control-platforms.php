@@ -62,7 +62,7 @@
 							<td class="w85 ttpl"><center><nobr><?=anchor('#','0 / 0');?></nobr></center></td>
 							<td class="w85"><center><nobr><?=$platforms[$i]['date'];?></nobr></center></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
-							<?php if(!$platforms[$i]['locked']):?>
+							<?php if(!$platforms[$i]['locked'] && !$userinfo['lock']):?>
 								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-status="<?=$platforms[$i]['status'];?>"></div>
 								<a class="btn btn-success editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Свойства"><nobr>&nbsp;&nbsp;<i class="icon-tags icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>

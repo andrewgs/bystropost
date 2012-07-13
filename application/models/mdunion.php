@@ -185,7 +185,26 @@ class Mdunion extends CI_Model{
 		if(count($data)) return count($data);
 		return NULL;
 	}
+	
+	function read_mails_admin_pages($recipient,$count,$from){
+		
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_mails_admin_pages($recipient){
+		
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0)";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
+		return NULL;
+	}
 
+	
 	function read_all_tickets($count,$from){
 		
 		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.type AS utype,users.position,platforms.id AS plid, platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON (tickets.platform=platforms.id || tickets.platform=0) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";

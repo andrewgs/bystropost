@@ -4,8 +4,8 @@
 			<div class="span7">
 				<div id="logo"><span>Система управления продажами<br/><br/>Администрирование</span></div>
 			</div>
-			<div class="span5">
-				<div class="authorized-user">
+			<div class="span5" style="padding-top:10px;">
+				<div class="alert alert-info">
 					<?php $this->load->view("topblock/admins");?>
 				</div>
 			</div>

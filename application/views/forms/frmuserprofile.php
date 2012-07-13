@@ -75,7 +75,24 @@
 					Присылать уведомления и важные новости
 				</label>
 			</div>
+		</div>
+	<?php if($userinfo['utype'] == 1):?>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" id="lockprofile" name="lockprofile" value="1">
+				<?php if(!$userinfo['lock']):?>
+					Заблокировать профиль
+				<?php else:?>
+					Разблокировать профиль
+				<?php endif;?>
+				</label>
+			<?php if(!$userinfo['lock']):?>
+				<input type="text" id="reason" class="input-xlarge" name="reason" value="" placeholder="Укажите причину блокировки профиля">
+			<?php endif;?>
+			</div>
 		</div>	
+	<?php endif;?>
 		<div class="form-actions">
 			<button class="btn btn-primary" type="submit" name="submit" id="submit" value="submit">Сохранить</button>
 			<input class="btn btn-inverse" id="reset" style="height: 28px; cursor:pointer;" type="button" value="Отменить">
