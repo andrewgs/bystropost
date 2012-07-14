@@ -1,11 +1,12 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Mdmarkets extends CI_Model{
+class Mdtypeswork extends CI_Model{
 
-	var $id		= 0;
-	var $title 	= '';
-	var $url 	= 0;
-	var $icon 	= '';
+	var $id			= 0;
+	var $title 		= '';
+	var $wprice 	= 0;
+	var $mprice 	= 0;
+	var $nickname	= '';
 	
 	function __construct(){
 		parent::__construct();
@@ -14,30 +15,27 @@ class Mdmarkets extends CI_Model{
 	function insert_record($data){
 			
 		$this->title 	= htmlspecialchars($data['title']);
-		$this->url 		= $data['url'];
-		$this->icon		= $data['icon'];
+		$this->wprice 	= $data['wprice'];
+		$this->mprice 	= $data['mprice'];
 		
-		$this->db->insert('markets',$this);
+		$this->db->insert('typeswork',$this);
 		return $this->db->insert_id();
 	}
 	
 	function update_record($data){
 		
 		$this->db->set('title',htmlspecialchars($data['title']));
-		$this->db->set('url',$data['url']);
-		if(isset($data['icon'])):
-			$this->db->set('icon',$data['icon']);
-		endif;
-		$this->db->where('id',$data['mid']);
-		$this->db->update('markets');
+		$this->db->set('wprice',$data['wprice']);
+		$this->db->set('mprice',$data['mprice']);
+		$this->db->where('id',$data['tpid']);
+		$this->db->update('typeswork');
 		return $this->db->affected_rows();
 	}
 	
 	function read_records(){
 		
-		$this->db->select('id,title,url');
 		$this->db->order_by('title');
-		$query = $this->db->get('markets');
+		$query = $this->db->get('typeswork');
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
@@ -45,9 +43,8 @@ class Mdmarkets extends CI_Model{
 	
 	function read_record($id){
 		
-		$this->db->select('id,title,url');
 		$this->db->where('id',$id);
-		$query = $this->db->get('markets',1);
+		$query = $this->db->get('typeswork',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];
 		return NULL;
@@ -56,7 +53,7 @@ class Mdmarkets extends CI_Model{
 	function read_field($id,$field){
 			
 		$this->db->where('id',$id);
-		$query = $this->db->get('markets',1);
+		$query = $this->db->get('typeswork',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0][$field];
 		return FALSE;
@@ -65,25 +62,18 @@ class Mdmarkets extends CI_Model{
 	function delete_record($id){
 	
 		$this->db->where('id',$id);
-		$this->db->delete('markets');
+		$this->db->delete('typeswork');
 		return $this->db->affected_rows();
 	}
 	
-	function exist_market($market){
+	function exist_type_work($type){
 		
-		$this->db->where('title',$market);
-		$query = $this->db->get('markets',1);
+		$this->db->where('title',$type);
+		$query = $this->db->get('typeswork',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
 
-	function get_image($mid){
-		
-		$this->db->where('id',$mid);
-		$this->db->select('icon');
-		$query = $this->db->get('markets');
-		$data = $query->result_array();
-		return $data[0]['icon'];
-	}
+	
 }

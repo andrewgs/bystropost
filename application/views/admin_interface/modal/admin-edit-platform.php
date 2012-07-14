@@ -1,28 +1,28 @@
 <?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 	<input type="hidden" class="idPlatform" value="" name="pid" />
 	<input type="hidden" class="idUser" value="" name="uid" />
-	<div id="editPlatform" class="modal hide fade dmodal">
+	<div id="editPlatform" class="modal hide fade dmodal" style="top: 40%;">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
 			<h3>Редактирование информации о площадке</h3>
 		</div>
-		<div class="modal-body" style="max-height: 500px;">
+		<div class="modal-body" style="min-height: 450px;">
 			<fieldset>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="fio" class="control-label">Имя владельца: </label>
 					<div class="controls">
 						<input type="text" disabled="disabled" class="input-xlarge epinput eFio" name="fio">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="login" class="control-label">Логин владельца: </label>
 					<div class="controls">
 						<input type="text" disabled="disabled" class="input-xlarge epinput eLogin" name="login">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
 					<div class="controls">
 						<div style="margin-left: 30px;display: inline-block;">
 							<span class="help-inline">Для вебмастера</span>
@@ -32,7 +32,18 @@
 						</div>
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
+					<label for="notice" class="control-label">Заметка-постовой: </label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="ecNotice" class="input-small epinput digital" placeholder="0" name="cnotice"><span class="add-on">.00</span>
+						</div>
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="emNotice" class="input-small epinput digital" placeholder="0" name="mnotice"><span class="add-on">.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="сontext" class="control-label">Контекстная ссылка: </label>
 					<div class="controls">
 						<div class="input-prepend input-append">
@@ -43,18 +54,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="control-group">
-					<label for="notice" class="control-label">Заметка(постовой): </label>
-					<div class="controls">
-						<div class="input-prepend input-append">
-							<span class="add-on">руб</span><input type="text" id="ecNotice" class="input-small epinput digital" placeholder="0" name="cnotice"><span class="add-on">.00</span>
-						</div>
-						<div class="input-prepend input-append">
-							<span class="add-on">руб</span><input type="text" id="emNotice" class="input-small epinput digital" placeholder="0" name="mnotice"><span class="add-on">.00</span>
-						</div>
-					</div>
-				</div>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="review" class="control-label">Обзор: </label>
 					<div class="controls">
 						<div class="input-prepend input-append">
@@ -65,7 +65,40 @@
 						</div>
 					</div>
 				</div>
-				<div class="control-group">
+				<div class="control-group" style="margin-bottom: 5px;">
+					<label for="linkpic" class="control-label">Ссылка-картинка: </label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="ecLinkPic" class="input-small epinput digital" placeholder="0" name="clinkpic"><span class="add-on">.00</span>
+						</div>
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="emLinkPic" class="input-small epinput digital" placeholder="0" name="mlinkpic"><span class="add-on">.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="control-group" style="margin-bottom: 5px;">
+					<label for="pressrel" class="control-label">Пресс-релиз: </label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="ecPressRel" class="input-small epinput digital" placeholder="0" name="cpressrel"><span class="add-on">.00</span>
+						</div>
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="emPressRel" class="input-small epinput digital" placeholder="0" name="mpressrel"><span class="add-on">.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="control-group" style="margin-bottom: 5px;">
+					<label for="linkarh" class="control-label">Ссылка в архиве: </label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="ecLinkArh" class="input-small epinput digital" placeholder="0" name="clinkarh"><span class="add-on">.00</span>
+						</div>
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" id="emLinkArh" class="input-small epinput digital" placeholder="0" name="mlinkarh"><span class="add-on">.00</span>
+						</div>
+					</div>
+				</div>
+				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="news" class="control-label">Новость: </label>
 					<div class="controls">
 						<div class="input-prepend input-append">
@@ -76,6 +109,7 @@
 						</div>
 					</div>
 				</div>
+				<div class="clear"></div>
 				<hr/>
 				<div class="control-group">
 					<label for="manager" class="control-label">Менеджеры</label>

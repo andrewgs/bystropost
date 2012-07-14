@@ -106,6 +106,9 @@ $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 
+$route['admin-panel/management/types-of-work']				= "admin_interface/management_types_work";
+$route['admin-panel/management/types-of-work/workid/:num']	= "admin_interface/management_types_work_deleting";
+
 $route['admin-panel/management/mails']					= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from']				= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from/:num']		= "admin_interface/management_mails";

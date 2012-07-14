@@ -1,9 +1,9 @@
-<?=form_open_multipart($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
-	<input type="hidden" class="idMarket" value="" name="mid" />
-	<div id="editMarket" class="modal hide fade mkmodal">
+<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
+	<input type="hidden" class="idTypeWork" value="" name="tpid" />
+	<div id="editTypeWork" class="modal hide fade mkmodal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3>Редактирование биржи</h3>
+			<h3>Редактирование типа работ</h3>
 		</div>
 		<div class="modal-body">
 			<fieldset>
@@ -15,16 +15,16 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label for="url" class="control-label">URL: </label>
+					<label for="wprice" class="control-label">Цена (вебмастер): </label>
 					<div class="controls">
-						<input type="text" id="emURL" class="input-xlarge eminput" name="url" value="">
+						<input type="text" id="ewPrice" class="input-small eminput digital" name="wprice" value="">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
 				<div class="control-group">
-					<label for="icon" class="control-label">ICON: </label>
+					<label for="mprice" class="control-label">Цена (менеджер): </label>
 					<div class="controls">
-						<input type="file" id="amIcon" class="input-file" name="icon" size="30">
+						<input type="text" id="emPrice" class="input-small eminput digital" name="mprice" value="">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>

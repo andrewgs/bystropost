@@ -17,6 +17,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdtickets');
 		$this->load->model('mdplatforms');
 		$this->load->model('mdmkplatform');
+		$this->load->model('mdtypeswork');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -313,6 +314,13 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('cnews',' ','required|trim');
 			$this->form_validation->set_rules('mnews',' ','required|trim');
 			$this->form_validation->set_rules('manager',' ','required|trim');
+			$this->form_validation->set_rules('clinkpic',' ','required|trim');
+			$this->form_validation->set_rules('mlinkpic',' ','required|trim');
+			$this->form_validation->set_rules('cpressrel',' ','required|trim');
+			$this->form_validation->set_rules('mpressrel',' ','required|trim');
+			$this->form_validation->set_rules('clinkarh',' ','required|trim');
+			$this->form_validation->set_rules('mlinkarh',' ','required|trim');
+			
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
@@ -321,8 +329,10 @@ class Admin_interface extends CI_Controller{
 				endif;
 				$prevman = $this->mdplatforms->read_field($_POST['pid'],'manager');
 				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
-				$result = $this->mdplatforms->update_price($_POST['pid'],$_POST['uid'],$_POST);
-				if($result):
+				$result1 = $this->mdplatforms->update_lock($_POST['pid'],$_POST['uid'],$_POST['locked']);
+				$result2 = $this->mdplatforms->update_manager($_POST['pid'],$_POST['uid'],$_POST['manager']);
+				$result3 = $this->mdplatforms->update_price($_POST['pid'],$_POST['uid'],$_POST);
+				if($result1 || $result2 || $result3):
 					$platform = $this->mdplatforms->read_field($_POST['pid'],'url');
 					if(!$prevman && $_POST['manager']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' принята к работе';
@@ -386,8 +396,6 @@ class Admin_interface extends CI_Controller{
 						endif;
 					endif;
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Информация не изменилась.');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -540,6 +548,73 @@ class Admin_interface extends CI_Controller{
 				$this->session->set_userdata('msgs','Биржа удалена успешно');
 			else:
 				$this->session->set_userdata('msgr','Биржа не удалена');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
+	public function management_types_work(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Типы работ',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'tpswork'		=> $this->mdtypeswork->read_records(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('amsubmit')):
+			$_POST['amsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('wprice',' ','required|trim');
+			$this->form_validation->set_rules('mprice',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdtypeswork->insert_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Тип работ добавлен успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->input->post('emsubmit')):
+			$_POST['emsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('wprice',' ','required|trim');
+			$this->form_validation->set_rules('mprice',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdtypeswork->update_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Тип работ изменен успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/management-types-work",$pagevar);
+	}
+	
+	public function management_types_work_deleting(){
+		
+		$wid = $this->uri->segment(5);
+		if($wid):
+			$result = $this->mdtypeswork->delete_record($wid);
+			if($result):
+				$this->session->set_userdata('msgs','Тип работ удален успешно');
+			else:
+				$this->session->set_userdata('msgr','Тип работ не удален');
 			endif;
 			redirect($_SERVER['HTTP_REFERER']);
 		else:
@@ -833,7 +908,7 @@ class Admin_interface extends CI_Controller{
 	
 	function actions_exec_onew(){
 
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetBirz','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetOrderType','param'=>'');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);
@@ -842,7 +917,7 @@ class Admin_interface extends CI_Controller{
 		curl_setopt($ch,CURLOPT_TIMEOUT,30);
 		$data = curl_exec($ch);
 		curl_close($ch);
-		if(!$data):
+		 if($data!==false):
 			$res = json_decode($data, true);
 			if((int)$res['status']==1):
 				print_r($res['data']);

@@ -17,6 +17,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdmkplatform');
 		$this->load->model('mdtickets');
 		$this->load->model('mdtkmsgs');
+		$this->load->model('mdtypeswork');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -399,6 +400,7 @@ class Clients_interface extends CI_Controller{
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
+			
 			$this->form_validation->set_rules('url',' ','required|trim');
 			$this->form_validation->set_rules('subject',' ','required|trim');
 			$this->form_validation->set_rules('cms',' ','required|trim');
@@ -415,6 +417,18 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
+				if($platform):
+					$sqlquery = "UPDATE platforms SET ";
+					$works = $this->mdtypeswork->read_records();
+					for($i=0;$i<count($works);$i++):
+						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.$works[$i]['wprice'].', m'.$works[$i]['nickname'].' = '.$works[$i]['mprice'];
+						if(isset($works[$i+1])):
+							$sqlquery .= ', ';
+						endif;
+					endfor;
+					$sqlquery .= ' WHERE platforms.id = '.$platform;
+					$this->mdplatforms->run_query($sqlquery);
+				endif;
 				if($platform && isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();

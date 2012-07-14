@@ -19,14 +19,20 @@ class Mdplatforms extends CI_Model{
 	var $requests 		= '';
 	var $tic 			= 0;
 	var $pr 			= 0;
-	var $ccontext 		= 0;
+	var $ccontext 		= 0; //контекстная ссылка
 	var $mcontext 		= 0;
-	var $cnotice 		= 0;
+	var $cnotice 		= 0; //Заметка
 	var $mnotice 		= 0;
-	var $creview 		= 0;
+	var $creview 		= 0; //Обзор
 	var $mreview 		= 0;
-	var $cnews 			= 0;
+	var $cnews 			= 0; //Новость
 	var $mnews 			= 0;
+	var $clinkpic 		= 0; //Ссылка-картинка
+	var $mlinkpic 		= 0;
+	var $cpressrel 		= 0; //Пресс-релиз
+	var $mpressrel 		= 0;
+	var $clinkarh 		= 0; //Ссылка в архиве
+	var $mlinkarh 		= 0;
 	var $price 			= '';
 	var $date 			= '';
 	var $locked			= 0;
@@ -34,6 +40,11 @@ class Mdplatforms extends CI_Model{
 	
 	function __construct(){
 		parent::__construct();
+	}
+	
+	function run_query($sql){
+		
+		$this->db->query($sql);
 	}
 	
 	function insert_record($uid,$data){
@@ -100,8 +111,33 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('mreview',$data['mreview']);
 		$this->db->set('cnews',$data['cnews']);
 		$this->db->set('mnews',$data['mnews']);
-		$this->db->set('manager',$data['manager']);
-		$this->db->set('locked',$data['locked']);
+		
+		$this->db->set('clinkpic',$data['clinkpic']);
+		$this->db->set('mlinkpic',$data['mlinkpic']);
+		$this->db->set('cpressrel',$data['cpressrel']);
+		$this->db->set('mpressrel',$data['mpressrel']);
+		$this->db->set('clinkarh',$data['clinkarh']);
+		$this->db->set('mlinkarh',$data['mlinkarh']);
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
+	function update_lock($id,$uid,$locked){
+		
+		$this->db->set('locked',$locked);
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
+	function update_manager($id,$uid,$manager){
+		
+		$this->db->set('manager',$manager);
 		
 		$this->db->where('id',$id);
 		$this->db->where('webmaster',$uid);

@@ -5,6 +5,7 @@
 			<li num="users"><?=anchor('admin-panel/management/users/all','Список пользователей');?></li>
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Список площадок');?></li>
 			<li num="markets"><?=anchor('admin-panel/management/markets','Список биржи');?></li>
+			<li num="types-of-work"><?=anchor('admin-panel/management/types-of-work','Типы работ');?></li>
 			<li class="nav-header">Сообщения</li>
 		<?php if($cntunit['mails']):?>
 			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails'].'</b></font>)');?></li>
