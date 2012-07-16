@@ -100,6 +100,10 @@ $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
 $route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
 $route['admin-panel/actions/api']						= "admin_interface/actions_api";
 
+$route['admin-panel/management/users/read-messages/userid/:num']			= "admin_interface/reading_users_messages";
+$route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
+$route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "admin_interface/reading_users_messages";
+
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
@@ -124,7 +128,7 @@ $route['admin-panel/management/mails']					= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from']				= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from/:num']		= "admin_interface/management_mails";
 
-$route['admin-panel/messages/system-message']							= "admin_interface/messages_system";
+$route['admin-panel/messages/system-message']			= "admin_interface/messages_system";
 
 $route['admin-panel/messages/private-messages/delete-mail/mailid/:num']	= "admin_interface/messages_private_delete";
 

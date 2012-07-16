@@ -145,6 +145,24 @@ class Mdmessages extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function read_mails_user_pages($user){
+		
+		$query = "SELECT * FROM messages WHERE messages.recipient = $user OR messages.sender = $user ORDER BY date DESC, id DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_mails_user_pages($user){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE messages.recipient = $user OR messages.sender = $user";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_record($id){
 		
 		$this->db->where('id',$id);

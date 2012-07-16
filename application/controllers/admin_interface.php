@@ -967,6 +967,49 @@ class Admin_interface extends CI_Controller{
 		redirect('');
 	}
 	
+	public function reading_users_messages(){
+		
+		$from = intval($this->uri->segment(8));
+		$user = intval($this->uri->segment(6));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Просмотр сообщений',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'owner'			=> $this->mdusers->read_small_info($user),
+					'mails'			=> $this->mdmessages->read_mails_user_pages($user,10,$from),
+					'count'			=> $this->mdmessages->count_mails_user_pages($user),
+					'pages'			=> array(),
+					'cntunit'		=> array('mails'=>0),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		for($i=0;$i<count($pagevar['mails']);$i++):
+			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+		endfor;
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/read-messages/userid/'.$user.'/from/';
+		$config['uri_segment'] 	= 8;
+		$config['total_rows'] 	= $pagevar['count'];
+		$config['per_page'] 	= 10;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		$this->mdmessages->set_read_mails_by_admin($this->user['uid']);
+		$this->load->view("admin_interface/reading-users-messages",$pagevar);
+	}
+	
+	
 	/******************************************************** API ******************************************************/	
 	
 	function actions_exec_onew(){

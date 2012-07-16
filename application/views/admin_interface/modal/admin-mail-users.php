@@ -41,6 +41,7 @@
 			</fieldset>
 		</div>
 		<div class="modal-footer">
+			<div style="float:left"><?=anchor('','Просмотреть все сообщения',array('class'=>'ReadAllMessages none'));?></div>
 			<button class="btn" data-dismiss="modal">Отменить</button>
 			<button class="btn btn-success" type="submit" id="mtsend" name="mtsubmit" value="send">Отправить</button>
 		</div>

@@ -108,7 +108,7 @@ class Mdusers extends CI_Model{
 	
 	function read_email_record($email){
 		
-		$this->db->select('id,login,fio,cryptpassword,signdate,closedate');
+		$this->db->select('id,login,fio,cryptpassword,signdate,closedate,position');
 		$this->db->where('login',$email);
 		$this->db->where('closedate =','0000-00-00');
 		$query = $this->db->get('users');
@@ -137,7 +137,7 @@ class Mdusers extends CI_Model{
 	
 	function read_small_info($id){
 		
-		$this->db->select('id,login,fio,phones,icq,skype,balance,signdate');
+		$this->db->select('id,login,fio,phones,icq,skype,balance,signdate,position');
 		$this->db->where('id',$id);
 		$query = $this->db->get('users',1);
 		$data = $query->result_array();
