@@ -12,13 +12,20 @@ $route['optimizers']					= "users_interface/optimizers";
 $route['regulations']					= "users_interface/regulations";
 $route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
+$route['markets-catalog']				= "users_interface/markets_catalog";
+$route['users-ratings/advertisers']		= "users_interface/users_ratings";
+$route['users-ratings/webmasters']		= "users_interface/users_ratings";
+
+$route['users-ratings/advertisers/reading-rating/:num']= "users_interface/reading_rating";
+$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
 
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";
 $route['users/registering/successfull']	= "users_interface/reg_successfull";
 
-
 $route['users/restore-password']		= "users_interface/restore_password";
+
+$route['ratings/viewimage/:num']		= "users_interface/viewimage";
 
 /**************************************************	   CLIENTS INTRERFACE	***********************************************/
 $route['webmaster-panel/actions/control']							= "clients_interface/control_panel";
@@ -105,6 +112,10 @@ $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/
 
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
+
+$route['admin-panel/management/ratings/advertisers']	= "admin_interface/management_ratings";
+$route['admin-panel/management/ratings/webmasters']		= "admin_interface/management_ratings";
+$route['admin-panel/management/ratings/ratingid/:num']	= "admin_interface/management_rating_deleting";
 
 $route['admin-panel/management/types-of-work']				= "admin_interface/management_types_work";
 $route['admin-panel/management/types-of-work/workid/:num']	= "admin_interface/management_types_work_deleting";

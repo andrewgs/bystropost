@@ -18,6 +18,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdplatforms');
 		$this->load->model('mdmkplatform');
 		$this->load->model('mdtypeswork');
+		$this->load->model('mdratings');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -615,6 +616,68 @@ class Admin_interface extends CI_Controller{
 				$this->session->set_userdata('msgs','Тип работ удален успешно');
 			else:
 				$this->session->set_userdata('msgr','Тип работ не удален');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
+	public function management_ratings(){
+		
+		switch($this->uri->segment(4)):
+			case 'advertisers' 	: $rtype = 1; break;
+			case 'webmasters' 	: $rtype = 2; break;
+			default 			: redirect('/');
+		endswitch;
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Отзывы о системе',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'ratings'		=> $this->mdratings->read_records($rtype),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('arsubmit')):
+			$_POST['arsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				if($_FILES['avatar']['error'] != 4):
+					$_POST['avatar'] = file_get_contents($_FILES['avatar']['tmp_name']);
+				else:
+					$_POST['avatar'] = file_get_contents(base_url().'images/no-avatar.gif');
+				endif;
+				$result = $this->mdratings->insert_record($_POST,$rtype);
+				if($result):
+					$this->session->set_userdata('msgs','Отзыв добавлен успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/management-ratings",$pagevar);
+	}
+	
+	public function management_rating_deleting(){
+		
+		$rid = $this->uri->segment(5);
+		if($rid):
+			$result = $this->mdratings->delete_record($rid);
+			if($result):
+				$this->session->set_userdata('msgs','Отзыв удален успешно');
+			else:
+				$this->session->set_userdata('msgr','Отзыв не удален');
 			endif;
 			redirect($_SERVER['HTTP_REFERER']);
 		else:

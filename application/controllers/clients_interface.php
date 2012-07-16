@@ -400,7 +400,6 @@ class Clients_interface extends CI_Controller{
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
-			
 			$this->form_validation->set_rules('url',' ','required|trim');
 			$this->form_validation->set_rules('subject',' ','required|trim');
 			$this->form_validation->set_rules('cms',' ','required|trim');
@@ -416,6 +415,11 @@ class Clients_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$exist = $this->mdplatforms->exist_platform($_POST['url']);
+				if($exist):
+					$this->session->set_userdata('msgr','Площадка с URL-адресом '.$_POST['url'].' уже существует!');
+					redirect($this->uri->uri_string());
+				endif;
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
 				if($platform):
 					$sqlquery = "UPDATE platforms SET ";
@@ -449,7 +453,7 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgr','Платформа не создана.');
 				endif;
 			endif;
-			redirect('webmaster-panel/actions/platforms');
+			redirect($this->uri->uri_string());
 		endif;
 		
 		$this->load->view("clients_interface/control-add-platform",$pagevar);

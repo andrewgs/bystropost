@@ -49,4 +49,18 @@ function isValidPhone(phoneNumber){
 			event.preventDefault();
 		};
 	});
+	
+	$("#btnRestore").click(function(event){
+		$(".ErrImg").remove();
+		$("#RestoreEmail").css('border-color','#38BEDF');
+		if($("#RestoreEmail").val()==''){
+			$("#RestoreEmail").css('border-color','#ff8080');
+			$("#RestoreEmail").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" style="margin-top:10px;" title="Поле не может быть пустым">');
+			event.preventDefault();
+		}else if(!isValidEmailAddress($("#RestoreEmail").val())){
+			$("#RestoreEmail").css('border-color','#ff8080');
+			$("#RestoreEmail").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" style="margin-top:10px;" title="Не верный адрес E-Mail">');
+			event.preventDefault();
+		};
+	});
 })(window.jQuery);

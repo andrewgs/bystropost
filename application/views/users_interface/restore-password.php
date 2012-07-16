@@ -11,8 +11,8 @@
 			<div id="recovery">
 				<?=form_open($this->uri->uri_string()); ?>
 					<h1>Забыли пароль? Мы напомним</h1>
-					<input type="text" id="email" name="email" placeholder="Введите Ваш E-mail" />
-					<input type="submit" name="rsubmit" value="">
+					<input type="text" id="RestoreEmail" name="email" placeholder="Введите Ваш E-mail" />
+					<input type="submit" name="rsubmit" id="btnRestore" value="">
 				<?= form_close(); ?>
 			</div>
 		</div>

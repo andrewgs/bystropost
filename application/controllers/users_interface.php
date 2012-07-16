@@ -8,6 +8,7 @@ class Users_interface extends CI_Controller{
 		$this->load->model('mdusers');
 		$this->load->model('mdunion');
 		$this->load->model('mdmarkets');
+		$this->load->model('mdratings');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -138,6 +139,53 @@ class Users_interface extends CI_Controller{
 		$this->session->unset_userdata('ressuc');
 		
 		$this->load->view("users_interface/successfull",$pagevar);
+	}
+	
+	public function markets_catalog(){
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Каталог бирж',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/markets-catalog",$pagevar);
+	}
+	
+	public function users_ratings(){
+		
+		switch($this->uri->segment(2)):
+			case 'advertisers' 	: $rtype = 1; break;
+			case 'webmasters' 	: $rtype = 2; break;
+			default 			: redirect('/');
+		endswitch;
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Отзывы о системе',
+			'description'	=> '',
+			'author'		=> '',
+			'ratings'		=> $this->mdratings->read_records($rtype),
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/users-ratings",$pagevar);
+	}
+	
+	public function reading_rating(){
+		
+		$pagevar = array(
+			'title'			=> 'Bystropost.ru - Система управления продажами | Отзывы о системе',
+			'description'	=> '',
+			'author'		=> '',
+			'rating'		=> $this->mdratings->read_record($this->uri->segment(4)),
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/reading-rating",$pagevar);
 	}
 	
 	public function about(){
@@ -291,5 +339,17 @@ class Users_interface extends CI_Controller{
 			endif;
 		endif;
 		$this->load->view("users_interface/registering",$pagevar);
+	}
+
+	function viewimage(){
+		
+		$section = $this->uri->segment(1);
+		$id = $this->uri->segment(3);
+		switch ($section):
+			case 'ratings'	:	$image = $this->mdratings->get_image($id); break;
+			default			: 	show_404();break;
+		endswitch;
+		header('Content-type: image/gif');
+		echo $image;
 	}
 }

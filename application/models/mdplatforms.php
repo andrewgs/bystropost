@@ -192,6 +192,15 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function exist_platform($url){
+		
+		$this->db->where('url',$url);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+	
 	function read_records_by_webmaster($uid){
 		
 		$this->db->order_by('date');
