@@ -56,10 +56,14 @@ $route['views/market-profile'] 										= "clients_interface/views";
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
 $route['manager-panel/actions/control']								= "managers_interface/control_panel";
+$route['manager-panel/actions/control/from']						= "managers_interface/control_panel";
+$route['manager-panel/actions/control/from/:num']					= "managers_interface/control_panel";
 $route['manager-panel/actions/logoff']								= "managers_interface/actions_logoff";
 
 $route['manager-panel/actions/platforms']							= "managers_interface/control_platforms";
 $route['manager-panel/actions/platforms/view-platform/:num']		= "managers_interface/control_view_platform";
+
+$route['manager-panel/actions/platforms/:num/deliver-work']			= "managers_interface/deliver_work";
 
 $route['manager-panel/actions/tickets/inbox']						= "managers_interface/control_tickets_inbox";
 $route['manager-panel/actions/tickets/inbox/from']					= "managers_interface/control_tickets_inbox";

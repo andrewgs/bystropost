@@ -402,7 +402,7 @@ class Admin_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		
-		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/platforms/from/';
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/news/from/';
 		$config['uri_segment'] 		= 5;
 		$config['total_rows'] 		= $pagevar['count']; 
 		$config['per_page'] 		= 5;
@@ -509,7 +509,7 @@ class Admin_interface extends CI_Controller{
 				if($_FILES['icon']['error'] != 4):
 					$_POST['icon'] = file_get_contents($_FILES['icon']['tmp_name']);
 				else:
-					$_POST['icon'] = file_get_contents(base_url().'images/markets/other.jpg');
+					$_POST['icon'] = file_get_contents(base_url().'images/noimages/no_news.png');
 				endif;
 				$result = $this->mdmarkets->insert_record($_POST);
 				if($result):

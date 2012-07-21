@@ -301,4 +301,5 @@ class Mdplatforms extends CI_Model{
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
+
 }

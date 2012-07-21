@@ -75,5 +75,13 @@ class Mdtypeswork extends CI_Model{
 		return FALSE;
 	}
 
-	
+	function read_prices($id){
+		
+		$this->db->select('wprice,mprice');
+		$this->db->where('id',$id);
+		$query = $this->db->get('typeswork',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
 }

@@ -6,6 +6,24 @@ class Mdunion extends CI_Model{
 		parent::__construct();
 	}
 	
+	function devivers_works_manager($uid,$count,$from){
+		
+		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.manager = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_devivers_works_manager($uid){
+		
+		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.manager = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
+		return NULL;
+	}
+	
 	function read_user_webmaster($uid){
 		
 		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE users.type = 1 AND users.id = $uid";
@@ -203,7 +221,6 @@ class Mdunion extends CI_Model{
 		if(count($data)) return count($data);
 		return NULL;
 	}
-
 	
 	function read_all_tickets($count,$from){
 		

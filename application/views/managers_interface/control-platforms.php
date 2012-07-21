@@ -49,7 +49,7 @@
 								<i class="icon-lock" title="Заблокирована"></i>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
-								<i class=" icon-thumbs-up" title="Площадка активна"></i>
+								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase"></i>&nbsp',array('class'=>'btn btn-info DeliverWork','title'=>'Сдать задание'));?>
 							<?php endif;?>
 							</td>
 						</tr>

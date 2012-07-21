@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view('managers_interface/includes/head');?>
+<?php $this->load->view("managers_interface/includes/head");?>
+
 <body>
-	<?php $this->load->view('managers_interface/includes/header');?>
+	<?php $this->load->view("managers_interface/includes/header");?>
+	
 	<div class="container">
 		<div class="row">
 			<div class="span9">
