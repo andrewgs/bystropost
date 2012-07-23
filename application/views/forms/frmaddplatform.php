@@ -2,7 +2,7 @@
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
-			<td><input name="url" class="reg-form-input w660 inpval" type="text" size="80" value="" placeholder="Введите URL прощадки"></td>
+			<td><input name="url" class="reg-form-input w660 inpval" id="domen" type="text" size="80" value="" placeholder="Введите URL прощадки"></td>
 		</tr>
 	</table>
 	<div class="clear"></div>

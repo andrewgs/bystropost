@@ -5,6 +5,6 @@
 </div>
 <div style="margin-top:10px;">
 	Заявки:
-	<span style="float:right;">Всего: <b><?=anchor('users/orders/total',$userinfo['torders']);?></b></span><br/>
-	<span style="float:right;">Оплаченые: <b><?=anchor('users/orders/paid',$userinfo['uporders']);?></b></span>
+	<span style="float:right;">Всего: <b><?=anchor('webmaster-panel/actions/finished-jobs',$cntunit['delivers']['total']);?></b></span><br/>
+	<span style="float:right;">Не оплаченые: <b><?=anchor('webmaster-panel/actions/finished-jobs',$cntunit['delivers']['notpaid']);?></b></span>
 </div><br/>

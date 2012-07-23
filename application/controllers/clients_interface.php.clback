@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Clients_interface extends CI_Controller{
+class Clients_interface extends CI_Controller
 	
 	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0);
 	var $loginstatus = array('status'=>FALSE);
@@ -330,35 +330,15 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		if($this->input->post('submit')):
-			unset($_POST['submit']);
+			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('summa',' ','required|trim');
-			$this->form_validation->set_rules('works[]',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Не указана сумма.');
 				redirect($this->uri->uri_string());
 			else:
-				if($_POST['summa'] > $this->mdusers->read_field($this->user['uid'],'balance')):
-					$this->session->set_userdata('msgr','Ошибка. Сумма превышает Ваш баланс.');
-					redirect($this->uri->uri_string());
-				elseif($_POST['summa'] !== $this->mddelivesworks->read_summ_by_webmaster($this->user['uid'],$_POST['works'])):
-					$this->session->set_userdata('msgr','Ошибка. Не верны суммы!');
-					redirect($this->uri->uri_string());
-				else:
-					//процедура оплаты
-					$result = $this->mdusers->change_webmaster_balance($this->user['uid'],-$_POST['summa']);
-					if($result):
-						$this->mddelivesworks->update_status($this->user['uid'],$_POST['works']);
-						$message = 'Спасибо за оплату.';
-						if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
-							$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
-						endif;
-						$this->session->set_userdata('msgs',$message);
-					else:
-						$this->session->set_userdata('msgr','Ошибка. Не возможно списать средства!');
-					endif;
-					redirect($this->uri->uri_string());
-				endif;
+				
 			endif;
+			redirect($this->uri->uri_string());
 		endif;
 		
 		$values = array();
@@ -687,6 +667,7 @@ class Clients_interface extends CI_Controller{
 					if(!$recipient):
 						$recipient = 0;
 					endif;
+					//Тут происходит поиск менеджера
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
 				if($ticket):

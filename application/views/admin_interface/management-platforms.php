@@ -10,14 +10,26 @@
 					<li class="active">
 						<?=anchor('admin-panel/management/platforms','Площадки');?>
 					</li>
+					<li style="float:right;">
+						<?=anchor('admin-panel/management/platforms/calculate/tic','Яндекс тИЦ',array('class'=>'btn btn-info calc','style'=>'margin-top: -5px;'));?>
+					</li>
+					<li style="float:right;">
+						<?=anchor('admin-panel/management/platforms/calculate/pr','PageRank',array('class'=>'btn btn-info calc','style'=>'margin-top: -5px;'));?><span class="divider">/</span>
+					</li>
+					<li style="float:right;">
+						Пересчитать: &nbsp;&nbsp;
+					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<div class="alert alert-info" id="mscalculation" style="display:none;">
+					<h3>Ожидайте!</h3>Производится расчет. Это может занять некоторое время...
+				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th><center><nobr>URL / CMS<br/>Дата создания / Владелец<br/>Закрепленный менеджер</nobr></center></th>
-							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr></center></th>
+							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr><br/><nobr>тИЦ / PR</nobr></center></th>
 							<th><center>Цены:<br/><nobr>вебмастер /<br/>менеджер</nobr></center></th>
 							<th><center>Сумма</center></th>
 							<th>Управл.</th>
@@ -39,7 +51,12 @@
 								<?=$platforms[$i]['fio'];?><br/><i><b><?=$platforms[$i]['login'];?></b></i><br/><br/>
 								<?=$platforms[$i]['manfio'];?><br/><i><b><?=$platforms[$i]['manemail'];?></b></i></nobr>
 							</td>
-							<td class="w85"><center><nobr><?=$platforms[$i]['torders'];?> / <?=$platforms[$i]['uporders'];?></nobr></center></td>
+							<td class="w85" style="text-align:center; vertical-align:middle;">
+								<nobr>
+									<?=$platforms[$i]['torders'];?> / <?=$platforms[$i]['uporders'];?><br/><br/>
+									<?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?>
+								</nobr>
+							</td>
 							<td class="w85">
 								<center>
 									<nobr><?=$platforms[$i]['cnotice'];?> руб. / <?=$platforms[$i]['mnotice'];?> руб.</nobr><br/>
@@ -51,7 +68,7 @@
 									<nobr><?=$platforms[$i]['cnews'];?> руб. / <?=$platforms[$i]['mnews'];?> руб.</nobr>
 								</center>
 							</td>
-							<td class="w85"><center><nobr><?=$platforms[$i]['price'];?> руб.</nobr></center></td>
+							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$platforms[$i]['price'];?> руб.</nobr></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
 								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-uid="<?=$platforms[$i]['uid'];?>" data-fio="<?=$platforms[$i]['fio'];?>" data-login="<?=$platforms[$i]['login'];?>" data-ccontext="<?=$platforms[$i]['ccontext'];?>" data-mcontext="<?=$platforms[$i]['mcontext'];?>" data-cnotice="<?=$platforms[$i]['cnotice'];?>" data-mnotice="<?=$platforms[$i]['mnotice'];?>" data-creview="<?=$platforms[$i]['creview'];?>" data-mreview="<?=$platforms[$i]['mreview'];?>" data-cnews="<?=$platforms[$i]['cnews'];?>" data-mnews="<?=$platforms[$i]['mnews'];?>" data-clinkpic="<?=$platforms[$i]['clinkpic'];?>" data-mlinkpic="<?=$platforms[$i]['mlinkpic'];?>" data-cpressrel="<?=$platforms[$i]['cpressrel'];?>" data-mpressrel="<?=$platforms[$i]['mpressrel'];?>" data-clinkarh="<?=$platforms[$i]['clinkarh'];?>" data-mlinkarh="<?=$platforms[$i]['mlinkarh'];?>" data-locked="<?=$platforms[$i]['locked'];?>" data-manager="<?=$platforms[$i]['manager'];?>"></div>
 							<?php if(!empty($platforms[$i]['fio'])):?>
@@ -90,6 +107,7 @@
 			$("td[data-noowner='noowner']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
+			$(".calc").click(function(){$("#mscalculation").show();});
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");

@@ -195,5 +195,12 @@ class Mdusers extends CI_Model{
 		$this->db->where('id',$id);
 		$this->db->delete('users');
 		return $this->db->affected_rows();
-	}	
+	}
+
+	function change_webmaster_balance($id,$summa){
+		
+		$query = "UPDATE users SET balance = balance+$summa WHERE id = $id";
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
 }

@@ -402,7 +402,7 @@ class Admin_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		
-		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/news/from/';
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/platforms/from/';
 		$config['uri_segment'] 		= 5;
 		$config['total_rows'] 		= $pagevar['count']; 
 		$config['per_page'] 		= 5;
@@ -1009,7 +1009,26 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/reading-users-messages",$pagevar);
 	}
 	
+	public function calculate_tic(){
+		
+		$platforms = $this->mdplatforms->read_urls();
+		for($i=0;$i<count($platforms);$i++):
+			$this->mdplatforms->update_field($platforms[$i]['id'],'tic',$this->getTIC('http://'.$platforms[$i]['url']));
+		endfor;
+		$this->session->set_userdata('msgs','Яндекс тИЦ успешно вычислен');
+		redirect('admin-panel/management/platforms');
+	}
 	
+	public function calculate_pr(){
+	
+		$platforms = $this->mdplatforms->read_urls();
+		for($i=0;$i<count($platforms);$i++):
+			$this->mdplatforms->update_field($platforms[$i]['id'],'pr',$this->getpagerank($platforms[$i]['url']));
+		endfor;
+		$this->session->set_userdata('msgs','Google PageRank успешно вычислен');
+		redirect('admin-panel/management/platforms');
+	}
+
 	/******************************************************** API ******************************************************/	
 	
 	function actions_exec_onew(){
@@ -1096,5 +1115,110 @@ class Admin_interface extends CI_Controller{
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
+	}
+
+	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/
+	
+	public function StrToNum($Str, $Check, $Magic){
+	
+		$Int32Unit = 4294967296;
+		$length = strlen($Str);
+		for($i=0;$i<$length;$i++):
+			$Check *= $Magic;
+			if($Check>=$Int32Unit):
+				$Check = ($Check-$Int32Unit*(int)($Check/$Int32Unit));
+				$Check = ($Check<-2147483648)?($Check+$Int32Unit):$Check;
+			endif;
+			$Check += ord($Str{$i});
+		endfor;
+		return $Check;
+	}
+
+	public function HashURL($String){
+	
+		$Check1 = $this->StrToNum($String,0x1505,0x21);
+		$Check2 = $this->StrToNum($String,0,0x1003F);
+		$Check1 >>= 2;
+		$Check1 = (($Check1 >> 4) & 0x3FFFFC0 ) | ($Check1 & 0x3F);
+		$Check1 = (($Check1 >> 4) & 0x3FFC00 ) | ($Check1 & 0x3FF);
+		$Check1 = (($Check1 >> 4) & 0x3C000 ) | ($Check1 & 0x3FFF);
+		
+		$T1 = (((($Check1 & 0x3C0) << 4) | ($Check1 & 0x3C)) <<2 ) | ($Check2 &	0xF0F );
+		$T2 = (((($Check1 & 0xFFFFC000) << 4) | ($Check1 & 0x3C00)) << 0xA) | ($Check2 & 0xF0F0000 );
+		return ($T1 | $T2);
+	}
+	
+	public function CheckHash($Hashnum){
+	
+		$CheckByte = 0;
+		$Flag = 0;
+		$HashStr = sprintf('%u', $Hashnum) ;
+		$length = strlen($HashStr);
+		for($i=$length-1;$i>=0;$i--):
+			$Re = $HashStr{$i};
+			if(1===($Flag % 2)):
+				$Re += $Re;
+				$Re = (int)($Re/10)+($Re%10);
+			endif;
+			$CheckByte += $Re;
+			$Flag++;
+		endfor;
+		$CheckByte %= 10;
+		if(0!== $CheckByte):
+			$CheckByte = 10 - $CheckByte;
+			if(1===($Flag%2)):
+				if(1===($CheckByte%2)):
+					$CheckByte += 9;
+				endif;
+				$CheckByte >>= 1;
+			endif;
+		endif;
+		
+		return '7'.$CheckByte.$HashStr;
+	}
+	
+	public function getpagerank($url){
+
+		$fp = fsockopen("toolbarqueries.google.com", 80, $errno, $errstr, 30);
+		if(!$fp):
+			
+		else:
+			$out = "GET /tbr?features=Rank&sourceid=navclient-ff&client=navclient-auto-ff&ch=" .$this->CheckHash($this->HashURL($url)) . "&q=info:" . $url . " HTTP/1.1\r\n";
+			$out .= "Host: toolbarqueries.google.com\r\n";
+			$out .= "User-Agent: Mozilla/4.0 (compatible; GoogleToolbar 2.0.114-big;
+			Windows XP 5.1)\r\n";
+			$out .= "Connection: Close\r\n\r\n";
+			fwrite($fp, $out);
+			while(!feof($fp)):
+				$data = fgets($fp, 128);
+				$pos = strpos($data, "Rank_");
+				if($pos === false):
+				
+				else:
+					$pagerank = substr($data,$pos+9);
+				endif;
+			endwhile;
+			fclose($fp);
+		endif;
+		if(!isset($pagerank)):
+			$pagerank = 0;
+		endif;
+		return $pagerank;
+	}
+	
+	public function getTIC($url){
+		
+		$str = @file("http://bar-navig.yandex.ru/u?ver=2&show=32&url=".$url);
+		if($str == false):
+			$cy = false;
+		else:
+			$result = preg_match("/value=\"(.\d*)\"/", join("",$str), $tic);
+			if($result<1):
+				$cy = 0;
+			else:
+				$cy = $tic[1];
+			endif;
+		endif;
+		return $cy;
 	}
 }

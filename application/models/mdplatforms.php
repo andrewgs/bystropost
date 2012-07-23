@@ -185,7 +185,17 @@ class Mdplatforms extends CI_Model{
 	
 	function read_records(){
 		
-		$this->db->order_by('title');
+		$this->db->order_by('url');
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_urls(){
+		
+		$this->db->select('id,url');
+		$this->db->order_by('url');
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -301,5 +311,12 @@ class Mdplatforms extends CI_Model{
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
-
+	
+	function update_field($id,$field,$value){
+			
+		$this->db->set($field,$value);
+		$this->db->where('id',$id);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
 }

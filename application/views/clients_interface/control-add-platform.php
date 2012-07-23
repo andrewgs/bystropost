@@ -33,7 +33,6 @@
 		$(document).ready(function(){
 			$("#subject").megaselectlist({animate:true,animateevent:"click"});
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
-			
 			$("#addMarket").click(function(event){
 				var err = false;
 				$(".ErrImg").remove();
@@ -51,7 +50,11 @@
 				if(err){
 					event.preventDefault();
 					$.scrollTo(0,500);
-				}
+				}else if(!isValidDomen($("#domen").val())){
+					$("#domen").after('<img class="ErrImg" src="<?=$baseurl;?>/images/icons/exclamation.png" title="Не верное доменное имя">');
+					$.scrollTo(0,500);
+					event.preventDefault();
+				};
 			});
 			$("#mgselect").click(function(){$(this).css('background-color','#ffffff');})
 			$("#reset").click(function(){window.location="<?=$baseurl;?>webmaster-panel/actions/platforms"});

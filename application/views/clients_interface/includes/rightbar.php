@@ -2,7 +2,7 @@
 	<div class="well sidebar-nav">
 		<ul class="nav nav-list">
 			<li class="nav-header">Меню</li>
-			<li num="already"><?=anchor('#','Готовые задания (0)');?></li>
+			<li num="already"><?=anchor('webmaster-panel/actions/finished-jobs','Готовые задания (<font color="#0000ff"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')');?></li>
 			<li num="platforms"><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
 		<?php if($cntunit['mails']['new']):?>
 			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails']['new'].'</b></font>/'.$cntunit['mails']['total'].')');?></li>

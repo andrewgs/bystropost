@@ -36,6 +36,13 @@ $route['webmaster-panel/actions/platforms']							= "clients_interface/control_p
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
 
+$route['webmaster-panel/actions/finished-jobs']						= "clients_interface/control_finished_jobs";
+$route['webmaster-panel/actions/finished-jobs/from']				= "clients_interface/control_finished_jobs";
+$route['webmaster-panel/actions/finished-jobs/from/:num']			= "clients_interface/control_finished_jobs";
+
+$route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
+$route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
+
 $route['webmaster-panel/actions/tickets']							= "clients_interface/control_tickets";
 $route['webmaster-panel/actions/tickets/from']						= "clients_interface/control_tickets";
 $route['webmaster-panel/actions/tickets/from/:num']					= "clients_interface/control_tickets";
@@ -117,6 +124,9 @@ $route['admin-panel/management/platforms/from']			= "admin_interface/management_
 $route['admin-panel/management/platforms/from/:num']	= "admin_interface/management_platforms";
 $route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
 $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/management_view_platform";
+
+$route['admin-panel/management/platforms/calculate/tic']= "admin_interface/calculate_tic";
+$route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calculate_pr";
 
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";

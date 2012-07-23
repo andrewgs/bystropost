@@ -103,6 +103,27 @@ class Mddelivesworks extends CI_Model{
 		return 0;
 	}
 	
+	function count_records_by_webmaster_status($webmaster,$status){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('webmaster',$webmaster);
+		$this->db->where('status',$status);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function count_records_by_webmaster($webmaster){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('webmaster',$webmaster);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_field($id,$field){
 			
 		$this->db->where('id',$id);
@@ -116,6 +137,37 @@ class Mddelivesworks extends CI_Model{
 	
 		$this->db->where('id',$id);
 		$this->db->delete('delivesworks');
+		return $this->db->affected_rows();
+	}
+
+	function read_summ_by_webmaster($uid,$works){
+		
+		$in = '';
+		for($i=0;$i<count($works);$i++):
+			$in .=$works[$i];
+			if(isset($works[$i+1])):
+				$in .= ',';
+			endif;
+		endfor;
+		$query = "SELECT SUM(wprice) AS summa FROM delivesworks WHERE id IN ($in) AND webmaster = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['summa'])) return $data[0]['summa'];
+		return NULL;
+	}
+	
+	function update_status($uid,$works){
+		
+		$in = '';
+		for($i=0;$i<count($works);$i++):
+			$in .=$works[$i];
+			if(isset($works[$i+1])):
+				$in .= ',';
+			endif;
+		endfor;
+		$curdate = date("Y-m-d");
+		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE id IN ($in) AND webmaster = $uid";
+		$this->db->query($query);
 		return $this->db->affected_rows();
 	}
 }
