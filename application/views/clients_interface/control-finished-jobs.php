@@ -48,6 +48,7 @@
 							</td>
 							<?php else:?>
 								<td class="w100" style="text-align:center; vertical-align:middle;" data-status="notpaid">
+									<nobr><?=$delivers[$i]['mprice'];?> руб.</nobr><br/>
 									Нет средств
 								</td>
 							<?php endif;?>

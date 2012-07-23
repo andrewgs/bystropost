@@ -4736,7 +4736,6 @@
 		</csfile><csfile name="S:\home\bystropost\www\javascript\datepicker\jquery.ui.core.js" crc="1491572418">
 		</csfile><csfile name="S:\home\bystropost\www\javascript\datepicker\jquery.bgiframe-2.1.1.js" crc="1241897770">
 		</csfile><csfile name="S:\home\bystropost\www\javascript\scrollto-min.js" crc="649674503">
-		</csfile><csfile name="S:\home\bystropost\www\javascript\scripts.js" crc="152654642">
 		</csfile><csfile name="S:\home\bystropost\www\javascript\jquery.megaselectlist.js" crc="-1046882918">
 		</csfile><csfile name="S:\home\bystropost\www\javascript\bootstrap.min.js" crc="1490778448">
 		</csfile><csfile name="S:\home\bystropost\www\javascript\bootstrap.js" crc="-365782784">
@@ -5067,19 +5066,19 @@
 				<treenode node="tickets;Php:Var Name;29;28;37;28;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\managers_interface\control-platforms.php" crc="1112384255">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\managers_interface\control-platforms.php" crc="-935597425">
 			<phptree>
-				<treenode node="i;Php:Var Name;15;25;17;25;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="i;Php:Var Name;15;26;17;26;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="platforms;Php:Var Name;29;25;39;25;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="platforms;Php:Var Name;29;26;39;26;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
 			<jstree>
-				<treenode node="document;JS:JS Var Name;4;65;12;65;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="document;JS:JS Var Name;4;67;12;67;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="e;JS:JS Var Name;49;66;50;66;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="e;JS:JS Var Name;49;68;50;68;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</jstree>
 		</csfile><csfile name="S:\home\bystropost\www\application\views\managers_interface\control-panel.php" crc="-1101549071">
@@ -5377,7 +5376,7 @@
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\control-finished-jobs.php" crc="247944489">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\control-finished-jobs.php" crc="1188952634">
 			<phptree>
 				<treenode node="cntunit;Php:Var Name;12;16;20;16;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -5389,7 +5388,7 @@
 				</treenode>
 				<treenode node="num;Php:Var Name;20;34;24;34;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="pages;Php:Var Name;12;90;18;90;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="pages;Php:Var Name;12;91;18;91;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -5397,37 +5396,37 @@
 				</treenode>
 			</phptree>
 			<jstree>
-				<treenode node="calculate;JS:Function Name;3;157;4;190;34;;;v;;r;;d36,157;;b0,0;;mcheck;;pbalance;;p">
-					<treenode node="balance;JS:JS Var Name;28;157;35;157;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="calculate;JS:Function Name;3;158;4;191;34;;;v;;r;;d36,158;;b0,0;;mcheck;;pbalance;;p">
+					<treenode node="balance;JS:JS Var Name;28;158;35;158;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="check;JS:JS Var Name;22;157;27;157;34;;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="check;JS:JS Var Name;22;158;27;158;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="element;JS:JS Var Name;35;160;42;160;34;;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="element;JS:JS Var Name;35;161;42;161;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="i;JS:JS Var Name;32;160;33;160;34;;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="i;JS:JS Var Name;32;161;33;161;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="price;JS:JS Var Name;8;158;13;158;34;;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="price;JS:JS Var Name;8;159;13;159;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="balance;JS:JS Var Name;7;110;14;110;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="balance;JS:JS Var Name;7;111;14;111;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="document;JS:JS Var Name;4;101;12;101;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="document;JS:JS Var Name;4;102;12;102;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="e;JS:JS Var Name;48;102;49;102;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="e;JS:JS Var Name;48;103;49;103;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="endif;JS:JS Var Name;8;191;13;191;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="endif;JS:JS Var Name;8;192;13;192;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="event;JS:JS Var Name;29;153;34;153;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="event;JS:JS Var Name;29;154;34;154;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="minprice;JS:JS Var Name;36;108;44;108;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="minprice;JS:JS Var Name;36;109;44;109;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="php;JS:JS Var Name;4;108;7;108;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="php;JS:JS Var Name;4;109;7;109;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="price;JS:JS Var Name;8;126;13;126;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="price;JS:JS Var Name;8;127;13;127;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="tprice;JS:JS Var Name;7;111;13;111;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="tprice;JS:JS Var Name;7;112;13;112;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
-				<treenode node="userinfo;JS:JS Var Name;12;108;20;108;34;;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="userinfo;JS:JS Var Name;12;109;20;109;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</jstree>
 		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\control-edit-platform.php" crc="-189084036">

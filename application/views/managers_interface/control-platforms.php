@@ -18,6 +18,7 @@
 					<thead>
 						<tr>
 							<th><center><nobr>URL площадки</nobr></center></th>
+							<th><center><nobr>тиц / pr</nobr></center></th>
 							<th><center>Дата</center></th>
 							<th><center>Статус</center></th>
 						</tr>
@@ -32,6 +33,7 @@
 								<?=$platforms[$i]['url'];?>
 							<?php endif;?>
 							</td>
+							<td class="w85"><center><?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?></center></td>
 						<?php if(!$platforms[$i]['status']):?>
 							<td class="w85" data-status="noactive">
 						<?php elseif($platforms[$i]['locked']):?>
