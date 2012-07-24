@@ -31,7 +31,7 @@
 							<th><center><nobr>URL / CMS<br/>Дата создания / Владелец<br/>Закрепленный менеджер</nobr></center></th>
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr><br/><nobr>тИЦ / PR</nobr></center></th>
 							<th><center>Цены:<br/><nobr>вебмастер /<br/>менеджер</nobr></center></th>
-							<th><center>Сумма</center></th>
+							<th><center>Сумма для вебмастера</center></th>
 							<th>Управл.</th>
 						</tr>
 					</thead>
@@ -53,7 +53,7 @@
 							</td>
 							<td class="w85" style="text-align:center; vertical-align:middle;">
 								<nobr>
-									<?=$platforms[$i]['torders'];?> / <?=$platforms[$i]['uporders'];?><br/><br/>
+									<?=anchor('admin-panel/management/platforms/platformid/'.$platforms[$i]['id'].'/finished-jobs',$platforms[$i]['torders'].' / <b>'.$platforms[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?><br/><br/>
 									<?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?>
 								</nobr>
 							</td>

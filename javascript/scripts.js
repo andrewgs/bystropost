@@ -12,6 +12,11 @@ function isValidPhone(phoneNumber){
 	return pattern.test(phoneNumber);
 };
 
+function isValidDomen(domen){
+	var pattern = new RegExp(/^([\da-z\.-]+)\.([a-z\.]{2,6})$/);
+	return pattern.test(domen);
+};
+
 (function($){
 	var baseurl = "http://bystropost/";
 	

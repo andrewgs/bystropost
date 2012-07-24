@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'');
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -30,6 +30,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['uname'] 			= $userinfo['fio'];
 					$this->user['utype'] 			= $userinfo['type'];
 					$this->user['lock'] 			= $userinfo['locked'];
+					$this->user['signdate'] 		= $userinfo['signdate'];
 					$this->loginstatus['status'] 	= TRUE;
 				else:
 					redirect('');
@@ -78,7 +79,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("clients_interface/control-panel",$pagevar);
@@ -205,7 +206,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("clients_interface/control-cabinet",$pagevar);
@@ -223,7 +224,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype'],10,$from),
+					'mails'			=> $this->mdunion->read_mails_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate'],10,$from),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -244,7 +245,28 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
-					//Отослать письмо подьзователю
+					ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+					<p>У вас новое сообщение.</p>
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->message($mailtext);	
+					$this->email->send();
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -265,7 +287,7 @@ class Clients_interface extends CI_Controller{
 		$this->mdmessages->set_read_mails_by_recipient($this->user['uid'],$this->user['utype']);
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/mails/from/';
 		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_mails_by_recipient($this->user['uid'],$this->user['utype']);
+		$config['total_rows'] 	= $this->mdunion->count_mails_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
@@ -282,7 +304,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("clients_interface/control-mails",$pagevar);
@@ -365,7 +387,9 @@ class Clients_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
 			$pagevar['delivers'][$i]['date'] = $this->operation_dot_date($pagevar['delivers'][$i]['date']);
-			$values[$i]= $pagevar['delivers'][$i]['wprice'];
+			if(!$pagevar['delivers'][$i]['status']):
+				$values[$i]= $pagevar['delivers'][$i]['wprice'];
+			endif;
 		endfor;
 		$pagevar['minprice'] = min($values);
 		unset($values);
@@ -398,8 +422,14 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		for($i=0;$i<count($pagevar['delivers']);$i++):
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			endif;
+		endfor;
 		
 		$this->load->view("clients_interface/control-finished-jobs",$pagevar);
 	}
@@ -447,6 +477,7 @@ class Clients_interface extends CI_Controller{
 						$this->mdmessages->insert_record($this->user['uid'],$manager,$text);
 					endif;
 					$this->mdmessages->insert_record($this->user['uid'],0,$text);
+					
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 				else:
 					$this->session->set_userdata('msgr','Информация не изменилась.');
@@ -469,7 +500,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
@@ -560,6 +591,8 @@ class Clients_interface extends CI_Controller{
 					$this->mdplatforms->update_field($platform,'pr',$pr);
 					$tic = $this->getTIC('http://'.$_POST['url']);
 					$this->mdplatforms->update_field($platform,'tic',$tic);
+					$text = 'Добавлена новая площадка: '.$_POST['url'];
+					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 					$this->session->set_userdata('msgs','Платформа успешно создана.');
 				else:
 					$this->session->set_userdata('msgr','Платформа не создана.');
@@ -686,6 +719,29 @@ class Clients_interface extends CI_Controller{
 					$recipient = $this->mdplatforms->read_field($_POST['platform'],'manager');
 					if(!$recipient):
 						$recipient = 0;
+					else:
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
+						<p>У Вас новое сообщение через тикет-систему</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($recipient,'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Новый тикет');
+						$this->email->message($mailtext);	
+						$this->email->send();
 					endif;
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
@@ -728,7 +784,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
@@ -776,7 +832,7 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
-				$tuser = $this->mdtickets->read_field($_POST['recipient'],'type');
+				$tuser = $this->mdusers->read_field($_POST['recipient'],'type');
 				switch($tuser):
 					case 1 : redirect($this->uri->uri_string()); break;
 					case 2 : TRUE; break;
@@ -791,6 +847,30 @@ class Clients_interface extends CI_Controller{
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
+					if(isset($_POST['sendmail'])):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
+						$this->email->message($mailtext);	
+						$this->email->send();
+					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -834,7 +914,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
-		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("clients_interface/control-view-ticket",$pagevar);

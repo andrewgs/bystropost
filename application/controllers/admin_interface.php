@@ -19,6 +19,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdmkplatform');
 		$this->load->model('mdtypeswork');
 		$this->load->model('mdratings');
+		$this->load->model('mddelivesworks');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -239,8 +240,13 @@ class Admin_interface extends CI_Controller{
 			else:
 				$pagevar['users'][$i]['lastlogin'] = '';
 			endif;
+			if($pagevar['users'][$i]['type'] == 1):
+				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
+				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
+			endif;
 		endfor;
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-users",$pagevar);
 	}
 	
@@ -362,6 +368,10 @@ class Admin_interface extends CI_Controller{
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
 						$text = 'Здравствуйте! С Ваc снята площадка '.$platform;
 						$this->mdmessages->send_noreply_message($this->user['uid'],$prevman,1,2,$text);
+						
+						$this->mdtickets->change_sender_recipient_by_new_manager($_POST['manager'],$prevman,$_POST['pid']);
+						$this->mddelivesworks->change_managers($_POST['manager'],$prevman,$_POST['pid']);
+						
 						if($this->mdusers->read_field($prevman,'sendmail')):
 							//Высылать письмо-уведомление
 						endif;
@@ -430,8 +440,11 @@ class Admin_interface extends CI_Controller{
 				$pagevar['platforms'][$i]['manfio'] = '<font style="color:#ff0000;">Менеджер не закреплен</font>';
 				$pagevar['platforms'][$i]['manemail'] = '';
 			endif;
+			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
+			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
 		endfor;
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-platforms",$pagevar);
 	}
 
@@ -538,6 +551,90 @@ class Admin_interface extends CI_Controller{
 		endif;
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/management-markets",$pagevar);
+	}
+	
+	public function user_finished_jobs(){
+		
+		$from = intval($this->uri->segment(8));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Выполненные задания для вебмастера',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'delivers'		=> $this->mdunion->devivers_works_webmaster($this->uri->segment(5),10,$from),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/userid/'.$this->uri->segment(5).'/finished-jobs/from/';
+		$config['uri_segment'] 	= 8;
+		$config['total_rows'] 	= $this->mdunion->count_devivers_works_webmaster($this->uri->segment(5));
+		$config['per_page'] 	= 10;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		for($i=0;$i<count($pagevar['delivers']);$i++):
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			endif;
+		endfor;
+		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/user-finished-jobs",$pagevar);
+	}
+	
+	public function platform_finished_jobs(){
+		
+		$from = intval($this->uri->segment(8));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Выполненные задания по площадке',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'delivers'		=> $this->mdunion->devivers_works_platform($this->uri->segment(5),10,$from),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/platforms/platformid/'.$this->uri->segment(5).'/finished-jobs/from/';
+		$config['uri_segment'] 	= 8;
+		$config['total_rows'] 	= $this->mdunion->count_devivers_works_platform($this->uri->segment(5));
+		$config['per_page'] 	= 10;
+		$config['num_links'] 	= 4;
+		$config['first_link']	= 'В начало';
+		$config['last_link'] 	= 'В конец';
+		$config['next_link'] 	= 'Далее &raquo;';
+		$config['prev_link'] 	= '&laquo; Назад';
+		$config['cur_tag_open']	= '<span class="actpage">';
+		$config['cur_tag_close'] = '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		for($i=0;$i<count($pagevar['delivers']);$i++):
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			endif;
+		endfor;
+		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
 	}
 	
 	public function management_markets_deleting(){

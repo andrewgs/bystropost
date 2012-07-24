@@ -101,9 +101,9 @@ class Mdmessages extends CI_Model{
 		return NULL;
 	}
 	
-	function count_records_by_recipient($recipient,$utype){
+	function count_records_by_recipient($recipient,$utype,$date){
 		
-		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE (messages.recipient = $recipient AND messages.system = 0) OR (messages.group = $utype AND messages.system = 1)";
+		$query = "SELECT COUNT(*) AS cnt FROM messages WHERE ((messages.recipient = $recipient AND messages.system = 0) OR (messages.group = $utype AND messages.system = 1 AND messages.recipient = $recipient) OR (messages.group = $utype AND messages.system = 1 AND messages.recipient = 0)) AND messages.date >= '$date'";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];

@@ -28,7 +28,6 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th><nobr>№ п\п</nobr></th>
 							<th><center><nobr>Е-mail (Логин) / Ф.И.О.</nobr></center></th>
 							<th><center><nobr>Баланс</nobr></center></th>
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr></center></th>
@@ -38,12 +37,19 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0,$num=$this->uri->segment(6)+1;$i<count($users);$i++):?>
+					<?php for($i=0;$i<count($users);$i++):?>
 						<tr class="align-center">
-							<td style="min-width:35px;"><center><?=$num;?></center></td>
-							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i></nobr><br/><?=$users[$i]['fio'];?><br/><nobr>Телефон:<?=$users[$i]['phones'];?></nobr><br/><nobr>Skype:<?=$users[$i]['skype'];?></nobr><br/><nobr>ICQ:<?=$users[$i]['icq'];?></nobr></td>
+							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i><br/><?=$users[$i]['fio'];?><br/>Телефон:<?=$users[$i]['phones'];?><br/>Skype:<?=$users[$i]['skype'];?><br/>ICQ:<?=$users[$i]['icq'];?></nobr></td>
 							<td style="min-width:50px;"><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
-							<td style="min-width:100px;"><center><nobr><?=$users[$i]['torders'];?> / <?=$users[$i]['uporders'];?></nobr></center></td>
+							<td style="min-width:100px;">
+								<center><nobr>
+							<?php if($users[$i]['type'] == 1):?>
+								<?=anchor('admin-panel/management/users/userid/'.$users[$i]['id'].'/finished-jobs',$users[$i]['torders'].' / <b>'.$users[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?><br/><br/>
+							<?php else:?>
+								&mdash; / &mdash;
+							<?php endif;?>
+								</nobr></center>
+							</td>
 							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
 							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><font style="color:#2fec13"><?=$users[$i]['lastlogin'];?></font></nobr></td>
 							<td style="max-width:58px;">
@@ -55,7 +61,6 @@
 							<?php endif;?>
 							</td>
 						</tr>
-						<?php $num++; ?>
 					<?php endfor; ?>
 					</tbody>
 				</table>

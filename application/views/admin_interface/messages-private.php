@@ -8,7 +8,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('admin-panel/messages/private-messages','Личные сообщения');?>
+						<?=anchor($this->uri->uri_string(),'Почта');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -28,7 +28,9 @@
 							<td class="w400"><?=$mails[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$mails[$i]['id'];?>" data-uid="<?=$mails[$i]['uid'];?>" data-fio="<?=$mails[$i]['fio'];?>" data-login="<?=$mails[$i]['login'];?>"></div>
+							<?php if($mails[$i]['sender'] != $userinfo['uid']):?>	
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php endif;?>
 								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
 						</tr>

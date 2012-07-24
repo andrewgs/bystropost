@@ -100,6 +100,11 @@ $route['manager-panel/actions/profile']								= "managers_interface/control_pro
 
 /*************************************************** OPTIMIZATORS INTRERFACE	*******************************************/
 
+$route['optimizator-panel/actions/control']								= "optimizators_interface/control_panel";
+$route['optimizator-panel/actions/control/from']						= "optimizators_interface/control_panel";
+$route['optimizator-panel/actions/control/from/:num']					= "optimizators_interface/control_panel";
+$route['optimizator-panel/actions/logoff']								= "optimizators_interface/actions_logoff";
+
 /*************************************************** GENERAL INTRERFACE	*******************************************/
 
 $route[':any/viewimage/:num']										= "general_interface/viewimage";
@@ -115,6 +120,10 @@ $route['admin-panel/management/users/read-messages/userid/:num']			= "admin_inte
 $route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "admin_interface/reading_users_messages";
 
+$route['admin-panel/management/users/userid/:num/finished-jobs']	= "admin_interface/user_finished_jobs";
+$route['admin-panel/management/users/userid/:num/finished-jobs/from']	= "admin_interface/user_finished_jobs";
+$route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";
+
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
@@ -124,6 +133,11 @@ $route['admin-panel/management/platforms/from']			= "admin_interface/management_
 $route['admin-panel/management/platforms/from/:num']	= "admin_interface/management_platforms";
 $route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
 $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/management_view_platform";
+
+$route['admin-panel/management/platforms/platformid/:num/finished-jobs']	= "admin_interface/platform_finished_jobs";
+$route['admin-panel/management/platforms/platformid/:num/finished-jobs/from']	= "admin_interface/platform_finished_jobs";
+$route['admin-panel/management/platforms/platformid/:num/finished-jobs/from/:num']	= "admin_interface/platform_finished_jobs";
+
 
 $route['admin-panel/management/platforms/calculate/tic']= "admin_interface/calculate_tic";
 $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calculate_pr";

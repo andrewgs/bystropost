@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view('managers_interface/includes/head');?>
+<?php $this->load->view('admin_interface/includes/head');?>
 <body>
-	<?php $this->load->view('managers_interface/includes/header');?>
+	<?php $this->load->view('admin_interface/includes/header');?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
+					<li tnum="webmasters">
+						<?=anchor($this->session->userdata('backpath'),'Список площадок');?> <span class="divider">/</span>
+					</li>
 					<li class="active">
-						<?=anchor('manager-panel/actions/control','Выполненные задания');?>
+						<?=anchor($this->uri->uri_string(),'Выполненные задания');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -27,7 +30,7 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0,$num=$this->uri->segment(5)+1;$i<count($delivers);$i++,$num++):?>
+					<?php for($i=0,$num=$this->uri->segment(8)+1;$i<count($delivers);$i++,$num++):?>
 						<tr>
 							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;"><?=$num;?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><i><b><?=$delivers[$i]['date'];?></b></i></nobr></td>
@@ -45,10 +48,10 @@
 				<?=$pages;?>
 			<?php endif;?>
 			</div>
-		<?php $this->load->view('managers_interface/includes/rightbar');?>
+		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		</div>
 	</div>
-	<?php $this->load->view('managers_interface/includes/scripts');?>
+	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("td[data-status='0']").each(function(e){

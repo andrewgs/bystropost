@@ -143,4 +143,13 @@ class Mdtickets extends CI_Model{
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
+
+	function change_sender_recipient_by_new_manager($new_recipient,$old_recipient,$platform){
+		
+		$this->db->set('recipient',$new_recipient);
+		$this->db->where('platform',$platform);
+		$this->db->where('recipient',$old_recipient);
+		$this->db->update('tickets');
+		return $this->db->affected_rows();
+	}
 }

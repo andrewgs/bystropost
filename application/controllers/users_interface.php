@@ -275,8 +275,8 @@ class Users_interface extends CI_Controller{
 		switch ($utype):
 			case 1 : redirect('webmaster-panel/actions/control');break;
 			case 2 : redirect('manager-panel/actions/control');break;
-			case 3 : redirect('');break;
-			case 4 : redirect('');break;
+			case 3 : redirect('optimizator-panel/actions/control');break;
+			case 4 : show_404();break;
 			case 5 : redirect('admin-panel/management/users/all');break;
 			default: show_404(); break;
 		endswitch;
@@ -329,6 +329,31 @@ class Users_interface extends CI_Controller{
 				endif;
 				
 				$this->mdusers->insert_record($_POST,$utype);
+				
+				ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$_POST['fio'];?></strong></p>
+					<p>Поздравляем! Вас успешно зарегистрировали в статусе <?=$tutype;?>. 
+					 Ваша работа будет осуществляться через личный кабинет.
+					 Для входа в личный кабинет используйте логином и паролем указанными при регистрации.</p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($_POST['login']);
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Регистрация на Bystropost.ru');
+					$this->email->message($mailtext);	
+					$this->email->send();
+				
 				$user = $this->mdusers->auth_user($_POST['login'],$_POST['password']);
 				if(!$user):
 					redirect('');

@@ -170,4 +170,34 @@ class Mddelivesworks extends CI_Model{
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}
+
+	function count_records_by_platform_status($platform,$status){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('platform',$platform);
+		$this->db->where('status',$status);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function count_records_by_platform($platform){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('platform',$platform);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function change_managers($new_manager,$old_manager,$platform){
+		
+		$this->db->set('manager',$new_manager);
+		$this->db->where('platform',$platform);
+		$this->db->where('manager',$old_manager);
+		$this->db->update('delivesworks');
+		return $this->db->affected_rows();
+	}
 }
