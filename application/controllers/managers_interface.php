@@ -284,6 +284,10 @@ class Managers_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if($this->mddelivesworks->exist_work($_POST['ulrlink'])):
+					$this->session->set_userdata('msgr','Работа по этому адресу уже выполена. Повторите ввод.');
+					redirect($this->uri->uri_string());
+				endif;
 				$webmaster = $this->mdplatforms->read_field($platform,'webmaster');
 				$prices = $this->mdtypeswork->read_prices($_POST['typework']);
 				if($webmaster):
@@ -735,6 +739,12 @@ class Managers_interface extends CI_Controller{
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5 $nmonth \$1"; 
 		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function escaping_domen($domen){
+			
+		$list = preg_split("/\./",$domen);
+		return implode("\.", $list);
 	}
 	
 	public function split_dot_date($field){

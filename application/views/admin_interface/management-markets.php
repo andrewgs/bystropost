@@ -19,7 +19,6 @@
 							<th class="w85"><center><nobr>Название</nobr></center></th>
 							<th class="w85"><center><nobr>URL</nobr></center></th>
 							<th class="w85">&nbsp;</th>
-							<th style="width:20px;">&nbsp;</th>
 							<th class="w85"><center><nobr>Название</nobr></center></th>
 							<th class="w85"><center><nobr>URL</nobr></center></th>
 							<th class="w85">&nbsp;</th>
@@ -37,7 +36,6 @@
 								<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить биржу"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
 						<?php endif;?>
-						<td style="width:20px;">&nbsp;</td>
 						<?php if(isset($markets[$i+1]['id'])):?>
 							<td class="w85">
 								<nobr>
@@ -48,8 +46,8 @@
 							<td class="w85"><i><b><a href="<?=$markets[$i+1]['url'];?>"><?=$markets[$i+1]['url'];?></a></b></i></td>
 							<td class="w85">
 								<div id="params<?=$i+1;?>" style="display:none" data-mid="<?=$markets[$i+1]['id'];?>" data-title="<?=$markets[$i+1]['title'];?>" data-url="<?=$markets[$i+1]['url'];?>"></div>
-								<a class="btn btn-success editMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#deleteMarket" title="Удалить биржу"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<a class="btn btn-success editMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#editMarket" title="Редактировать"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<a class="btn btn-danger deleteMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#deleteMarket" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
 						<?php else:?>
 							<td class="w85">&nbsp;</td>
@@ -60,7 +58,7 @@
 					<?php endfor; ?>
 					</tbody>
 				</table>
-				<a class="btn btn-info deleteMarket" data-toggle="modal" href="#addMarket" title="Добавить биржу"><nobr>&nbsp;&nbsp;<i class="icon-plus icon-white"></i> Добавить биржу в каталог&nbsp;&nbsp;</nobr></a>
+				<a class="btn btn-info" data-toggle="modal" href="#addMarket" title="Добавить биржу"><nobr>&nbsp;&nbsp;<i class="icon-plus icon-white"></i> Добавить&nbsp;&nbsp;</nobr></a>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		<?php $this->load->view('admin_interface/modal/admin-edit-market');?>

@@ -1,6 +1,6 @@
 <?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 	<fieldset>
-		<legend>Отчет о выполненной работе<div style="float:right;">Зароботок: <span id="gonorar">0</span>.00 руб.</div></legend>
+		<legend>Отчет о выполненной работе<div style="float:right;">Заработок: <span id="gonorar">0</span>.00 руб.</div></legend>
 		<div class="control-group">
 			<label for="typework" class="control-label">Тип работы</label>
 			<div class="controls">

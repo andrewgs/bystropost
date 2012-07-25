@@ -57,7 +57,13 @@ $route['webmaster-panel/actions/mails/from']						= "clients_interface/control_m
 $route['webmaster-panel/actions/mails/from/:num']					= "clients_interface/control_mails";
 $route['webmaster-panel/actions/mails/delete/mail-id/:num']			= "clients_interface/control_delete_mail";
 
-$route['views/market-profile'] 										= "clients_interface/views";
+$route['webmaster-panel/actions/balance']							= "clients_interface/control_balance";
+$route['webmaster-panel/actions/balance/paid']						= "clients_interface/control_balance_paid";
+$route['webmaster-panel/actions/balance/successfull']				= "clients_interface/control_balance_successfull";
+$route['webmaster-panel/actions/balance/failed']					= "clients_interface/control_balance_failed";
+$route['webmaster-panel/actions/services']							= "clients_interface/control_services";
+
+$route['views/market-profile']										= "clients_interface/views";
 
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
@@ -134,8 +140,8 @@ $route['admin-panel/management/platforms/from/:num']	= "admin_interface/manageme
 $route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
 $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/management_view_platform";
 
-$route['admin-panel/management/platforms/platformid/:num/finished-jobs']	= "admin_interface/platform_finished_jobs";
-$route['admin-panel/management/platforms/platformid/:num/finished-jobs/from']	= "admin_interface/platform_finished_jobs";
+$route['admin-panel/management/platforms/platformid/:num/finished-jobs']			= "admin_interface/platform_finished_jobs";
+$route['admin-panel/management/platforms/platformid/:num/finished-jobs/from']		= "admin_interface/platform_finished_jobs";
 $route['admin-panel/management/platforms/platformid/:num/finished-jobs/from/:num']	= "admin_interface/platform_finished_jobs";
 
 
@@ -144,6 +150,9 @@ $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calcu
 
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
+
+$route['admin-panel/management/services']					= "admin_interface/management_services";
+$route['admin-panel/management/services/serviceid/:num']	= "admin_interface/management_services_deleting";
 
 $route['admin-panel/management/ratings/advertisers']	= "admin_interface/management_ratings";
 $route['admin-panel/management/ratings/webmasters']		= "admin_interface/management_ratings";

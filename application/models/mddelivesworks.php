@@ -200,4 +200,13 @@ class Mddelivesworks extends CI_Model{
 		$this->db->update('delivesworks');
 		return $this->db->affected_rows();
 	}
+
+	function exist_work($url){
+		
+		$this->db->where('ulrlink',$url);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
 }

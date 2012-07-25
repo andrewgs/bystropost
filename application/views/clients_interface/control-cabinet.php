@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view('admin_interface/includes/head');?>
+<?php $this->load->view('clients_interface/includes/head');?>
 <body>
 	<?php $this->load->view('clients_interface/includes/header');?>
 	<div class="container">
@@ -19,7 +19,7 @@
 			<?php $this->load->view("clients_interface/includes/rightbar");?>
 		</div>
 	</div>
-	<?php $this->load->view('admin_interface/includes/scripts');?>
+	<?php $this->load->view('clients_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#submit").click(function(event){

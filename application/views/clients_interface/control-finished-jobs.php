@@ -42,7 +42,7 @@
 							<td class="w100" style="vertical-align:middle;"><?=anchor($delivers[$i]['ulrlink'],$delivers[$i]['link'],array('target'=>'_blank'));?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['countchars'];?> шт.</nobr></td>
 						<?php if(!$delivers[$i]['status']):?>
-							<?php if($userinfo['balance'] >= $delivers[$i]['wprice']):?>	
+							<?php if($userinfo['balance'] >= $delivers[$i]['wprice']):?>
 							<td class="w100" style="text-align:center; vertical-align:middle;" data-status="notpaid">
 								<input type="checkbox" class="chPrice" name="works[]" value="<?=$delivers[$i]['id'];?>" data-price="<?=$delivers[$i]['wprice'];?>" title="Оплатить" /><br/><nobr><?=$delivers[$i]['wprice'];?> руб.</nobr>
 							</td>

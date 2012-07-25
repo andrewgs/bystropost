@@ -4,7 +4,7 @@
 
 <body>
 	<?php $this->load->view("managers_interface/includes/header");?>
-	
+
 	<div class="container">
 		<div class="row">
 			<div class="span9">
@@ -38,6 +38,7 @@
 				if($(this).attr("checked") == 'checked'){$("#send").removeClass('disabled');}else{$("#send").addClass('disabled');};
 			});
 			$("#send").click(function(event){
+			
 				if($("#ValidWork").attr("checked") != "checked"){event.preventDefault();return false;}
 				var err = false;
 				$(".control-group").removeClass('error');
@@ -49,6 +50,11 @@
 						err = true;
 					}
 				});
+				if(!err && !isFindDomenToURL("<?=$platform['url'];?>",$("#UlrLink").val())){
+					$("#UlrLink").parents(".control-group").addClass('error');
+					$("#UlrLink").siblings(".help-inline").html("URL не пренадлежит площадке").show();
+					err = true;
+				};
 				if(err){event.preventDefault();}
 			});
 			$("#TypesWork").change(function(){

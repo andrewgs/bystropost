@@ -17,6 +17,11 @@ function isValidDomen(domen){
 	return pattern.test(domen);
 };
 
+function isFindDomenToURL(platform,url){
+	var pos = url.indexOf(platform);
+	if(pos>0){return true;}else{return false;}
+};
+
 (function($){
 	var baseurl = "http://bystropost/";
 	
