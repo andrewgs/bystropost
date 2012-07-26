@@ -20,6 +20,7 @@ class Mdusers extends CI_Model{
 	var $closedate  	= '0000-00-00';
 	var $sendmail 	 	= 0;
 	var $type	  		= 1;
+	var $manager 		= 0;
 	var $position	  	= '';
 
 	function __construct(){
@@ -100,6 +101,9 @@ class Mdusers extends CI_Model{
 				case 5 : $this->db->set('position','Администратор');break;
 				default: $this->db->set('position','Не определен');break;
 			endswitch;
+		endif;
+		if(isset($_POST['manager'])):
+			$this->db->set('manager',$_POST['manager']);
 		endif;
 		$this->db->where('id',$_POST['uid']);
 		$this->db->update('users');

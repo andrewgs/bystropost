@@ -8,11 +8,16 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('webmaster-panel/actions/control','&larr; На главную');?>
+						<?=anchor('webmaster-panel/actions/profile','Мой профиль');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+			<?php if($this->session->userdata('wmid')):?>
+				<div class="alert alert-info" id="msginfoalert">
+					Что бы пользоватся системой Быстропост необходимо указать идентификатор участника WebMoney (WMID)
+				</div>
+			<?php endif;?>
 				<?php $this->load->view('forms/frmuserprofile');?>
 				
 			</div>
@@ -29,6 +34,11 @@
 				if($("#fio").val()==''){
 					$("#fio").parents(".control-group").addClass('error');
 					$("#fio").siblings(".help-inline").html("Поле не может быть пустым").show();
+					event.preventDefault();
+				}
+				if($("#wmid").val().length != 12){
+					$("#wmid").parents(".control-group").addClass('error');
+					$("#wmid").siblings(".help-inline").html("Должно быть 12 цифр").show();
 					event.preventDefault();
 				}
 				if($("#password").val() != ''){

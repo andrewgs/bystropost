@@ -9,6 +9,7 @@ class Users_interface extends CI_Controller{
 		$this->load->model('mdunion');
 		$this->load->model('mdmarkets');
 		$this->load->model('mdratings');
+		$this->load->model('mdlog');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -36,15 +37,13 @@ class Users_interface extends CI_Controller{
 	}
 	
 	public function loginin(){
-		
-		if($this->input->post('submit_x')):
-			$login = trim($this->input->post('login'));
-			$pass = trim($this->input->post('password'));
-			if(!$login || !$pass):
+	
+		if(isset($_POST['submit_x'])):
+			if(!$_POST['login'] || !$_POST['password']):
 				$this->session->set_userdata('msgauth','Не заполены необходимые поля');
 				redirect($_SERVER['HTTP_REFERER']);
 			else:
-				$user = $this->mdusers->auth_user($login,$pass);
+				$user = $this->mdusers->auth_user($_POST['login'],$_POST['password']);
 				if(!$user):
 					$this->session->set_userdata('msgauth','Не верные данные для авторизации');
 					redirect($_SERVER['HTTP_REFERER']);
@@ -110,6 +109,7 @@ class Users_interface extends CI_Controller{
 					$this->email->message($mailtext);	
 					$this->email->send();
 					$this->session->set_userdata('ressuc',TRUE);
+					$this->mdlog->insert_record($user['id'],'Событие №3: Процедура восстановления пароля');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -328,8 +328,12 @@ class Users_interface extends CI_Controller{
 					$_POST['sendmail'] = 0;
 				endif;
 				
-				$this->mdusers->insert_record($_POST,$utype);
-				
+				$uid = $this->mdusers->insert_record($_POST,$utype);
+				if($utype == 1):
+					$this->mdlog->insert_record($uid,'Событие №1: Процедура регистрации вебмастера');
+				elseif($utype == 3):
+					$this->mdlog->insert_record($uid,'Событие №2: Процедура регистрации оптимизатора');
+				endif;
 				ob_start();
 					?>
 					<p><strong>Здравствуйте, <?=$_POST['fio'];?></strong></p>

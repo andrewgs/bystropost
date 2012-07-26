@@ -10,7 +10,6 @@
 			<li num="mails"><?=anchor('manager-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')');?></li>
 		<?php endif;?>
 			<li num="tickets"><?=anchor('manager-panel/actions/tickets/inbox','Тикеты ('.$cntunit['tickets']['inbox'].'/'.$cntunit['tickets']['outbox'].')');?></li>
-			<li num="servises"><?=anchor('#','Дополнительные услуги');?></li>
 			<li num="forum"><?=anchor('#','Форум');?></li>
 			<li num="profile"><?=anchor('manager-panel/actions/profile','Мой профиль');?></li>
 			<li><?=anchor('manager-panel/actions/logoff','Завершить сеанс');?></li>

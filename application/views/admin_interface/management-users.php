@@ -39,7 +39,17 @@
 					<tbody>
 					<?php for($i=0;$i<count($users);$i++):?>
 						<tr class="align-center">
-							<td style="min-width:185px;"><nobr><i><b><?=$users[$i]['login'];?></b></i><br/><?=$users[$i]['fio'];?><br/>Телефон:<?=$users[$i]['phones'];?><br/>Skype:<?=$users[$i]['skype'];?><br/>ICQ:<?=$users[$i]['icq'];?></nobr></td>
+							<td style="min-width:185px;">
+								<nobr><i><b><?=$users[$i]['login'];?></b></i><br/>
+								<?=$users[$i]['fio'];?><br/>
+								Телефон:<?=$users[$i]['phones'];?><br/>
+								Skype:<?=$users[$i]['skype'];?><br/>
+								ICQ:<?=$users[$i]['icq'];?>
+							<?php if($users[$i]['manager']):?>	
+								<br/><br/><?=$users[$i]['manfio'];?><br/><i><b><?=$users[$i]['manemail'];?></b></i>
+							<?php endif;?>
+								</nobr>
+							</td>
 							<td style="min-width:50px;"><center><nobr><?=$users[$i]['balance'];?> руб.</nobr></center></td>
 							<td style="min-width:100px;">
 								<center><nobr>
@@ -54,7 +64,7 @@
 							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><font style="color:#2fec13"><?=$users[$i]['lastlogin'];?></font></nobr></td>
 							<td style="max-width:58px;">
 							<?php if($userinfo['uid']!=$users[$i]['id']):?>
-								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>"></div>
+								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>" data-manager="<?=$users[$i]['manager'];?>"></div>
 								<a class="btn btn-success editUser" data-param="<?=$i;?>" data-toggle="modal" href="#editUser" title="Редактировать пользователя"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteUser" data-param="<?=$i;?>" data-toggle="modal" href="#deleteUser" title="Удалить пользователя"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
@@ -84,8 +94,8 @@
 				var Param = $(this).attr('data-param'); uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
 				var	uBalance = $("div[id = params"+Param+"]").attr("data-balance"); var	uWmid = $("div[id = params"+Param+"]").attr("data-wmid");
-				uType = $("div[id = params"+Param+"]").attr("data-utype");
-				$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);$("#eBalance").val(uBalance);$("#eWMID").val(uWmid);$("#eType").val(uType);
+				uType = $("div[id = params"+Param+"]").attr("data-utype");uManager = $("div[id = params"+Param+"]").attr("data-manager");
+				$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);$("#eBalance").val(uBalance);$("#eWMID").val(uWmid);$("#eType").val(uType);$("#uManager").val(uManager);
 			});
 			$("#eusend").click(function(event){
 				var err = false;

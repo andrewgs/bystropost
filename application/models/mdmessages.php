@@ -188,6 +188,13 @@ class Mdmessages extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function delete_system(){
+	
+		$this->db->where('system',1);
+		$this->db->delete('messages');
+		return $this->db->affected_rows();
+	}
+	
 	function delete_records_by_user($uid){
 	
 		$this->db->where('recipient',$uid);

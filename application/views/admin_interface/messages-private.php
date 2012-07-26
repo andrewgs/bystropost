@@ -10,6 +10,9 @@
 					<li class="active">
 						<?=anchor($this->uri->uri_string(),'Почта');?>
 					</li>
+					<li style="float:right;">
+						<?=anchor('admin-panel/actions/mails/system-clear','Удалить сист. сообщения',array('class'=>'btn btn-info','style'=>'margin-top: -5px;'));?>
+					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>

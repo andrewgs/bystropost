@@ -28,9 +28,22 @@
 				$(".help-inline").hide();
 				if($("#balance").val()==''){
 					$("#balance").parents(".control-group").addClass('error');
-					$(".help-inline").html("Поле не может быть пустым").show();
+					$("#hlbalance").html("Поле не может быть пустым").show();
 					event.preventDefault();
-				};
+				}else if($("#balance").val() == 0){
+					$("#balance").parents(".control-group").addClass('error');
+					$("#hlbalance").html("Cумма должна быть больше нуля").show();
+					event.preventDefault();
+				};;
+				if($("#purse").val()==''){
+					$("#purse").parents(".control-group").addClass('error');
+					$("#hlpurse").html("Поле не может быть пустым").show();
+					event.preventDefault();
+				}else if($("#purse").val().length != 12){
+					$("#purse").parents(".control-group").addClass('error');
+					$("#hlpurse").html("Должно быть 12 цифр").show();
+					event.preventDefault();
+				}
 			});
 		});
 	</script>

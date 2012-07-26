@@ -21,6 +21,9 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdservices');
 		$this->load->model('mdattachedservices');
+		$this->load->model('mdfillup');
+		$this->load->model('mdwebmarkets');
+		$this->load->model('mdlog');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -46,6 +49,19 @@ class Clients_interface extends CI_Controller{
 		else:
 			redirect('');
 		endif;
+		$segment = $this->uri->segment(3);
+		if($segment != 'profile' && $segment != 'logoff'):
+			if(empty($userinfo['wmid'])):
+				$this->session->set_userdata('wmid',1);
+				redirect('webmaster-panel/actions/profile');
+			endif;
+		endif;
+		/*if($segment != 'markets' && $segment != 'logoff'):
+			if(!count($this->mdwebmarkets->read_records($this->user['uid']))):
+				$this->session->set_userdata('markets',FALSE);
+				redirect('webmaster-panel/actions/markets');
+			endif;
+		endif;*/
 	}
 	
 	public function control_panel(){
@@ -135,7 +151,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('oldpas',' ','trim');
 			$this->form_validation->set_rules('password',' ','trim');
 			$this->form_validation->set_rules('confpass',' ','trim');
-			$this->form_validation->set_rules('wmid',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','required|numeric|exact_length[12]|trim');
 			$this->form_validation->set_rules('phones',' ','trim');
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
@@ -143,6 +159,7 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
+				$this->session->unset_userdata('wmid');
 				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
 					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
 						$this->session->set_userdata('msgr',' Не верный старый пароль!');
@@ -170,6 +187,7 @@ class Clients_interface extends CI_Controller{
 					if($result):
 						$managers = $this->mdplatforms->read_managers_platform_online($this->user['uid']);
 						$this->mdplatforms->platforms_status_offline($this->user['uid']);
+						$this->mdlog->insert_record($this->user['uid'],'Событие №4: Профиль заблокирован');
 						$msgs = 'Профиль заблокирован. Все площадки не активны.<br/>'.$this->session->userdata('msgs');
 						$this->session->set_userdata('msgs',$msgs);
 						$text = 'Вебмастер '.$this->user['ulogin'].' заблокировал свой профиль.';
@@ -184,6 +202,7 @@ class Clients_interface extends CI_Controller{
 					endif;
 				elseif($this->user['lock'] && isset($_POST['lockprofile'])):
 					$this->mdusers->update_field($this->user['uid'],'locked',0);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №5: Профиль разблокирован');
 //					$this->mdplatforms->platforms_status_online($this->user['uid']);
 					$msgs = 'Профиль разблокирован.'.$this->session->userdata('msgs');
 					$this->session->set_userdata('msgs',$msgs);
@@ -224,6 +243,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'wmid'			=> $this->mdusers->read_field($this->user['uid'],'wmid'),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -231,8 +251,8 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		if($this->input->post('submit')):
-			unset($_POST['submit']);
 			$this->form_validation->set_rules('balance',' ','required|numeric|trim');
+			$this->form_validation->set_rules('purse',' ','required|numeric|exact_length[12]|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
@@ -242,6 +262,7 @@ class Clients_interface extends CI_Controller{
 					redirect($this->uri->uri_string());
 				endif;
 				$this->session->set_userdata('balance',$_POST['balance']);
+				$this->session->set_userdata('purse','R'.$_POST['purse']);
 				redirect('webmaster-panel/actions/balance/paid');
 			endif;
 		endif;
@@ -255,9 +276,6 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
-		
-		$this->session->set_userdata('rnd',rand(314159,9846980));
-		$pagevar['valid'] = md5($this->session->userdata('logon').$this->session->userdata('rnd'));
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -282,6 +300,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
+					'wmid'			=> $this->mdusers->read_field($this->user['uid'],'wmid'),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -300,7 +319,12 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_balance_successfull(){
 		
-		if(!$this->session->userdata('balance')):
+		if(isset($_SERVER['HTTP_REFERER']) && $this->session->userdata('balance')):
+			$pos = stristr($_SERVER['HTTP_REFERER'],'webmoney.ru');
+			if(!$pos):
+				redirect('webmaster-panel/actions/balance');
+			endif;
+		else:
 			redirect('webmaster-panel/actions/balance');
 		endif;
 		
@@ -317,6 +341,14 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
+		$this->mdfillup->insert_record($this->user['uid'],$this->session->userdata('balance'));
+		$new_balance = $this->user['balance']+$this->session->userdata('balance');
+		$this->mdusers->update_field($this->user['uid'],'balance',$new_balance);
+		$this->mdlog->insert_record($this->user['uid'],'Событие №6: Баланс пополнен');
+		$pagevar['userinfo']['balance'] = $new_balance;
+		$this->session->unset_userdata('balance');
+		$this->session->unset_userdata('purse');
+		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
@@ -329,7 +361,12 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_balance_failed(){
 		
-		if(!$this->session->userdata('balance')):
+		if(isset($_SERVER['HTTP_REFERER']) && $this->session->userdata('balance')):
+			$pos = stristr($_SERVER['HTTP_REFERER'],'webmoney.ru');
+			if(!$pos):
+				redirect('webmaster-panel/actions/balance');
+			endif;
+		else:
 			redirect('webmaster-panel/actions/balance');
 		endif;
 		
@@ -346,6 +383,9 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
+		$this->session->unset_userdata('balance');
+		$this->session->unset_userdata('purse');
+		$this->mdlog->insert_record($this->user['uid'],'Событие №7: Баланс не пополнен');
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
@@ -381,6 +421,7 @@ class Clients_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				print_r($_POST);exit;
+				$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
 				redirect($this->uri->uri_string());
 			endif;
 		endif;
@@ -417,7 +458,82 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-services",$pagevar);
 	}
 	
-	/******************************************************** mails *********************************************************/	
+	/******************************************************** markets *********************************************************/	
+	
+	public function control_markets(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Биржи',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'accounts'		=> $this->mdunion->read_markets_by_webmaster($this->user['uid']),
+					'markets'		=> $this->mdmarkets->read_records(),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('amsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('market',' ','required|trim');
+			$this->form_validation->set_rules('login',' ','required|trim');
+			$this->form_validation->set_rules('password',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+				redirect($this->uri->uri_string());
+			else:
+				$id = $this->mdwebmarkets->insert_record($this->user['uid'],$_POST);
+				if($id):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
+					$this->session->set_userdata('msgs','Запись создана успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['mails']['new'] = 0;
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		$this->load->view("clients_interface/control-markets",$pagevar);
+	}
+	
+	public function control_delete_markets(){
+		
+		$mid = $this->uri->segment(6);
+		if($mid):
+			$result = $this->mdwebmarkets->delete_record($this->user['uid'],$mid);
+			if($result):
+				$this->mdlog->insert_record($this->user['uid'],'Событие №10: Удалена учетная запись на бирже');
+				$this->session->set_userdata('msgs','Запись удалена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не удалено');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+
+/******************************************************** mails *********************************************************/	
 	
 	public function control_mails(){
 		
@@ -575,6 +691,7 @@ class Clients_interface extends CI_Controller{
 					$result = $this->mdusers->change_webmaster_balance($this->user['uid'],-$_POST['summa']);
 					if($result):
 						$this->mddelivesworks->update_status($this->user['uid'],$_POST['works']);
+						$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
 						$message = 'Спасибо за оплату.';
 						if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
 							$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
@@ -596,7 +713,9 @@ class Clients_interface extends CI_Controller{
 				$values[$i]= $pagevar['delivers'][$i]['wprice'];
 			endif;
 		endfor;
-		$pagevar['minprice'] = min($values);
+		if(count($values)):
+			$pagevar['minprice'] = min($values);
+		endif;
 		unset($values);
 		if($this->loginstatus['status']):
 			if($this->user['utype'] == 1):
@@ -673,16 +792,17 @@ class Clients_interface extends CI_Controller{
 				$result = $this->mdplatforms->update_status($_POST['pid'],$this->user['uid'],$status);
 				if($result):
 					if($status):
-						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - активна!';
+						$this->mdlog->insert_record($this->user['uid'],'Событие №12: Состояние площадки - активная');
+						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - активная!';
 					else:
-						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - не активна!';
+						$this->mdlog->insert_record($this->user['uid'],'Событие №13: Состояние площадки - не активная');
+						$text = 'Площадка '.$this->mdplatforms->read_field($_POST['pid'],'url').' перешла в состояние - не активная!';
 					endif;
 					$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
 					if($manager):
 						$this->mdmessages->insert_record($this->user['uid'],$manager,$text);
 					endif;
 					$this->mdmessages->insert_record($this->user['uid'],0,$text);
-					
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 				else:
 					$this->session->set_userdata('msgr','Информация не изменилась.');
@@ -765,16 +885,35 @@ class Clients_interface extends CI_Controller{
 					redirect($this->uri->uri_string());
 				endif;
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
+				
+				$manager = $this->mdusers->read_field($this->user['uid'],'manager');
+				if($manager):
+					$this->mdplatforms->update_field($platform,'manager',$manager);
+				endif;
 				if($platform):
+					$addtic = 0;
+					$pr = $this->getpagerank($_POST['url']);
+					$this->mdplatforms->update_field($platform,'pr',$pr);
+					$tic = $this->getTIC('http://'.$_POST['url']);
+					$this->mdplatforms->update_field($platform,'tic',$tic);
+					if($tic >= 1000):
+						$addtic = 5;
+					endif;
 					$sqlquery = "UPDATE platforms SET ";
 					$works = $this->mdtypeswork->read_records();
 					for($i=0;$i<count($works);$i++):
-						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.$works[$i]['wprice'].', m'.$works[$i]['nickname'].' = '.$works[$i]['mprice'];
+						$wadd=$madd=$addtic;
+						if($_POST['amount'] == 2):
+							$wadd = 11;$madd = 9;
+						endif;
+					//
+						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.$works[$i]['wprice']+$wadd.', m'.$works[$i]['nickname'].' = '.$works[$i]['mprice']+$madd;
 						if(isset($works[$i+1])):
 							$sqlquery .= ', ';
 						endif;
 					endfor;
 					$sqlquery .= ' WHERE platforms.id = '.$platform;
+					print_r($sqlquery);exit;
 					$this->mdplatforms->run_query($sqlquery);
 				endif;
 				if($platform && isset($_POST['markets'])):
@@ -792,10 +931,7 @@ class Clients_interface extends CI_Controller{
 					if(count($marketslist)):
 						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 					endif;
-					$pr = $this->getpagerank($_POST['url']);
-					$this->mdplatforms->update_field($platform,'pr',$pr);
-					$tic = $this->getTIC('http://'.$_POST['url']);
-					$this->mdplatforms->update_field($platform,'tic',$tic);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №15: Состояние площадки - создана');
 					$text = 'Добавлена новая площадка: '.$_POST['url'];
 					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 					$this->session->set_userdata('msgs','Платформа успешно создана.');
@@ -862,6 +998,7 @@ class Clients_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
+				$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
 				$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 				if(isset($_POST['markets'])):
@@ -952,6 +1089,7 @@ class Clients_interface extends CI_Controller{
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
 				if($ticket):
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
@@ -1046,11 +1184,13 @@ class Clients_interface extends CI_Controller{
 					case 5 : $_POST['recipient'] = 0; break;
 				endswitch;
 				if(isset($_POST['closeticket'])):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
 					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
 						ob_start();
@@ -1135,9 +1275,10 @@ class Clients_interface extends CI_Controller{
 			$result = $this->mdtickets->delete_record($ticket);
 			if($result):
 				$this->mdtkmsgs->delete_records($ticket);
-				$this->session->set_userdata('msgs','Сообшение удалено успешно');
+				$this->mdlog->insert_record($this->user['uid'],'Событие №20: Состояние тикета - удален');
+				$this->session->set_userdata('msgs','Тикет удален успешно');
 			else:
-				$this->session->set_userdata('msgr','Сообшение не удалено');
+				$this->session->set_userdata('msgr','Тикет не удален');
 			endif;
 			redirect($_SERVER['HTTP_REFERER']);
 		else:

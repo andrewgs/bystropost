@@ -46,7 +46,8 @@
 		<div class="control-group">
 			<label for="wmid" class="control-label">WMID:</label>
 			<div class="controls">
-				<input type="text" id="wmid" class="input-medium digital" name="wmid" maxlength="10" value="<?=$user['wmid'];?>">
+				<input type="text" id="wmid" class="input-medium digital" name="wmid" maxlength="12" value="<?=$user['wmid'];?>">
+				<span class="help-inline" style="display:none;">&nbsp;</span>
 			</div>
 		</div>
 		<div class="control-group">

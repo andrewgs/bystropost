@@ -48,6 +48,17 @@
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label for="manager" class="control-label">Менеджеры</label>
+					<div class="controls">
+						<select id="uManager" name="manager" class="input-xlarge">
+							<option value="0">Менеджер не назначен</option>
+						<?php for($i=0;$i<count($managers);$i++):?>
+							<option value="<?=$managers[$i]['id'];?>"><?=$managers[$i]['fio'];?></option>
+						<?php endfor;?>
+						</select>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

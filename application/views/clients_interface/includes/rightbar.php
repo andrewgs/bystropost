@@ -10,6 +10,7 @@
 			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')');?></li>
 		<?php endif;?>
 			<li num="tickets"><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></li>
+			<li num="markets"><?=anchor('webmaster-panel/actions/markets','Биржи');?></li>
 			<li num="servises"><?=anchor('webmaster-panel/actions/services','Дополнительные услуги');?></li>
 			<li num="forum"><?=anchor('#','Форум');?></li>
 			<li num="balance"><?=anchor('webmaster-panel/actions/balance','Баланс аккаунта');?></li>

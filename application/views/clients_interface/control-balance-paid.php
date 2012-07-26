@@ -13,16 +13,28 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				
 				<?=form_open('https://merchant.webmoney.ru/lmi/payment.asp',array('class'=>'form-horizontal')); ?>
 					<input type="hidden" name="LMI_PAYEE_PURSE" value="R239187174514">
-					<input type="hidden" name="LMI_PAYMENT_DESC" value="тестовый товар">
+					<input type="hidden" name="LMI_PAYMENT_DESC" value="Попобление баланса на Bystropost.ru">
 					<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="<?=$this->session->userdata('balance');?>">
+					<input type="hidden" name="LMI_PAYER_PURSE" value="<?=$this->session->userdata('purse');?>">
+					<input type="hidden" name="LMI_PAYER_WM" value="<?=$wmid;?>">
+					<input type="hidden" name="LMI_SIM_MODE" value="0">
+					<input type="hidden" name="LMI_SUCCESS_URL" value="<?=$baseurl;?>webmaster-panel/actions/balance/successfull">
+					<input type="hidden" name="LMI_FAIL_URL" value="<?=$baseurl;?>webmaster-panel/actions/balance/failed">
 					<fieldset>
 						<legend>Подтвердите перевод средств</legend>
 						<div class="control-group">
 							<label class="control-label"><strong>Сумма:</strong></label>
 							<div class="controls">
 								<div class="help-inline"><strong><?=$this->session->userdata('balance');?>,00 руб.</strong></div>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label"><strong>Кошелек WM:</strong></label>
+							<div class="controls">
+								<div class="help-inline"><strong><?=$this->session->userdata('purse');?></strong></div>
 							</div>
 						</div>
 						<hr/>

@@ -32,6 +32,9 @@ $route['webmaster-panel/actions/control']							= "clients_interface/control_pan
 $route['webmaster-panel/actions/profile']							= "clients_interface/control_profile";
 $route['webmaster-panel/actions/logoff']							= "clients_interface/actions_logoff";
 
+$route['webmaster-panel/actions/markets']							= "clients_interface/control_markets";
+$route['webmaster-panel/actions/markets/delete/marketid/:num']		= "clients_interface/control_delete_markets";
+
 $route['webmaster-panel/actions/platforms']							= "clients_interface/control_platforms";
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
@@ -122,6 +125,11 @@ $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
 $route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
 $route['admin-panel/actions/api']						= "admin_interface/actions_api";
 
+$route['admin-panel/actions/events']					= "admin_interface/actions_events";
+$route['admin-panel/actions/events/from']				= "admin_interface/actions_events";
+$route['admin-panel/actions/events/from/:num']			= "admin_interface/actions_events";
+$route['admin-panel/actions/events/clear']				= "admin_interface/actions_events_clear";
+
 $route['admin-panel/management/users/read-messages/userid/:num']			= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "admin_interface/reading_users_messages";
@@ -164,6 +172,8 @@ $route['admin-panel/management/types-of-work/workid/:num']	= "admin_interface/ma
 $route['admin-panel/management/mails']					= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from']				= "admin_interface/management_mails";
 $route['admin-panel/management/mails/from/:num']		= "admin_interface/management_mails";
+
+$route['admin-panel/actions/mails/system-clear']		= "admin_interface/messages_system_clear";
 
 $route['admin-panel/messages/system-message']			= "admin_interface/messages_system";
 

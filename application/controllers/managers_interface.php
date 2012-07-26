@@ -19,6 +19,7 @@ class Managers_interface extends CI_Controller{
 		$this->load->model('mdtkmsgs');
 		$this->load->model('mdtypeswork');
 		$this->load->model('mddelivesworks');
+		$this->load->model('mdlog');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -292,6 +293,7 @@ class Managers_interface extends CI_Controller{
 				$prices = $this->mdtypeswork->read_prices($_POST['typework']);
 				if($webmaster):
 					$this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$prices['wprice'],$prices['mprice'],$_POST);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
 					$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
 				else:
 					$this->session->set_userdata('msgr','Отчет о выполенной работе не создан');
@@ -319,7 +321,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Кабинет Менеджера | Входящие сообщениями',
+					'title'			=> 'Кабинет Менеджера | Входящие сообщения',
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
@@ -431,6 +433,7 @@ class Managers_interface extends CI_Controller{
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],0,$_POST);
 				if($ticket):
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],0,0,$_POST['text']);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
@@ -551,6 +554,7 @@ class Managers_interface extends CI_Controller{
 			else:
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 			endif;
@@ -627,11 +631,13 @@ class Managers_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
 			else:
 				if(isset($_POST['closeticket'])):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
 					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 			endif;
@@ -685,6 +691,7 @@ class Managers_interface extends CI_Controller{
 			$result = $this->mdtickets->delete_record($ticket);
 			if($result):
 				$this->mdtkmsgs->delete_records($ticket);
+				$this->mdlog->insert_record($this->user['uid'],'Событие №20: Состояние тикета - удален');
 				$this->session->set_userdata('msgs','Сообшение удалено успешно');
 			else:
 				$this->session->set_userdata('msgr','Сообшение не удалено');

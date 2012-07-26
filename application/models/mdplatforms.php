@@ -319,4 +319,14 @@ class Mdplatforms extends CI_Model{
 		$this->db->update('platforms');
 		return $this->db->affected_rows();
 	}
+
+	function update_managers($uid,$manager){
+		
+		$this->db->set('manager',$manager);
+		
+		$this->db->where('webmaster',$uid);
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
 }

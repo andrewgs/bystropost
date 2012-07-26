@@ -21,6 +21,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdratings');
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdservices');
+		$this->load->model('mdlog');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -77,6 +78,57 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/control-api",$pagevar);
+	}
+	
+	public function actions_events(){
+		
+		$from = intval($this->uri->segment(5));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | События',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'events'		=> $this->mdunion->read_events(25,$from),
+					'pages'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		for($i=0;$i<count($pagevar['events']);$i++):
+			$pagevar['events'][$i]['date'] = $this->operation_dot_date($pagevar['events'][$i]['date']);
+		endfor;
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/events/from/';
+		$config['uri_segment'] 		= 5;
+		$config['total_rows'] 		= $this->mdlog->count_records();
+		$config['per_page'] 		= 25;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<span class="actpage">';
+		$config['cur_tag_close'] 	= '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/control-events",$pagevar);
+	}
+	
+	public function actions_events_clear(){
+		
+		$this->mdlog->delete_records();
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function messages_system_clear(){
+		
+		$this->mdmessages->delete_system();
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	public function actions_profile(){
@@ -153,6 +205,7 @@ class Admin_interface extends CI_Controller{
 					'count'			=> 0,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
+					'managers'		=> $this->mdusers->read_users_by_type(2),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -161,14 +214,28 @@ class Admin_interface extends CI_Controller{
 		
 		if($this->input->post('eusubmit')):
 			$_POST['eusubmit'] = NULL;
+			$this->form_validation->set_rules('uid',' ','required|trim');
 			$this->form_validation->set_rules('wmid',' ','required|trim');
 			$this->form_validation->set_rules('balance',' ','required|trim');
 			$this->form_validation->set_rules('type',' ','required|trim');
+			$this->form_validation->set_rules('manager',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
+					if($_POST['manager']):
+						$platforms = $this->mdplatforms->read_managers_platform_online($_POST['uid']);
+						for($i=0;$i<count($platforms);$i++):
+							$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platforms[$i]['url'];
+							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+							if($platforms[$i]['manager']):
+								$text = 'Здравствуйте! С Ваc снята площадка '.$platforms[$i]['url'];
+								$this->mdmessages->send_noreply_message($this->user['uid'],$platforms[$i]['manager'],1,2,$text);
+							endif;
+						endfor;
+						$this->mdplatforms->update_managers($_POST['uid'],$_POST['manager']);
+					endif;
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 				else:
 					$this->session->set_userdata('msgr','Информация не изменилась.');
@@ -242,6 +309,10 @@ class Admin_interface extends CI_Controller{
 				$pagevar['users'][$i]['lastlogin'] = '';
 			endif;
 			if($pagevar['users'][$i]['type'] == 1):
+				if($pagevar['users'][$i]['manager']):
+					$pagevar['users'][$i]['manfio'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'fio');
+					$pagevar['users'][$i]['manemail'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'login');
+				endif;
 				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
 				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
 			endif;

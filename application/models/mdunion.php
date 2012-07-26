@@ -321,4 +321,21 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
+	function read_markets_by_webmaster($uid){
+		
+		$query = "SELECT webmarkets.*,markets.title AS mtitle FROM webmarkets INNER JOIN markets ON webmarkets.market=markets.id WHERE webmarkets.webmaster = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+
+	function read_events($count,$from){
+		
+		$query = "SELECT log.*,users.id AS uid, users.fio AS ufio, users.login AS ulogin, users.position AS uposition FROM log INNER JOIN users ON log.user=users.id ORDER BY log.date DESC,log.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }
