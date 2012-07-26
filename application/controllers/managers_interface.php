@@ -294,6 +294,30 @@ class Managers_interface extends CI_Controller{
 				if($webmaster):
 					$this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$prices['wprice'],$prices['mprice'],$_POST);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
+					if($this->mdusers->read_field($webmaster,'sendmail')):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
+						<p>Для Вас новое завершенное задение</p>
+						<p>Что бы просмотреть его вводите в личный кабинет и перейдите в раздел "Готовые задания"</p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($webmaster,'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задение');
+						$this->email->message($mailtext);	
+						$this->email->send();
+					endif;
 					$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
 				else:
 					$this->session->set_userdata('msgr','Отчет о выполенной работе не создан');
@@ -345,7 +369,28 @@ class Managers_interface extends CI_Controller{
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
-					//Отослать письмо подьзователю
+					ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+					<p>У Вас новое сообщение</p>
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел Почта</p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->message($mailtext);	
+					$this->email->send();
 				endif;
 			endif;
 			redirect($this->uri->uri_string());

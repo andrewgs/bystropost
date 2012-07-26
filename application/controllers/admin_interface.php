@@ -253,6 +253,30 @@ class Admin_interface extends CI_Controller{
 			else:
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
+					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p>У Вас новое сообщение</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);	
+						$this->email->send();
+					endif;
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
@@ -326,12 +350,34 @@ class Admin_interface extends CI_Controller{
 		
 		$uid = $this->uri->segment(5);
 		if($uid):
+			$user = $this->mdusers->read_record($uid);
 			$result = $this->mdusers->delete_record($uid);
 			if($result):
 				$this->mdmessages->delete_records_by_user($uid);
 				$this->mdtickets->delete_records_by_user($uid);
 				$this->mdtkmsgs->delete_records_by_user($uid);
 				$this->mdplatforms->close_platform_by_user_delete($uid);
+				ob_start();
+				?>
+				<p><strong>Здравствуйте, <?=$user['fio'];?></strong></p>
+				<p>Ваша учетная запись удалена Администратором</p>
+				<p>Желаем Вам удачи!</p> 
+				<?
+				$mailtext = ob_get_clean();
+				
+				$this->email->clear(TRUE);
+				$config['smtp_host'] = 'localhost';
+				$config['charset'] = 'utf-8';
+				$config['wordwrap'] = TRUE;
+				$config['mailtype'] = 'html';
+				
+				$this->email->initialize($config);
+				$this->email->to($user['login']);
+				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+				$this->email->bcc('');
+				$this->email->subject('Noreply: Bystropost.ru - Учетная запись удалена');
+				$this->email->message($mailtext);	
+				$this->email->send();
 				$this->session->set_userdata('msgs','Пользователь удален успешно.');
 			else:
 				$this->session->set_userdata('msgr','Пользователь не удален.');
@@ -419,10 +465,50 @@ class Admin_interface extends CI_Controller{
 						$text = 'Здравствуйте! За Вами закреплена площадка '.$platform;
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
-							//Высылать письмо-уведомление
+							ob_start();
+							?>
+							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
+							<p>Ваша площадка <?=$platform;?> принята к работе</p>
+							<p>Желаем Вам удачи!</p> 
+							<?
+							$mailtext = ob_get_clean();
+							
+							$this->email->clear(TRUE);
+							$config['smtp_host'] = 'localhost';
+							$config['charset'] = 'utf-8';
+							$config['wordwrap'] = TRUE;
+							$config['mailtype'] = 'html';
+							
+							$this->email->initialize($config);
+							$this->email->to($this->mdusers->read_field($_POST['uid'],'login'));
+							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+							$this->email->bcc('');
+							$this->email->subject('Noreply: Bystropost.ru - Площадка в работе');
+							$this->email->message($mailtext);	
+							$this->email->send();
 						endif;
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
-							//Высылать письмо-уведомление
+							ob_start();
+							?>
+							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
+							<p>За Вами закреплена площадка  <?=$platform;?></p>
+							<p>Желаем Вам удачи!</p> 
+							<?
+							$mailtext = ob_get_clean();
+							
+							$this->email->clear(TRUE);
+							$config['smtp_host'] = 'localhost';
+							$config['charset'] = 'utf-8';
+							$config['wordwrap'] = TRUE;
+							$config['mailtype'] = 'html';
+							
+							$this->email->initialize($config);
+							$this->email->to($this->mdusers->read_field($_POST['manager'],'login'));
+							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+							$this->email->bcc('');
+							$this->email->subject('Noreply: Bystropost.ru - Новая площадка');
+							$this->email->message($mailtext);	
+							$this->email->send();
 						endif;
 					elseif($prevman && !$_POST['manager']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' снята с работы';
@@ -530,6 +616,27 @@ class Admin_interface extends CI_Controller{
 				$text = 'Площадка '.$info['url'].'. Удалена администратором';
 				if($info['webmaster']):
 					$this->mdmessages->send_noreply_message($this->user['uid'],$info['webmaster'],1,1,$text);
+					ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($info['webmaster'],'fio');?></strong></p>
+					<p>Ваша площадка <?=$info['url'];?> удалена администратором</p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($this->mdusers->read_field($info['webmaster'],'login'));
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Noreply: Bystropost.ru - Площадка удалена');
+					$this->email->message($mailtext);	
+					$this->email->send();
 				endif;
 				if($info['manager']):
 					$this->mdmessages->send_noreply_message($this->user['uid'],$info['manager'],1,2,$text);
@@ -956,6 +1063,30 @@ class Admin_interface extends CI_Controller{
 			else:
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
+					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p>У Вас новое сообщение</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел Почта</p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);	
+						$this->email->send();
+					endif;
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
@@ -1084,7 +1215,28 @@ class Admin_interface extends CI_Controller{
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
-					//уведомление по почте
+					ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+					<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+					<p>Желаем Вам удачи!</p> 
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->bcc('');
+					$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
+					$this->email->message($mailtext);	
+					$this->email->send();
 				endif;
 			endif;
 			redirect($this->uri->uri_string());

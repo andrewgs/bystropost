@@ -169,6 +169,29 @@ class Clients_interface extends CI_Controller{
 						$this->mdusers->update_field($this->user['uid'],'password',md5($_POST['password']));
 						$this->mdusers->update_field($this->user['uid'],'cryptpassword',$this->encrypt->encode($_POST['password']));
 						$this->session->set_userdata('msgs',' Пароль успешно изменен');
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$pagevar['user']['fio'];?></strong></p>
+						<p>Был сменен пароль для доступа к системе Быстропост.</p>
+						<p>Ваш логин: <?=$this->user['ulogin'];?></p>
+						<p>Новый пароль: <?=$_POST['password'];?></p>
+						<p>Желаем Вам удачи!</p>
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->user['ulogin']);
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Смена пароля в системе Bystropost.ru');
+						$this->email->message($mailtext);	
+						$this->email->send();
 						$this->session->set_userdata('logon',md5($this->user['ulogin'].md5($_POST['password'])));
 					endif;
 				endif;
@@ -348,6 +371,29 @@ class Clients_interface extends CI_Controller{
 		$pagevar['userinfo']['balance'] = $new_balance;
 		$this->session->unset_userdata('balance');
 		$this->session->unset_userdata('purse');
+		
+		ob_start();
+		?>
+		<p><strong>Здравствуйте, <?=$this->user['uname'];?></strong></p>
+		<p>Ваш баланс успешно пополнен.</p>
+		<p>Сумма пополнения: <?=$new_balance;?>.00 руб.</p>
+		<p>Желаем Вам удачи!</p>
+		<?
+		$mailtext = ob_get_clean();
+		
+		$this->email->clear(TRUE);
+		$config['smtp_host'] = 'localhost';
+		$config['charset'] = 'utf-8';
+		$config['wordwrap'] = TRUE;
+		$config['mailtype'] = 'html';
+		
+		$this->email->initialize($config);
+		$this->email->to($this->user['ulogin']);
+		$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+		$this->email->bcc('');
+		$this->email->subject('Noreply: Пополнение баланса в системе Bystropost.ru');
+		$this->email->message($mailtext);	
+		$this->email->send();
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);

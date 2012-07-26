@@ -335,29 +335,29 @@ class Users_interface extends CI_Controller{
 					$this->mdlog->insert_record($uid,'Событие №2: Процедура регистрации оптимизатора');
 				endif;
 				ob_start();
-					?>
-					<p><strong>Здравствуйте, <?=$_POST['fio'];?></strong></p>
-					<p>Поздравляем! Вас успешно зарегистрировали в статусе <?=$tutype;?>. 
-					 Ваша работа будет осуществляться через личный кабинет.
-					 Для входа в личный кабинет используйте логином и паролем указанными при регистрации.</p>
-					<p>Желаем Вам удачи!</p> 
-					<?
-					$mailtext = ob_get_clean();
-					
-					$this->email->clear(TRUE);
-					$config['smtp_host'] = 'localhost';
-					$config['charset'] = 'utf-8';
-					$config['wordwrap'] = TRUE;
-					$config['mailtype'] = 'html';
-					
-					$this->email->initialize($config);
-					$this->email->to($_POST['login']);
-					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
-					$this->email->bcc('');
-					$this->email->subject('Регистрация на Bystropost.ru');
-					$this->email->message($mailtext);	
-					$this->email->send();
+				?>
+				<p><strong>Здравствуйте, <?=$_POST['fio'];?></strong></p>
+				<p>Поздравляем! Вас успешно зарегистрировали в статусе <?=$tutype;?>. 
+				 Ваша работа будет осуществляться через личный кабинет.
+				 Для входа в личный кабинет используйте логином и паролем указанными при регистрации.</p>
+				<p>Желаем Вам удачи!</p> 
+				<?
+				$mailtext = ob_get_clean();
 				
+				$this->email->clear(TRUE);
+				$config['smtp_host'] = 'localhost';
+				$config['charset'] = 'utf-8';
+				$config['wordwrap'] = TRUE;
+				$config['mailtype'] = 'html';
+				
+				$this->email->initialize($config);
+				$this->email->to($_POST['login']);
+				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+				$this->email->bcc('');
+				$this->email->subject('Регистрация на Bystropost.ru');
+				$this->email->message($mailtext);	
+				$this->email->send();
+			
 				$user = $this->mdusers->auth_user($_POST['login'],$_POST['password']);
 				if(!$user):
 					redirect('');
