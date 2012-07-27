@@ -30,6 +30,14 @@
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label class="control-label" for="login">Код:</label>
+					<div class="controls">
+						<input type="text" id="loading" class="input-small inpval digital" name="loading">
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+						<span class="help-block" style="margin-top: 5px;">Внимание! Площадки импортируются автоматически.<br/>Если импортировать не нужно введите код: <strong>9846</strong></span>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

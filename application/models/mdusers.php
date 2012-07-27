@@ -201,9 +201,16 @@ class Mdusers extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	function change_webmaster_balance($id,$summa){
+	function change_user_balance($id,$summa){
 		
 		$query = "UPDATE users SET balance = balance+$summa WHERE id = $id";
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
+	
+	function change_admins_balance($summa){
+		
+		$query = "UPDATE users SET balance = balance+$summa WHERE type = 5";
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}

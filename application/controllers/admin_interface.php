@@ -63,23 +63,6 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
 	
-	public function actions_api(){
-		
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> 'Администрирование | Интерфейс программирования приложений',
-					'baseurl' 		=> base_url(),
-					'userinfo'		=> $this->user,
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr')
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$this->load->view("admin_interface/control-api",$pagevar);
-	}
-	
 	public function actions_events(){
 		
 		$from = intval($this->uri->segment(5));
@@ -765,8 +748,11 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
-			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
-				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
+				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
+			else:
+				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
 		
@@ -807,11 +793,13 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
-			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
-				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
+				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
+			else:
+				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
-		
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
 	}
@@ -1418,7 +1406,7 @@ class Admin_interface extends CI_Controller{
 	
 	/******************************************************** API ******************************************************/	
 	
-	function actions_exec_onew(){
+	function actions_api(){
 
 		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetOrderType','param'=>'');
 		$ch = curl_init();

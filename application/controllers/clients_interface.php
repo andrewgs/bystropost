@@ -529,12 +529,16 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('market',' ','required|trim');
 			$this->form_validation->set_rules('login',' ','required|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
+			$this->form_validation->set_rules('loading',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
 				$id = $this->mdwebmarkets->insert_record($this->user['uid'],$_POST);
 				if($id):
+					if($_POST['loading'] != '9846' || empty($_POST['loading'])):
+						//загрузка по апи площадок
+					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
 					$this->session->set_userdata('msgs','Запись создана успешно');
 				endif;
@@ -733,11 +737,21 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgr','Ошибка. Не верны суммы!');
 					redirect($this->uri->uri_string());
 				else:
-					//процедура оплаты
-					$result = $this->mdusers->change_webmaster_balance($this->user['uid'],-$_POST['summa']);
+					$result = $this->mdusers->change_user_balance($this->user['uid'],-$_POST['summa']);
 					if($result):
 						$this->mddelivesworks->update_status($this->user['uid'],$_POST['works']);
 						$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
+						$mprice = 0;
+						for($i=0;$i<count($_POST['works']);$i++):
+							$wprice = $this->mddelivesworks->read_field($_POST['works'][$i],'wprice');
+							$mprice = $this->mddelivesworks->read_field($_POST['works'][$i],'mprice');
+							$manager = $this->mddelivesworks->read_field($_POST['works'][$i],'manager');
+							if($manager):
+								$this->mdusers->change_user_balance($manager,$mprice);
+							endif;
+							$this->mdusers->change_admins_balance($wprice-$mprice);
+							$this->mdfillup->insert_record(0,$wprice-$mprice); // Запись о том что перечислены деньги админу с указанием суммы
+						endfor;
 						$message = 'Спасибо за оплату.';
 						if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
 							$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
@@ -796,8 +810,11 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
-			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
-				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
+				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
+			else:
+				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
 		
@@ -942,24 +959,27 @@ class Clients_interface extends CI_Controller{
 					$this->mdplatforms->update_field($platform,'pr',$pr);
 					$tic = $this->getTIC('http://'.$_POST['url']);
 					$this->mdplatforms->update_field($platform,'tic',$tic);
-					if($tic >= 1000):
+					if($tic >= 50):
 						$addtic = 5;
 					endif;
 					$sqlquery = "UPDATE platforms SET ";
 					$works = $this->mdtypeswork->read_records();
 					for($i=0;$i<count($works);$i++):
 						$wadd=$madd=$addtic;
-						if($_POST['amount'] == 2):
-							$wadd = 11;$madd = 9;
+						$arr_works = array(1,2,4,5);
+						if(in_array($works[$i]['id'],$arr_works)):
+							switch($_POST['amount']):
+								case 1 : $wadd += 0; $madd += 0; break;
+								case 2 : $wadd += 11; $madd += 9; break;
+								case 3 : $wadd += 23; $madd += 18; break;
+							endswitch;
 						endif;
-					//
-						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.$works[$i]['wprice']+$wadd.', m'.$works[$i]['nickname'].' = '.$works[$i]['mprice']+$madd;
+						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$wadd).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$madd);
 						if(isset($works[$i+1])):
 							$sqlquery .= ', ';
 						endif;
 					endfor;
 					$sqlquery .= ' WHERE platforms.id = '.$platform;
-					print_r($sqlquery);exit;
 					$this->mdplatforms->run_query($sqlquery);
 				endif;
 				if($platform && isset($_POST['markets'])):

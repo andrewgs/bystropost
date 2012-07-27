@@ -84,8 +84,11 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
-			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 25):
-				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,25,'UTF-8');	
+			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
+				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
+				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
+			else:
+				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
 		
@@ -290,9 +293,11 @@ class Managers_interface extends CI_Controller{
 					redirect($this->uri->uri_string());
 				endif;
 				$webmaster = $this->mdplatforms->read_field($platform,'webmaster');
-				$prices = $this->mdtypeswork->read_prices($_POST['typework']);
+				$nickname = $this->mdtypeswork->read_field($_POST['typework'],'nickname');
+				$wprice = $this->mdplatforms->read_field($platform,'c'.$nickname);
+				$mprice = $this->mdplatforms->read_field($platform,'m'.$nickname);
 				if($webmaster):
-					$this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$prices['wprice'],$prices['mprice'],$_POST);
+					$this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$wprice,$mprice,$_POST);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
 					if($this->mdusers->read_field($webmaster,'sendmail')):
 						ob_start();
@@ -325,7 +330,14 @@ class Managers_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
-		
+		$arr = array(); $i = 0;
+		foreach($pagevar['platform'] as $key => $value):
+			$arr[$i] = $value;
+			$i++;
+		endforeach;
+		for($i=0,$j=18;$i<count($pagevar['typeswork']);$i++,$j+=2):
+			$pagevar['typeswork'][$i]['mprice'] = $arr[$j];
+		endfor;
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);

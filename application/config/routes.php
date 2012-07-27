@@ -123,7 +123,7 @@ $route['admin-panel/actions/profile']					= "admin_interface/actions_profile";
 $route['admin-panel/actions/forum']						= "admin_interface/actions_forum";
 $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
 $route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
-$route['admin-panel/actions/api']						= "admin_interface/actions_api";
+$route['admin-panel/actions/api-test']					= "admin_interface/actions_api";
 
 $route['admin-panel/actions/events']					= "admin_interface/actions_events";
 $route['admin-panel/actions/events/from']				= "admin_interface/actions_events";
