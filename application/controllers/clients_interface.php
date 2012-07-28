@@ -557,7 +557,7 @@ class Clients_interface extends CI_Controller{
 						for($i=0;$i<count($pl_data);$i++):
 							$new_platform['id'] = $pl_data[$i]['id'];
 							$new_platform['webmaster'] = $this->user['uid'];
-							$new_platform['manager'] = 0;
+							$new_platform['manager'] = 2;
 							$new_platform['url'] = $pl_data[$i]['url'];
 							$new_platform['subject'] = $pl_data[$i]['tematic'];
 							$new_platform['cms'] = '';
