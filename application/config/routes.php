@@ -71,22 +71,23 @@ $route['views/market-profile']										= "clients_interface/views";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
-$route['manager-panel/actions/control']								= "managers_interface/control_panel";
-$route['manager-panel/actions/control/from']						= "managers_interface/control_panel";
-$route['manager-panel/actions/control/from/:num']					= "managers_interface/control_panel";
-$route['manager-panel/actions/logoff']								= "managers_interface/actions_logoff";
+$route['manager-panel/actions/control']							= "managers_interface/control_panel";
+$route['manager-panel/actions/control/from']					= "managers_interface/control_panel";
+$route['manager-panel/actions/control/from/:num']				= "managers_interface/control_panel";
+$route['manager-panel/actions/logoff']							= "managers_interface/actions_logoff";
 
-$route['manager-panel/actions/platforms']							= "managers_interface/control_platforms";
-$route['manager-panel/actions/platforms/view-platform/:num']		= "managers_interface/control_view_platform";
+$route['manager-panel/actions/platforms']						= "managers_interface/control_platforms";
+$route['manager-panel/actions/platforms/view-platform/:num']	= "managers_interface/control_view_platform";
 
-$route['manager-panel/actions/platforms/:num/deliver-work']			= "managers_interface/deliver_work";
+$route['manager-panel/actions/platforms/:num/deliver-work']		= "managers_interface/deliver_work";
+$route['manager-panel/actions/platforms/remote_deliver_work']	= "managers_interface/remote_deliver_work";
 
-$route['manager-panel/actions/tickets/inbox']						= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/inbox/from']					= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/inbox/from/:num']				= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/outbox']						= "managers_interface/control_tickets_outbox";
-$route['manager-panel/actions/tickets/outbox/from']					= "managers_interface/control_tickets_outbox";
-$route['manager-panel/actions/tickets/outbox/from/:num']			= "managers_interface/control_tickets_outbox";
+$route['manager-panel/actions/tickets/inbox']					= "managers_interface/control_tickets_inbox";
+$route['manager-panel/actions/tickets/inbox/from']				= "managers_interface/control_tickets_inbox";
+$route['manager-panel/actions/tickets/inbox/from/:num']			= "managers_interface/control_tickets_inbox";
+$route['manager-panel/actions/tickets/outbox']					= "managers_interface/control_tickets_outbox";
+$route['manager-panel/actions/tickets/outbox/from']				= "managers_interface/control_tickets_outbox";
+$route['manager-panel/actions/tickets/outbox/from/:num']		= "managers_interface/control_tickets_outbox";
 
 $route['manager-panel/actions/tickets/inbox/view-ticket/:num']				= "managers_interface/control_view_inbox_ticket";
 $route['manager-panel/actions/tickets/inbox/view-ticket/:num/from']			= "managers_interface/control_view_inbox_ticket";
@@ -134,8 +135,8 @@ $route['admin-panel/management/users/read-messages/userid/:num']			= "admin_inte
 $route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "admin_interface/reading_users_messages";
 
-$route['admin-panel/management/users/userid/:num/finished-jobs']	= "admin_interface/user_finished_jobs";
-$route['admin-panel/management/users/userid/:num/finished-jobs/from']	= "admin_interface/user_finished_jobs";
+$route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_interface/user_finished_jobs";
+$route['admin-panel/management/users/userid/:num/finished-jobs/from']		= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
@@ -159,8 +160,8 @@ $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calcu
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 
-$route['admin-panel/management/services']					= "admin_interface/management_services";
-$route['admin-panel/management/services/serviceid/:num']	= "admin_interface/management_services_deleting";
+$route['admin-panel/management/services']				= "admin_interface/management_services";
+$route['admin-panel/management/services/serviceid/:num']= "admin_interface/management_services_deleting";
 
 $route['admin-panel/management/ratings/advertisers']	= "admin_interface/management_ratings";
 $route['admin-panel/management/ratings/webmasters']		= "admin_interface/management_ratings";

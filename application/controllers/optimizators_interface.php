@@ -54,7 +54,7 @@ class Optimizators_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'delivers'		=> $this->mdunion->devivers_works_manager($this->user['uid'],10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_manager($this->user['uid'],10,$from),
 					'cntunit'		=> array(),
 					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -69,7 +69,7 @@ class Optimizators_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/control/from/';
 		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_devivers_works_manager($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_manager($this->user['uid']);
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';

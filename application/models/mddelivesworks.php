@@ -3,6 +3,7 @@
 class Mddelivesworks extends CI_Model{
 
 	var $id			= 0;
+	var $remoteid	= 0;
 	var $webmaster 	= 0;
 	var $platform 	= 0;
 	var $manager 	= 0;
@@ -23,6 +24,7 @@ class Mddelivesworks extends CI_Model{
 	
 	function insert_record($webmaster,$platform,$manager,$wprice,$mprice,$data){
 			
+		$this->remoteid 	= $data['id'];
 		$this->webmaster 	= $webmaster;
 		$this->platform 	= $platform;
 		$this->manager 		= $manager;

@@ -11,9 +11,17 @@
 					<li class="active">
 						<?=anchor("manager-panel/actions/platforms","Все площадки");?>
 					</li>
+				<?php if($userinfo['uid'] == 2):?>
+					<li style="float:right;">
+						<?=anchor('manager-panel/actions/platforms/remote_deliver_work','Импортировать работы',array('class'=>'btn btn-info DLWorks','style'=>'margin-top: -5px;'));?>
+					</li>
+				<?php endif;?>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
+				<div class="alert alert-info" id="msdownloading" style="display:none;">
+					<h3>Ожидайте!</h3>Производится импорт выполненных работ. Это может занять некоторое время...
+				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -72,6 +80,7 @@
 			$("td[data-locked='locked']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
+			$(".DLWorks").click(function(event){$("#msdownloading").show();});
 		});
 	</script>
 </body>

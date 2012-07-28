@@ -41,6 +41,15 @@ class Mdtypeswork extends CI_Model{
 		return NULL;
 	}
 	
+	function read_records_id(){
+		
+		$this->db->order_by('id');
+		$query = $this->db->get('typeswork');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_record($id){
 		
 		$this->db->where('id',$id);

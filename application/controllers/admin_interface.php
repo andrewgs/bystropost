@@ -727,7 +727,7 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'delivers'		=> $this->mdunion->devivers_works_webmaster($this->uri->segment(5),10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_webmaster($this->uri->segment(5),10,$from),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -736,7 +736,7 @@ class Admin_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/userid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
-		$config['total_rows'] 	= $this->mdunion->count_devivers_works_webmaster($this->uri->segment(5));
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_webmaster($this->uri->segment(5));
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
@@ -772,7 +772,7 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'delivers'		=> $this->mdunion->devivers_works_platform($this->uri->segment(5),10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_platform($this->uri->segment(5),10,$from),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -781,7 +781,7 @@ class Admin_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/platforms/platformid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
-		$config['total_rows'] 	= $this->mdunion->count_devivers_works_platform($this->uri->segment(5));
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_platform($this->uri->segment(5));
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
@@ -1410,8 +1410,7 @@ class Admin_interface extends CI_Controller{
 	
 	function actions_api(){
 		
-		$thematic = array();
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetThematic','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetOrderType','param'=>'');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);
@@ -1430,10 +1429,7 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-		ksort($thematic);
-		foreach($thematic as $key => $value):
-			$this->mdthematic->insert_record($key,$value);
-		endforeach;
+		print_r($thematic);
 	}
 	
 	/******************************************************** functions ******************************************************/	

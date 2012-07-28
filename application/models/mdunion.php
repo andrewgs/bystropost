@@ -6,7 +6,7 @@ class Mdunion extends CI_Model{
 		parent::__construct();
 	}
 	
-	function devivers_works_manager($uid,$count,$from){
+	function delivers_works_manager($uid,$count,$from){
 		
 		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.manager = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
@@ -15,7 +15,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_devivers_works_manager($uid){
+	function count_delivers_works_manager($uid){
 		
 		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.manager = $uid";
 		$query = $this->db->query($query);
@@ -24,7 +24,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function devivers_works_webmaster($uid,$count,$from){
+	function delivers_works_webmaster($uid,$count,$from){
 		
 		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
@@ -33,7 +33,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_devivers_works_webmaster($uid){
+	function count_delivers_works_webmaster($uid){
 		
 		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.webmaster = $uid";
 		$query = $this->db->query($query);
@@ -294,7 +294,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 
-	function devivers_works_platform($platform,$count,$from){
+	function delivers_works_platform($platform,$count,$from){
 		
 		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.platform = $platform ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
@@ -303,7 +303,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_devivers_works_platform($platform){
+	function count_delivers_works_platform($platform){
 		
 		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.platform = $platform";
 		$query = $this->db->query($query);

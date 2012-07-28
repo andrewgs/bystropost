@@ -66,6 +66,10 @@ class Mdplatforms extends CI_Model{
 		$this->requests 	= $data['requests'];
 		$this->date 		= date("Y-m-d");
 		
+		if(isset($data['manager'])):
+			$this->manager 	= $data['manager'];
+		endif;
+		
 		$this->db->insert('platforms',$this);
 		return $this->db->insert_id();
 	}
@@ -74,6 +78,18 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->select('manager,url');
 		$this->db->where('webmaster',$uid);
+		$this->db->where('locked',0);
+		$this->db->where('status',1);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_managers_platform_remote($manager){
+		
+		$this->db->where('remoteid >',0);
+		$this->db->where('manager',$manager);
 		$this->db->where('locked',0);
 		$this->db->where('status',1);
 		$query = $this->db->get('platforms');

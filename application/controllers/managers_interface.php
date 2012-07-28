@@ -21,6 +21,7 @@ class Managers_interface extends CI_Controller{
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
+		$this->load->model('mdwebmarkets');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -56,7 +57,7 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'delivers'		=> $this->mdunion->devivers_works_manager($this->user['uid'],10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_manager($this->user['uid'],10,$from),
 					'cntunit'		=> array(),
 					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -71,7 +72,7 @@ class Managers_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/control/from/';
 		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_devivers_works_manager($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_manager($this->user['uid']);
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
@@ -349,6 +350,68 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		$this->load->view("managers_interface/deliver-work",$pagevar);
+	}
+	
+	public function remote_deliver_work(){
+		
+		$kol = 0;
+		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid']);
+		if(!count($platforms)):
+			$this->session->set_userdata('msgr','Ошибка. Нет площадок. Импорт не возможен.');
+			redirect('manager-panel/actions/platforms');
+		else:
+			$markets = $this->mdmarkets->read_records();
+			$typeswork = $this->mdtypeswork->read_records_id();
+			$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-14,date("Y")));
+			$dateto = date("Y-m-d");
+			for($pl=0;$pl<count($platforms);$pl++):
+				$webmarkets = $this->mdwebmarkets->read_records($platforms[$pl]['webmaster']);
+				for($mk=0;$mk<count($markets);$mk++):
+					for($wmk=0;$wmk<count($webmarkets);$wmk++):
+						if($webmarkets[$wmk]['market'] == $markets[$mk]['id']):
+							$param = 'birzid='.$markets[$mk]['id'].'&accid='.$webmarkets[$wmk]['id'].'&datefrom='.$datefrom.'&dateto='.$dateto;
+							$deliver_works = $this->API('GetFinishedOrder',$param);
+							if(count($deliver_works)):
+								$dwd = 0;
+								$dw_data = array();
+								foreach($deliver_works as $key => $value):
+									$dw_data[$dwd] = $value;
+									$dw_data[$dwd]['id'] = $key;
+									$dwd++;
+								endforeach;
+								for($dwd=0;$dwd<count($dw_data);$dwd++):
+									if($dw_data[$dwd]['type'] <= 7):
+										$new_work['id'] 		= $dw_data[$dwd]['id'];
+										$new_work['webmaster'] 	= $platforms[$pl]['webmaster'];
+										$new_work['platform'] 	= $dw_data[$dwd]['siteid'];
+										$new_work['manager'] 	= $this->user['uid'];
+										$new_work['typework'] 	= $dw_data[$dwd]['type'];
+										$new_work['market'] 	= $markets[$mk]['id'];
+										$new_work['mkprice'] 	= 0;
+										$new_work['ulrlink'] 	= $dw_data[$dwd]['link'];
+										$new_work['countchars'] = 0;
+										$new_work['wprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'c'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+										$new_work['mprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'m'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+										$new_work['status'] 	= 0;
+										$new_work['date'] 		= $dateto;
+										$new_work['datepaid'] 	= '0000-00-00';
+										if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['link'])):
+											$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
+											$kol++;
+										else:
+											continue;
+										endif;
+									endif;
+								endfor;
+							endif;
+						endif;
+					endfor;
+				endfor;
+			endfor;
+			$this->mdlog->insert_record($this->user['uid'],'Событие №23: Произведена загрузка выполненных заданий. '.$kol.' записей');
+			$this->session->set_userdata('msgs',$msgs.'Выполненные работы импортированы');
+			redirect('manager-panel/actions/control');
+		endif;
 	}
 
 	/******************************************************* mails *********************************************************/	
@@ -828,5 +891,30 @@ class Managers_interface extends CI_Controller{
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	/******************************************************** Функции API *******************************************************************/
+	
+	private function API($action,$param){
+	
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>$action,'param'=>$param);
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
+		curl_setopt($ch,CURLOPT_POST,1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch,CURLOPT_TIMEOUT,30);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		 if($data!==false):
+			$res = json_decode($data, true);
+			if((int)$res['status']==1):
+				return $res['data'];
+			else:
+				return FALSE;
+			endif;
+		else:
+			return FALSE;
+		endif;
 	}
 }
