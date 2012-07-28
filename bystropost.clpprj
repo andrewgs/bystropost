@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="S:\home\bystropost\www\bystropost.clpprj">
-	<settings><PM_URL><![CDATA[bystropost]]></PM_URL><PM_HOME_URL><![CDATA[bystropost]]></PM_HOME_URL><PM_LIBS><![CDATA[]]></PM_LIBS><PM_FTP_CONNECTION><![CDATA[]]></PM_FTP_CONNECTION><PM_FTP_DIR><![CDATA[]]></PM_FTP_DIR><PM_FTP_UPLOAD_ON_SAVE><![CDATA[INT:0]]></PM_FTP_UPLOAD_ON_SAVE></settings><removed value=";S:\home\bystropost\www\application\models\mdmails.php;S:\home\bystropost\www\application\views\admin_interface\modal\Codelobster0.js;S:\home\bystropost\www\application\views\clients_interface\includes\header-cabinet.php;S:\home\bystropost\www\application\views\clients_interface\includes\navigation.php;S:\home\bystropost\www\application\views\clients_interface\modal\Codelobster0.php;S:\home\bystropost\www\application\views\clients_interface\modal\client-locked.php;S:\home\bystropost\www\application\views\forms\autorization.php;S:\home\bystropost\www\application\views\includes;S:\home\bystropost\www\application\views\managers_interface\Codelobster0.php;S:\home\bystropost\www\application\views\users_interface\control-balance.php;S:\home\bystropost\www\application\views\users_interface\folder0;S:\home\bystropost\www\application\views\users_interface\includes\navigation-no-reg.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok;S:\home\bystropost\www\application\views\users_interface\includes\topblok\admins.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\clients.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\managers.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\optimizators.php;S:\home\bystropost\www\license.txt;S:\home\bystropost\www\user_guide;S:\home\bystropost\www\user_guide\changelog.html;S:\home\bystropost\www\user_guide\database;S:\home\bystropost\www\user_guide\database\active_record.html;S:\home\bystropost\www\user_guide\database\caching.html;S:\home\bystropost\www\user_guide\database\call_function.html;S:\home\bystropost\www\user_guide\database\configuration.html;S:\home\bystropost\www\user_guide\database\connecting.html;S:\home\bystropost\www\user_guide\database\examples.html;S:\home\bystropost\www\user_guide\database\fields.html;S:\home\bystropost\www\user_guide\database\forge.html;S:\home\bystropost\www\user_guide\database\helpers.html;S:\home\bystropost\www\user_guide\database\index.html;S:\home\bystropost\www\user_guide\database\queries.html;S:\home\bystropost\www\user_guide\database\results.html;S:\home\bystropost\www\user_guide\database\table_data.html;S:\home\bystropost\www\user_guide\database\transactions.html;S:\home\bystropost\www\user_guide\database\utilities.html;S:\home\bystropost\www\user_guide\doc_style;S:\home\bystropost\www\user_guide\doc_style\index.html;S:\home\bystropost\www\user_guide\doc_style\template.html;S:\home\bystropost\www\user_guide\general;S:\home\bystropost\www\user_guide\general\alternative_php.html;S:\home\bystropost\www\user_guide\general\ancillary_classes.html;S:\home\bystropost\www\user_guide\general\autoloader.html;S:\home\bystropost\www\user_guide\general\caching.html;S:\home\bystropost\www\user_guide\general\cli.html;S:\home\bystropost\www\user_guide\general\common_functions.html;S:\home\bystropost\www\user_guide\general\controllers.html;S:\home\bystropost\www\user_guide\general\core_classes.html;S:\home\bystropost\www\user_guide\general\creating_drivers.html;S:\home\bystropost\www\user_guide\general\creating_libraries.html;S:\home\bystropost\www\user_guide\general\credits.html;S:\home\bystropost\www\user_guide\general\drivers.html;S:\home\bystropost\www\user_guide\general\environments.html;S:\home\bystropost\www\user_guide\general\errors.html;S:\home\bystropost\www\user_guide\general\helpers.html;S:\home\bystropost\www\user_guide\general\hooks.html;S:\home\bystropost\www\user_guide\general\libraries.html;S:\home\bystropost\www\user_guide\general\managing_apps.html;S:\home\bystropost\www\user_guide\general\models.html;S:\home\bystropost\www\user_guide\general\profiling.html;S:\home\bystropost\www\user_guide\general\quick_reference.html;S:\home\bystropost\www\user_guide\general\requirements.html;S:\home\bystropost\www\user_guide\general\reserved_names.html;S:\home\bystropost\www\user_guide\general\routing.html;S:\home\bystropost\www\user_guide\general\security.html;S:\home\bystropost\www\user_guide\general\styleguide.html;S:\home\bystropost\www\user_guide\general\urls.html;S:\home\bystropost\www\user_guide\general\views.html;S:\home\bystropost\www\user_guide\helpers;S:\home\bystropost\www\user_guide\helpers\array_helper.html;S:\home\bystropost\www\user_guide\helpers\captcha_helper.html;S:\home\bystropost\www\user_guide\helpers\cookie_helper.html;S:\home\bystropost\www\user_guide\helpers\date_helper.html;S:\home\bystropost\www\user_guide\helpers\directory_helper.html;S:\home\bystropost\www\user_guide\helpers\download_helper.html;S:\home\bystropost\www\user_guide\helpers\email_helper.html;S:\home\bystropost\www\user_guide\helpers\file_helper.html;S:\home\bystropost\www\user_guide\helpers\form_helper.html;S:\home\bystropost\www\user_guide\helpers\html_helper.html;S:\home\bystropost\www\user_guide\helpers\inflector_helper.html;S:\home\bystropost\www\user_guide\helpers\language_helper.html;S:\home\bystropost\www\user_guide\helpers\number_helper.html;S:\home\bystropost\www\user_guide\helpers\path_helper.html;S:\home\bystropost\www\user_guide\helpers\security_helper.html;S:\home\bystropost\www\user_guide\helpers\smiley_helper.html;S:\home\bystropost\www\user_guide\helpers\string_helper.html;S:\home\bystropost\www\user_guide\helpers\text_helper.html;S:\home\bystropost\www\user_guide\helpers\typography_helper.html;S:\home\bystropost\www\user_guide\helpers\url_helper.html;S:\home\bystropost\www\user_guide\helpers\xml_helper.html;S:\home\bystropost\www\user_guide\images;S:\home\bystropost\www\user_guide\index.html;S:\home\bystropost\www\user_guide\installation;S:\home\bystropost\www\user_guide\installation\downloads.html;S:\home\bystropost\www\user_guide\installation\index.html;S:\home\bystropost\www\user_guide\installation\troubleshooting.html;S:\home\bystropost\www\user_guide\installation\upgrade_120.html;S:\home\bystropost\www\user_guide\installation\upgrade_130.html;S:\home\bystropost\www\user_guide\installation\upgrade_131.html;S:\home\bystropost\www\user_guide\installation\upgrade_132.html;S:\home\bystropost\www\user_guide\installation\upgrade_133.html;S:\home\bystropost\www\user_guide\installation\upgrade_140.html;S:\home\bystropost\www\user_guide\installation\upgrade_141.html;S:\home\bystropost\www\user_guide\installation\upgrade_150.html;S:\home\bystropost\www\user_guide\installation\upgrade_152.html;S:\home\bystropost\www\user_guide\installation\upgrade_153.html;S:\home\bystropost\www\user_guide\installation\upgrade_154.html;S:\home\bystropost\www\user_guide\installation\upgrade_160.html;S:\home\bystropost\www\user_guide\installation\upgrade_161.html;S:\home\bystropost\www\user_guide\installation\upgrade_162.html;S:\home\bystropost\www\user_guide\installation\upgrade_163.html;S:\home\bystropost\www\user_guide\installation\upgrade_170.html;S:\home\bystropost\www\user_guide\installation\upgrade_171.html;S:\home\bystropost\www\user_guide\installation\upgrade_172.html;S:\home\bystropost\www\user_guide\installation\upgrade_200.html;S:\home\bystropost\www\user_guide\installation\upgrade_201.html;S:\home\bystropost\www\user_guide\installation\upgrade_202.html;S:\home\bystropost\www\user_guide\installation\upgrade_203.html;S:\home\bystropost\www\user_guide\installation\upgrade_210.html;S:\home\bystropost\www\user_guide\installation\upgrade_211.html;S:\home\bystropost\www\user_guide\installation\upgrade_b11.html;S:\home\bystropost\www\user_guide\installation\upgrading.html;S:\home\bystropost\www\user_guide\libraries;S:\home\bystropost\www\user_guide\libraries\benchmark.html;S:\home\bystropost\www\user_guide\libraries\caching.html;S:\home\bystropost\www\user_guide\libraries\calendar.html;S:\home\bystropost\www\user_guide\libraries\cart.html;S:\home\bystropost\www\user_guide\libraries\config.html;S:\home\bystropost\www\user_guide\libraries\email.html;S:\home\bystropost\www\user_guide\libraries\encryption.html;S:\home\bystropost\www\user_guide\libraries\file_uploading.html;S:\home\bystropost\www\user_guide\libraries\form_validation.html;S:\home\bystropost\www\user_guide\libraries\ftp.html;S:\home\bystropost\www\user_guide\libraries\image_lib.html;S:\home\bystropost\www\user_guide\libraries\input.html;S:\home\bystropost\www\user_guide\libraries\javascript.html;S:\home\bystropost\www\user_guide\libraries\language.html;S:\home\bystropost\www\user_guide\libraries\loader.html;S:\home\bystropost\www\user_guide\libraries\migration.html;S:\home\bystropost\www\user_guide\libraries\output.html;S:\home\bystropost\www\user_guide\libraries\pagination.html;S:\home\bystropost\www\user_guide\libraries\parser.html;S:\home\bystropost\www\user_guide\libraries\security.html;S:\home\bystropost\www\user_guide\libraries\sessions.html;S:\home\bystropost\www\user_guide\libraries\table.html;S:\home\bystropost\www\user_guide\libraries\trackback.html;S:\home\bystropost\www\user_guide\libraries\typography.html;S:\home\bystropost\www\user_guide\libraries\unit_testing.html;S:\home\bystropost\www\user_guide\libraries\uri.html;S:\home\bystropost\www\user_guide\libraries\user_agent.html;S:\home\bystropost\www\user_guide\libraries\xmlrpc.html;S:\home\bystropost\www\user_guide\libraries\zip.html;S:\home\bystropost\www\user_guide\license.html;S:\home\bystropost\www\user_guide\nav;S:\home\bystropost\www\user_guide\nav\hacks.txt;S:\home\bystropost\www\user_guide\nav\moo.fx.js;S:\home\bystropost\www\user_guide\nav\nav.js;S:\home\bystropost\www\user_guide\nav\prototype.lite.js;S:\home\bystropost\www\user_guide\nav\user_guide_menu.js;S:\home\bystropost\www\user_guide\overview;S:\home\bystropost\www\user_guide\overview\appflow.html;S:\home\bystropost\www\user_guide\overview\at_a_glance.html;S:\home\bystropost\www\user_guide\overview\cheatsheets.html;S:\home\bystropost\www\user_guide\overview\features.html;S:\home\bystropost\www\user_guide\overview\getting_started.html;S:\home\bystropost\www\user_guide\overview\goals.html;S:\home\bystropost\www\user_guide\overview\index.html;S:\home\bystropost\www\user_guide\overview\mvc.html;S:\home\bystropost\www\user_guide\toc.html;S:\home\bystropost\www\user_guide\tutorial;S:\home\bystropost\www\user_guide\tutorial\conclusion.html;S:\home\bystropost\www\user_guide\tutorial\create_news_items.html;S:\home\bystropost\www\user_guide\tutorial\hard_coded_pages.html;S:\home\bystropost\www\user_guide\tutorial\index.html;S:\home\bystropost\www\user_guide\tutorial\news_section.html;S:\home\bystropost\www\user_guide\tutorial\static_pages.html;S:\home\bystropost\www\user_guide\userguide.css;"/><added value=""/><codestructure>
-		<csfile name="S:\home\bystropost\www\bystropost.clpprj" crc="1666816434">
+	<settings><PM_URL><![CDATA[bystropost]]></PM_URL><PM_HOME_URL><![CDATA[bystropost]]></PM_HOME_URL><PM_LIBS><![CDATA[]]></PM_LIBS><PM_FTP_CONNECTION><![CDATA[]]></PM_FTP_CONNECTION><PM_FTP_DIR><![CDATA[]]></PM_FTP_DIR><PM_FTP_UPLOAD_ON_SAVE><![CDATA[INT:0]]></PM_FTP_UPLOAD_ON_SAVE></settings><removed value=";S:\home\bystropost\www\application\models\mdmails.php;S:\home\bystropost\www\application\views\admin_interface\control-api.php;S:\home\bystropost\www\application\views\admin_interface\modal\Codelobster0.js;S:\home\bystropost\www\application\views\clients_interface\includes\header-cabinet.php;S:\home\bystropost\www\application\views\clients_interface\includes\navigation.php;S:\home\bystropost\www\application\views\clients_interface\modal\Codelobster0.php;S:\home\bystropost\www\application\views\clients_interface\modal\client-locked.php;S:\home\bystropost\www\application\views\forms\autorization.php;S:\home\bystropost\www\application\views\includes;S:\home\bystropost\www\application\views\managers_interface\Codelobster0.php;S:\home\bystropost\www\application\views\users_interface\control-balance.php;S:\home\bystropost\www\application\views\users_interface\folder0;S:\home\bystropost\www\application\views\users_interface\includes\navigation-no-reg.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok;S:\home\bystropost\www\application\views\users_interface\includes\topblok\admins.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\clients.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\managers.php;S:\home\bystropost\www\application\views\users_interface\includes\topblok\optimizators.php;S:\home\bystropost\www\license.txt;S:\home\bystropost\www\user_guide;S:\home\bystropost\www\user_guide\changelog.html;S:\home\bystropost\www\user_guide\database;S:\home\bystropost\www\user_guide\database\active_record.html;S:\home\bystropost\www\user_guide\database\caching.html;S:\home\bystropost\www\user_guide\database\call_function.html;S:\home\bystropost\www\user_guide\database\configuration.html;S:\home\bystropost\www\user_guide\database\connecting.html;S:\home\bystropost\www\user_guide\database\examples.html;S:\home\bystropost\www\user_guide\database\fields.html;S:\home\bystropost\www\user_guide\database\forge.html;S:\home\bystropost\www\user_guide\database\helpers.html;S:\home\bystropost\www\user_guide\database\index.html;S:\home\bystropost\www\user_guide\database\queries.html;S:\home\bystropost\www\user_guide\database\results.html;S:\home\bystropost\www\user_guide\database\table_data.html;S:\home\bystropost\www\user_guide\database\transactions.html;S:\home\bystropost\www\user_guide\database\utilities.html;S:\home\bystropost\www\user_guide\doc_style;S:\home\bystropost\www\user_guide\doc_style\index.html;S:\home\bystropost\www\user_guide\doc_style\template.html;S:\home\bystropost\www\user_guide\general;S:\home\bystropost\www\user_guide\general\alternative_php.html;S:\home\bystropost\www\user_guide\general\ancillary_classes.html;S:\home\bystropost\www\user_guide\general\autoloader.html;S:\home\bystropost\www\user_guide\general\caching.html;S:\home\bystropost\www\user_guide\general\cli.html;S:\home\bystropost\www\user_guide\general\common_functions.html;S:\home\bystropost\www\user_guide\general\controllers.html;S:\home\bystropost\www\user_guide\general\core_classes.html;S:\home\bystropost\www\user_guide\general\creating_drivers.html;S:\home\bystropost\www\user_guide\general\creating_libraries.html;S:\home\bystropost\www\user_guide\general\credits.html;S:\home\bystropost\www\user_guide\general\drivers.html;S:\home\bystropost\www\user_guide\general\environments.html;S:\home\bystropost\www\user_guide\general\errors.html;S:\home\bystropost\www\user_guide\general\helpers.html;S:\home\bystropost\www\user_guide\general\hooks.html;S:\home\bystropost\www\user_guide\general\libraries.html;S:\home\bystropost\www\user_guide\general\managing_apps.html;S:\home\bystropost\www\user_guide\general\models.html;S:\home\bystropost\www\user_guide\general\profiling.html;S:\home\bystropost\www\user_guide\general\quick_reference.html;S:\home\bystropost\www\user_guide\general\requirements.html;S:\home\bystropost\www\user_guide\general\reserved_names.html;S:\home\bystropost\www\user_guide\general\routing.html;S:\home\bystropost\www\user_guide\general\security.html;S:\home\bystropost\www\user_guide\general\styleguide.html;S:\home\bystropost\www\user_guide\general\urls.html;S:\home\bystropost\www\user_guide\general\views.html;S:\home\bystropost\www\user_guide\helpers;S:\home\bystropost\www\user_guide\helpers\array_helper.html;S:\home\bystropost\www\user_guide\helpers\captcha_helper.html;S:\home\bystropost\www\user_guide\helpers\cookie_helper.html;S:\home\bystropost\www\user_guide\helpers\date_helper.html;S:\home\bystropost\www\user_guide\helpers\directory_helper.html;S:\home\bystropost\www\user_guide\helpers\download_helper.html;S:\home\bystropost\www\user_guide\helpers\email_helper.html;S:\home\bystropost\www\user_guide\helpers\file_helper.html;S:\home\bystropost\www\user_guide\helpers\form_helper.html;S:\home\bystropost\www\user_guide\helpers\html_helper.html;S:\home\bystropost\www\user_guide\helpers\inflector_helper.html;S:\home\bystropost\www\user_guide\helpers\language_helper.html;S:\home\bystropost\www\user_guide\helpers\number_helper.html;S:\home\bystropost\www\user_guide\helpers\path_helper.html;S:\home\bystropost\www\user_guide\helpers\security_helper.html;S:\home\bystropost\www\user_guide\helpers\smiley_helper.html;S:\home\bystropost\www\user_guide\helpers\string_helper.html;S:\home\bystropost\www\user_guide\helpers\text_helper.html;S:\home\bystropost\www\user_guide\helpers\typography_helper.html;S:\home\bystropost\www\user_guide\helpers\url_helper.html;S:\home\bystropost\www\user_guide\helpers\xml_helper.html;S:\home\bystropost\www\user_guide\images;S:\home\bystropost\www\user_guide\index.html;S:\home\bystropost\www\user_guide\installation;S:\home\bystropost\www\user_guide\installation\downloads.html;S:\home\bystropost\www\user_guide\installation\index.html;S:\home\bystropost\www\user_guide\installation\troubleshooting.html;S:\home\bystropost\www\user_guide\installation\upgrade_120.html;S:\home\bystropost\www\user_guide\installation\upgrade_130.html;S:\home\bystropost\www\user_guide\installation\upgrade_131.html;S:\home\bystropost\www\user_guide\installation\upgrade_132.html;S:\home\bystropost\www\user_guide\installation\upgrade_133.html;S:\home\bystropost\www\user_guide\installation\upgrade_140.html;S:\home\bystropost\www\user_guide\installation\upgrade_141.html;S:\home\bystropost\www\user_guide\installation\upgrade_150.html;S:\home\bystropost\www\user_guide\installation\upgrade_152.html;S:\home\bystropost\www\user_guide\installation\upgrade_153.html;S:\home\bystropost\www\user_guide\installation\upgrade_154.html;S:\home\bystropost\www\user_guide\installation\upgrade_160.html;S:\home\bystropost\www\user_guide\installation\upgrade_161.html;S:\home\bystropost\www\user_guide\installation\upgrade_162.html;S:\home\bystropost\www\user_guide\installation\upgrade_163.html;S:\home\bystropost\www\user_guide\installation\upgrade_170.html;S:\home\bystropost\www\user_guide\installation\upgrade_171.html;S:\home\bystropost\www\user_guide\installation\upgrade_172.html;S:\home\bystropost\www\user_guide\installation\upgrade_200.html;S:\home\bystropost\www\user_guide\installation\upgrade_201.html;S:\home\bystropost\www\user_guide\installation\upgrade_202.html;S:\home\bystropost\www\user_guide\installation\upgrade_203.html;S:\home\bystropost\www\user_guide\installation\upgrade_210.html;S:\home\bystropost\www\user_guide\installation\upgrade_211.html;S:\home\bystropost\www\user_guide\installation\upgrade_b11.html;S:\home\bystropost\www\user_guide\installation\upgrading.html;S:\home\bystropost\www\user_guide\libraries;S:\home\bystropost\www\user_guide\libraries\benchmark.html;S:\home\bystropost\www\user_guide\libraries\caching.html;S:\home\bystropost\www\user_guide\libraries\calendar.html;S:\home\bystropost\www\user_guide\libraries\cart.html;S:\home\bystropost\www\user_guide\libraries\config.html;S:\home\bystropost\www\user_guide\libraries\email.html;S:\home\bystropost\www\user_guide\libraries\encryption.html;S:\home\bystropost\www\user_guide\libraries\file_uploading.html;S:\home\bystropost\www\user_guide\libraries\form_validation.html;S:\home\bystropost\www\user_guide\libraries\ftp.html;S:\home\bystropost\www\user_guide\libraries\image_lib.html;S:\home\bystropost\www\user_guide\libraries\input.html;S:\home\bystropost\www\user_guide\libraries\javascript.html;S:\home\bystropost\www\user_guide\libraries\language.html;S:\home\bystropost\www\user_guide\libraries\loader.html;S:\home\bystropost\www\user_guide\libraries\migration.html;S:\home\bystropost\www\user_guide\libraries\output.html;S:\home\bystropost\www\user_guide\libraries\pagination.html;S:\home\bystropost\www\user_guide\libraries\parser.html;S:\home\bystropost\www\user_guide\libraries\security.html;S:\home\bystropost\www\user_guide\libraries\sessions.html;S:\home\bystropost\www\user_guide\libraries\table.html;S:\home\bystropost\www\user_guide\libraries\trackback.html;S:\home\bystropost\www\user_guide\libraries\typography.html;S:\home\bystropost\www\user_guide\libraries\unit_testing.html;S:\home\bystropost\www\user_guide\libraries\uri.html;S:\home\bystropost\www\user_guide\libraries\user_agent.html;S:\home\bystropost\www\user_guide\libraries\xmlrpc.html;S:\home\bystropost\www\user_guide\libraries\zip.html;S:\home\bystropost\www\user_guide\license.html;S:\home\bystropost\www\user_guide\nav;S:\home\bystropost\www\user_guide\nav\hacks.txt;S:\home\bystropost\www\user_guide\nav\moo.fx.js;S:\home\bystropost\www\user_guide\nav\nav.js;S:\home\bystropost\www\user_guide\nav\prototype.lite.js;S:\home\bystropost\www\user_guide\nav\user_guide_menu.js;S:\home\bystropost\www\user_guide\overview;S:\home\bystropost\www\user_guide\overview\appflow.html;S:\home\bystropost\www\user_guide\overview\at_a_glance.html;S:\home\bystropost\www\user_guide\overview\cheatsheets.html;S:\home\bystropost\www\user_guide\overview\features.html;S:\home\bystropost\www\user_guide\overview\getting_started.html;S:\home\bystropost\www\user_guide\overview\goals.html;S:\home\bystropost\www\user_guide\overview\index.html;S:\home\bystropost\www\user_guide\overview\mvc.html;S:\home\bystropost\www\user_guide\toc.html;S:\home\bystropost\www\user_guide\tutorial;S:\home\bystropost\www\user_guide\tutorial\conclusion.html;S:\home\bystropost\www\user_guide\tutorial\create_news_items.html;S:\home\bystropost\www\user_guide\tutorial\hard_coded_pages.html;S:\home\bystropost\www\user_guide\tutorial\index.html;S:\home\bystropost\www\user_guide\tutorial\news_section.html;S:\home\bystropost\www\user_guide\tutorial\static_pages.html;S:\home\bystropost\www\user_guide\userguide.css;"/><added value=""/><codestructure>
+		<csfile name="S:\home\bystropost\www\bystropost.clpprj" crc="411030681">
 		</csfile><csfile name="S:\home\bystropost\www\system\libraries\javascript\Jquery.php" crc="1251186840">
 			<phptree>
 				<treenode node="CI_Jquery;Php:Class Name;0;26;1;1067;34;;;vCI_Javascript;;c;;r;;d38,26;;b0,0;;m">
@@ -5268,7 +5268,7 @@
 				<treenode node="userinfo;Php:Var Name;10;7;19;7;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\forms\frmaddplatform.php" crc="-1687035340">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\forms\frmaddplatform.php" crc="1245008105">
 			<phptree>
 				<treenode node="this;Php:Var Name;13;0;18;0;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -5304,7 +5304,7 @@
 				<treenode node="userinfo;Php:Var Name;95;13;104;13;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\modal\clients-add-market.php" crc="-775065108">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\modal\clients-add-market.php" crc="-603069890">
 			<phptree>
 				<treenode node="i;Php:Var Name;16;12;18;12;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -5514,7 +5514,7 @@
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\control-markets.php" crc="1387072664">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\clients_interface\control-markets.php" crc="28796852">
 			<phptree>
 				<treenode node="accounts;Php:Var Name;29;26;38;26;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -5812,7 +5812,7 @@
 				<treenode node="window;JS:JS Var Name;8;1;14;1;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</jstree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\admin_interface\includes\rightbar.php" crc="-1351028159">
+		</csfile><csfile name="S:\home\bystropost\www\application\views\admin_interface\includes\rightbar.php" crc="979430133">
 			<phptree>
 				<treenode node="cntunit;Php:Var Name;11;11;19;11;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -6254,11 +6254,6 @@
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\views\admin_interface\control-api.php" crc="-1387917508">
-			<phptree>
-				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
-				</treenode>
-			</phptree>
 		</csfile><csfile name="S:\home\bystropost\www\application\views\admin_interface\admin-profile.php" crc="-1293866926">
 			<phptree>
 				<treenode node="this;Php:Var Name;6;2;11;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
@@ -6315,14 +6310,16 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\models\mdusers.php" crc="448602703">
+		</csfile><csfile name="S:\home\bystropost\www\application\models\mdusers.php" crc="-2005552820">
 			<phptree>
-				<treenode node="Mdusers;Php:Class Name;0;2;1;209;34;;;vCI_Model;;c;;r;;d30,2;;b0,0;;m">
+				<treenode node="Mdusers;Php:Class Name;0;2;1;216;34;;;vCI_Model;;c;;r;;d30,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;25;2;27;34;;;v;;r;;d23,25;;b0,0;;m">
 					</treenode>
 					<treenode node="auth_user;Php:Function Name;1;151;2;159;34;;;v;;r;;d37,151;;b0,0;;mlogin;;ppassword;;p">
 					</treenode>
-					<treenode node="change_webmaster_balance;Php:Function Name;1;203;2;208;34;;;v;;r;;d46,203;;b0,0;;mid;;psumma;;p">
+					<treenode node="change_admins_balance;Php:Function Name;1;210;2;215;34;;;v;;r;;d39,210;;b0,0;;msumma;;p">
+					</treenode>
+					<treenode node="change_user_balance;Php:Function Name;1;203;2;208;34;;;v;;r;;d41,203;;b0,0;;mid;;psumma;;p">
 					</treenode>
 					<treenode node="delete_record;Php:Function Name;1;196;2;201;34;;;v;;r;;d28,196;;b0,0;;mid;;p">
 					</treenode>
@@ -6903,7 +6900,7 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\models\mdmarkets.php" crc="1083659749">
+		</csfile><csfile name="S:\home\bystropost\www\application\models\mdmarkets.php" crc="-295708508">
 			<phptree>
 				<treenode node="Mdmarkets;Php:Class Name;0;2;1;88;34;;;vCI_Model;;c;;r;;d32,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;9;2;11;34;;;v;;r;;d23,9;;b0,0;;m">
@@ -7248,52 +7245,52 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\controllers\managers_interface.php" crc="-1245863192">
+		</csfile><csfile name="S:\home\bystropost\www\application\controllers\managers_interface.php" crc="431424497">
 			<phptree>
-				<treenode node="Managers_interface;Php:Class Name;0;2;1;817;34;;;vCI_Controller;;c;;r;;d46,2;;b0,0;;m">
+				<treenode node="Managers_interface;Php:Class Name;0;2;1;829;34;;;vCI_Controller;;c;;r;;d46,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;8;2;45;34;;;v;;r;;d23,8;;b0,0;;m">
 					</treenode>
-					<treenode node="actions_logoff;Php:Function Name;8;184;2;188;34;;;v;;r;;d33,184;;b1,0;;m">
+					<treenode node="actions_logoff;Php:Function Name;8;187;2;191;34;;;v;;r;;d33,184;;b1,0;;m">
 					</treenode>
-					<treenode node="control_delete_mail;Php:Function Name;8;429;2;446;34;;;v;;r;;d38,429;;b1,0;;m">
+					<treenode node="control_delete_mail;Php:Function Name;8;441;2;458;34;;;v;;r;;d38,438;;b1,0;;m">
 					</treenode>
-					<treenode node="control_delete_tickets;Php:Function Name;8;728;2;747;34;;;v;;r;;d41,728;;b1,0;;m">
+					<treenode node="control_delete_tickets;Php:Function Name;8;740;2;759;34;;;v;;r;;d41,737;;b1,0;;m">
 					</treenode>
-					<treenode node="control_mails;Php:Function Name;8;341;2;427;34;;;v;;r;;d32,341;;b1,0;;m">
+					<treenode node="control_mails;Php:Function Name;8;353;2;439;34;;;v;;r;;d32,350;;b1,0;;m">
 					</treenode>
-					<treenode node="control_panel;Php:Function Name;8;47;2;100;34;;;v;;r;;d32,47;;b1,0;;m">
+					<treenode node="control_panel;Php:Function Name;8;47;2;103;34;;;v;;r;;d32,47;;b1,0;;m">
 					</treenode>
-					<treenode node="control_platforms;Php:Function Name;8;192;2;221;34;;;v;;r;;d36,192;;b1,0;;m">
+					<treenode node="control_platforms;Php:Function Name;8;195;2;224;34;;;v;;r;;d36,192;;b1,0;;m">
 					</treenode>
-					<treenode node="control_profile;Php:Function Name;8;102;2;169;34;;;v;;r;;d34,102;;b1,0;;m">
+					<treenode node="control_profile;Php:Function Name;8;105;2;172;34;;;v;;r;;d34,102;;b1,0;;m">
 					</treenode>
-					<treenode node="control_tickets_inbox;Php:Function Name;8;518;2;564;34;;;v;;r;;d40,518;;b1,0;;m">
+					<treenode node="control_tickets_inbox;Php:Function Name;8;530;2;576;34;;;v;;r;;d40,527;;b1,0;;m">
 					</treenode>
-					<treenode node="control_tickets_outbox;Php:Function Name;8;450;2;516;34;;;v;;r;;d41,450;;b1,0;;m">
+					<treenode node="control_tickets_outbox;Php:Function Name;8;462;2;528;34;;;v;;r;;d41,459;;b1,0;;m">
 					</treenode>
-					<treenode node="control_view_inbox_ticket;Php:Function Name;8;566;2;643;34;;;v;;r;;d44,566;;b1,0;;m">
+					<treenode node="control_view_inbox_ticket;Php:Function Name;8;578;2;655;34;;;v;;r;;d44,575;;b1,0;;m">
 					</treenode>
-					<treenode node="control_view_outbox_ticket;Php:Function Name;8;645;2;726;34;;;v;;r;;d45,645;;b1,0;;m">
+					<treenode node="control_view_outbox_ticket;Php:Function Name;8;657;2;738;34;;;v;;r;;d45,654;;b1,0;;m">
 					</treenode>
-					<treenode node="control_view_platform;Php:Function Name;8;223;2;248;34;;;v;;r;;d40,223;;b1,0;;m">
+					<treenode node="control_view_platform;Php:Function Name;8;226;2;251;34;;;v;;r;;d40,223;;b1,0;;m">
 					</treenode>
-					<treenode node="deliver_work;Php:Function Name;8;252;2;337;34;;;v;;r;;d31,252;;b1,0;;m">
+					<treenode node="deliver_work;Php:Function Name;8;255;2;349;34;;;v;;r;;d31,252;;b1,0;;m">
 					</treenode>
-					<treenode node="escaping_domen;Php:Function Name;8;795;2;799;34;;;v;;r;;d39,795;;b1,0;;mdomen;;p">
+					<treenode node="escaping_domen;Php:Function Name;8;807;2;811;34;;;v;;r;;d39,804;;b1,0;;mdomen;;p">
 					</treenode>
-					<treenode node="filedelete;Php:Function Name;8;767;2;775;34;;;v;;r;;d34,767;;b1,0;;mfile;;p">
+					<treenode node="filedelete;Php:Function Name;8;779;2;787;34;;;v;;r;;d34,776;;b1,0;;mfile;;p">
 					</treenode>
-					<treenode node="fileupload;Php:Function Name;8;751;2;765;34;;;v;;r;;d58,751;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
+					<treenode node="fileupload;Php:Function Name;8;763;2;777;34;;;v;;r;;d58,760;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
 					</treenode>
-					<treenode node="operation_date;Php:Function Name;8;777;2;784;34;;;v;;r;;d39,777;;b1,0;;mfield;;p">
+					<treenode node="operation_date;Php:Function Name;8;789;2;796;34;;;v;;r;;d39,786;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="operation_dot_date;Php:Function Name;8;810;2;816;34;;;v;;r;;d43,810;;b1,0;;mfield;;p">
+					<treenode node="operation_dot_date;Php:Function Name;8;822;2;828;34;;;v;;r;;d43,819;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="split_date;Php:Function Name;8;786;2;793;34;;;v;;r;;d35,786;;b1,0;;mfield;;p">
+					<treenode node="split_date;Php:Function Name;8;798;2;805;34;;;v;;r;;d35,795;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="split_dot_date;Php:Function Name;8;801;2;808;34;;;v;;r;;d39,801;;b1,0;;mfield;;p">
+					<treenode node="split_dot_date;Php:Function Name;8;813;2;820;34;;;v;;r;;d39,810;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="views;Php:Function Name;1;173;2;182;34;;;v;;r;;d17,173;;b0,0;;m">
+					<treenode node="views;Php:Function Name;1;176;2;185;34;;;v;;r;;d17,173;;b0,0;;m">
 					</treenode>
 					<treenode node="loginstatus;Php:Var Name;5;5;17;5;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -7313,16 +7310,18 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\controllers\clients_interface.php" crc="278359185">
+		</csfile><csfile name="S:\home\bystropost\www\application\controllers\clients_interface.php" crc="-2125616970">
 			<phptree>
-				<treenode node="Clients_interface;Php:Class Name;0;2;1;1529;34;;;vCI_Controller;;c;;r;;d45,2;;b0,0;;m">
+				<treenode node="Clients_interface;Php:Class Name;0;2;1;1581;34;;;vCI_Controller;;c;;r;;d45,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;8;2;64;34;;;v;;r;;d23,8;;b0,0;;m">
 					</treenode>
-					<treenode node="actions_logoff;Php:Function Name;8;1347;2;1351;34;;;v;;r;;d33,1347;;b1,0;;m">
+					<treenode node="actions_logoff;Php:Function Name;8;1374;2;1378;34;;;v;;r;;d33,1374;;b1,0;;m">
 					</treenode>
-					<treenode node="CheckHash;Php:Function Name;8;1459;2;1486;34;;;v;;r;;d36,1459;;b1,0;;mHashnum;;p">
+					<treenode node="API;Php:Function Name;9;1559;2;1580;34;;;v;;r;;d37,1559;;b3,0;;maction;;pparam;;p">
 					</treenode>
-					<treenode node="control_add_platform;Php:Function Name;8;882;2;992;34;;;v;;r;;d39,882;;b1,0;;m">
+					<treenode node="CheckHash;Php:Function Name;8;1486;2;1513;34;;;v;;r;;d36,1486;;b1,0;;mHashnum;;p">
+					</treenode>
+					<treenode node="control_add_platform;Php:Function Name;8;906;2;1019;34;;;v;;r;;d39,906;;b1,0;;m">
 					</treenode>
 					<treenode node="control_balance;Php:Function Name;8;259;2;310;34;;;v;;r;;d34,259;;b1,0;;m">
 					</treenode>
@@ -7332,57 +7331,57 @@
 					</treenode>
 					<treenode node="control_balance_successfull;Php:Function Name;8;342;2;405;34;;;v;;r;;d46,342;;b1,0;;m">
 					</treenode>
-					<treenode node="control_delete_mail;Php:Function Name;8;679;2;696;34;;;v;;r;;d38,679;;b1,0;;m">
+					<treenode node="control_delete_mail;Php:Function Name;8;690;2;707;34;;;v;;r;;d38,690;;b1,0;;m">
 					</treenode>
-					<treenode node="control_delete_markets;Php:Function Name;8;564;2;579;34;;;v;;r;;d41,564;;b1,0;;m">
+					<treenode node="control_delete_markets;Php:Function Name;8;575;2;590;34;;;v;;r;;d41,575;;b1,0;;m">
 					</treenode>
-					<treenode node="control_delete_tickets;Php:Function Name;8;1313;2;1332;34;;;v;;r;;d41,1313;;b1,0;;m">
+					<treenode node="control_delete_tickets;Php:Function Name;8;1340;2;1359;34;;;v;;r;;d41,1340;;b1,0;;m">
 					</treenode>
-					<treenode node="control_edit_platform;Php:Function Name;8;994;2;1071;34;;;v;;r;;d40,994;;b1,0;;m">
+					<treenode node="control_edit_platform;Php:Function Name;8;1021;2;1098;34;;;v;;r;;d40,1021;;b1,0;;m">
 					</treenode>
-					<treenode node="control_finished_jobs;Php:Function Name;8;700;2;804;34;;;v;;r;;d40,700;;b1,0;;m">
+					<treenode node="control_finished_jobs;Php:Function Name;8;711;2;828;34;;;v;;r;;d40,711;;b1,0;;m">
 					</treenode>
-					<treenode node="control_mails;Php:Function Name;8;583;2;677;34;;;v;;r;;d32,583;;b1,0;;m">
+					<treenode node="control_mails;Php:Function Name;8;594;2;688;34;;;v;;r;;d32,594;;b1,0;;m">
 					</treenode>
-					<treenode node="control_markets;Php:Function Name;8;508;2;562;34;;;v;;r;;d34,508;;b1,0;;m">
+					<treenode node="control_markets;Php:Function Name;8;508;2;573;34;;;v;;r;;d34,508;;b1,0;;m">
 					</treenode>
 					<treenode node="control_panel;Php:Function Name;8;66;2;104;34;;;v;;r;;d32,66;;b1,0;;m">
 					</treenode>
-					<treenode node="control_platforms;Php:Function Name;8;808;2;880;34;;;v;;r;;d36,808;;b1,0;;m">
+					<treenode node="control_platforms;Php:Function Name;8;832;2;904;34;;;v;;r;;d36,832;;b1,0;;m">
 					</treenode>
 					<treenode node="control_profile;Php:Function Name;8;129;2;257;34;;;v;;r;;d34,129;;b1,0;;m">
 					</treenode>
 					<treenode node="control_services;Php:Function Name;8;444;2;504;34;;;v;;r;;d35,444;;b1,0;;m">
 					</treenode>
-					<treenode node="control_tickets;Php:Function Name;8;1075;2;1187;34;;;v;;r;;d34,1075;;b1,0;;m">
+					<treenode node="control_tickets;Php:Function Name;8;1102;2;1214;34;;;v;;r;;d34,1102;;b1,0;;m">
 					</treenode>
-					<treenode node="control_view_ticket;Php:Function Name;8;1189;2;1311;34;;;v;;r;;d38,1189;;b1,0;;m">
+					<treenode node="control_view_ticket;Php:Function Name;8;1216;2;1338;34;;;v;;r;;d38,1216;;b1,0;;m">
 					</treenode>
-					<treenode node="filedelete;Php:Function Name;8;1383;2;1391;34;;;v;;r;;d34,1383;;b1,0;;mfile;;p">
+					<treenode node="filedelete;Php:Function Name;8;1410;2;1418;34;;;v;;r;;d34,1410;;b1,0;;mfile;;p">
 					</treenode>
-					<treenode node="fileupload;Php:Function Name;8;1367;2;1381;34;;;v;;r;;d58,1367;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
+					<treenode node="fileupload;Php:Function Name;8;1394;2;1408;34;;;v;;r;;d58,1394;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
 					</treenode>
-					<treenode node="getpagerank;Php:Function Name;8;1488;2;1512;34;;;v;;r;;d34,1488;;b1,0;;murl;;p">
+					<treenode node="getpagerank;Php:Function Name;8;1515;2;1539;34;;;v;;r;;d34,1515;;b1,0;;murl;;p">
 					</treenode>
-					<treenode node="getTIC;Php:Function Name;8;1514;2;1528;34;;;v;;r;;d29,1514;;b1,0;;murl;;p">
+					<treenode node="getTIC;Php:Function Name;8;1541;2;1555;34;;;v;;r;;d29,1541;;b1,0;;murl;;p">
 					</treenode>
-					<treenode node="HashURL;Php:Function Name;8;1445;2;1457;34;;;v;;r;;d33,1445;;b1,0;;mString;;p">
+					<treenode node="HashURL;Php:Function Name;8;1472;2;1484;34;;;v;;r;;d33,1472;;b1,0;;mString;;p">
 					</treenode>
-					<treenode node="operation_date;Php:Function Name;8;1393;2;1400;34;;;v;;r;;d39,1393;;b1,0;;mfield;;p">
+					<treenode node="operation_date;Php:Function Name;8;1420;2;1427;34;;;v;;r;;d39,1420;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="operation_dot_date;Php:Function Name;8;1420;2;1426;34;;;v;;r;;d43,1420;;b1,0;;mfield;;p">
+					<treenode node="operation_dot_date;Php:Function Name;8;1447;2;1453;34;;;v;;r;;d43,1447;;b1,0;;mfield;;p">
 					</treenode>
 					<treenode node="reg_successfull;Php:Function Name;8;106;2;127;34;;;v;;r;;d34,106;;b1,0;;m">
 					</treenode>
-					<treenode node="split_date;Php:Function Name;8;1402;2;1409;34;;;v;;r;;d35,1402;;b1,0;;mfield;;p">
+					<treenode node="split_date;Php:Function Name;8;1429;2;1436;34;;;v;;r;;d35,1429;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="split_dot_date;Php:Function Name;8;1411;2;1418;34;;;v;;r;;d39,1411;;b1,0;;mfield;;p">
+					<treenode node="split_dot_date;Php:Function Name;8;1438;2;1445;34;;;v;;r;;d39,1438;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="StrToNum;Php:Function Name;8;1430;2;1443;34;;;v;;r;;d47,1430;;b1,0;;mStr;;pCheck;;pMagic;;p">
+					<treenode node="StrToNum;Php:Function Name;8;1457;2;1470;34;;;v;;r;;d47,1457;;b1,0;;mStr;;pCheck;;pMagic;;p">
 					</treenode>
-					<treenode node="viewimage;Php:Function Name;1;1353;2;1363;34;;;v;;r;;d21,1353;;b0,0;;m">
+					<treenode node="viewimage;Php:Function Name;1;1380;2;1390;34;;;v;;r;;d21,1380;;b0,0;;m">
 					</treenode>
-					<treenode node="views;Php:Function Name;1;1336;2;1345;34;;;v;;r;;d17,1336;;b0,0;;m">
+					<treenode node="views;Php:Function Name;1;1363;2;1372;34;;;v;;r;;d17,1363;;b0,0;;m">
 					</treenode>
 					<treenode node="loginstatus;Php:Var Name;5;5;17;5;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -7392,100 +7391,98 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\controllers\admin_interface.php" crc="-724113018">
+		</csfile><csfile name="S:\home\bystropost\www\application\controllers\admin_interface.php" crc="1249209840">
 			<phptree>
-				<treenode node="Admin_interface;Php:Class Name;0;2;1;1610;34;;;vCI_Controller;;c;;r;;d43,2;;b0,0;;m">
+				<treenode node="Admin_interface;Php:Class Name;0;2;1;1598;34;;;vCI_Controller;;c;;r;;d43,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;8;2;46;34;;;v;;r;;d23,8;;b0,0;;m">
 					</treenode>
-					<treenode node="actions_api;Php:Function Name;8;65;2;80;34;;;v;;r;;d30,65;;b1,0;;m">
+					<treenode node="actions_api;Php:Function Name;1;1408;2;1429;34;;;v;;r;;d23,1405;;b0,0;;m">
 					</treenode>
-					<treenode node="actions_balance;Php:Function Name;8;981;2;997;34;;;v;;r;;d34,981;;b1,0;;m">
+					<treenode node="actions_balance;Php:Function Name;8;969;2;985;34;;;v;;r;;d34,966;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_events;Php:Function Name;8;82;2;119;34;;;v;;r;;d33,82;;b1,0;;m">
+					<treenode node="actions_events;Php:Function Name;8;65;2;102;34;;;v;;r;;d33,65;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_events_clear;Php:Function Name;8;121;2;125;34;;;v;;r;;d39,121;;b1,0;;m">
+					<treenode node="actions_events_clear;Php:Function Name;8;104;2;108;34;;;v;;r;;d39,104;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_exec_onew;Php:Function Name;1;1420;2;1441;34;;;v;;r;;d29,1420;;b0,0;;m">
+					<treenode node="actions_forum;Php:Function Name;8;951;2;967;34;;;v;;r;;d32,948;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_forum;Php:Function Name;8;963;2;979;34;;;v;;r;;d32,963;;b1,0;;m">
+					<treenode node="actions_logoff;Php:Function Name;8;1272;2;1276;34;;;v;;r;;d33,1269;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_logoff;Php:Function Name;8;1284;2;1288;34;;;v;;r;;d33,1284;;b1,0;;m">
+					<treenode node="actions_profile;Php:Function Name;8;116;2;176;34;;;v;;r;;d34,116;;b1,0;;m">
 					</treenode>
-					<treenode node="actions_profile;Php:Function Name;8;133;2;193;34;;;v;;r;;d34,133;;b1,0;;m">
+					<treenode node="calculate_pr;Php:Function Name;8;1330;2;1338;34;;;v;;r;;d31,1327;;b1,0;;m">
 					</treenode>
-					<treenode node="calculate_pr;Php:Function Name;8;1342;2;1350;34;;;v;;r;;d31,1342;;b1,0;;m">
+					<treenode node="calculate_tic;Php:Function Name;8;1320;2;1328;34;;;v;;r;;d32,1317;;b1,0;;m">
 					</treenode>
-					<treenode node="calculate_tic;Php:Function Name;8;1332;2;1340;34;;;v;;r;;d32,1332;;b1,0;;m">
+					<treenode node="CheckHash;Php:Function Name;8;1525;2;1552;34;;;v;;r;;d36,1522;;b1,0;;mHashnum;;p">
 					</treenode>
-					<treenode node="CheckHash;Php:Function Name;8;1537;2;1564;34;;;v;;r;;d36,1537;;b1,0;;mHashnum;;p">
-					</treenode>
-					<treenode node="control_delete_msg_ticket;Php:Function Name;8;1265;2;1282;34;;;v;;r;;d44,1265;;b1,0;;m">
+					<treenode node="control_delete_msg_ticket;Php:Function Name;8;1253;2;1270;34;;;v;;r;;d44,1250;;b1,0;;m">
 					</treenode>
 					<treenode node="control_panel;Php:Function Name;8;48;2;63;34;;;v;;r;;d32,48;;b1,0;;m">
 					</treenode>
-					<treenode node="filedelete;Php:Function Name;8;1461;2;1469;34;;;v;;r;;d34,1461;;b1,0;;mfile;;p">
+					<treenode node="filedelete;Php:Function Name;8;1449;2;1457;34;;;v;;r;;d34,1446;;b1,0;;mfile;;p">
 					</treenode>
-					<treenode node="fileupload;Php:Function Name;8;1445;2;1459;34;;;v;;r;;d58,1445;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
+					<treenode node="fileupload;Php:Function Name;8;1433;2;1447;34;;;v;;r;;d58,1430;;b1,0;;muserfile;;poverwrite;;pcatalog;;p">
 					</treenode>
-					<treenode node="getpagerank;Php:Function Name;8;1566;2;1593;34;;;v;;r;;d34,1566;;b1,0;;murl;;p">
+					<treenode node="getpagerank;Php:Function Name;8;1554;2;1581;34;;;v;;r;;d34,1551;;b1,0;;murl;;p">
 					</treenode>
-					<treenode node="getTIC;Php:Function Name;8;1595;2;1609;34;;;v;;r;;d29,1595;;b1,0;;murl;;p">
+					<treenode node="getTIC;Php:Function Name;8;1583;2;1597;34;;;v;;r;;d29,1580;;b1,0;;murl;;p">
 					</treenode>
-					<treenode node="HashURL;Php:Function Name;8;1523;2;1535;34;;;v;;r;;d33,1523;;b1,0;;mString;;p">
+					<treenode node="HashURL;Php:Function Name;8;1511;2;1523;34;;;v;;r;;d33,1508;;b1,0;;mString;;p">
 					</treenode>
-					<treenode node="management_delete_platform;Php:Function Name;8;608;2;651;34;;;v;;r;;d45,608;;b1,0;;m">
+					<treenode node="management_delete_platform;Php:Function Name;8;591;2;634;34;;;v;;r;;d45,591;;b1,0;;m">
 					</treenode>
-					<treenode node="management_mails;Php:Function Name;8;1038;2;1116;34;;;v;;r;;d35,1038;;b1,0;;m">
+					<treenode node="management_mails;Php:Function Name;8;1026;2;1104;34;;;v;;r;;d35,1023;;b1,0;;m">
 					</treenode>
-					<treenode node="management_markets;Php:Function Name;8;677;2;732;34;;;v;;r;;d37,677;;b1,0;;m">
+					<treenode node="management_markets;Php:Function Name;8;660;2;715;34;;;v;;r;;d37,660;;b1,0;;m">
 					</treenode>
-					<treenode node="management_markets_deleting;Php:Function Name;8;818;2;832;34;;;v;;r;;d46,818;;b1,0;;m">
+					<treenode node="management_markets_deleting;Php:Function Name;8;806;2;820;34;;;v;;r;;d46,803;;b1,0;;m">
 					</treenode>
-					<treenode node="management_platforms;Php:Function Name;8;390;2;606;34;;;v;;r;;d39,390;;b1,0;;m">
+					<treenode node="management_platforms;Php:Function Name;8;373;2;589;34;;;v;;r;;d39,373;;b1,0;;m">
 					</treenode>
-					<treenode node="management_rating_deleting;Php:Function Name;8;947;2;961;34;;;v;;r;;d45,947;;b1,0;;m">
+					<treenode node="management_rating_deleting;Php:Function Name;8;935;2;949;34;;;v;;r;;d45,932;;b1,0;;m">
 					</treenode>
-					<treenode node="management_ratings;Php:Function Name;8;901;2;945;34;;;v;;r;;d37,901;;b1,0;;m">
+					<treenode node="management_ratings;Php:Function Name;8;889;2;933;34;;;v;;r;;d37,886;;b1,0;;m">
 					</treenode>
-					<treenode node="management_services;Php:Function Name;8;1352;2;1400;34;;;v;;r;;d38,1352;;b1,0;;m">
+					<treenode node="management_services;Php:Function Name;8;1340;2;1388;34;;;v;;r;;d38,1337;;b1,0;;m">
 					</treenode>
-					<treenode node="management_services_deleting;Php:Function Name;8;1402;2;1416;34;;;v;;r;;d47,1402;;b1,0;;m">
+					<treenode node="management_services_deleting;Php:Function Name;8;1390;2;1404;34;;;v;;r;;d47,1387;;b1,0;;m">
 					</treenode>
-					<treenode node="management_types_work;Php:Function Name;8;834;2;883;34;;;v;;r;;d40,834;;b1,0;;m">
+					<treenode node="management_types_work;Php:Function Name;8;822;2;871;34;;;v;;r;;d40,819;;b1,0;;m">
 					</treenode>
-					<treenode node="management_types_work_deleting;Php:Function Name;8;885;2;899;34;;;v;;r;;d49,885;;b1,0;;m">
+					<treenode node="management_types_work_deleting;Php:Function Name;8;873;2;887;34;;;v;;r;;d49,870;;b1,0;;m">
 					</treenode>
-					<treenode node="management_users;Php:Function Name;8;195;2;346;34;;;v;;r;;d35,195;;b1,0;;m">
+					<treenode node="management_users;Php:Function Name;8;178;2;329;34;;;v;;r;;d35,178;;b1,0;;m">
 					</treenode>
-					<treenode node="management_users_deleting;Php:Function Name;8;348;2;388;34;;;v;;r;;d44,348;;b1,0;;m">
+					<treenode node="management_users_deleting;Php:Function Name;8;331;2;371;34;;;v;;r;;d44,331;;b1,0;;m">
 					</treenode>
-					<treenode node="management_view_platform;Php:Function Name;8;653;2;675;34;;;v;;r;;d43,653;;b1,0;;m">
+					<treenode node="management_view_platform;Php:Function Name;8;636;2;658;34;;;v;;r;;d43,636;;b1,0;;m">
 					</treenode>
-					<treenode node="messages_private_delete;Php:Function Name;8;1118;2;1132;34;;;v;;r;;d42,1118;;b1,0;;m">
+					<treenode node="messages_private_delete;Php:Function Name;8;1106;2;1120;34;;;v;;r;;d42,1103;;b1,0;;m">
 					</treenode>
-					<treenode node="messages_system;Php:Function Name;8;999;2;1036;34;;;v;;r;;d34,999;;b1,0;;m">
+					<treenode node="messages_system;Php:Function Name;8;987;2;1024;34;;;v;;r;;d34,984;;b1,0;;m">
 					</treenode>
-					<treenode node="messages_system_clear;Php:Function Name;8;127;2;131;34;;;v;;r;;d40,127;;b1,0;;m">
+					<treenode node="messages_system_clear;Php:Function Name;8;110;2;114;34;;;v;;r;;d40,110;;b1,0;;m">
 					</treenode>
-					<treenode node="messages_tickets;Php:Function Name;8;1134;2;1180;34;;;v;;r;;d35,1134;;b1,0;;m">
+					<treenode node="messages_tickets;Php:Function Name;8;1122;2;1168;34;;;v;;r;;d35,1119;;b1,0;;m">
 					</treenode>
-					<treenode node="messages_view_ticket;Php:Function Name;8;1182;2;1263;34;;;v;;r;;d39,1182;;b1,0;;m">
+					<treenode node="messages_view_ticket;Php:Function Name;8;1170;2;1251;34;;;v;;r;;d39,1167;;b1,0;;m">
 					</treenode>
-					<treenode node="operation_date;Php:Function Name;8;1471;2;1478;34;;;v;;r;;d39,1471;;b1,0;;mfield;;p">
+					<treenode node="operation_date;Php:Function Name;8;1459;2;1466;34;;;v;;r;;d39,1456;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="operation_dot_date;Php:Function Name;8;1498;2;1504;34;;;v;;r;;d43,1498;;b1,0;;mfield;;p">
+					<treenode node="operation_dot_date;Php:Function Name;8;1486;2;1492;34;;;v;;r;;d43,1483;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="platform_finished_jobs;Php:Function Name;8;776;2;816;34;;;v;;r;;d41,776;;b1,0;;m">
+					<treenode node="platform_finished_jobs;Php:Function Name;8;762;2;804;34;;;v;;r;;d41,759;;b1,0;;m">
 					</treenode>
-					<treenode node="reading_users_messages;Php:Function Name;8;1290;2;1330;34;;;v;;r;;d41,1290;;b1,0;;m">
+					<treenode node="reading_users_messages;Php:Function Name;8;1278;2;1318;34;;;v;;r;;d41,1275;;b1,0;;m">
 					</treenode>
-					<treenode node="split_date;Php:Function Name;8;1480;2;1487;34;;;v;;r;;d35,1480;;b1,0;;mfield;;p">
+					<treenode node="split_date;Php:Function Name;8;1468;2;1475;34;;;v;;r;;d35,1465;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="split_dot_date;Php:Function Name;8;1489;2;1496;34;;;v;;r;;d39,1489;;b1,0;;mfield;;p">
+					<treenode node="split_dot_date;Php:Function Name;8;1477;2;1484;34;;;v;;r;;d39,1474;;b1,0;;mfield;;p">
 					</treenode>
-					<treenode node="StrToNum;Php:Function Name;8;1508;2;1521;34;;;v;;r;;d47,1508;;b1,0;;mStr;;pCheck;;pMagic;;p">
+					<treenode node="StrToNum;Php:Function Name;8;1496;2;1509;34;;;v;;r;;d47,1493;;b1,0;;mStr;;pCheck;;pMagic;;p">
 					</treenode>
-					<treenode node="user_finished_jobs;Php:Function Name;8;734;2;774;34;;;v;;r;;d37,734;;b1,0;;m">
+					<treenode node="user_finished_jobs;Php:Function Name;8;717;2;760;34;;;v;;r;;d37,717;;b1,0;;m">
 					</treenode>
 					<treenode node="loginstatus;Php:Var Name;5;5;17;5;34;;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -7511,7 +7508,7 @@
 				<treenode node="smileys;Php:Var Name;0;14;8;14;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\config\routes.php" crc="-994205612">
+		</csfile><csfile name="S:\home\bystropost\www\application\config\routes.php" crc="-420261665">
 			<phptree>
 				<treenode node="route;Php:Var Name;0;2;6;2;34;;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
@@ -7571,4 +7568,6 @@
 				</treenode>
 			</phptree>
 		</csfile><csfile name="S:\home\bystropost\www\.htaccess" crc="139727451">
-		</csfile></codestructure></project>
+		</csfile></codestructure><dbgurls>
+	</dbgurls>
+</project>

@@ -20,6 +20,7 @@ class Managers_interface extends CI_Controller{
 		$this->load->model('mdtypeswork');
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdlog');
+		$this->load->model('mdthematic');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -240,6 +241,7 @@ class Managers_interface extends CI_Controller{
 					'platform'		=> $this->mdplatforms->read_record($platform),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
+					'thematic'		=> $this->mdthematic->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);

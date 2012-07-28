@@ -11,9 +11,9 @@ class Mdplatforms extends CI_Model{
 	var $adminpanel 	= '';
 	var $aplogin 		= '';
 	var $appassword 	= '';
-	var $amount 		= 0;
-	var $reviews 		= 0;
-	var $thematically 	= 0;
+	var $amount 		= 1;
+	var $reviews 		= 1;
+	var $thematically 	= 1;
 	var $illegal 		= 0;
 	var $criteria 		= '';
 	var $requests 		= '';
@@ -33,7 +33,7 @@ class Mdplatforms extends CI_Model{
 	var $mpressrel 		= 0;
 	var $clinkarh 		= 0; //Ссылка в архиве
 	var $mlinkarh 		= 0;
-	var $price 			= '';
+	var $price 			= 0;
 	var $date 			= '';
 	var $locked			= 0;
 	var $status			= 1;
@@ -48,7 +48,9 @@ class Mdplatforms extends CI_Model{
 	}
 	
 	function insert_record($uid,$data){
-			
+		if(isset($data['id'])):
+			$this->id 		= $data['id'];
+		endif;
 		$this->url 			= $data['url'];
 		$this->webmaster 	= $uid;
 		$this->subject 		= $data['subject'];

@@ -27,10 +27,7 @@
 					</tr>
 					<tr>
 						<td>Тематика площадки:</td>
-						<td style="text-align:left;"><span id="tsbj" style="margin-left: 20px;"></span></td>
-						<div style="display:none;">
-							<?php $this->load->view("clients_interface/includes/thematically");?>
-						</div>
+						<td><?php $this->load->view("clients_interface/includes/thematically");?></td>
 					</tr>
 					<tr>
 						<td>CMS:</td>
@@ -133,6 +130,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#subject [value='<?=$platform['subject'];?>']").attr("selected", "selected");
+			$("#subject").attr("disabled","disabled");
 			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
 			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
 			$("#amount [value='<?=$platform['amount'];?>']").attr("selected", "selected");

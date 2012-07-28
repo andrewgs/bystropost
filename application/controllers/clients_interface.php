@@ -24,6 +24,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdfillup');
 		$this->load->model('mdwebmarkets');
 		$this->load->model('mdlog');
+		$this->load->model('mdthematic');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -534,13 +535,102 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
-				$id = $this->mdwebmarkets->insert_record($this->user['uid'],$_POST);
-				if($id):
-					if($_POST['loading'] != '9846' || empty($_POST['loading'])):
-						//загрузка по апи площадок
+				if($_POST['loading'] != '9846' || empty($_POST['loading'])):
+					//Добавление нового акаунта
+					$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
+					$market_id = $this->API('AddNewAccount',$param);
+					if($market_id['id']):
+						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
+						if($id):
+							$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
+							$this->session->set_userdata('msgs','Запись создана успешно');
+						endif;
+						//Получить список сайтов аккаунта с настройками сайтов
+						$param = 'birzid='.$_POST['market'].'&accid='.$market_id['id'];
+						$platforms = $this->API('GetSitesFromAccount',$param);
+						$i = 0;
+						foreach($platforms as $key => $value):
+							$pl_data[$i] = $value;
+							$pl_data[$i]['id'] = $key;
+							$i++;
+						endforeach;
+						for($i=0;$i<count($pl_data);$i++):
+							$new_platform['id'] = $pl_data[$i]['id'];
+							$new_platform['webmaster'] = $this->user['uid'];
+							$new_platform['manager'] = 0;
+							$new_platform['url'] = $pl_data[$i]['url'];
+							$new_platform['subject'] = $pl_data[$i]['tematic'];
+							$new_platform['cms'] = '';
+							$new_platform['adminpanel'] = $pl_data[$i]['adminurl'];
+							$new_platform['aplogin'] = $pl_data[$i]['cms_login'];
+							$new_platform['appassword'] = $pl_data[$i]['cms_pass'];
+							$new_platform['amount'] = 1;
+							$new_platform['reviews'] = 1;
+							$new_platform['thematically'] = 1;
+							$new_platform['illegal'] = 0;
+							$new_platform['criteria'] = '';
+							$new_platform['requests'] = '';
+							$new_platform['tic'] = 0;
+							$new_platform['pr'] = 0;
+							$new_platform['ccontext'] = 0;
+							$new_platform['mcontext'] = 0;
+							$new_platform['cnotice'] = 0;
+							$new_platform['mnotice'] = 0;
+							$new_platform['creview'] = 0;
+							$new_platform['mreview'] = 0;
+							$new_platform['cnews'] = 0;
+							$new_platform['mnews'] = 0;
+							$new_platform['clinkpic'] = 0;
+							$new_platform['mlinkpic'] = 0;
+							$new_platform['cpressrel'] = 0;
+							$new_platform['mpressrel'] = 0;
+							$new_platform['clinkarh'] = 0;
+							$new_platform['mlinkarh'] = 0;
+							$new_platform['price'] = 0;
+							$new_platform['locked'] = 0;
+							$new_platform['status'] = 1;
+							if(!$this->mdplatforms->exist_platform($new_platform['url'])):
+								$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
+								if($platform):
+									$addtic = 0;
+									$pr = $this->getpagerank($new_platform['url']);
+									$this->mdplatforms->update_field($platform,'pr',$pr);
+									$tic = $this->getTIC('http://'.$new_platform['url']);
+									$this->mdplatforms->update_field($platform,'tic',$tic);
+									if($tic >= 50):
+										$addtic = 5;
+									endif;
+									$sqlquery = "UPDATE platforms SET ";
+									$works = $this->mdtypeswork->read_records();
+									for($j=0;$j<count($works);$j++):
+										$wadd=$madd=$addtic;
+										$arr_works = array(1,2,4,5);
+										if(in_array($works[$j]['id'],$arr_works)):
+											switch($new_platform['amount']):
+												case 1 : $wadd += 0; $madd += 0; break;
+												case 2 : $wadd += 11; $madd += 9; break;
+												case 3 : $wadd += 23; $madd += 18; break;
+											endswitch;
+										endif;
+										$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+										if(isset($works[$j+1])):
+											$sqlquery .= ', ';
+										endif;
+									endfor;
+									$sqlquery .= ' WHERE platforms.id = '.$platform;
+									$this->mdplatforms->run_query($sqlquery);
+								endif;
+							else:
+								continue;
+							endif;
+							unset($new_platform);
+							$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+						endfor;
+						$msgs = $this->session->userdata('msgs');
+						$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы');
+					else:
+						$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
 					endif;
-					$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
-					$this->session->set_userdata('msgs','Запись создана успешно');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -577,7 +667,7 @@ class Clients_interface extends CI_Controller{
 			else:
 				$this->session->set_userdata('msgr','Запись не удалено');
 			endif;
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect('webmaster-panel/actions/markets');
 		else:
 			show_404();
 		endif;
@@ -907,6 +997,7 @@ class Clients_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'markets'		=> $this->mdmarkets->read_records(),
+					'thematic'		=> $this->mdthematic->read_records(),
 					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Убедительная просьба тщательно заполнить все поля представленные ниже. Чем больше вы дадите нам информации, тем меньше ошибок будет совершено при публикации.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -1028,6 +1119,7 @@ class Clients_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'platform'		=> $this->mdplatforms->read_record($platform),
 					'markets'		=> $this->mdmarkets->read_records(),
+					'thematic'		=> $this->mdthematic->read_records(),
 					'mymarkets'		=> $this->mdmkplatform->read_records_by_platform($platform,$this->user['uid']),
 					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -1064,6 +1156,36 @@ class Clients_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
+				if($result):
+					$addtic = 0;
+					$pr = $this->getpagerank($_POST['url']);
+					$this->mdplatforms->update_field($platform,'pr',$pr);
+					$tic = $this->getTIC('http://'.$_POST['url']);
+					$this->mdplatforms->update_field($platform,'tic',$tic);
+					if($tic >= 50):
+						$addtic = 5;
+					endif;
+					$sqlquery = "UPDATE platforms SET ";
+					$works = $this->mdtypeswork->read_records();
+					for($i=0;$i<count($works);$i++):
+						$wadd=$madd=$addtic;
+						$arr_works = array(1,2,4,5);
+						if(in_array($works[$i]['id'],$arr_works)):
+							switch($_POST['amount']):
+								case 1 : $wadd += 0; $madd += 0; break;
+								case 2 : $wadd += 11; $madd += 9; break;
+								case 3 : $wadd += 23; $madd += 18; break;
+							endswitch;
+						endif;
+						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$wadd).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$madd);
+						if(isset($works[$i+1])):
+							$sqlquery .= ', ';
+						endif;
+					endfor;
+					$sqlquery .= ' WHERE platforms.id = '.$platform;
+					$this->mdplatforms->run_query($sqlquery);
+				endif;
+				
 				$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
 				$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
@@ -1446,7 +1568,7 @@ class Clients_interface extends CI_Controller{
 		return preg_replace($pattern, $replacement,$field);
 	}
 
-	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/
+	/******************************************************** Расчет парсинга ПР и ТИЦ ******************************************************/
 	
 	public function StrToNum($Str, $Check, $Magic){
 	
@@ -1546,5 +1668,30 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		return $cy;
+	}
+	
+	/******************************************************** Функции API *******************************************************************/
+	
+	private function API($action,$param){
+	
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>$action,'param'=>$param);
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
+		curl_setopt($ch,CURLOPT_POST,1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch,CURLOPT_TIMEOUT,30);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		 if($data!==false):
+			$res = json_decode($data, true);
+			if((int)$res['status']==1):
+				return $res['data'];
+			else:
+				return FALSE;
+			endif;
+		else:
+			return FALSE;
+		endif;
 	}
 }

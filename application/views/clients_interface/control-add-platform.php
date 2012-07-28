@@ -26,12 +26,10 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
-	<script src="<?=$baseurl;?>javascript/jquery.megaselectlist.js"></script>
 	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script src="<?=$baseurl;?>javascript/scrollto-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#subject").megaselectlist({animate:true,animateevent:"click"});
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#addMarket").click(function(event){
 				var err = false;
@@ -43,10 +41,6 @@
 						err = true;
 					}
 				});
-				if($("#subject").val() == 0){
-					$("#mgselect").css('background-color','#ff8080');
-					err = true;
-				}
 				if(err){
 					event.preventDefault();
 					$.scrollTo(0,500);

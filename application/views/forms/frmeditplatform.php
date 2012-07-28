@@ -5,11 +5,8 @@
 			<td><input name="url" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
 		</tr>
 		<tr>
-			<td>Тематика площадки:<br/>(сменить не возможно)</td>
-			<td style="text-align:left;"><span id="tsbj" style="margin-left: 20px;"></span></td>
-			<div style="display:none;">
-				<?php $this->load->view("clients_interface/includes/thematically");?>
-			</div>
+			<td>Тематика площадки:</td>
+			<td><?php $this->load->view("clients_interface/includes/thematically");?></td>
 		</tr>
 		<tr>
 			<td>Укажите вашу CMS:</td>
@@ -57,8 +54,9 @@
 			<td>Объем знаков: </td>
 			<td>
 				<select name="amount" id="amount" class="reg-form-input w195 h35">
-					<option value="1" >от 1000-1500 – 23 руб.</option>
-					<option value="2" >от 1500-2000 – 30 руб.</option>
+					<option value="1" >от 1000 до 1499 +0 руб</option>
+					<option value="2" >от 1500 до 1999 +11 руб</option>
+					<option value="3" >от 2000 до 2500 +23 руб</option>
 				</select>
 			</td>
 		</tr>

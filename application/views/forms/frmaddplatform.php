@@ -4,11 +4,10 @@
 			<td width="200">URL площадки:</td>
 			<td><input name="url" class="reg-form-input w660 inpval" id="domen" type="text" size="80" value="" placeholder="Введите URL прощадки"></td>
 		</tr>
-	</table>
-	<div class="clear"></div>
-	<?php $this->load->view("clients_interface/includes/thematically");?>
-	
-	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
+		<tr>
+			<td width="200">Выберите тематику:</td>
+			<td><?php $this->load->view("clients_interface/includes/thematically");?></td>
+		</tr>
 		<tr>
 			<td>Укажите вашу CMS:</td>
 			<td><input name="cms" class="reg-form-input w660 inpval" type="text" size="80" value="" placeholder="Укажите название CMS (если используете)"></td>

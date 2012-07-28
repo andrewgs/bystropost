@@ -36,7 +36,7 @@ class Mdmarkets extends CI_Model{
 	function read_records(){
 		
 		$this->db->select('id,title,url');
-		$this->db->order_by('title');
+		$this->db->order_by('id');
 		$query = $this->db->get('markets');
 		$data = $query->result_array();
 		if(count($data)) return $data;

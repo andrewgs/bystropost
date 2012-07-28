@@ -49,7 +49,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var mID = 0;
-			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);});
+			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);$(".inpval").val('');$("#loading").val('');});
 			$(".deleteMarket").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
 			$("#DelMarket").click(function(){location.href='<?=$baseurl;?>webmaster-panel/actions/markets/delete/marketid/'+mID;});
 		});

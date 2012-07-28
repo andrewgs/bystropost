@@ -12,8 +12,9 @@ class Mdwebmarkets extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($webmaster,$data){
+	function insert_record($market,$webmaster,$data){
 			
+		$this->id			= $market;
 		$this->webmaster	= $webmaster;
 		$this->market 		= $data['market'];
 		$this->login		= $data['login'];
