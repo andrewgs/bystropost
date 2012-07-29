@@ -409,7 +409,7 @@ class Managers_interface extends CI_Controller{
 				endfor;
 			endfor;
 			$this->mdlog->insert_record($this->user['uid'],'Событие №23: Произведена загрузка выполненных заданий. '.$kol.' записей');
-			$this->session->set_userdata('msgs',$msgs.'Выполненные работы импортированы');
+			$this->session->set_userdata('msgs',$msgs.'Выполненные работы импортированы. '.$kol.' записей');
 			redirect('manager-panel/actions/control');
 		endif;
 	}

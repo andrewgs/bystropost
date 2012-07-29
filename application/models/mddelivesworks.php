@@ -211,4 +211,13 @@ class Mddelivesworks extends CI_Model{
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
+
+	function calc_summ($field,$data,$status){
+		
+		$query = "SELECT SUM($field) AS sum,COUNT($field) AS cnt FROM delivesworks WHERE date >= '$data' AND status = $status";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
 }

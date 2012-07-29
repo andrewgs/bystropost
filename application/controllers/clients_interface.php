@@ -1184,10 +1184,50 @@ class Clients_interface extends CI_Controller{
 					endfor;
 					$sqlquery .= ' WHERE platforms.id = '.$platform;
 					$this->mdplatforms->run_query($sqlquery);
+					
+					if($pagevar['platform']['manager']):
+						$text = "Информация о площадке изменена. Проверьте свой E-mail что бы увидеть изменения";
+						$this->mdmessages->insert_record($this->user['uid'],$pagevar['platform']['manager'],$text);
+						
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($pagevar['platform']['manager'],'fio');?></strong></p>
+						<p>Вебмастер изменил информацию о площадке: <?=$this->mdplatforms->read_field($pagevar['platform']['manager'],'url');?><br/>
+						Что изменилось (Было - Сейчас):</p>
+						<p>URL: <?=$pagevar['platform']['url'].' - '.$_POST['url'];?><br/>
+						Тематика: <?=$pagevar['platform']['subject'].' - '.$_POST['subject'];?><br/>
+						CMS: <?=$pagevar['platform']['cms'].' - '.$_POST['cms'];?><br/>
+						URL админки: <?=$pagevar['platform']['adminpanel'].' - '.$_POST['adminpanel'];?><br/>
+						Логин к админке: <?=$pagevar['platform']['aplogin'].' - '.$_POST['aplogin'];?><br/>
+						Пароль к админке: <?=$pagevar['platform']['appassword'].' - '.$_POST['appassword'];?><br/>
+						Диапазон знаков: <?=$pagevar['platform']['amount'].' - '.$_POST['amount'];?><br/>
+						Обзоры: <?=($pagevar['platform']['reviews'] == 1)?'да':'нет';?> - <?=($_POST['reviews'] == 1)?'да':'нет';?><br/>
+						Тематичность: <?=($pagevar['platform']['thematically'] == 1)?'да':'нет';?> - <?=($_POST['thematically'] == 1)?'да':'нет';?><br/>
+						Размещать задания которые противоречат законам РФ: <?=($pagevar['platform']['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?> - <?=($_POST['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?></p>
+						<p>Критерии к публикации:<br/> <br/><?=$pagevar['platform']['criteria'].'<br/><br/>'.$_POST['criteria'];?></p>
+						<p>Пожелания :<br/> <br/><?=$pagevar['platform']['requests'].'<br/><br/>'.$_POST['requests'];?></p>
+						
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($pagevar['platform']['manager'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Изменения по площадке.');
+						$this->email->message($mailtext);	
+						$this->email->send();
+					endif;
+					$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
+					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				endif;
-				
-				$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
-				$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
