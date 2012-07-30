@@ -4,7 +4,7 @@
 			<li class="nav-header">Списки</li>
 			<li num="users"><?=anchor('admin-panel/management/users/all','Список пользователей');?></li>
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Список площадок');?></li>
-			<li num="markets"><?=anchor('admin-panel/management/markets','Список биржи');?></li>
+			<li num="markets"><?=anchor('admin-panel/management/markets','Список бирж');?></li>
 			<li num="services"><?=anchor('admin-panel/management/services','Список доп.услуг');?></li>
 			<li num="types-of-work"><?=anchor('admin-panel/management/types-of-work','Типы работ');?></li>
 			<li num="ratings"><?=anchor('admin-panel/management/ratings/advertisers','Отзывы о системе');?></li>

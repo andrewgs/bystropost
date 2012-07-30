@@ -23,8 +23,10 @@ class Mddelivesworks extends CI_Model{
 	}
 	
 	function insert_record($webmaster,$platform,$manager,$wprice,$mprice,$data){
-			
-		$this->remoteid 	= $data['id'];
+	
+		if(isset($data['id'])):
+			$this->remoteid 	= $data['id'];
+		endif;
 		$this->webmaster 	= $webmaster;
 		$this->platform 	= $platform;
 		$this->manager 		= $manager;
@@ -58,6 +60,15 @@ class Mddelivesworks extends CI_Model{
 	}
 	
 	function read_records_webmaster($webmaster){
+		
+		$this->db->where('webmaster',$webmaster);
+		$query = $this->db->get('delivesworks');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_records_webmaster_status($webmaster,$status){
 		
 		$this->db->where('webmaster',$webmaster);
 		$query = $this->db->get('delivesworks');
@@ -172,6 +183,14 @@ class Mddelivesworks extends CI_Model{
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}
+	
+	function update_status_ones($uid,$id){
+		
+		$curdate = date("Y-m-d");
+		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE id = $id AND webmaster = $uid";
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
 
 	function count_records_by_platform_status($platform,$status){
 		
@@ -217,7 +236,22 @@ class Mddelivesworks extends CI_Model{
 		$query = "SELECT SUM($field) AS sum,COUNT($field) AS cnt FROM delivesworks WHERE date >= '$data' AND status = $status";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
-		if(isset($data[0])) return $data[0];
-		return NULL;
+		if($data[0]['sum'] == NULL): 
+			$data[0]['sum'] = 0;
+			return $data[0];
+		endif;
+		return $data[0];
+	}
+	
+	function calc_webmaster_summ($uid,$data,$status){
+		
+		$query = "SELECT SUM(wprice) AS sum,COUNT(wprice) AS cnt FROM delivesworks WHERE date >= '$data' AND status = $status AND webmaster = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if($data[0]['sum'] == NULL): 
+			$data[0]['sum'] = 0;
+			return $data[0];
+		endif;
+		return $data[0];
 	}
 }

@@ -15,8 +15,8 @@
 				<?php $this->load->view('alert_messages/alert-success');?>
 				
 				<?=form_open('https://merchant.webmoney.ru/lmi/payment.asp',array('class'=>'form-horizontal')); ?>
-					<input type="hidden" name="LMI_PAYEE_PURSE" value="R239187174514">
-					<input type="hidden" name="LMI_PAYMENT_DESC" value="Попобление баланса на Bystropost.ru">
+					<input type="hidden" name="LMI_PAYEE_PURSE" value="R135034329557">
+					<input type="hidden" name="LMI_PAYMENT_DESC" value="Recharge to the balance Bystropost.ru">
 					<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="<?=$this->session->userdata('balance');?>">
 					<input type="hidden" name="LMI_PAYER_PURSE" value="<?=$this->session->userdata('purse');?>">
 					<input type="hidden" name="LMI_PAYER_WM" value="<?=$wmid;?>">

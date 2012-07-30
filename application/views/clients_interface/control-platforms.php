@@ -59,7 +59,7 @@
 									<?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?>
 								</center>
 							</td>
-							<td class="w85 ttpl"><center><nobr><?=anchor('#','0 / 0');?></nobr></center></td>
+							<td class="w85"><center><nobr><?=anchor('webmaster-panel/actions/finished-jobs/platform/platformid/'.$platforms[$i]['id'],$platforms[$i]['torders'].' / <b>'.$platforms[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?></nobr></center></td>
 							<td class="w85"><center><nobr><?=$platforms[$i]['date'];?></nobr></center></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['locked'] && !$userinfo['lock']):?>

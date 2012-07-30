@@ -107,7 +107,7 @@
 			$("td[data-noowner='noowner']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
-			$(".calc").click(function(){$("#mscalculation").show();});
+			$(".calc").click(function(){$(".alert ").hide();$("#mscalculation").show();});
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");

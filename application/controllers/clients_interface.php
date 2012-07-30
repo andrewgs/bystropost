@@ -488,7 +488,11 @@ class Clients_interface extends CI_Controller{
 		for($i=0;$i<count($pagevar['services']);$i++):
 			$values[$i]= $pagevar['services'][$i]['price'];
 		endfor;
-		$pagevar['minprice'] = min($values);
+		if(count($values)):
+			$pagevar['minprice'] = min($values);
+		else:
+			$pagevar['minprice'] = 0;
+		endif;
 		unset($values);
 		
 		for($i=0;$i<count($pagevar['attached']);$i++):
@@ -592,18 +596,21 @@ class Clients_interface extends CI_Controller{
 							if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 								$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 								if($platform):
-									$addtic = 0;
+									$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
+									$addwtic = $addmtic = 0;
 									$pr = $this->getpagerank($new_platform['url']);
 									$this->mdplatforms->update_field($platform,'pr',$pr);
 									$tic = $this->getTIC('http://'.$new_platform['url']);
 									$this->mdplatforms->update_field($platform,'tic',$tic);
-									if($tic >= 50):
-										$addtic = 5;
+									if($tic >= 30):
+										$addwtic = 5;
+										$addmtic = 2;
 									endif;
 									$sqlquery = "UPDATE platforms SET ";
 									$works = $this->mdtypeswork->read_records();
 									for($j=0;$j<count($works);$j++):
-										$wadd=$madd=$addtic;
+										$wadd = $addwtic;
+										$madd = $addmtic;
 										$arr_works = array(1,2,4,5);
 										if(in_array($works[$j]['id'],$arr_works)):
 											switch($new_platform['amount']):
@@ -794,7 +801,6 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_finished_jobs(){
 		
-		$from = intval($this->uri->segment(5));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -805,12 +811,31 @@ class Clients_interface extends CI_Controller{
 					'cntunit'		=> array(),
 					'pages'			=> array(),
 					'minprice'		=> 0,
-					'delivers'		=> $this->mdunion->delivers_works_webmaster($this->user['uid'],10,$from),
+					'total'			=> $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0),
+					'delivers'		=> array(),
+					'view'			=> FALSE,
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		if($this->uri->segment(6)):
+			if(!$this->mdplatforms->ownew_platform($this->user['uid'],$this->uri->segment(6))):
+				redirect($_SERVER['HTTP_REFERER']);
+			endif;
+			$from = intval($this->uri->segment(8));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),10,intval($this->uri->segment(8)));
+			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6));
+			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/platform/platformid/'.$this->uri->segment(6).'/from/';
+			$config['uri_segment'] 	= 8;
+		else:
+			$from = $this->uri->segment(5);
+			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],10,intval($this->uri->segment(5)));
+			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid']);
+			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
+			$config['uri_segment'] 	= 5;
+		endif;
 		
 		if($this->input->post('submit')):
 			unset($_POST['submit']);
@@ -865,6 +890,8 @@ class Clients_interface extends CI_Controller{
 		endfor;
 		if(count($values)):
 			$pagevar['minprice'] = min($values);
+		else:
+			$pagevar['minprice'] = 0;
 		endif;
 		unset($values);
 		if($this->loginstatus['status']):
@@ -877,9 +904,7 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
-		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_delivers_works_webmaster($this->user['uid']);
+		$config['total_rows'] 	= $count;
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
@@ -909,6 +934,37 @@ class Clients_interface extends CI_Controller{
 		endfor;
 		
 		$this->load->view("clients_interface/control-finished-jobs",$pagevar);
+	}
+	
+	public function control_pay_all(){
+		
+		$balance = $this->mdusers->read_field($this->user['uid'],'balance');
+		if($balance == 0):
+			$this->session->set_userdata('msgr','Ошибка. У Вас нулевой баланс. Необходимо пополнить счет');
+			redirect('webmaster-panel/actions/finished-jobs');
+		endif;
+		$works = $this->mddelivesworks->read_records_webmaster_status($this->user['uid'],0);
+		for($i=0;$i<count($works);$i++):
+			if($balance < $works[$i]['wprice']):
+				continue;
+			endif;
+			$result = $this->mdusers->change_user_balance($this->user['uid'],-$works[$i]['wprice']);
+			if($result):
+				$balance = $balance - $works[$i]['wprice'];
+				$this->mddelivesworks->update_status_ones($this->user['uid'],$works[$i]['id']);
+				if($works[$i]['manager']):
+					$this->mdusers->change_user_balance($works[$i]['manager'],$works[$i]['mprice']);
+				endif;
+				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
+				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice']); // Запись о том что перечислены деньги админу с указанием суммы
+			endif;
+		endfor;
+		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
+		$message = 'Спасибо за оплату.';
+		if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
+			$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
+		endif;
+		redirect('webmaster-panel/actions/finished-jobs');
 	}
 	
 	/******************************************************** platforms ******************************************************/	
@@ -983,6 +1039,8 @@ class Clients_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
+			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
+			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
 		endfor;
 		$this->load->view("clients_interface/control-platforms",$pagevar);
 	}
@@ -1045,18 +1103,20 @@ class Clients_interface extends CI_Controller{
 					$this->mdplatforms->update_field($platform,'manager',$manager);
 				endif;
 				if($platform):
-					$addtic = 0;
+					$addwtic = $addmtic = 0;
 					$pr = $this->getpagerank($_POST['url']);
 					$this->mdplatforms->update_field($platform,'pr',$pr);
 					$tic = $this->getTIC('http://'.$_POST['url']);
 					$this->mdplatforms->update_field($platform,'tic',$tic);
-					if($tic >= 50):
-						$addtic = 5;
+					if($tic >= 30):
+						$addwtic = 5;
+						$addmtic = 2;
 					endif;
 					$sqlquery = "UPDATE platforms SET ";
 					$works = $this->mdtypeswork->read_records();
 					for($i=0;$i<count($works);$i++):
-						$wadd=$madd=$addtic;
+						$wadd = $addwtic;
+						$madd = $addmtic;
 						$arr_works = array(1,2,4,5);
 						if(in_array($works[$i]['id'],$arr_works)):
 							switch($_POST['amount']):

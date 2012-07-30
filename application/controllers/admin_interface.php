@@ -1332,7 +1332,17 @@ class Admin_interface extends CI_Controller{
 		
 		$platforms = $this->mdplatforms->read_urls();
 		for($i=0;$i<count($platforms);$i++):
-			$this->mdplatforms->update_field($platforms[$i]['id'],'tic',$this->getTIC('http://'.$platforms[$i]['url']));
+			$oldtic = $this->mdplatforms->read_field($platforms[$i]['id'],'tic');
+			$tic = $this->getTIC('http://'.$platforms[$i]['url']);
+			$this->mdplatforms->update_field($platforms[$i]['id'],'tic',$tic);
+			if($oldtic != $tic):
+				if($oldtic< 30 AND $tic >= 30):
+					$addwtic = 5;
+					$addmtic = 2;
+				endif;
+				$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,creview=creview+$addwtic,mreview=mreview+$addmtic,cnews=cnews+$addwtic,mnews=mnews+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+				$this->mdplatforms->run_query($sqlquery);
+			endif;
 		endfor;
 		$this->session->set_userdata('msgs','Яндекс тИЦ успешно вычислен');
 		redirect('admin-panel/management/platforms');

@@ -11,6 +11,12 @@
 					<li class="active">
 						<?=anchor("webmaster-panel/actions/finished-jobs","Готовые задания");?>
 					</li>
+					<li style="float:right;">
+						<?=anchor('webmaster-panel/actions/finished-jobs/pay-all','Оплатить все',array('class'=>'btn btn-info payall','style'=>'margin-top: -5px;'));?>
+					</li>
+					<li style="float:right;">
+						Сумма к оплате: <?=$total['sum'];?>.00 руб&nbsp;&nbsp;
+					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
@@ -54,7 +60,7 @@
 							<?php endif;?>
 						<?php else:?>
 							<td class="w100" style="text-align:center; vertical-align:middle;" data-status="paid">
-								<nobr><?=$delivers[$i]['mprice'];?> руб.</nobr>
+								<nobr><?=$delivers[$i]['wprice'];?> руб.</nobr>
 							</td>
 						<?php endif;?>
 						</tr>
@@ -108,7 +114,7 @@
 				$(this).addClass('alert alert-saccess'); $(this).siblings('td').addClass('alert alert-saccess');
 			});
 		<?php if($userinfo['balance'] >= $minprice):?>
-			
+			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false;});
 			var balance = <?=$userinfo['balance'];?>;
 			var tprice = 0;
 			$("#ValidWork").removeAttr('checked').attr('disabled','disabled');
