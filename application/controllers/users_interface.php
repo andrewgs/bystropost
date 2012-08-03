@@ -26,13 +26,18 @@ class Users_interface extends CI_Controller{
 	public function index(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами',
+			'title'			=> 'Быстропост - система автоматической монетизации',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
+			'statistic'		=> array(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
+		$this->load->model('mdplatforms');
+		$pagevar['statistic']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['statistic']['users'] = $this->mdusers->count_all();
+		
 		$this->load->view("users_interface/index",$pagevar);
 	}
 	
@@ -65,7 +70,7 @@ class Users_interface extends CI_Controller{
 		endif;
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Восстановление пароля',
+			'title'			=> 'Быстропост - система автоматической монетизации | Восстановление пароля',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -103,7 +108,7 @@ class Users_interface extends CI_Controller{
 					
 					$this->email->initialize($config);
 					$this->email->to($user['login']);
-					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
 					$this->email->bcc('');
 					$this->email->subject('Данные для доступа к профилю');
 					$this->email->message($mailtext);	
@@ -125,7 +130,7 @@ class Users_interface extends CI_Controller{
 		endif;
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Восстановление пароля',
+			'title'			=> 'Быстропост - система автоматической монетизации | Восстановление пароля',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -144,14 +149,23 @@ class Users_interface extends CI_Controller{
 	public function markets_catalog(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Каталог бирж',
+			'title'			=> 'Быстропост - система автоматической монетизации | Каталог бирж | ',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
-		$this->load->view("users_interface/markets-catalog",$pagevar);
+		switch ($this->uri->segment(2)):
+			case 'gogetlinks' : $pagevar['title'] .='gogetlinks'; $this->load->view("users_interface/markets/market-gogetlinks",$pagevar); break;
+			case 'miralinks' : $pagevar['title'] .='miralinks'; $this->load->view("users_interface/markets/market-miralinks",$pagevar); break;
+			case 'getgoodlinks' : $pagevar['title'] .='getgoodlinks'; $this->load->view("users_interface/markets/market-getgoodlinks",$pagevar); break;
+			case 'blogcash' : $pagevar['title'] .='blogcash.ru'; $this->load->view("users_interface/markets/market-blogcash",$pagevar); break;
+			case 'pr-sape-ru' : $pagevar['title'] .='pr.sape.ru'; $this->load->view("users_interface/markets/market-prsaperu",$pagevar); break;
+			case 'blogun' : $pagevar['title'] .='blogun.ru'; $this->load->view("users_interface/markets/market-blogun",$pagevar); break;
+			case 'rotapost' : $pagevar['title'] .='rotapost.ru'; $this->load->view("users_interface/markets/market-rotapost",$pagevar); break;
+			default : redirect('/');
+		endswitch;
 	}
 	
 	public function users_ratings(){
@@ -163,7 +177,7 @@ class Users_interface extends CI_Controller{
 		endswitch;
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Отзывы о системе',
+			'title'			=> 'Быстропост - система автоматической монетизации | Отзывы о системе',
 			'description'	=> '',
 			'author'		=> '',
 			'ratings'		=> $this->mdratings->read_records($rtype),
@@ -177,7 +191,7 @@ class Users_interface extends CI_Controller{
 	public function reading_rating(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Отзывы о системе',
+			'title'			=> 'Быстропост - система автоматической монетизации | Отзывы о системе',
 			'description'	=> '',
 			'author'		=> '',
 			'rating'		=> $this->mdratings->read_record($this->uri->segment(4)),
@@ -191,7 +205,7 @@ class Users_interface extends CI_Controller{
 	public function about(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | О проекте',
+			'title'			=> 'Быстропост - система автоматической монетизации | О проекте',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -204,7 +218,7 @@ class Users_interface extends CI_Controller{
 	public function webmasters(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Вебмастера',
+			'title'			=> 'Быстропост - система автоматической монетизации | Вебмастера',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -217,7 +231,7 @@ class Users_interface extends CI_Controller{
 	public function optimizers(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Оптимизаторам',
+			'title'			=> 'Быстропост - система автоматической монетизации | Оптимизаторам',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -230,7 +244,7 @@ class Users_interface extends CI_Controller{
 	public function regulations(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Правила',
+			'title'			=> 'Быстропост - система автоматической монетизации | Правила',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -243,7 +257,7 @@ class Users_interface extends CI_Controller{
 	public function support(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Поддержка',
+			'title'			=> 'Быстропост - система автоматической монетизации | Поддержка',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -256,7 +270,7 @@ class Users_interface extends CI_Controller{
 	public function faq(){
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Поддержка',
+			'title'			=> 'Быстропост - система автоматической монетизации | Поддержка',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -292,7 +306,7 @@ class Users_interface extends CI_Controller{
 		endswitch;
 		
 		$pagevar = array(
-				'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация пользователей',
+				'title'			=> 'Быстропост - система автоматической монетизации | Регистрация пользователей',
 				'description'	=> '',
 				'author'		=> '',
 				'baseurl' 		=> base_url(),
@@ -352,7 +366,7 @@ class Users_interface extends CI_Controller{
 				
 				$this->email->initialize($config);
 				$this->email->to($_POST['login']);
-				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+				$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
 				$this->email->bcc('');
 				$this->email->subject('Регистрация на Bystropost.ru');
 				$this->email->message($mailtext);	

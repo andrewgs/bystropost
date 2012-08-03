@@ -7,8 +7,8 @@
 				<tr>
 					<td width="100px" align=center><?=anchor('','Главная');?></td>
 					<td width="140px" align=center><?=anchor('about','О проекте');?><br/><?=anchor('users-ratings/advertisers','Отзывы');?></td>
-					<td width="135px" align=center><?=anchor('webmasters','Вебмастерам');?><br/><?=anchor('optimizers','Оптимизаторам');?></td>
-					<td width="155px" align=center><?=anchor('markets-catalog','Каталог бирж');?></td>
+					<td width="135px" align=center><?=anchor('webmasters','Вебмастерам');?></td>
+					<td width="155px" align=center><?=anchor('optimizers','Оптимизаторам');?></td>
 				</tr>
 			</table>
 			<div id="banner">

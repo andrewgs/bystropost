@@ -12,7 +12,7 @@ $route['optimizers']					= "users_interface/optimizers";
 $route['regulations']					= "users_interface/regulations";
 $route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
-$route['markets-catalog']				= "users_interface/markets_catalog";
+$route['markets-catalog/:any']			= "users_interface/markets_catalog";
 $route['users-ratings/advertisers']		= "users_interface/users_ratings";
 $route['users-ratings/webmasters']		= "users_interface/users_ratings";
 

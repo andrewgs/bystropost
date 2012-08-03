@@ -16,8 +16,8 @@
 					&nbsp;
 				</td>
 				<td width="315px" valign="top">
-					<span>Статистика</span><br><br>Сайтов:<br>9998<hr>Сайтов в каталоге DMOZ:<br>1915<hr>Сайтов в каталоге Яндекса:<br>2056<hr>
-					Пользователей:<br>92056
+					<span>Статистика</span><br><br>Сайтов:<br><?=$statistic['platforms'];?><hr>Сайтов в каталоге DMOZ:<br>1915<hr>Сайтов в каталоге Яндекса:<br>2056<hr>
+					Пользователей:<br><?=$statistic['users'];?>
 				</td>
 			</tr>
 			<tr>

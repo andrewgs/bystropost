@@ -291,6 +291,11 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function count_all(){
+		
+		return $this->db->count_all('platforms');
+	}
+	
 	function read_field($id,$field){
 			
 		$this->db->where('id',$id);

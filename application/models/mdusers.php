@@ -214,4 +214,9 @@ class Mdusers extends CI_Model{
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}
+	
+	function count_all(){
+		
+		return $this->db->count_all('users');
+	}
 }

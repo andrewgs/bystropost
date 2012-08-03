@@ -10,16 +10,15 @@
 		<span><i>Автоматизация работы в:</i></span>
 		<table border=0>
 			<tr>
-				<td><img src="<?=$baseurl;?>images/markets/goget.jpg"><a href="http://GoGetLinks.ru/" target="_blank">GoGetLinks</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/miralinks.jpg"><a href="http://Miralinks.ru/" target="_blank">Miralinks</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/getgood.jpg"><a href="http://GetGoodLinks.ru/" target="_blank">GetGoodLinks</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/blogcash.jpg"><a href="http://blogcash.ru/" target="_blank">blogcash.ru</a></td>
+				<td><img src="<?=$baseurl;?>images/markets/goget.jpg"><?=anchor('markets-catalog/gogetlinks','GoGetLinks');?></td>
+				<td><img src="<?=$baseurl;?>images/markets/miralinks.jpg"><?=anchor('markets-catalog/miralinks','Miralinks');?></td>
+				<td><img src="<?=$baseurl;?>images/markets/getgood.jpg"><?=anchor('markets-catalog/getgoodlinks','GetGoodLinks');?></td>
+				<td><img src="<?=$baseurl;?>images/markets/blogcash.jpg"><?=anchor('markets-catalog/blogcash','blogcash');?></td>
 			</tr>
 			<tr>
-				<td><img src="<?=$baseurl;?>images/markets/sape.jpg"><a href="http://pr.sape.ru/" target="_blank">pr.sape.ru</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/blogun.jpg"><a href="http://blogun.ru/" target="_blank">blogun.ru</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/rotapost.jpg"><a href="http://rotapost.ru/" target="_blank">rotapost.ru</a></td>
-				<td><img src="<?=$baseurl;?>images/markets/other.jpg"><a href="#" class="none">и другие</a></td>
+				<td><img src="<?=$baseurl;?>images/markets/sape.jpg"><?=anchor('markets-catalog/pr-sape-ru','pr.sape.ru');?></td>
+				<td><img src="<?=$baseurl;?>images/markets/blogun.jpg"><?=anchor('markets-catalog/blogun','blogun');?></td>
+				<td><img src="<?=$baseurl;?>images/markets/rotapost.jpg"><?=anchor('markets-catalog/rotapost','rotapost');?></td>
 			</tr>
 		</table>
 	</div>
