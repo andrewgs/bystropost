@@ -1495,7 +1495,7 @@ class Admin_interface extends CI_Controller{
 	
 	function actions_api(){
 		
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetOrderType','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);

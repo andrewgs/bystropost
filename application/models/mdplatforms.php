@@ -101,13 +101,11 @@ class Mdplatforms extends CI_Model{
 	
 	function update_record($id,$uid,$data){
 		
-		$this->db->set('url',$data['url']);
 		$this->db->set('subject',$data['subject']);
 		$this->db->set('cms',$data['cms']);
 		$this->db->set('adminpanel',$data['adminpanel']);
 		$this->db->set('aplogin',$data['aplogin']);
 		$this->db->set('appassword',$data['appassword']);
-		$this->db->set('amount',$data['amount']);
 		$this->db->set('reviews',$data['reviews']);
 		$this->db->set('thematically',$data['thematically']);
 		$this->db->set('illegal',$data['illegal']);

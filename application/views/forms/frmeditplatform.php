@@ -2,7 +2,7 @@
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
-			<td><input name="url" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
+			<td><input name="url" class="reg-form-input w660 inpval disabled" disabled="disabled" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
 		</tr>
 		<tr>
 			<td>Тематика площадки:</td>
@@ -46,14 +46,16 @@
 				<?php endfor;?>
 				</div>
 				<div class="clear"></div>
+			<?php if(!$userinfo['remote'] || $platform['manager'] != 2):?>
 				<input class="goog-button mt7 mb10" style="height: 30px;" id="btnAddMarketLine" type="button" value="Добавить аккаунт"/>
 				<input class="goog-button mt7 mb10" style="height: 30px;" id="btnDelMarketLine" type="button" value="Удалить аккаунт"/>
+			<?php endif;?>
 			</td>
 		</tr>
 		<tr>
 			<td>Объем знаков: </td>
 			<td>
-				<select name="amount" id="amount" class="reg-form-input w195 h35">
+				<select name="amount" id="amount" class="reg-form-input w195 h35 disabled" disabled="disabled">
 					<option value="1" >от 1000 до 1499 +0 руб</option>
 					<option value="2" >от 1500 до 1999 +11 руб</option>
 					<option value="3" >от 2000 до 2500 +23 руб</option>

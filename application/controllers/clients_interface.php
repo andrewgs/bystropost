@@ -575,6 +575,10 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
+		if(!$pagevar['cntunit']['platforms']):
+			redirect('webmaster-panel/actions/control');
+		endif;
+		
 		$this->load->view("clients_interface/control-services",$pagevar);
 	}
 	
@@ -614,15 +618,18 @@ class Clients_interface extends CI_Controller{
 				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
-					$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
-					if($id):
-						$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
-						$this->session->set_userdata('msgs','Запись создана успешно');
+					if(!$this->mdwebmarkets->exist_market($market_id['id'])):
+						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
+						if($id):
+							$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
+							$this->session->set_userdata('msgs','Запись создана успешно');
+						endif;
 					endif;
 					//Получить список сайтов аккаунта с настройками сайтов
 					$param = 'birzid='.$_POST['market'].'&accid='.$market_id['id'];
 					$platforms = $this->API('GetSitesFromAccount',$param);
 					$i = 0;
+					$pl_data = array();
 					foreach($platforms as $key => $value):
 						$pl_data[$i] = $value;
 						$pl_data[$i]['id'] = $key;
@@ -733,8 +740,6 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
-		
-		
 		if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
 			redirect('webmaster-panel/actions/control');
 		endif;
@@ -1129,7 +1134,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		if($pagevar['userinfo']['remote']):
-			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
 				redirect('webmaster-panel/actions/control');
 			endif;
 		else:
@@ -1453,11 +1458,11 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$markets = $this->mdwebmarkets->read_records($this->user['uid']);
-		for($i=0;$i<count($markets);$i++):
-			$param = 'birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$markets[$i]['password'];
+		for($m=0;$m<count($markets);$m++):
+			$param = 'birzid='.$markets[$m]['market'].'&login='.$markets[$m]['login'].'&pass='.$markets[$m]['password'];
 			$market_id = $this->API('AddNewAccount',$param);
 			if($market_id['id']):
-				$param = 'birzid='.$markets[$i]['market'].'&accid='.$market_id['id'];
+				$param = 'birzid='.$markets[$m]['market'].'&accid='.$market_id['id'];
 				$platforms = $this->API('GetSitesFromAccount',$param);
 				$i = 0;
 				foreach($platforms as $key => $value):
@@ -1470,6 +1475,9 @@ class Clients_interface extends CI_Controller{
 					$new_platform['webmaster'] = $this->user['uid'];
 					$new_platform['manager'] = 2;
 					$new_platform['url'] = $pl_data[$i]['url'];
+					if(!isset($new_platform['url']) || empty($new_platform['url'])):
+						continue;
+					endif;
 					$new_platform['subject'] = $pl_data[$i]['tematic'];
 					$new_platform['cms'] = $pl_data[$i]['cms'];
 					$new_platform['adminpanel'] = $pl_data[$i]['adminurl'];
@@ -1503,7 +1511,7 @@ class Clients_interface extends CI_Controller{
 					if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 						$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 						if($platform):
-							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password']);
+							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password']);
 							$addwtic = $addmtic = 0;
 							$pr = $this->getpagerank($new_platform['url']);
 							$this->mdplatforms->update_field($platform,'pr',$pr);
@@ -1536,8 +1544,8 @@ class Clients_interface extends CI_Controller{
 						endif;
 					else:
 						$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
-						if(!$this->mdmkplatform->exist_market_platform($platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password'])):
-							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password']);
+						if(!$this->mdmkplatform->exist_market_platform($platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password'])):
+							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password']);
 						endif;
 						continue;
 					endif;
@@ -1987,7 +1995,8 @@ class Clients_interface extends CI_Controller{
 	}
 	
 	public function getpagerank($url){
-
+		
+		$pagerank = 0;
 		$fp = fsockopen("toolbarqueries.google.com", 80, $errno, $errstr, 30);
 		if(!$fp):
 			
@@ -2002,7 +2011,7 @@ class Clients_interface extends CI_Controller{
 				$data = fgets($fp, 128);
 				$pos = strpos($data, "Rank_");
 				if($pos === false):
-				
+					
 				else:
 					$pagerank = substr($data, $pos + 9);
 				endif;

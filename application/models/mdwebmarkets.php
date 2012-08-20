@@ -78,4 +78,13 @@ class Mdwebmarkets extends CI_Model{
 		$this->db->delete('webmarkets');
 		return $this->db->affected_rows();
 	}
+
+	function exist_market($id){
+		
+		$this->db->where('id',$id);
+		$query = $this->db->get('webmarkets');
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
 }

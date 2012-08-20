@@ -54,13 +54,14 @@
 					}
 				});
 				if(err){
-						event.preventDefault();
-						$.scrollTo(0,500);
+					event.preventDefault();
+					$.scrollTo(0,500);
 				}
 			});
-			
+		<?php if(!$userinfo['remote'] || $platform['manager'] != 2):?>
 			$("#btnAddMarketLine").click(function(){var lastObj = $("div[list='MarketLine']:last");$(lastObj).after('<div list="MarketLine"></div>');lastObj = $("div[list='MarketLine']:last");$(lastObj).load("<?=$baseurl;?>views/market-profile",function(){var cnt = $("div[list='MarketLine']").size();if(cnt > 1) $("#btnDelMarketLine").show();});});
 			$("#btnDelMarketLine").click(function(){$("div[list='MarketLine']:last").remove();var cnt = $("div[list='MarketLine']").size();if(cnt <= 1) $("#btnDelMarketLine").hide();});
+		<?php endif;?>
 			$("#reset").click(function(){
 				window.location="<?=$baseurl;?>webmaster-panel/actions/platforms"
 			})
