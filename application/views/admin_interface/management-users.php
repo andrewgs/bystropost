@@ -40,13 +40,11 @@
 					<?php for($i=0;$i<count($users);$i++):?>
 						<tr class="align-center">
 							<td style="min-width:185px;">
-								<nobr><i><b><?=$users[$i]['login'];?></b></i><br/>
+								<nobr><i><b><?=anchor('admin-panel/management/users/profile/id/'.$users[$i]['id'],$users[$i]['login']);?></b></i><br/>
 								<?=$users[$i]['fio'];?><br/>
-								Телефон:<?=$users[$i]['phones'];?><br/>
-								Skype:<?=$users[$i]['skype'];?><br/>
-								ICQ:<?=$users[$i]['icq'];?>
+								<strong>(<?=$users[$i]['position'];?>)</strong><br/>
 							<?php if($users[$i]['manager']):?>	
-								<br/><br/><?=$users[$i]['manfio'];?><br/><i><b><?=$users[$i]['manemail'];?></b></i>
+								<br/><?=$users[$i]['manfio'];?><br/><i><b><?=$users[$i]['manemail'];?></b></i>
 							<?php endif;?>
 								</nobr>
 							</td>

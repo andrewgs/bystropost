@@ -9,7 +9,6 @@ $route['users/login']					= "users_interface/loginin";
 $route['about']							= "users_interface/about";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
-$route['regulations']					= "users_interface/regulations";
 $route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
 $route['markets-catalog/:any']			= "users_interface/markets_catalog";
@@ -36,6 +35,7 @@ $route['webmaster-panel/actions/markets']							= "clients_interface/control_mar
 $route['webmaster-panel/actions/markets/delete/marketid/:num']		= "clients_interface/control_delete_markets";
 
 $route['webmaster-panel/actions/platforms']							= "clients_interface/control_platforms";
+$route['webmaster-panel/actions/platforms/refresh-list']			= "clients_interface/control_platforms_refresh";
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
 
@@ -147,6 +147,8 @@ $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "ad
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
+
+$route['admin-panel/management/users/profile/id/:num']	= "admin_interface/management_users_profile";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
 
 $route['admin-panel/management/platforms']				= "admin_interface/management_platforms";
@@ -194,6 +196,3 @@ $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num']		= "admin_inte
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from/:num']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_interface/control_delete_msg_ticket";
-
-/*************************************************** 	ADMINS INTRERFACE API *****************************************/
-$route['admin-panel/actions/api/executing-ones-api'] = "admin_interface/actions_exec_onew";

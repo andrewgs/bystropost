@@ -11,9 +11,15 @@
 					<li class="active">
 						<?=anchor("webmaster-panel/actions/platforms","Все площадки");?>
 					</li>
+					<li style="float:right;">
+						<?=anchor('webmaster-panel/actions/platforms/refresh-list','Обновить список',array('class'=>'btn btn-info refresh','style'=>'margin-top: -5px;'));?>
+					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
+				<div class="alert alert-info" id="msrefresh" style="display:none;">
+					<h3>Ожидайте!</h3>Производится построение списка площадок. Это может занять некоторое время...
+				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -77,7 +83,9 @@
 					<?php endfor; ?>
 					</tbody>
 				</table>
-				<?=anchor('webmaster-panel/actions/platforms/add-platform','Добавить площадку',array('class'=>'btn btn-info'));?>
+		<?php if(!$userinfo['remote']):
+			echo anchor('webmaster-panel/actions/platforms/add-platform','Добавить площадку',array('class'=>'btn btn-info'));
+		endif;?>
 			</div>
 		<?php $this->load->view("clients_interface/includes/rightbar");?>
 		<?php $this->load->view('clients_interface/modal/clients-edit-platform');?>
@@ -94,7 +102,7 @@
 			$("td[data-locked='locked']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
-			
+			$(".refresh").click(function(){$(".alert ").hide();$("#msrefresh").show();});
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");
 				var	status = $("div[id = params"+Param+"]").attr("data-status");

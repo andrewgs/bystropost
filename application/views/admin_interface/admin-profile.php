@@ -8,7 +8,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor('admin-panel/actions/profile','Профиль');?>
+						<?=anchor($this->uri->uri_string(),'Профиль');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -50,7 +50,7 @@
 					}
 				}
 			});
-			$("#reset").click(function(){window.location="<?=$baseurl;?>admin-panel/management/platforms"});
+			$("#reset").click(function(){window.location="<?=$baseurl;?><?=$this->session->userdata('backpath');?>"});
 		});
 	</script>
 </body>

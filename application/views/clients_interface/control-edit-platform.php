@@ -32,6 +32,7 @@
 		$(document).ready(function(){
 			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#subject [value='<?=$platform['subject'];?>']").attr("selected", "selected");
+			$("#cms [value='<?=$platform['cms'];?>']").attr("selected", "selected");
 			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
 			$("#amount [value='<?=$platform['amount'];?>']").attr("selected", "selected");
 			$("#reviews [value='<?=$platform['reviews'];?>']").attr("selected", "selected");

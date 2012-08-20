@@ -89,6 +89,18 @@ class Mdmkplatform extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function exist_market_platform($platform,$market,$login,$password){
+		
+		$this->db->where('market',$market);
+		$this->db->where('platform',$platform);
+		$this->db->where('login',$login);
+		$this->db->where('password',$password);
+		$query = $this->db->get('mkplatform');
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+	
 	function delete_records_by_platform($platform,$uid){
 	
 		$this->db->where('platform',$platform);

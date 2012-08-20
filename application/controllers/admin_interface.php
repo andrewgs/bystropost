@@ -2,7 +2,7 @@
 
 class Admin_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'');
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','balance'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -23,6 +23,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdservices');
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
+		$this->load->model('mdcms');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -33,6 +34,7 @@ class Admin_interface extends CI_Controller{
 					$this->user['ulogin'] 		= $userinfo['login'];
 					$this->user['uname'] 		= $userinfo['fio'];
 					$this->user['utype'] 		= $userinfo['type'];
+					$this->user['balance'] 		= $userinfo['balance'];
 					$this->loginstatus['status']= TRUE;
 				else:
 					redirect('');
@@ -273,23 +275,23 @@ class Admin_interface extends CI_Controller{
 		$from = intval($this->uri->segment(6));
 		switch ($this->uri->segment(4)):
 			case 'webmasters' 	:	$pagevar['title'] .= 'Группа "Вебмастера"';
-									$pagevar['users'] = $this->mdunion->read_users_group_webmasters(5,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_webmasters(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_webmasters();
 									break;
 			case 'optimizators' :	$pagevar['title'] .= 'Группа "Оптимизаторы"';
-									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(5,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_optimizators();
 									break;
 			case 'manegers' 	:	$pagevar['title'] .= 'Группа "Менеджеры"';
-									$pagevar['users'] = $this->mdunion->read_users_group_manegers(5,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_manegers(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_manegers();
 									break;
 			case 'admin' 		:	$pagevar['title'] .= 'Группа "Администраторы"';
-									$pagevar['users'] = $this->mdunion->read_users_group_admin(5,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_admin(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_admin();
 									break;
 			default 			:	$pagevar['title'] .= 'Все группы';
-									$pagevar['users'] = $this->mdunion->read_users_group_all(5,$from);
+									$pagevar['users'] = $this->mdunion->read_users_group_all(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_all();
 									break;
 		endswitch;
@@ -297,7 +299,7 @@ class Admin_interface extends CI_Controller{
 		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/management/users/'.$this->uri->segment(4).'/from/';
 		$config['uri_segment'] 		= 6;
 		$config['total_rows'] 		= $pagevar['count']; 
-		$config['per_page'] 		= 5;
+		$config['per_page'] 		= 10;
 		$config['num_links'] 		= 4;
 		$config['first_link']		= 'В начало';
 		$config['last_link'] 		= 'В конец';
@@ -328,6 +330,68 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-users",$pagevar);
+	}
+	
+	public function management_users_profile(){
+		
+		$user = $this->uri->segment(6);
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Личный кабинет',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'user'			=> $this->mdusers->read_record($user),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('fio',' ','required|trim');
+			$this->form_validation->set_rules('oldpas',' ','trim');
+			$this->form_validation->set_rules('password',' ','trim');
+			$this->form_validation->set_rules('confpass',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','trim');
+			$this->form_validation->set_rules('phones',' ','trim');
+			$this->form_validation->set_rules('icq',' ','trim');
+			$this->form_validation->set_rules('skype',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				redirect($this->uri->uri_string());
+			else:
+				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
+					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
+						$this->session->set_userdata('msgr',' Не верный старый пароль!');
+					elseif($_POST['password']!=$_POST['confpass']):
+						$this->session->set_userdata('msgr',' Пароли не совпадают.');
+					else:
+						$this->mdusers->update_field($user,'password',md5($_POST['password']));
+						$this->mdusers->update_field($user,'cryptpassword',$this->encrypt->encode($_POST['password']));
+						$this->session->set_userdata('msgs',' Пароль успешно изменен');
+					endif;
+				endif;
+				if(!isset($_POST['sendmail'])):
+					$_POST['sendmail'] = 0;
+				endif;
+				unset($_POST['password']);unset($_POST['login']);
+				$_POST['uid'] = $user;
+				$result = $this->mdusers->update_record($_POST);
+				if($result):
+					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
+					$this->session->set_userdata('msgs',$msgs);
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		$this->load->view("admin_interface/admin-profile",$pagevar);
 	}
 	
 	public function management_users_deleting(){
@@ -649,6 +713,7 @@ class Admin_interface extends CI_Controller{
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
 					'thematic'		=> $this->mdthematic->read_records(),
+					'cms'			=> $this->mdcms->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -1336,12 +1401,14 @@ class Admin_interface extends CI_Controller{
 			$tic = $this->getTIC('http://'.$platforms[$i]['url']);
 			$this->mdplatforms->update_field($platforms[$i]['id'],'tic',$tic);
 			if($oldtic != $tic):
-				if($oldtic< 30 AND $tic >= 30):
-					$addwtic = 5;
-					$addmtic = 2;
+				$addwtic = 5; $addmtic = 2;
+				if($oldtic < 30 AND $tic >= 30):
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,creview=creview+$addwtic,mreview=mreview+$addmtic,cnews=cnews+$addwtic,mnews=mnews+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$this->mdplatforms->run_query($sqlquery);
+				elseif($oldtic >= 30 AND $tic < 30):
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,creview=creview-$addwtic,mreview=mreview-$addmtic,cnews=cnews-$addwtic,mnews=mnews-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$this->mdplatforms->run_query($sqlquery);
 				endif;
-				$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,creview=creview+$addwtic,mreview=mreview+$addmtic,cnews=cnews+$addwtic,mnews=mnews+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
-				$this->mdplatforms->run_query($sqlquery);
 			endif;
 		endfor;
 		$this->session->set_userdata('msgs','Яндекс тИЦ успешно вычислен');

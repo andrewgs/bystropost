@@ -11,15 +11,6 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label for="purse" class="control-label">Кошелек WM:</label>
-			<div class="controls">
-				<div class="input-prepend input-append">
-					<span class="add-on">R</span><input type="text" class="input-medium digital" maxlength="12" id="purse" name="purse">
-				</div>
-				<div class="help-inline" id="hlpurse" style="display:none;">&nbsp;</div>
-			</div>
-		</div>
-		<div class="control-group">
 			<label for="wmid" class="control-label">WMID: </label>
 			<div class="controls">
 				<div class="help-block" style="margin-top: 5px;"><?=$wmid;?></div>

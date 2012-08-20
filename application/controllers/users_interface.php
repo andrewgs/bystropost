@@ -30,13 +30,10 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
-			'statistic'		=> array(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
 		$this->load->model('mdplatforms');
-		$pagevar['statistic']['platforms'] = $this->mdplatforms->count_all();
-		$pagevar['statistic']['users'] = $this->mdusers->count_all();
 		
 		$this->load->view("users_interface/index",$pagevar);
 	}
@@ -160,8 +157,8 @@ class Users_interface extends CI_Controller{
 			case 'gogetlinks' : $pagevar['title'] .='gogetlinks'; $this->load->view("users_interface/markets/market-gogetlinks",$pagevar); break;
 			case 'miralinks' : $pagevar['title'] .='miralinks'; $this->load->view("users_interface/markets/market-miralinks",$pagevar); break;
 			case 'getgoodlinks' : $pagevar['title'] .='getgoodlinks'; $this->load->view("users_interface/markets/market-getgoodlinks",$pagevar); break;
-			case 'blogcash' : $pagevar['title'] .='blogcash.ru'; $this->load->view("users_interface/markets/market-blogcash",$pagevar); break;
-			case 'pr-sape-ru' : $pagevar['title'] .='pr.sape.ru'; $this->load->view("users_interface/markets/market-prsaperu",$pagevar); break;
+			case 'blogocash' : $pagevar['title'] .='blogcash.ru'; $this->load->view("users_interface/markets/market-blogcash",$pagevar); break;
+			case 'prsape' : $pagevar['title'] .='pr.sape.ru'; $this->load->view("users_interface/markets/market-prsaperu",$pagevar); break;
 			case 'blogun' : $pagevar['title'] .='blogun.ru'; $this->load->view("users_interface/markets/market-blogun",$pagevar); break;
 			case 'rotapost' : $pagevar['title'] .='rotapost.ru'; $this->load->view("users_interface/markets/market-rotapost",$pagevar); break;
 			default : redirect('/');
@@ -241,19 +238,6 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/optimizers",$pagevar);
 	}
 	
-	public function regulations(){
-		
-		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Правила',
-			'description'	=> '',
-			'author'		=> '',
-			'baseurl' 		=> base_url(),
-			'msgauth'		=> $this->session->userdata('msgauth')
-		);
-		$this->session->unset_userdata('msgauth');
-		$this->load->view("users_interface/regulations",$pagevar);
-	}
-	
 	public function support(){
 		
 		$pagevar = array(
@@ -326,6 +310,7 @@ class Users_interface extends CI_Controller{
 			$this->form_validation->set_rules('confpass',' ','required|trim');
 			$this->form_validation->set_rules('wmid',' ','required|trim');
 			$this->form_validation->set_rules('knowus',' ','trim');
+			$this->form_validation->set_rules('promo',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
@@ -341,10 +326,19 @@ class Users_interface extends CI_Controller{
 				if(!isset($_POST['sendmail'])):
 					$_POST['sendmail'] = 0;
 				endif;
-				
 				$uid = $this->mdusers->insert_record($_POST,$utype);
 				if($utype == 1):
 					$this->mdlog->insert_record($uid,'Событие №1: Процедура регистрации вебмастера');
+					if(intval($_POST['promo']) == 9846980):
+						$this->mdusers->update_field($uid,'manager',0);
+					else:
+						$this->mdusers->update_field($uid,'manager',2);
+						$param = 'user='.$_POST['fio'].'&email='.$_POST['login'];
+						$remote_user = $this->API('AddNewUser',$param);
+						if($remote_user['id']):
+							$this->mdusers->update_field($uid,'remoteid',$remote_user['id']);
+						endif;
+					endif;
 				elseif($utype == 3):
 					$this->mdlog->insert_record($uid,'Событие №2: Процедура регистрации оптимизатора');
 				endif;
@@ -394,5 +388,28 @@ class Users_interface extends CI_Controller{
 		endswitch;
 		header('Content-type: image/gif');
 		echo $image;
+	}
+
+	private function API($action,$param){
+	
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>$action,'param'=>$param);
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
+		curl_setopt($ch,CURLOPT_POST,1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch,CURLOPT_TIMEOUT,30);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		 if($data!==false):
+			$res = json_decode($data, true);
+			if((int)$res['status']==1):
+				return $res['data'];
+			else:
+				return FALSE;
+			endif;
+		else:
+			return FALSE;
+		endif;
 	}
 }

@@ -6,6 +6,7 @@
 	<?php $this->load->view("users_interface/includes/header");?>
 	<div id="main">
 		<?php $this->load->view("users_interface/includes/navigation");?>
+		<div class="clear"></div>
 		<div id="register_tree">
 			<?=anchor('users/registering/webmaster','<img src="'.$baseurl.'images/spacer.gif" width="500px" height="450px" border="0">');?>
 		</div>

@@ -14,8 +14,15 @@
 					<?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?>
 				</div>
 				<div class="clear"></div>
+			<?php if($userinfo['locked']):?>
+				<div class="alert alert-error">
+					<center>Перед началом работы в системе Bystropost необходимо пополнить баланс минимум на 500 рублей.<br/>После пополнения, Вам будут доступны дополнительные разделы.<br/><?=anchor('webmaster-panel/actions/balance','Пополнить баланс');?></center>
+				</div>
+				<div class="clear"></div>
+			<?php endif;?>
 				<div id="stable">
 					<div id="panel_segments">
+					<?php if($cntunit['delivers']['total']):?>
 						<div class="panel_segment">
 							<big><?=anchor('webmaster-panel/actions/finished-jobs','Готовые задания (<font color="#0000ff"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')',array('title'=>$cntunit['delivers']['notpaid'].' не оплаченных'));?></big>
 							<img src="<?=$baseurl;?>images/panel_pic1.jpg">
@@ -23,6 +30,8 @@
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 							</div>
 						</div>
+					<?php endif;?>
+					<?php if((($cntunit['platforms'] || $cntunit['markets']) && $userinfo['remote']) || (!$userinfo['locked'] && !$userinfo['remote'])):?>
 						<div class="panel_segment">
 							<big><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic2.jpg">
@@ -30,6 +39,7 @@
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 							</div>
 						</div>
+					<?php endif;?>
 						<div class="panel_segment">
 							<big><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic3.jpg">
@@ -48,6 +58,7 @@
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 							</div>
 						</div>
+					<?php if(!$userinfo['locked'] && $cntunit['platforms']):?>
 						<div class="panel_segment">
 							<big><?=anchor('webmaster-panel/actions/services','Дополнительные услуги');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic5.jpg">
@@ -55,6 +66,8 @@
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 							</div>
 						</div>
+					<?php endif;?>
+					<?php if($userinfo['remote'] && !$userinfo['locked']):?>
 						<div class="panel_segment">
 							<big><?=anchor('webmaster-panel/actions/markets','Биржи');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic6.jpg">
@@ -62,6 +75,7 @@
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
 							</div>
 						</div>
+					<?php endif;?>
 					</div>
 					<div class="clear"></div>
 				</div>

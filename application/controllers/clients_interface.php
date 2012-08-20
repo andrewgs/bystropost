@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'remote'=>FALSE);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -25,6 +25,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdwebmarkets');
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
+		$this->load->model('mdcms');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -38,6 +39,9 @@ class Clients_interface extends CI_Controller{
 					$this->user['lock'] 			= $userinfo['locked'];
 					$this->user['signdate'] 		= $userinfo['signdate'];
 					$this->user['balance'] 			= $userinfo['balance'];
+					if($userinfo['manager'] == 2):
+						$this->user['remote'] = TRUE;
+					endif;
 					$this->loginstatus['status'] 	= TRUE;
 				else:
 					redirect('');
@@ -98,10 +102,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
-		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
+		print_r($pagevar['userinfo']['locked']);
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
@@ -251,9 +265,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-cabinet",$pagevar);
 	}
@@ -276,7 +301,6 @@ class Clients_interface extends CI_Controller{
 		
 		if($this->input->post('submit')):
 			$this->form_validation->set_rules('balance',' ','required|numeric|trim');
-			$this->form_validation->set_rules('purse',' ','required|numeric|exact_length[12]|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
@@ -286,7 +310,6 @@ class Clients_interface extends CI_Controller{
 					redirect($this->uri->uri_string());
 				endif;
 				$this->session->set_userdata('balance',$_POST['balance']);
-				$this->session->set_userdata('purse','R'.$_POST['purse']);
 				redirect('webmaster-panel/actions/balance/paid');
 			endif;
 		endif;
@@ -304,9 +327,21 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
+		
 		$this->session->unset_userdata('balance');
 		$this->load->view("clients_interface/control-balance",$pagevar);
 	}
@@ -334,9 +369,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-balance-paid",$pagevar);
 	}
@@ -399,9 +445,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-balance-successful",$pagevar);
 	}
@@ -436,9 +493,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-balance-failed",$pagevar);
 	}
@@ -502,6 +570,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -512,6 +581,10 @@ class Clients_interface extends CI_Controller{
 	/******************************************************** markets *********************************************************/	
 	
 	public function control_markets(){
+		
+		if(!$this->user['remote']):
+			show_404();
+		endif;
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -534,110 +607,110 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('market',' ','required|trim');
 			$this->form_validation->set_rules('login',' ','required|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
-			$this->form_validation->set_rules('loading',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
-				if($_POST['loading'] != '9846' || empty($_POST['loading'])):
-					//Добавление нового акаунта
-					$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
-					$market_id = $this->API('AddNewAccount',$param);
-					if($market_id['id']):
-						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
-						if($id):
-							$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
-							$this->session->set_userdata('msgs','Запись создана успешно');
-						endif;
-						//Получить список сайтов аккаунта с настройками сайтов
-						$param = 'birzid='.$_POST['market'].'&accid='.$market_id['id'];
-						$platforms = $this->API('GetSitesFromAccount',$param);
-						$i = 0;
-						foreach($platforms as $key => $value):
-							$pl_data[$i] = $value;
-							$pl_data[$i]['id'] = $key;
-							$i++;
-						endforeach;
-						for($i=0;$i<count($pl_data);$i++):
-							$new_platform['id'] = $pl_data[$i]['id'];
-							$new_platform['webmaster'] = $this->user['uid'];
-							$new_platform['manager'] = 2;
-							$new_platform['url'] = $pl_data[$i]['url'];
-							$new_platform['subject'] = $pl_data[$i]['tematic'];
-							$new_platform['cms'] = '';
-							$new_platform['adminpanel'] = $pl_data[$i]['adminurl'];
-							$new_platform['aplogin'] = $pl_data[$i]['cms_login'];
-							$new_platform['appassword'] = $pl_data[$i]['cms_pass'];
-							$new_platform['amount'] = 1;
-							$new_platform['reviews'] = 1;
-							$new_platform['thematically'] = 1;
-							$new_platform['illegal'] = 0;
-							$new_platform['criteria'] = '';
-							$new_platform['requests'] = '';
-							$new_platform['tic'] = 0;
-							$new_platform['pr'] = 0;
-							$new_platform['ccontext'] = 0;
-							$new_platform['mcontext'] = 0;
-							$new_platform['cnotice'] = 0;
-							$new_platform['mnotice'] = 0;
-							$new_platform['creview'] = 0;
-							$new_platform['mreview'] = 0;
-							$new_platform['cnews'] = 0;
-							$new_platform['mnews'] = 0;
-							$new_platform['clinkpic'] = 0;
-							$new_platform['mlinkpic'] = 0;
-							$new_platform['cpressrel'] = 0;
-							$new_platform['mpressrel'] = 0;
-							$new_platform['clinkarh'] = 0;
-							$new_platform['mlinkarh'] = 0;
-							$new_platform['price'] = 0;
-							$new_platform['locked'] = 0;
-							$new_platform['status'] = 1;
-							if(!$this->mdplatforms->exist_platform($new_platform['url'])):
-								$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
-								if($platform):
-									$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
-									$addwtic = $addmtic = 0;
-									$pr = $this->getpagerank($new_platform['url']);
-									$this->mdplatforms->update_field($platform,'pr',$pr);
-									$tic = $this->getTIC('http://'.$new_platform['url']);
-									$this->mdplatforms->update_field($platform,'tic',$tic);
-									if($tic >= 30):
-										$addwtic = 5;
-										$addmtic = 2;
-									endif;
-									$sqlquery = "UPDATE platforms SET ";
-									$works = $this->mdtypeswork->read_records();
-									for($j=0;$j<count($works);$j++):
-										$wadd = $addwtic;
-										$madd = $addmtic;
-										$arr_works = array(1,2,4,5);
-										if(in_array($works[$j]['id'],$arr_works)):
-											switch($new_platform['amount']):
-												case 1 : $wadd += 0; $madd += 0; break;
-												case 2 : $wadd += 11; $madd += 9; break;
-												case 3 : $wadd += 23; $madd += 18; break;
-											endswitch;
-										endif;
-										$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
-										if(isset($works[$j+1])):
-											$sqlquery .= ', ';
-										endif;
-									endfor;
-									$sqlquery .= ' WHERE platforms.id = '.$platform;
-									$this->mdplatforms->run_query($sqlquery);
-								endif;
-							else:
-								continue;
-							endif;
-							unset($new_platform);
-							$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
-						endfor;
-						$msgs = $this->session->userdata('msgs');
-						$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы');
-					else:
-						$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
+				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
+				$market_id = $this->API('AddNewAccount',$param);
+				if($market_id['id']):
+					$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
+					if($id):
+						$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
+						$this->session->set_userdata('msgs','Запись создана успешно');
 					endif;
+					//Получить список сайтов аккаунта с настройками сайтов
+					$param = 'birzid='.$_POST['market'].'&accid='.$market_id['id'];
+					$platforms = $this->API('GetSitesFromAccount',$param);
+					$i = 0;
+					foreach($platforms as $key => $value):
+						$pl_data[$i] = $value;
+						$pl_data[$i]['id'] = $key;
+						$i++;
+					endforeach;
+					for($i=0;$i<count($pl_data);$i++):
+						$new_platform['id'] = $pl_data[$i]['id'];
+						$new_platform['webmaster'] = $this->user['uid'];
+						$new_platform['manager'] = 2;
+						$new_platform['url'] = $pl_data[$i]['url'];
+						$new_platform['subject'] = $pl_data[$i]['tematic'];
+						$new_platform['cms'] = $pl_data[$i]['cms'];
+						$new_platform['adminpanel'] = $pl_data[$i]['adminurl'];
+						$new_platform['aplogin'] = $pl_data[$i]['cms_login'];
+						$new_platform['appassword'] = $pl_data[$i]['cms_pass'];
+						$new_platform['amount'] = 1;
+						$new_platform['reviews'] = 1;
+						$new_platform['thematically'] = 1;
+						$new_platform['illegal'] = 0;
+						$new_platform['criteria'] = '';
+						$new_platform['requests'] = '';
+						$new_platform['tic'] = 0;
+						$new_platform['pr'] = 0;
+						$new_platform['ccontext'] = 0;
+						$new_platform['mcontext'] = 0;
+						$new_platform['cnotice'] = 0;
+						$new_platform['mnotice'] = 0;
+						$new_platform['creview'] = 0;
+						$new_platform['mreview'] = 0;
+						$new_platform['cnews'] = 0;
+						$new_platform['mnews'] = 0;
+						$new_platform['clinkpic'] = 0;
+						$new_platform['mlinkpic'] = 0;
+						$new_platform['cpressrel'] = 0;
+						$new_platform['mpressrel'] = 0;
+						$new_platform['clinkarh'] = 0;
+						$new_platform['mlinkarh'] = 0;
+						$new_platform['price'] = 0;
+						$new_platform['locked'] = 0;
+						$new_platform['status'] = 1;
+						if(!$this->mdplatforms->exist_platform($new_platform['url'])):
+							$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
+							if($platform):
+								$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
+								$addwtic = $addmtic = 0;
+								$pr = $this->getpagerank($new_platform['url']);
+								$this->mdplatforms->update_field($platform,'pr',$pr);
+								$tic = $this->getTIC('http://'.$new_platform['url']);
+								$this->mdplatforms->update_field($platform,'tic',$tic);
+								if($tic >= 30):
+									$addwtic = 5;
+									$addmtic = 2;
+								endif;
+								$sqlquery = "UPDATE platforms SET ";
+								$works = $this->mdtypeswork->read_records();
+								for($j=0;$j<count($works);$j++):
+									$wadd = $addwtic;
+									$madd = $addmtic;
+									$arr_works = array(1,2,4,5);
+									if(in_array($works[$j]['id'],$arr_works)):
+										switch($new_platform['amount']):
+											case 1 : $wadd += 0; $madd += 0; break;
+											case 2 : $wadd += 11; $madd += 9; break;
+											case 3 : $wadd += 23; $madd += 18; break;
+										endswitch;
+									endif;
+									$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+									if(isset($works[$j+1])):
+										$sqlquery .= ', ';
+									endif;
+								endfor;
+								$sqlquery .= ' WHERE platforms.id = '.$platform;
+								$this->mdplatforms->run_query($sqlquery);
+							endif;
+						else:
+							$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
+							if(!$this->mdmkplatform->exist_market_platform($platform,$_POST['market'],$_POST['login'],$_POST['password'])):
+								$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
+							endif;
+							continue;
+						endif;
+						unset($new_platform);
+						$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+					endfor;
+					$msgs = $this->session->userdata('msgs');
+					$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы');
+				else:
+					$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -656,9 +729,15 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		
+		if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		
 		$this->load->view("clients_interface/control-markets",$pagevar);
 	}
@@ -771,9 +850,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-mails",$pagevar);
 	}
@@ -920,6 +1010,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -1033,19 +1124,34 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		endif;
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
 			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
 			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
 		endfor;
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("clients_interface/control-platforms",$pagevar);
 	}
 	
 	public function control_add_platform(){
+		
+		if($this->user['remote']):
+			show_404();
+		endif;
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -1056,6 +1162,7 @@ class Clients_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'markets'		=> $this->mdmarkets->read_records(),
 					'thematic'		=> $this->mdthematic->read_records(),
+					'cms'			=> $this->mdcms->read_records(),
 					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Убедительная просьба тщательно заполнить все поля представленные ниже. Чем больше вы дадите нам информации, тем меньше ошибок будет совершено при публикации.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -1160,6 +1267,17 @@ class Clients_interface extends CI_Controller{
 		endif;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		endif;
+		
 		$this->load->view("clients_interface/control-add-platform",$pagevar);
 	}
 	
@@ -1167,7 +1285,11 @@ class Clients_interface extends CI_Controller{
 		
 		$platform = $this->uri->segment(5);
 		if(!$this->mdplatforms->ownew_platform($this->user['uid'],$platform)):
-			redirect($_SERVER['HTTP_REFERER']);
+			if(isset($_SERVER['HTTP_REFERER'])):
+				redirect($_SERVER['HTTP_REFERER']);
+			else:
+				redirect('webmaster-panel/actions/control');
+			endif;
 		endif;
 		
 		$pagevar = array(
@@ -1180,6 +1302,7 @@ class Clients_interface extends CI_Controller{
 					'platform'		=> $this->mdplatforms->read_record($platform),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'thematic'		=> $this->mdthematic->read_records(),
+					'cms'			=> $this->mdcms->read_records(),
 					'mymarkets'		=> $this->mdmkplatform->read_records_by_platform($platform,$this->user['uid']),
 					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -1310,7 +1433,120 @@ class Clients_interface extends CI_Controller{
 		endif;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500):
+				redirect('webmaster-panel/actions/control');
+			endif;
+		endif;
 		$this->load->view("clients_interface/control-edit-platform",$pagevar);
+	}
+	
+	public function control_platforms_refresh(){
+		
+		if(!$this->user['remote']):
+			show_404();
+		endif;
+		
+		$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+		for($i=0;$i<count($markets);$i++):
+			$param = 'birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$markets[$i]['password'];
+			$market_id = $this->API('AddNewAccount',$param);
+			if($market_id['id']):
+				$param = 'birzid='.$markets[$i]['market'].'&accid='.$market_id['id'];
+				$platforms = $this->API('GetSitesFromAccount',$param);
+				$i = 0;
+				foreach($platforms as $key => $value):
+					$pl_data[$i] = $value;
+					$pl_data[$i]['id'] = $key;
+					$i++;
+				endforeach;
+				for($i=0;$i<count($pl_data);$i++):
+					$new_platform['id'] = $pl_data[$i]['id'];
+					$new_platform['webmaster'] = $this->user['uid'];
+					$new_platform['manager'] = 2;
+					$new_platform['url'] = $pl_data[$i]['url'];
+					$new_platform['subject'] = $pl_data[$i]['tematic'];
+					$new_platform['cms'] = $pl_data[$i]['cms'];
+					$new_platform['adminpanel'] = $pl_data[$i]['adminurl'];
+					$new_platform['aplogin'] = $pl_data[$i]['cms_login'];
+					$new_platform['appassword'] = $pl_data[$i]['cms_pass'];
+					$new_platform['amount'] = 1;
+					$new_platform['reviews'] = 1;
+					$new_platform['thematically'] = 1;
+					$new_platform['illegal'] = 0;
+					$new_platform['criteria'] = '';
+					$new_platform['requests'] = '';
+					$new_platform['tic'] = 0;
+					$new_platform['pr'] = 0;
+					$new_platform['ccontext'] = 0;
+					$new_platform['mcontext'] = 0;
+					$new_platform['cnotice'] = 0;
+					$new_platform['mnotice'] = 0;
+					$new_platform['creview'] = 0;
+					$new_platform['mreview'] = 0;
+					$new_platform['cnews'] = 0;
+					$new_platform['mnews'] = 0;
+					$new_platform['clinkpic'] = 0;
+					$new_platform['mlinkpic'] = 0;
+					$new_platform['cpressrel'] = 0;
+					$new_platform['mpressrel'] = 0;
+					$new_platform['clinkarh'] = 0;
+					$new_platform['mlinkarh'] = 0;
+					$new_platform['price'] = 0;
+					$new_platform['locked'] = 0;
+					$new_platform['status'] = 1;
+					if(!$this->mdplatforms->exist_platform($new_platform['url'])):
+						$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
+						if($platform):
+							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password']);
+							$addwtic = $addmtic = 0;
+							$pr = $this->getpagerank($new_platform['url']);
+							$this->mdplatforms->update_field($platform,'pr',$pr);
+							$tic = $this->getTIC('http://'.$new_platform['url']);
+							$this->mdplatforms->update_field($platform,'tic',$tic);
+							if($tic >= 30):
+								$addwtic = 5;
+								$addmtic = 2;
+							endif;
+							$sqlquery = "UPDATE platforms SET ";
+							$works = $this->mdtypeswork->read_records();
+							for($j=0;$j<count($works);$j++):
+								$wadd = $addwtic;
+								$madd = $addmtic;
+								$arr_works = array(1,2,4,5);
+								if(in_array($works[$j]['id'],$arr_works)):
+									switch($new_platform['amount']):
+										case 1 : $wadd += 0; $madd += 0; break;
+										case 2 : $wadd += 11; $madd += 9; break;
+										case 3 : $wadd += 23; $madd += 18; break;
+									endswitch;
+								endif;
+								$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+								if(isset($works[$j+1])):
+									$sqlquery .= ', ';
+								endif;
+							endfor;
+							$sqlquery .= ' WHERE platforms.id = '.$platform;
+							$this->mdplatforms->run_query($sqlquery);
+						endif;
+					else:
+						$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
+						if(!$this->mdmkplatform->exist_market_platform($platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password'])):
+							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$i]['market'],$markets[$i]['login'],$markets[$i]['password']);
+						endif;
+						continue;
+					endif;
+					unset($new_platform);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+				endfor;
+			endif;
+		endfor;
+		redirect($this->session->userdata('backpath'));
 	}
 	
 	/******************************************************** tickets ******************************************************/	
@@ -1414,9 +1650,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
@@ -1546,9 +1793,20 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
 		
 		$this->load->view("clients_interface/control-view-ticket",$pagevar);
 	}

@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td>Укажите вашу CMS:</td>
-			<td><input name="cms" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['cms']?>" placeholder="Укажите название CMS (если используете)"></td>
+			<td><?php $this->load->view("clients_interface/includes/cms");?></td>
 		</tr>
 		<tr>
 			<td>URL админки:</td>

@@ -43,6 +43,16 @@ class Mdwebmarkets extends CI_Model{
 		return NULL;
 	}
 	
+	function count_records($webmaster){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('webmaster',$webmaster);
+		$query = $this->db->get('webmarkets');
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_record($id){
 		
 		$this->db->where('id',$id);

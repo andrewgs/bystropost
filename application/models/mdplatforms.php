@@ -8,7 +8,7 @@ class Mdplatforms extends CI_Model{
 	var $manager		= 0;
 	var $url 			= '';
 	var $subject 		= 0;
-	var $cms 			= '';
+	var $cms 			= 0;
 	var $adminpanel 	= '';
 	var $aplogin 		= '';
 	var $appassword 	= '';
@@ -218,6 +218,15 @@ class Mdplatforms extends CI_Model{
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_field_url($url,$field){
+		
+		$this->db->where('url',$url);
+		$query = $this->db->get('platforms',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0][$field];
 		return NULL;
 	}
 	

@@ -31,7 +31,7 @@
 					</tr>
 					<tr>
 						<td>CMS:</td>
-						<td style="text-align:left;"><?=$platform['cms']?></td>
+						<td><?php $this->load->view("clients_interface/includes/cms");?></td>
 					</tr>
 					<tr>
 						<td>URL админки:</td>
@@ -131,6 +131,8 @@
 		$(document).ready(function(){
 			$("#subject [value='<?=$platform['subject'];?>']").attr("selected", "selected");
 			$("#subject").attr("disabled","disabled");
+			$("#cms [value='<?=$platform['cms'];?>']").attr("selected", "selected");
+			$("#cms").attr("disabled","disabled");
 			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
 			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
 			$("#amount [value='<?=$platform['amount'];?>']").attr("selected", "selected");

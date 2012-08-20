@@ -21,6 +21,7 @@ class Managers_interface extends CI_Controller{
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
+		$this->load->model('mdcms');
 		$this->load->model('mdwebmarkets');
 		
 		$cookieuid = $this->session->userdata('logon');
@@ -243,6 +244,7 @@ class Managers_interface extends CI_Controller{
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
 					'thematic'		=> $this->mdthematic->read_records(),
+					'cms'			=> $this->mdcms->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
