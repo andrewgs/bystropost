@@ -36,7 +36,11 @@
 					$("#fio").siblings(".help-inline").html("Поле не может быть пустым").show();
 					event.preventDefault();
 				}
-				if($("#wmid").val().length != 12){
+				if($("#wmid").val()==''){
+					$("#wmid").parents(".control-group").addClass('error');
+					$("#wmid").siblings(".help-inline").html("Поле не может быть пустым").show();
+					event.preventDefault();
+				}else if($("#wmid").val().length != 12){
 					$("#wmid").parents(".control-group").addClass('error');
 					$("#wmid").siblings(".help-inline").html("Должно быть 12 цифр").show();
 					event.preventDefault();

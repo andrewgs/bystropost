@@ -15,7 +15,7 @@
 		<?php endif;?>
 			<li num="tickets"><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></li>
 		<?php if($userinfo['remote'] && !$userinfo['locked']):?>
-			<li num="markets"><?=anchor('webmaster-panel/actions/markets','Биржи');?></li>
+			<li num="markets"><?=anchor('webmaster-panel/actions/markets','Биржи ('.$cntunit['markets'].')');?></li>
 		<?php endif;?>
 		<?php if(!$userinfo['locked'] && $cntunit['platforms']):?>
 			<li num="servises"><?=anchor('webmaster-panel/actions/services','Дополнительные услуги');?></li>

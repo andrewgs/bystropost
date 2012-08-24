@@ -308,7 +308,7 @@ class Users_interface extends CI_Controller{
 			$this->form_validation->set_rules('login',' ','required|valid_email|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
 			$this->form_validation->set_rules('confpass',' ','required|trim');
-			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('wmid',' ','required|numeric|exact_length[12]|trim');
 			$this->form_validation->set_rules('knowus',' ','trim');
 			$this->form_validation->set_rules('promo',' ','trim');
 			if(!$this->form_validation->run()):
@@ -321,6 +321,10 @@ class Users_interface extends CI_Controller{
 				endif;
 				if($_POST['password']!=$_POST['confpass']):
 					$this->session->set_userdata('msgr','Ошибка. Пароли не совпадают.');
+					redirect($this->uri->uri_string());
+				endif;
+				if($this->mdusers->read_by_wmid($_POST['wmid'])):
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
 					redirect($this->uri->uri_string());
 				endif;
 				if(!isset($_POST['sendmail'])):

@@ -69,7 +69,7 @@
 					<?php endif;?>
 					<?php if($userinfo['remote'] && !$userinfo['locked']):?>
 						<div class="panel_segment">
-							<big><?=anchor('webmaster-panel/actions/markets','Биржи');?></big>
+							<big><?=anchor('webmaster-panel/actions/markets','Биржи ('.$cntunit['markets'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic6.jpg">
 							<div class="text">
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей

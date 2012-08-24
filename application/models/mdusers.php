@@ -3,6 +3,7 @@
 class Mdusers extends CI_Model{
 
 	var $id   			= 0;
+	var $remoteid		= 0;
 	var $login 			= '';
 	var $cryptpassword 	= '';
 	var $password 		= '';
@@ -127,6 +128,15 @@ class Mdusers extends CI_Model{
 		$query = $this->db->get('users',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
+	function read_by_wmid($wmid){
+		
+		$this->db->where('wmid',$wmid);
+		$query = $this->db->get('users',1);
+		$data = $query->result_array();
+		if(isset($data[0]['id'])) return $data[0]['id'];
 		return NULL;
 	}
 	

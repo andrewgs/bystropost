@@ -24,8 +24,11 @@
 		<div class="control-group">
 			<label for="oldpas" class="control-label">Старый пароль:</label>
 			<div class="controls">
-				<input type="password" id="oldpas" class="input-medium" name="oldpas" value="">
-				<span class="help-inline" style="display:none;">&nbsp;</span>
+				<input type="password" id="oldpas" class="input-medium" name="oldpas" value="<?=isset($user['oldpassword'])? $user['oldpassword']:'';?>">
+				<span class="help-inline" style="display:none;"></span>
+			<?php if(isset($user['oldpassword'])):?>
+				<span class="help-block">Пароль: <?=$user['oldpassword'];?></span>
+			<?php endif;?>
 			</div>
 		</div>
 		<div class="control-group">

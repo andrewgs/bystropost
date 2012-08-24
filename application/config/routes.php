@@ -70,6 +70,8 @@ $route['webmaster-panel/actions/balance']							= "clients_interface/control_bal
 $route['webmaster-panel/actions/balance/paid']						= "clients_interface/control_balance_paid";
 $route['webmaster-panel/actions/balance/successfull']				= "clients_interface/control_balance_successfull";
 $route['webmaster-panel/actions/balance/failed']					= "clients_interface/control_balance_failed";
+//$route['webmaster-panel/actions/balance/result']					= "clients_interface/control_balance_result";
+
 $route['webmaster-panel/actions/services']							= "clients_interface/control_services";
 
 $route['views/market-profile']										= "clients_interface/views";
@@ -123,14 +125,15 @@ $route['optimizator-panel/actions/logoff']								= "optimizators_interface/acti
 
 /*************************************************** GENERAL INTRERFACE	*******************************************/
 
-$route[':any/viewimage/:num']										= "general_interface/viewimage";
+$route[':any/viewimage/:num']	= "general_interface/viewimage";
+$route['balance/result']		= "general_interface/balance_result";
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
 $route['admin-panel/actions/profile']					= "admin_interface/actions_profile";
 $route['admin-panel/actions/forum']						= "admin_interface/actions_forum";
 $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
 $route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
-$route['admin-panel/actions/api-test']					= "admin_interface/actions_api";
+$route['api']											= "admin_interface/actions_api";
 
 $route['admin-panel/actions/events']					= "admin_interface/actions_events";
 $route['admin-panel/actions/events/from']				= "admin_interface/actions_events";

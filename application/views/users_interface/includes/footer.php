@@ -7,7 +7,11 @@
 		<br><br>
 		<?=anchor('','&#169; 2012 bystropost.ru');?>
 		<div id="counters">
-			<img src="<?=$baseurl;?>images/counter.gif">
+			<!-- begin WebMoney Transfer : accept label -->
+			<a href="http://www.megastock.ru/" target="_blank">
+				<img src="<?=$baseurl;?>images/acc_blue_on_white_ru.png" alt="www.megastock.ru" border="0">
+			</a>
+			<!-- end WebMoney Transfer : accept label -->
 			<img src="<?=$baseurl;?>images/counter.gif">
 		</div>
 	</div>

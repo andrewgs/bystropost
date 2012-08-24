@@ -115,7 +115,6 @@ class Clients_interface extends CI_Controller{
 				$pagevar['userinfo']['locked'] = TRUE;
 			endif;
 		endif;
-		print_r($pagevar['userinfo']['locked']);
 		$this->load->view("clients_interface/control-panel",$pagevar);
 	}
 	
@@ -215,6 +214,11 @@ class Clients_interface extends CI_Controller{
 				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $this->user['uid'];
+				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
+				if($wmid && $wmid != $this->user['uid']):
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
+					redirect($this->uri->uri_string());
+				endif;
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
@@ -389,14 +393,14 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_balance_successfull(){
 		
-		if(isset($_SERVER['HTTP_REFERER']) && $this->session->userdata('balance')):
+		/*if(isset($_SERVER['HTTP_REFERER'])):
 			$pos = stristr($_SERVER['HTTP_REFERER'],'webmoney.ru');
 			if(!$pos):
 				redirect('webmaster-panel/actions/balance');
 			endif;
 		else:
 			redirect('webmaster-panel/actions/balance');
-		endif;
+		endif;*/
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -411,15 +415,10 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		$this->mdfillup->insert_record($this->user['uid'],$this->session->userdata('balance'));
-		$new_balance = $this->user['balance']+$this->session->userdata('balance');
-		$this->mdusers->update_field($this->user['uid'],'balance',$new_balance);
-		$this->mdlog->insert_record($this->user['uid'],'Событие №6: Баланс пополнен');
-		$pagevar['userinfo']['balance'] = $new_balance;
 		$this->session->unset_userdata('balance');
 		$this->session->unset_userdata('purse');
 		
-		ob_start();
+		/*ob_start();
 		?>
 		<p><strong>Здравствуйте, <?=$this->user['uname'];?></strong></p>
 		<p>Ваш баланс успешно пополнен.</p>
@@ -440,7 +439,7 @@ class Clients_interface extends CI_Controller{
 		$this->email->bcc('');
 		$this->email->subject('Noreply: Пополнение баланса в системе Bystropost.ru');
 		$this->email->message($mailtext);	
-		$this->email->send();
+		$this->email->send();*/
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -465,14 +464,14 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_balance_failed(){
 		
-		if(isset($_SERVER['HTTP_REFERER']) && $this->session->userdata('balance')):
+		/*if(isset($_SERVER['HTTP_REFERER'])):
 			$pos = stristr($_SERVER['HTTP_REFERER'],'webmoney.ru');
 			if(!$pos):
 				redirect('webmaster-panel/actions/balance');
 			endif;
 		else:
 			redirect('webmaster-panel/actions/balance');
-		endif;
+		endif;*/
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -535,7 +534,6 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
-				print_r($_POST);exit;
 				$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
 				redirect($this->uri->uri_string());
 			endif;
@@ -628,7 +626,7 @@ class Clients_interface extends CI_Controller{
 					//Получить список сайтов аккаунта с настройками сайтов
 					$param = 'birzid='.$_POST['market'].'&accid='.$market_id['id'];
 					$platforms = $this->API('GetSitesFromAccount',$param);
-					$i = 0;
+					$i = $cntpl = 0;
 					$pl_data = array();
 					foreach($platforms as $key => $value):
 						$pl_data[$i] = $value;
@@ -703,6 +701,8 @@ class Clients_interface extends CI_Controller{
 								endfor;
 								$sqlquery .= ' WHERE platforms.id = '.$platform;
 								$this->mdplatforms->run_query($sqlquery);
+								$cntpl++;
+								$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
 							endif;
 						else:
 							$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
@@ -712,10 +712,13 @@ class Clients_interface extends CI_Controller{
 							continue;
 						endif;
 						unset($new_platform);
-						$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
 					endfor;
 					$msgs = $this->session->userdata('msgs');
-					$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы');
+					if($cntpl):
+						$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы. Количество: '.$cntpl);
+					else:
+						$this->session->set_userdata('msgs',$msgs.'<br/><font color="#0000ff">Внимание! Площадки отсутствуют!<br/>Подождите и через время воспользуйтесь кнопкой [Обновить список] в разделе "Площадки" для импорта Ваших площадок.</font>');
+					endif;
 				else:
 					$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
 				endif;
@@ -1133,8 +1136,9 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
 		if($pagevar['userinfo']['remote']):
-			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+			if(intval(($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']) && !$pagevar['cntunit']['platforms']):
 				redirect('webmaster-panel/actions/control');
 			endif;
 		else:
@@ -1465,6 +1469,7 @@ class Clients_interface extends CI_Controller{
 				$param = 'birzid='.$markets[$m]['market'].'&accid='.$market_id['id'];
 				$platforms = $this->API('GetSitesFromAccount',$param);
 				$i = 0;
+				$pl_data = array();
 				foreach($platforms as $key => $value):
 					$pl_data[$i] = $value;
 					$pl_data[$i]['id'] = $key;
@@ -1541,6 +1546,7 @@ class Clients_interface extends CI_Controller{
 							endfor;
 							$sqlquery .= ' WHERE platforms.id = '.$platform;
 							$this->mdplatforms->run_query($sqlquery);
+							$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
 						endif;
 					else:
 						$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
@@ -1550,7 +1556,6 @@ class Clients_interface extends CI_Controller{
 						continue;
 					endif;
 					unset($new_platform);
-					$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
 				endfor;
 			endif;
 		endfor;

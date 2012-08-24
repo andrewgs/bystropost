@@ -155,6 +155,11 @@ class Managers_interface extends CI_Controller{
 				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $this->user['uid'];
+				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
+				if($wmid && $wmid != $this->user['uid']):
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
+					redirect($this->uri->uri_string());
+				endif;
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');

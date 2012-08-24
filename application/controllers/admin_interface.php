@@ -355,7 +355,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('oldpas',' ','trim');
 			$this->form_validation->set_rules('password',' ','trim');
 			$this->form_validation->set_rules('confpass',' ','trim');
-			$this->form_validation->set_rules('wmid',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','required|trim');
 			$this->form_validation->set_rules('phones',' ','trim');
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
@@ -379,6 +379,11 @@ class Admin_interface extends CI_Controller{
 				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $user;
+				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
+				if($wmid && $wmid != $user):
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
+					redirect($this->uri->uri_string());
+				endif;
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
@@ -389,6 +394,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 		
 		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		
 		$this->load->view("admin_interface/admin-profile",$pagevar);
@@ -1054,7 +1060,6 @@ class Admin_interface extends CI_Controller{
 		$pagevar['income']['ten'] = $this->mddelivesworks->calc_summ('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-10,date("Y"))),1);
 		$pagevar['income']['managers'] = $this->mddelivesworks->calc_summ('wprice-mprice','2012-01-01',1);
 		$pagevar['income']['debt'] = $this->mddelivesworks->calc_summ('wprice','2012-01-01',0);
-//		print_r($pagevar['income']['debt']);exit;
 		
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/actions-balance",$pagevar);
@@ -1491,10 +1496,12 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	/******************************************************** API ******************************************************/	
+	/******************************************************** API ******************************************************/
 	
 	function actions_api(){
-		
+		/*======================== Загрузка вебмастеров ============================*/
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
+	/*======================== Загрузка аккаунтов на биржах ========================*/
 		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -1507,14 +1514,74 @@ class Admin_interface extends CI_Controller{
 		 if($data!==false):
 			$res = json_decode($data, true);
 			if((int)$res['status']==1):
-				$thematic = $res['data'];
+				$mass_data = $res['data'];
 			else:
 				print_r($res['error']);
 			endif;
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-		print_r($thematic);
+		print_r($mass_data);
+		echo '<br/>'.count($mass_data);
+	/*======================== Загрузка вебмастеров начало ============================
+		$data = array(); $cnt = 0;
+		foreach($mass_data AS $key => $value):
+			if($key):
+				$data['login'] = $mass_data[$key]['email'];
+				$data['password'] = $this->randomPassword(8);
+				$data['fio'] = 'Имя не указанно';
+				$data['wmid'] = '';
+				$data['knowus'] = 'Загружен через API';
+				$data['sendmail'] = 1;
+				print_r('Обработка: '.$key.' Email: '.$data['login']);
+				if(!$this->mdusers->user_exist('login ',$data['login'])):
+					print_r(' Статус: Не уществует!');
+					$uid = $this->mdusers->insert_record($data,1);
+					if($uid):
+						$this->mdusers->update_field($uid,'manager',2);
+						$this->mdusers->update_field($uid,'remoteid',$key);
+						$cnt++;
+						print_r(' Добавлен. ID = '.$uid.'<br/>');
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$_POST['login'];?></strong></p>
+						<p>Поздравляем! Вас успешно зарегистрировали в статусе вебмастера. 
+						Ваша работа будет осуществляться через личный кабинет.
+						Для входа в личный кабинет используйте логин: <?=$data['login'];?> и пароль: <?=$data['password'];?></p>
+						<p>Желаем Вам удачи!</p> 
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($data['login']);
+						$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
+						$this->email->bcc('');
+						$this->email->subject('Регистрация на Bystropost.ru');
+						$this->email->message($mailtext);
+						$this->email->send();
+					else:
+						print_r(' Не добавлен.<br/>');
+					endif;
+				else:
+					print_r(' Статус: Существует! Не добавлен.<br/>');
+				endif;
+			endif;
+		endforeach;
+		print_r('Импортировнно: '.$cnt.' вебмастеров');
+		=============================== Загрузка вебмастеров конец ============================*/
+		/*======================== Загрузка аккаунтов на биржах начало ========================
+		$data = array(); $cnt = 0;
+		foreach($mass_data AS $key => $value):
+			print_r($key.' ');
+		endforeach;
+		print_r('Импортировнно: '.$cnt.' аккаунтов');
+		======================== Загрузка аккаунтов на биржах конец ========================*/
 	}
 	
 	/******************************************************** functions ******************************************************/	
@@ -1579,7 +1646,21 @@ class Admin_interface extends CI_Controller{
 		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
 	}
-
+	
+	public function randomPassword($length,$allow="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789"){
+	
+		$i = 1;
+		$ret = '';
+		while($i<=$length):
+			$max   = strlen($allow)-1;
+			$num   = rand(0, $max);
+			$temp  = substr($allow, $num, 1);
+			$ret  .= $temp;
+			$i++;
+		endwhile;
+		return $ret;
+	}
+	
 	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/
 	
 	public function StrToNum($Str, $Check, $Magic){
