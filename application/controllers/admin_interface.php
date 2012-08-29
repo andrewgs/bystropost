@@ -591,6 +591,8 @@ class Admin_interface extends CI_Controller{
 							//Высылать письмо-уведомление
 						endif;
 					endif;
+					$manager = $this->mdplatforms->read_field($platform,'manager');
+					$remote_id = $this->mdplatforms->read_field($platform,'remoteid');
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
@@ -600,6 +602,10 @@ class Admin_interface extends CI_Controller{
 							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 								//Высылать письмо-уведомление
 							endif;
+						endif;
+						if($manager == 2 && $remote_id):
+							$param = 'siteid='.$remote_id.'&value=0';
+							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							//Высылать письмо-уведомление
@@ -613,6 +619,10 @@ class Admin_interface extends CI_Controller{
 							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 								//Высылать письмо-уведомление
 							endif;
+						endif;
+						if($manager == 2 && $remote_id):
+							$param = 'siteid='.$remote_id.'&value=1';
+							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							//Высылать письмо-уведомление
@@ -1499,10 +1509,12 @@ class Admin_interface extends CI_Controller{
 	/******************************************************** API ******************************************************/
 	
 	function actions_api(){
+		$mass_data = array();
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=17&datefrom=2012-08-13&dateto=2012-08-27');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);

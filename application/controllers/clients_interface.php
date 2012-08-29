@@ -923,13 +923,13 @@ class Clients_interface extends CI_Controller{
 				redirect($_SERVER['HTTP_REFERER']);
 			endif;
 			$from = intval($this->uri->segment(8));
-			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),10,intval($this->uri->segment(8)));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),50,intval($this->uri->segment(8)));
 			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/platform/platformid/'.$this->uri->segment(6).'/from/';
 			$config['uri_segment'] 	= 8;
 		else:
 			$from = $this->uri->segment(5);
-			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],10,intval($this->uri->segment(5)));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],50,intval($this->uri->segment(5)));
 			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid']);
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
 			$config['uri_segment'] 	= 5;
@@ -1003,7 +1003,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$config['total_rows'] 	= $count;
-		$config['per_page'] 	= 10;
+		$config['per_page'] 	= 50;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';
@@ -1111,6 +1111,11 @@ class Clients_interface extends CI_Controller{
 						$this->mdmessages->insert_record($this->user['uid'],$manager,$text);
 					endif;
 					$this->mdmessages->insert_record($this->user['uid'],0,$text);
+					$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
+					if($manager == 2 && $remote_id):
+						$param = 'siteid='.$remote_id.'&value='.$status;
+						$res = $this->API('SetSiteActive',$param);
+					endif;
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 				else:
 					$this->session->set_userdata('msgr','Информация не изменилась.');

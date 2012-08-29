@@ -378,7 +378,7 @@ class Managers_interface extends CI_Controller{
 						if($webmarkets[$wmk]['market'] == $markets[$mk]['id']):
 							$param = 'birzid='.$markets[$mk]['id'].'&accid='.$webmarkets[$wmk]['id'].'&datefrom='.$datefrom.'&dateto='.$dateto;
 							$deliver_works = $this->API('GetFinishedOrder',$param);
-							if(count($deliver_works)):
+							if(isset($deliver_works) && count($deliver_works)):
 								$dwd = 0;
 								$dw_data = array();
 								foreach($deliver_works as $key => $value):
@@ -387,26 +387,28 @@ class Managers_interface extends CI_Controller{
 									$dwd++;
 								endforeach;
 								for($dwd=0;$dwd<count($dw_data);$dwd++):
-									if($dw_data[$dwd]['type'] <= 7):
-										$new_work['id'] 		= $dw_data[$dwd]['id'];
-										$new_work['webmaster'] 	= $platforms[$pl]['webmaster'];
-										$new_work['platform'] 	= $dw_data[$dwd]['siteid'];
-										$new_work['manager'] 	= $this->user['uid'];
-										$new_work['typework'] 	= $dw_data[$dwd]['type'];
-										$new_work['market'] 	= $markets[$mk]['id'];
-										$new_work['mkprice'] 	= 0;
-										$new_work['ulrlink'] 	= $dw_data[$dwd]['link'];
-										$new_work['countchars'] = 0;
-										$new_work['wprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'c'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
-										$new_work['mprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'m'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
-										$new_work['status'] 	= 0;
-										$new_work['date'] 		= $dateto;
-										$new_work['datepaid'] 	= '0000-00-00';
-										if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['link'])):
-											$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
-											$kol++;
-										else:
-											continue;
+									if($platforms[$pl]['remoteid'] == $dw_data[$dwd]['siteid']):
+										if($dw_data[$dwd]['type'] <= 7):
+											$new_work['id'] 		= $dw_data[$dwd]['id'];
+											$new_work['webmaster'] 	= $platforms[$pl]['webmaster'];
+											$new_work['platform'] 	= $dw_data[$dwd]['siteid'];
+											$new_work['manager'] 	= $this->user['uid'];
+											$new_work['typework'] 	= $dw_data[$dwd]['type'];
+											$new_work['market'] 	= $markets[$mk]['id'];
+											$new_work['mkprice'] 	= 0;
+											$new_work['ulrlink'] 	= $dw_data[$dwd]['link'];
+											$new_work['countchars'] = 0;
+											$new_work['wprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'c'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+											$new_work['mprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'m'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+											$new_work['status'] 	= 0;
+											$new_work['date'] 		= $dateto;
+											$new_work['datepaid'] 	= '0000-00-00';
+											if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['link'])):
+												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
+												$kol++;
+											else:
+												continue;
+											endif;
 										endif;
 									endif;
 								endfor;
@@ -416,7 +418,7 @@ class Managers_interface extends CI_Controller{
 				endfor;
 			endfor;
 			$this->mdlog->insert_record($this->user['uid'],'Событие №23: Произведена загрузка выполненных заданий. '.$kol.' записей');
-			$this->session->set_userdata('msgs',$msgs.'Выполненные работы импортированы. '.$kol.' записей');
+			$this->session->set_userdata('msgs','Выполненные работы импортированы. '.$kol.' записей');
 			redirect('manager-panel/actions/control');
 		endif;
 	}

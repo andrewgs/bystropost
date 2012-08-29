@@ -3,7 +3,7 @@
 		<ul class="nav nav-list">
 			<li class="nav-header">Меню</li>
 		<?php if($cntunit['delivers']['total']):?>
-			<li num="finished-jobs"><?=anchor('webmaster-panel/actions/finished-jobs','Готовые задания (<font color="#0000ff"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')');?></li>
+			<li num="finished-jobs"><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<font color="#ff0000"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')');?></li>
 		<?php endif;?>
 		<?php if((($cntunit['platforms'] || $cntunit['markets']) && $userinfo['remote']) || (!$userinfo['locked'] && !$userinfo['remote'])):?>
 			<li num="platforms"><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
