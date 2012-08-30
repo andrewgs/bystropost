@@ -14,5 +14,5 @@
 		<input name="sendmail" type="checkbox" value="1" class="checkbox" checked="checked" />
 		<span style="margin-left:10px;">Присылать уведомления и важные новости</span><br/>
 	</div>
-	<button type="submit" name="submit" id="userRegister" style="padding:0;margin-left:60px;" value="submit"><img src="<?=$baseurl;?>images/registration_go.png" alt="" /></button>
+	<button type="submit" name="submit" id="userRegister" style="padding:0;" value="submit"><img src="<?=$baseurl;?>images/registration_go.png" alt="" /></button>
 <?= form_close(); ?>

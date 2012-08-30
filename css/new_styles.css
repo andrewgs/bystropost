@@ -1,0 +1,32 @@
+#top-logo {
+	background: url("../images/logo.png");
+	display: inline-block;
+	height: 100px;
+	margin-top: 1.5em;
+	width: 290px;
+}
+
+#top-links { display: inline-block; margin: 1em 0 0.5em; text-align: right; width: 97%; }
+#top-links a { font-family: arial,sans-serif;  font-size: 13px; text-decoration: underline; }
+#login-form { margin: 0; }
+#login { margin: 1em 0 0; }
+#login a { font-size: 0.8em; margin-left: 14.25em; }
+#login .input { padding: 0.1em 0.5em; border-radius: 2px; width: 9.5em; }
+#login .go { margin-top: 7px; }
+
+#main-nav-wrapper { border-bottom: 1px solid #C2E2E7; border-top: 1px solid #C2E2E7;  margin: 1.5em 0; padding: 2em 0; width: 100%; }
+#main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; }
+#main-nav li { display: inline-block; }
+#main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 25px; margin: 0 2em 0 0; text-decoration: underline; color: #3995BF; }
+
+h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; }
+h1 span { font-size: 48px; /*color: #00b6dc;*/}
+
+#white_line { background: none; border: 1px solid #C2E2E7; border-style: solid none none; float: left; height: 63px; margin: 3em 0 2em 1.5em; padding: 1.25em 1em 1em 0.5em; width: 890px; }
+#white_line span { color: #4D4D4D; display: block; float: left; font-family: trebuchet ms,arial,sans-serif; font-size: 24px; font-weight: normal; margin-top: 15px; }
+#content { margin: 0; }
+#content tr td { font: 14px/19px trebuchet ms,arial,sans-serif; padding: 30px 7px 7px; }
+#webmaster big, #optimizator big { margin: 1.5em 0 1em; display: block; }
+#white_line table tr td { width: 130px; padding: 7px 5px; }
+#register_tree { margin-top: 3em; }
+p { margin: 0 0 1.25em; }

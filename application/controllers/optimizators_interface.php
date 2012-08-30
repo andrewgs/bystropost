@@ -2,7 +2,7 @@
 
 class Optimizators_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','signdate'=>'');
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','signdate'=>'','balance'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -30,6 +30,7 @@ class Optimizators_interface extends CI_Controller{
 					$this->user['uname'] 			= $userinfo['fio'];
 					$this->user['utype'] 			= $userinfo['type'];
 					$this->user['signdate'] 		= $userinfo['signdate'];
+					$this->user['balance'] 			= $userinfo['balance'];
 					$this->loginstatus['status'] 	= TRUE;
 				else:
 					redirect('');

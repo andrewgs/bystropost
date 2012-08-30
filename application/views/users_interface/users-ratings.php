@@ -3,11 +3,11 @@
 <?php $this->load->view("users_interface/includes/head");?>
 
 <body>
-	<?php $this->load->view("users_interface/includes/header");?>
-	<div id="main">
+	<div class="container">
 		<?php $this->load->view("users_interface/includes/navigation");?>
-		<div id="stable" style="margin-top:180px;width: 1005px;">
-			<h1 class="whiteline">Отзывы о системе</h1>
+		<?php $this->load->view("users_interface/includes/header");?>
+		
+		<div id="stable">
 			<div id="who_reviews">
 			<?php if($this->uri->segment(2) == 'advertisers'):?>
 				<?=anchor('users-ratings/advertisers','Отзывы от рекламодателей',array('class'=>'active'));?>
@@ -38,6 +38,7 @@
 			</div>
 		<?php endfor;?>
 		</div>
+		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>
