@@ -3,7 +3,7 @@
 	display: inline-block;
 	height: 100px;
 	margin-top: 1.5em;
-	width: 290px;
+	width: 350px;
 }
 
 #top-links { display: inline-block; margin: 1em 0 0.5em; text-align: right; width: 97%; }
@@ -62,4 +62,5 @@ p { margin: 0 0 1.25em; }
 			box-shadow: 0 0 3px #C0C0C0;
 }
 .ErrImg { margin-bottom: 15px; margin-left: 10px; }
-#msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+#msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); } 
+#footer a {color: #fff; display: inline-block; font: 13px trebuchet ms,arial,sans-serif; margin: 1em 0.75em 0; }

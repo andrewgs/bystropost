@@ -303,7 +303,10 @@ header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.
 td.paid { background: #FCF8E3; }
 td.notpaid { background: #fff; }
 
-td { font: 13px trebuchet ms, sans-serif; } 
+td { font: 13px trebuchet ms, sans-serif; }
+.table thead th { vertical-align: middle !important; } 
 .ttpl a { font: 13px trebuchet ms,sans-serif; }
 footer { background: none; }
-
+nobr small { font: 11px arial, sans-serif; color: #999; }
+.breadcrumb { padding: 14px; }
+.table tr.align-center td { text-align: center; }
