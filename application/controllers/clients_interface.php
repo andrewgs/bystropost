@@ -1206,7 +1206,10 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
-			$this->form_validation->set_rules('criteria',' ','trim');
+			$this->form_validation->set_rules('imgstatus',' ','trim');
+			$this->form_validation->set_rules('imgwidth',' ','trim');
+			$this->form_validation->set_rules('imgheight',' ','trim');
+			$this->form_validation->set_rules('imgpos',' ','trim');
 			$this->form_validation->set_rules('requests',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
@@ -1216,6 +1219,9 @@ class Clients_interface extends CI_Controller{
 				if($exist):
 					$this->session->set_userdata('msgr','Площадка с URL-адресом '.$_POST['url'].' уже существует!');
 					redirect($this->uri->uri_string());
+				endif;
+				if($_POST['imgwidth'] && $_POST['imgheight']):
+					$_POST['imgstatus'] = 1;
 				endif;
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
 				
@@ -1282,12 +1288,9 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		if($pagevar['userinfo']['remote']):
-			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
-				redirect('webmaster-panel/actions/control');
-			endif;
-		else:
-			if(intval($pagevar['userinfo']['balance'])<500):
+			if(intval($pagevar['userinfo']['balance'])<500 ||!$pagevar['cntunit']['platforms']):
 				redirect('webmaster-panel/actions/control');
 			endif;
 		endif;
@@ -1346,12 +1349,21 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
-			$this->form_validation->set_rules('criteria',' ','trim');
+			$this->form_validation->set_rules('imgstatus',' ','trim');
+			$this->form_validation->set_rules('imgwidth',' ','trim');
+			$this->form_validation->set_rules('imgheight',' ','trim');
+			$this->form_validation->set_rules('imgpos',' ','trim');
 			$this->form_validation->set_rules('requests',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
+				if($_POST['imgwidth'] && $_POST['imgheight']):
+					$_POST['imgstatus'] = 1;
+				else:
+					$_POST['imgstatus'] = 0;
+					$_POST['imgpos'] = 'right';
+				endif;
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
 				if($result):
 					$addtic = 0;
@@ -1401,7 +1413,11 @@ class Clients_interface extends CI_Controller{
 						Обзоры: <?=($pagevar['platform']['reviews'] == 1)?'да':'нет';?> - <?=($_POST['reviews'] == 1)?'да':'нет';?><br/>
 						Тематичность: <?=($pagevar['platform']['thematically'] == 1)?'да':'нет';?> - <?=($_POST['thematically'] == 1)?'да':'нет';?><br/>
 						Размещать задания которые противоречат законам РФ: <?=($pagevar['platform']['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?> - <?=($_POST['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?></p>
-						<p>Критерии к публикации:<br/> <br/><?=$pagevar['platform']['criteria'].'<br/><br/>'.$_POST['criteria'];?></p>
+						<p>Критерии к публикации:<br/><br/>
+							Ширина изображения:<?=$pagevar['platform']['imgwidth'].' - '.$_POST['imgwidth'];?>
+							Высота изображения:<?=$pagevar['platform']['imgheight'].' - '.$_POST['imgheight'];?>
+							Позиция изображения:<?=$pagevar['platform']['imgpos'].' - '.$_POST['imgpos'];?>
+						</p>
 						<p>Пожелания :<br/> <br/><?=$pagevar['platform']['requests'].'<br/><br/>'.$_POST['requests'];?></p>
 						
 						<p>Желаем Вам удачи!</p> 
@@ -1448,15 +1464,14 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
-		if($pagevar['userinfo']['remote']):
-			if(intval($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']):
-				redirect('webmaster-panel/actions/control');
-			endif;
-		else:
-			if(intval($pagevar['userinfo']['balance'])<500):
-				redirect('webmaster-panel/actions/control');
-			endif;
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		
+		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
+			$pagevar['platform']['imgstatus'] = 0;
+			$pagevar['platform']['imgwidth'] = '';
+			$pagevar['platform']['imgheight'] = '';
 		endif;
+		
 		$this->load->view("clients_interface/control-edit-platform",$pagevar);
 	}
 	

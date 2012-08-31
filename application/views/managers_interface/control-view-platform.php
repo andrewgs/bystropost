@@ -73,8 +73,9 @@
 						<td>Объем знаков: </td>
 						<td>
 							<select name="amount" id="amount" class="reg-form-input w195 h35" disabled="disabled">
-								<option value="1" >от 1000-1500 – 23 руб.</option>
-								<option value="2" >от 1500-2000 – 30 руб.</option>
+								<option value="1" >от 1000 до 1499</option>
+								<option value="2" >от 1500 до 1999</option>
+								<option value="3" >от 2000 до 2500</option>
 							</select>
 						</td>
 					</tr>
@@ -106,8 +107,16 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="200">Критерии к публикации фотографий к контенту (если поле не заполнено – фотографии будут отсутствовать). Укажите размер фотографий, напишите желательно о всех ньансах при публикации фото. Если cms обычная, можете просто написать – стандарт.:</td>
-						<td style="text-align:left;"><?=$platform['criteria'];?></td>
+						<td width="200">Критерии к публикации фотографий к контенту (если поля не заполнены – фотографии будут отсутствовать)</td>
+						<td>
+							<span style="margin-left:15px;">Размер изображения: </span><?=$platform['imgwidth'];?> на <?=$platform['imgheight'];?><br/>
+							<span style="margin-left:15px;">Позиция изображения:</span>
+							<select name="imgpos" id="imgpos" class="reg-form-input w195 h35" disabled="disabled">
+								<option value="left">Слева</option>
+								<option value="center">По центру</option>
+								<option value="right">Справа</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td width="200">Ваши пожелания по работе с площадкой (опциональное поле, не обязательное к заполнению)</td>

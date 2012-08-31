@@ -38,6 +38,7 @@
 			$("#reviews [value='<?=$platform['reviews'];?>']").attr("selected", "selected");
 			$("#thematically [value='<?=$platform['thematically'];?>']").attr("selected", "selected");
 			$("#illegal [value='<?=$platform['illegal'];?>']").attr("selected", "selected");
+			$("#imgpos [value='<?=$platform['imgpos'];?>']").attr("selected", "selected");
 			
 		<?php if(count($mymarkets)):?>
 			$("#btnDelMarketLine").show();

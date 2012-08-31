@@ -30,3 +30,36 @@ h1 span { font-size: 48px; /*color: #00b6dc;*/}
 #white_line table tr td { width: 130px; padding: 7px 5px; }
 #register_tree { margin-top: 3em; }
 p { margin: 0 0 1.25em; }
+
+#registration { background: url("../images/tree.png") no-repeat scroll 500px 50px transparent; margin: 0; width: 100%; font: 13px trebuchet ms, sans-serif; }
+#registration h2 { font: 24px trebuchet ms,arial,sans-serif; margin: 0.25em 0 1em; }
+#registration input, #registration textarea { font: 13px/18px arial,sans-serif; padding: 0.5em; height: 24px; margin-bottom: 15px; color: #333; }
+#registration textarea { height: 100px; }
+#promo { width: 150px !important; } 
+#userRegister {
+	background: #2a2a2a;
+	background: -moz-linear-gradient(top, #f8d53b 0%, #f09e14 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8d53b), color-stop(100%,#f09e14));
+	background: -webkit-linear-gradient(top, #f8d53b 0%, #f09e14 100%);
+	background: -o-linear-gradient(top, #f8d53b 0%, #f09e14 100%);
+	background: -ms-linear-gradient(top, #f8d53b 0%, #f09e14 100%);
+	background: linear-gradient(top, #f8d53b 0%, #f09e14 100%);
+	border: 1px solid #999;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1em 2em;
+	color: #C51D1F;
+	font: 24px/45px georgia,serif;
+	height: 60px;
+	width: 300px;
+	text-align: center;
+	-webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+	   -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+	-webkit-box-shadow: 0 0 3px #C0C0C0;
+	   -moz-box-shadow: 0 0 3px #C0C0C0;
+			box-shadow: 0 0 3px #C0C0C0;
+}
+.ErrImg { margin-bottom: 15px; margin-left: 10px; }
+#msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }

@@ -1,8 +1,11 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'frmaddplatform')); ?>
+	<input type="hidden" name="imgstatus" value="<?=$platform['imgstatus'];?>"/>
+	<input type="hidden" name="url" value="<?=$platform['url'];?>"/>
+	<input type="hidden" name="amount" value="<?=$platform['amount'];?>"/>
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
-			<td><input name="url" class="reg-form-input w660 inpval disabled" disabled="disabled" type="text" size="80" value="<?=$platform['url']?>" placeholder="Введите URL прощадки"></td>
+			<td><input name="durl" class="reg-form-input w660 inpval disabled" disabled="disabled" type="text" size="80" value="<?=$platform['url'];?>" placeholder="Введите URL прощадки"></td>
 		</tr>
 		<tr>
 			<td>Тематика площадки:</td>
@@ -14,13 +17,13 @@
 		</tr>
 		<tr>
 			<td>URL админки:</td>
-			<td><input name="adminpanel" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['adminpanel']?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
+			<td><input name="adminpanel" class="reg-form-input w660 inpval" type="text" size="80" value="<?=$platform['adminpanel'];?>" placeholder="Укажите URL для доступа к панели администрирования"></td>
 		</tr>
 		<tr>
 			<td>Доступ к админке:</td>
 			<td style="text-align: left;">
-				<span style="margin-left:10px;">Логин:</span><input name="aplogin" class="reg-form-input w230 inpval" type="text" value="<?=$platform['aplogin']?>" placeholder="Укажите логин" style="margin-left:10px;">
-				<span style="margin-left:15px;">Пароль:</span><input name="appassword" type="text" class="reg-form-input w230 inpval" value="<?=$platform['appassword']?>" placeholder="Укажите пароль" style="margin-left:10px;">
+				<span style="margin-left:10px;">Логин:</span><input name="aplogin" class="reg-form-input w230 inpval" type="text" value="<?=$platform['aplogin'];?>" placeholder="Укажите логин" style="margin-left:10px;">
+				<span style="margin-left:15px;">Пароль:</span><input name="appassword" type="text" class="reg-form-input w230 inpval" value="<?=$platform['appassword'];?>" placeholder="Укажите пароль" style="margin-left:10px;">
 			</td>
 		</tr>
 		<tr>
@@ -55,7 +58,7 @@
 		<tr>
 			<td>Объем знаков: </td>
 			<td>
-				<select name="amount" id="amount" class="reg-form-input w195 h35 disabled" disabled="disabled">
+				<select name="amount" id="damount" class="reg-form-input w195 h35 disabled" disabled="disabled">
 					<option value="1" >от 1000 до 1499 +0 руб</option>
 					<option value="2" >от 1500 до 1999 +11 руб</option>
 					<option value="3" >от 2000 до 2500 +23 руб</option>
@@ -90,12 +93,21 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="200">Критерии к публикации фотографий к контенту (если поле не заполнено – фотографии будут отсутствовать). Укажите размер фотографий, напишите желательно о всех ньансах при публикации фото. Если cms обычная, можете просто написать – стандарт.:</td>
-			<td><textarea class="redactor" name="criteria" cols="79" rows="12"><?=$platform['criteria']?></textarea></td>
+			<td width="200">Критерии к публикации фотографий к контенту (если поля не заполнены – фотографии будут отсутствовать)</td>
+			<td>
+				<span style="margin-left:10px;">Ширина изображения:</span><input name="imgwidth" class="reg-form-input w50 digital" type="text" value="<?=$platform['imgwidth']?>" style="margin-left:10px;"><br/>
+				<span style="margin-left:15px;">Высота изображения:</span><input name="imgheight" type="text" class="reg-form-input w50 digital" value="<?=$platform['imgheight']?>" style="margin-left:10px;"><br/>
+				<span style="margin-left:15px;">Позиция изображения:</span>
+				<select name="imgpos" id="imgpos" class="reg-form-input w195 h35">
+					<option value="left">Слева</option>
+					<option value="center">По центру</option>
+					<option value="right">Справа</option>
+				</select>
+			</td>
 		</tr>
 		<tr>
 			<td width="200">Ваши пожелания по работе с площадкой (опциональное поле, не обязательное к заполнению)</td>
-			<td><textarea class="redactor" name="requests" cols="79" rows="12"><?=$platform['requests']?></textarea></td>
+			<td><textarea class="redactor" name="requests" cols="79" rows="12"><?=$platform['requests'];?></textarea></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>

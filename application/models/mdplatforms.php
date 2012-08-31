@@ -17,6 +17,10 @@ class Mdplatforms extends CI_Model{
 	var $thematically 	= 1;
 	var $illegal 		= 0;
 	var $criteria 		= '';
+	var $imgstatus		= 0;
+	var $imgwidth		= 0;
+	var $imgheight		= 0;
+	var $imgpos			= 0;
 	var $requests 		= '';
 	var $tic 			= 0;
 	var $pr 			= 0;
@@ -63,8 +67,12 @@ class Mdplatforms extends CI_Model{
 		$this->reviews 		= $data['reviews'];
 		$this->thematically = $data['thematically'];
 		$this->illegal 		= $data['illegal'];
-		$this->criteria 	= $data['criteria'];
+//		$this->criteria 	= $data['criteria'];
 		$this->requests 	= $data['requests'];
+		$this->imgstatus 	= $data['imgstatus'];
+		$this->imgwidth 	= $data['imgwidth'];
+		$this->imgheight 	= $data['imgheight'];
+		$this->imgpos 		= $data['imgpos'];
 		$this->date 		= date("Y-m-d");
 		
 		if(isset($data['manager'])):
@@ -109,8 +117,12 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('reviews',$data['reviews']);
 		$this->db->set('thematically',$data['thematically']);
 		$this->db->set('illegal',$data['illegal']);
-		$this->db->set('criteria',$data['criteria']);
+//		$this->db->set('criteria',$data['criteria']);
 		$this->db->set('requests',$data['requests']);
+		$this->db->set('imgstatus',$data['imgstatus']);
+		$this->db->set('imgwidth',$data['imgwidth']);
+		$this->db->set('imgheight',$data['imgheight']);
+		$this->db->set('imgpos',$data['imgpos']);
 		
 		$this->db->where('id',$id);
 		$this->db->where('webmaster',$uid);

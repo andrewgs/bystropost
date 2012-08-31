@@ -259,6 +259,12 @@ class Managers_interface extends CI_Controller{
 		
 		$pagevar['mymarkets'] = $this->mdmkplatform->read_records_by_platform($platform,$pagevar['platform']['webmaster']);
 		
+		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
+			$pagevar['platform']['imgstatus'] = 0;
+			$pagevar['platform']['imgwidth'] = '-';
+			$pagevar['platform']['imgheight'] = '-';
+		endif;
+		
 		$this->load->view("managers_interface/control-view-platform",$pagevar);
 	}
 	

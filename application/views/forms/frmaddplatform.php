@@ -1,4 +1,6 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'frmaddplatform')); ?>
+	<input type="hidden" name="amount" value="1"/>
+	<input type="hidden" name="imgstatus" value="0"/>
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
@@ -37,16 +39,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td>Объем знаков: </td>
-			<td>
-				<select name="amount" class="reg-form-input w195 h35">
-					<option value="1" >от 1000 до 1499 +0 руб</option>
-					<option value="2" >от 1500 до 1999 +11 руб</option>
-					<option value="3" >от 2000 до 2500 +23 руб</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
 			<td>Обзоры:</td>
 			<td>
 				<select name="reviews" class="reg-form-input w195 h35">
@@ -74,8 +66,17 @@
 			</td>
 		</tr>
 		<tr>
-				<td width="200">Критерии к публикации фотографий к контенту (если поле не заполнено – фотографии будут отсутствовать). Укажите размер фотографий, напишите желательно о всех ньансах при публикации фото. Если cms обычная, можете просто написать – стандарт.:</td>
-				<td><textarea class="redactor" name="criteria" cols="79" rows="12"></textarea></td>
+				<td width="200">Критерии к публикации фотографий к контенту (если поля не заполнены – фотографии будут отсутствовать)</td>
+				<td>
+					<span style="margin-left:10px;">Ширина изображения:</span><input name="imgwidth" class="reg-form-input w50 inpval digital" type="text" value="" style="margin-left:10px;"><br/>
+					<span style="margin-left:15px;">Высота изображения:</span><input name="imgheight" type="text" class="reg-form-input w50 inpval digital" value="" style="margin-left:10px;"><br/>
+					<span style="margin-left:15px;">Позиция изображения:</span>
+					<select name="imgpos" class="reg-form-input w195 h35">
+						<option value="left">Слева</option>
+						<option value="center">По центру</option>
+						<option value="right">Справа</option>
+					</select>
+				</td>
 		</tr>
 		<tr>
 				<td width="200">Ваши пожелания по работе с площадкой (опциональное поле, не обязательное к заполнению)</td>
