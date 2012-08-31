@@ -238,19 +238,6 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/optimizers",$pagevar);
 	}
 	
-	public function support(){
-		
-		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Поддержка',
-			'description'	=> '',
-			'author'		=> '',
-			'baseurl' 		=> base_url(),
-			'msgauth'		=> $this->session->userdata('msgauth')
-		);
-		$this->session->unset_userdata('msgauth');
-		$this->load->view("users_interface/support",$pagevar);
-	}
-	
 	public function faq(){
 		
 		$pagevar = array(

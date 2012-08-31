@@ -1,5 +1,6 @@
-<?=anchor('admin-panel/actions/profile','<i>Мой профиль</i>');?><span style="float:right;">(<?=$userinfo['ulogin'];?>)</span>
-<hr style="margin: 5px 0;"/>
+<div class="user-info">
+	<?=$userinfo['ulogin'];?> <span style="float:right;"><?=anchor('admin-panel/actions/profile','Мой профиль', array('class' => 'underline'));?> &nbsp;<?=anchor('admin-panel/actions/logoff','Завершить сеанс', array('class' => 'underline'));?></span>
+</div>
 <div>
-	Баланс: <span style="float:right;"><?=anchor('admin-panel/actions/balance','<i>'.$userinfo['balance'].' руб.</i>');?></span>
+	Баланс: <span style="float:right;"><?=anchor('admin-panel/actions/balance',$userinfo['balance'].' руб.');?></span>
 </div>

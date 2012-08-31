@@ -1,6 +1,5 @@
 <?php if($msgauth):?>
-	<div class="alert-auth alert-error" id="msgdealert">
-		<a class="auth-close" id="msgeclose">×</a>
+	<div id="msgdealert">
 		<?=$msgauth;?>
 	</div>
 <?php endif; ?>

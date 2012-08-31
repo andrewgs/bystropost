@@ -48,6 +48,7 @@
 		<?php $this->load->view('managers_interface/includes/rightbar');?>
 		</div>
 	</div>
+	<?php $this->load->view("managers_interface/includes/footer");?>
 	<?php $this->load->view('managers_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

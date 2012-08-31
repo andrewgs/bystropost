@@ -38,7 +38,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($users);$i++):?>
-						<tr class="align-center">
+						<tr>
 							<td style="min-width:185px;">
 								<nobr><i><b><?=anchor('admin-panel/management/users/profile/id/'.$users[$i]['id'],$users[$i]['login']);?></b></i><br/>
 								<?=$users[$i]['fio'];?><br/>
@@ -82,6 +82,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-users');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

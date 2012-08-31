@@ -27,7 +27,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($tpswork);$i+=2):?>
-						<tr class="align-center">
+						<tr>
 						<?php if(isset($tpswork[$i]['id'])):?>
 							<td class="w85"><nobr><i><b><?=$tpswork[$i]['title'];?></b></i></nobr></td>
 							<td class="w85"><i><b><?=$tpswork[$i]['wprice'];?> руб.<br/><?=$tpswork[$i]['mprice'];?> руб.</b></i></td>
@@ -67,6 +67,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-typework');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

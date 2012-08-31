@@ -9,7 +9,6 @@ $route['users/login']					= "users_interface/loginin";
 $route['about']							= "users_interface/about";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
-$route['support']						= "users_interface/support";
 $route['faq']							= "users_interface/faq";
 $route['markets-catalog/:any']			= "users_interface/markets_catalog";
 $route['users-ratings/advertisers']		= "users_interface/users_ratings";
@@ -127,7 +126,7 @@ $route['optimizator-panel/actions/logoff']								= "optimizators_interface/acti
 
 $route[':any/viewimage/:num']	= "general_interface/viewimage";
 $route['balance/result']		= "general_interface/balance_result";
-
+$route['support']				= "general_interface/support";
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
 $route['admin-panel/actions/profile']					= "admin_interface/actions_profile";
 $route['admin-panel/actions/forum']						= "admin_interface/actions_forum";

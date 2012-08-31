@@ -10,9 +10,6 @@
 			<div class="span12">
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
-				<div style="float:right;">
-					<?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?>
-				</div>
 				<div class="clear"></div>
 			<?php if($userinfo['locked']):?>
 				<div class="alert alert-error">
@@ -24,7 +21,7 @@
 					<div id="panel_segments">
 					<?php if($cntunit['delivers']['total']):?>
 						<div class="panel_segment">
-							<big><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<font color="#ff0000"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')',array('title'=>$cntunit['delivers']['notpaid'].' не оплаченных'));?></big>
+							<big><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<b>'.$cntunit['delivers']['notpaid'].'</b>/'.$cntunit['delivers']['total'].')',array('title'=>$cntunit['delivers']['notpaid'].' не оплаченных'));?></big>
 							<img src="<?=$baseurl;?>images/panel_pic1.jpg">
 							<div class="text">
 								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
@@ -49,7 +46,7 @@
 						</div>
 						<div class="panel_segment">
 						<?php if($cntunit['mails']['new']):?>
-							<big><?=anchor('webmaster-panel/actions/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails']['new'].'</b></font>/'.$cntunit['mails']['total'].')',array('title'=>$cntunit['mails']['new'].' новых сообщений'));?></big>
+							<big><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'</b>/'.$cntunit['mails']['total'].')',array('title'=>$cntunit['mails']['new'].' новых сообщений'));?></big>
 						<?php else:?>
 							<big><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')',array('title'=>'Новых сообщений нет'));?></big>
 						<?php endif;?>

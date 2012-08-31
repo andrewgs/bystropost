@@ -40,6 +40,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-mail');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	
 	<script type="text/javascript">

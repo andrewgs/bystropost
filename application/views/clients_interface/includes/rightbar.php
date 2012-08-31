@@ -3,13 +3,13 @@
 		<ul class="nav nav-list">
 			<li class="nav-header">Меню</li>
 		<?php if($cntunit['delivers']['total']):?>
-			<li num="finished-jobs"><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<font color="#ff0000"><b>'.$cntunit['delivers']['notpaid'].'</b></font>/'.$cntunit['delivers']['total'].')');?></li>
+			<li num="finished-jobs"><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<b>'.$cntunit['delivers']['notpaid'].'</b>/'.$cntunit['delivers']['total'].')');?></li>
 		<?php endif;?>
 		<?php if((($cntunit['platforms'] || $cntunit['markets']) && $userinfo['remote']) || (!$userinfo['locked'] && !$userinfo['remote'])):?>
 			<li num="platforms"><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
 		<?php endif;?>
 		<?php if($cntunit['mails']['new']):?>
-			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails']['new'].'</b></font>/'.$cntunit['mails']['total'].')');?></li>
+			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'</font>/'.$cntunit['mails']['total'].')');?></li>
 		<?php else:?>
 			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')');?></li>
 		<?php endif;?>
@@ -22,8 +22,10 @@
 		<?php endif;?>
 			<li num="forum"><?=anchor('#','Форум');?></li>
 			<li num="balance"><?=anchor('webmaster-panel/actions/balance','Баланс');?></li>
+			<!--
 			<li num="profile"><?=anchor('webmaster-panel/actions/profile','Мой профиль');?></li>
 			<li><?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?></li>
+			-->
 		</ul>
 	</div>
 </div>

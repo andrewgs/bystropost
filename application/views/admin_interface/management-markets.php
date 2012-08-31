@@ -26,7 +26,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($markets);$i+=2):?>
-						<tr class="align-center">
+						<tr>
 						<?php if(isset($markets[$i]['id'])):?>
 							<td class="w85"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<i><b><?=$markets[$i]['title'];?></b></i></nobr></td>
 							<td class="w85"><i><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></i></td>
@@ -66,6 +66,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-market');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

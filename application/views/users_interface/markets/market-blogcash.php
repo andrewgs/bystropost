@@ -8,7 +8,7 @@
 		<?php $this->load->view("users_interface/includes/header");?>
 		
 		<div class="row">
-			<div id="white_line" class="span12">
+			<div id="white_line" class="span12 no-margin">
 				<span>Автоматизация работы в:</span>
 				<table border=0>
 					<tr>

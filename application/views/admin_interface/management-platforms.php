@@ -37,7 +37,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($platforms);$i++):?>
-						<tr class="align-center">
+						<tr>
 						<?php if(empty($platforms[$i]['fio'])):?>
 							<td class="w275" data-noowner="noowner">
 						<?php elseif(empty($platforms[$i]['manemail'])):?>
@@ -97,6 +97,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-platform');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

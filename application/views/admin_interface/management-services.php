@@ -43,6 +43,7 @@
 		<?php $this->load->view('admin_interface/modal/admin-delete-service');?>
 		</div>
 	</div>
+	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){

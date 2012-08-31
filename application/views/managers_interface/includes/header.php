@@ -10,10 +10,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span12">
-				<h1>Система управления продажами <span>/ Профиль &laquo;Менеджера&raquo;</span></h1>
-			</div>
-		</div>
 	</div>
 </header>
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<h1 class="admin-h1">Система управления продажами <span>/ Профиль &laquo;Менеджера&raquo;</span></h1>
+		</div>
+	</div>
+</div>

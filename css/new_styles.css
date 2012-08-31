@@ -15,9 +15,10 @@
 #login .go { margin-top: 7px; }
 
 #main-nav-wrapper { border-bottom: 1px solid #C2E2E7; border-top: 1px solid #C2E2E7;  margin: 1.5em 0; padding: 2em 0; width: 100%; }
-#main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; }
+#main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; position: relative; }
 #main-nav li { display: inline-block; }
 #main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 25px; margin: 0 2em 0 0; text-decoration: underline; color: #3995BF; }
+.banner-gogetlinks { position: absolute; right: 19px; top: -24px; }
 
 h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; }
 h1 span { font-size: 48px; /*color: #00b6dc;*/}
@@ -63,4 +64,19 @@ p { margin: 0 0 1.25em; }
 }
 .ErrImg { margin-bottom: 15px; margin-left: 10px; }
 #msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); } 
-#footer a {color: #fff; display: inline-block; font: 13px trebuchet ms,arial,sans-serif; margin: 1em 0.75em 0; }
+#footer a, #footer a:hover {color: #fff; display: inline-block; font: 13px trebuchet ms,arial,sans-serif; margin: 1em 0.75em 0; }
+#white_line.no-margin { margin: 0 0 0.5em 1.5em; border: 0 none; }
+h1.whiteline { border: 0 none; }
+#who_reviews, #where_reviews { width: auto; margin-top: 0.5em; float: none; }
+#who_reviews a, #who_reviews a:hover { display: inline-block; font: 24px trebuchet ms,arial,sans-serif; float: none; }
+#who_reviews a:hover { text-decoration: none; color: #1983C6; border-color: #DDF7FB; }
+#who_reviews a.active { color: #4d4d4d; cursor: default; }   
+#where_reviews { font: 13px trebuchet ms,arial,sans-serif; }
+#where_reviews p { float: none; width: auto; margin-bottom: 1em; }
+#where_reviews p a { float: none; } 
+.review_post { background: none; border: 0 none; border-top: 1px solid #e0e0e0; border-radius: 0; float: none; height: auto; width: auto; font-size: inherit; padding: 0; margin: 2em 0 0; padding-top: 2em; }
+.review_post .avatar { display: block; float: left; margin: 0.25em 0.5em 0 0; text-align: right; width: 100px; height: auto; padding: 0; position: inherit; }
+.left { float: left; }
+.avatar-wpapper { width: 120px; }
+.comment-body { width: 650px; }  
+#stable p a:hover { font-size: inherit !important; font-family: trebuchet ms, sans-serif; }

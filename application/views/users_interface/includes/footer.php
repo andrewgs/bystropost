@@ -3,7 +3,7 @@
 		<?=anchor('support','Техподдержка');?>
 		<?=anchor('#','Ссылки под Google');?>
 		<?=anchor('#','Статьи Биржасайтов');?>
-		<br><br>
+		<br>
 		<?=anchor('','&#169; 2012 bystropost.ru');?>
 		<div id="counters">
 			<!-- begin WebMoney Transfer : accept label -->

@@ -41,7 +41,7 @@
 					<?php for($i=0,$num=$this->uri->segment(5)+1;$i<count($delivers);$i++,$num++):?>
 						<tr>
 							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;"><?=$num;?></td>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><i><b><?=$delivers[$i]['date'];?></b></i></nobr></td>
+							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><b><?=$delivers[$i]['date'];?></b></nobr></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['twtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['mtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['mkprice'];?> руб.</nobr></td>
@@ -55,7 +55,7 @@
 							<?php else:?>
 								<td class="w100" style="text-align:center; vertical-align:middle;" data-status="notpaid">
 									<nobr><?=$delivers[$i]['mprice'];?> руб.</nobr><br/>
-									Нет средств
+									<nobr><small>Нет средств</small></nobr>
 								</td>
 							<?php endif;?>
 						<?php else:?>
@@ -108,10 +108,10 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("td[data-status='notpaid']").each(function(e){
-				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
+				$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');
 			});
 			$("td[data-status='paid']").each(function(e){
-				$(this).addClass('alert alert-saccess'); $(this).siblings('td').addClass('alert alert-saccess');
+				$(this).addClass('paid'); $(this).siblings('td').addClass('paid');
 			});
 		<?php if($userinfo['balance'] >= $minprice):?>
 			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false;});

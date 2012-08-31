@@ -7,9 +7,8 @@
 		<?php $this->load->view("users_interface/includes/navigation");?>
 		<?php $this->load->view("users_interface/includes/header");?>
 		
-		<div class="row">
-			<div id="stable">
-				<h1 class="whiteline">Отзывы о системе</h1>
+		<div id="stable" class="row">
+			<div class="span12">
 				<div id="who_reviews">
 				<?php if($this->uri->segment(2) == 'advertisers'):?>
 					<?=anchor('users-ratings/advertisers','Отзывы от рекламодателей',array('class'=>'active'));?>
@@ -20,20 +19,27 @@
 				<?php endif;?>
 				</div>
 				<div id="where_reviews">
-					Отзывы на:
+					<p>
+						Вы можете оставить свой отзыв для отображения на сайте на следующих форумах:
+					</p>
 					<p>
 						<?=anchor('http://forum.searchengines.ru/','forum.searchengines.ru',array('class'=>'se'));?>
 						<?=anchor('http://maultalk.com/','maultalk.com',array('class'=>'maultalk'));?>
-						Оставить отзыв для отображения на сайте,можно через форумы выше
 					</p>
 				</div>
-				<div class="review_post" style="width:875px;">
-					<span class="avatar">
-						<img src="<?=$baseurl;?>ratings/viewimage/<?=$rating['id'];?>" title="<?=$rating['title'];?>" alt="<?=$rating['title'];?>"/>
-					</span>
-					<i><?=$rating['title'];?></i>
-					<br/>
-					<?=$rating['text'];?>
+				<div class="review_post">
+					<div class="left avatar-wpapper">
+						<img class="avatar" src="<?=$baseurl;?>ratings/viewimage/<?=$rating['id'];?>" title="<?=$rating['title'];?>" alt="<?=$rating['title'];?>"/>
+					</div>
+					<div class="left comment-body">
+						<p>
+							<?=$rating['text'];?>
+						</p>
+						<p>
+							<?=$rating['title'];?>
+						</p>
+					</div>
+					<div class="clear"></div>
 				</div>
 			</div>
 		</div>
