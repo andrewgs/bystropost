@@ -29,14 +29,14 @@
 					<?php for($i=0;$i<count($tkmsgs);$i++):?>
 						<tr class="align-center">
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tkmsgs[$i]['id'];?></td>
-							<td class="w195"><b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><?=$tkmsgs[$i]['fio'];?><br/><i><b><?=$tkmsgs[$i]['login'];?></b></i><br/><?=$tkmsgs[$i]['date'];?></td>
+							<td class="w195"><b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><?=$tkmsgs[$i]['fio'];?><br/><b><?=$tkmsgs[$i]['login'];?></b><br/><?=$tkmsgs[$i]['date'];?></td>
 						<?php if(($tkmsgs[$i]['recipient'] == $userinfo['uid']) OR !$tkmsgs[$i]['recipient']):?>
 							<td class="w400" data-incoming="incoming">
 						<?php else:?>
 							<td class="w400">
 						<?php endif;?>
 							<?php if($tkmsgs[$i]['reply']):?>
-								<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
+								<strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong><br/>
 							<?php endif;?>
 								<?=$tkmsgs[$i]['text'];?>
 							</td>

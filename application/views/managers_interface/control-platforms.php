@@ -33,7 +33,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($platforms);$i++):?>
-						<tr class="align-center">
+						<tr>
 							<td class="w275 ttpl">
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/view-platform/'.$platforms[$i]['id'],$platforms[$i]['url'],array('title'=>'Просмотреть площадку'));?>

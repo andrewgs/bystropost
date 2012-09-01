@@ -10,7 +10,7 @@
 			<li num="ratings"><?=anchor('admin-panel/management/ratings/advertisers','Отзывы о системе');?></li>
 			<li class="nav-header">Сообщения</li>
 		<?php if($cntunit['mails']):?>
-			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<font color="#0000ff"><b>'.$cntunit['mails'].'</b></font>)');?></li>
+			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<b>'.$cntunit['mails'].'</b>)');?></li>
 		<?php else:?>
 			<li num="private-messages"><?=anchor('admin-panel/management/mails','Почта');?></li>
 		<?php endif;?>

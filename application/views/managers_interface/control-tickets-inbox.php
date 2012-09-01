@@ -30,7 +30,7 @@
 						<tr>
 							<td class="w195 ttpl">
 								<?=anchor('manager-panel/actions/tickets/inbox/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
-								(<?=anchor('manager-panel/actions/platforms/view-platform/'.$tickets[$i]['plid'],'<i><b>'.$tickets[$i]['url'].'</b></i>',array('title'=>'Просмотреть площадку'));?>)<br/><br/>
+								(<?=anchor('manager-panel/actions/platforms/view-platform/'.$tickets[$i]['plid'],'<b>'.$tickets[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>)<br/><br/>
 								от <?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>

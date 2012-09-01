@@ -26,10 +26,10 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($ratings);$i++):?>
-						<tr class="align-center">
-							<td class="w100" style="vertical-align:middle;"><nobr><i><b><?=$ratings[$i]['title'];?></b></i></nobr></td>
-							<td class="w500"><i><?=$ratings[$i]['text'];?></i></td>
-							<td class="w50" style="vertical-align:middle; text-align:center;">
+						<tr>
+							<td class="w100"><nobr><b><?=$ratings[$i]['title'];?></b></nobr></td>
+							<td class="w500"><?=$ratings[$i]['text'];?></td>
+							<td class="w50">
 								<div id="params<?=$i;?>" style="display:none" data-rid="<?=$ratings[$i]['id'];?>"></div>
 								<a class="btn btn-danger deleteRating" data-param="<?=$i;?>" data-toggle="modal" href="#deleteRating" title="Удалить отзыв"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>

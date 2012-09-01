@@ -34,9 +34,9 @@
 						<?php else:?>
 							<td class="w275">
 						<?php endif;?>
-								<nobr><i><b><?=$platforms[$i]['url'];?></b></i><br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
-								<?=$platforms[$i]['fio'];?><br/><i><b><?=$platforms[$i]['login'];?></b></i><br/><br/>
-								<?=$platforms[$i]['manfio'];?><br/><i><b><?=$platforms[$i]['manemail'];?></b></i></nobr>
+								<nobr><b><?=$platforms[$i]['url'];?><br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
+								<?=$platforms[$i]['fio'];?><br/><b><?=$platforms[$i]['login'];?></b><br/><br/>
+								<?=$platforms[$i]['manfio'];?><br/><b><?=$platforms[$i]['manemail'];?></b></nobr>
 							</td>
 							<td class="w85"><center><nobr><?=$platforms[$i]['torders'];?> / <?=$platforms[$i]['uporders'];?></nobr></center></td>
 							<td class="w85">

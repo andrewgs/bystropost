@@ -27,7 +27,7 @@
 					<tbody>
 					<?php for($i=0;$i<count($mails);$i++):?>
 						<tr class="align-center">
-							<td class="w100"><?=$mails[$i]['fio'];?><br/><i><b><?=$mails[$i]['login'];?></b></i></td>
+							<td class="w100"><?=$mails[$i]['fio'];?><br/><b><?=$mails[$i]['login'];?></b></td>
 							<td class="w400"><?=$mails[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$mails[$i]['id'];?>" data-uid="<?=$mails[$i]['uid'];?>" data-fio="<?=$mails[$i]['fio'];?>" data-login="<?=$mails[$i]['login'];?>"></div>

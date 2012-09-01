@@ -142,8 +142,8 @@
 			$("#subject").attr("disabled","disabled");
 			$("#cms [value='<?=$platform['cms'];?>']").attr("selected", "selected");
 			$("#cms").attr("disabled","disabled");
-			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
-			$("#tsbj").html('<i><b>'+$("#subject option:selected").html()+'</b></i>');
+			$("#tsbj").html('<b>'+$("#subject option:selected").html()+'</b>');
+			$("#tsbj").html('<b>'+$("#subject option:selected").html()+'</b>');
 			$("#amount [value='<?=$platform['amount'];?>']").attr("selected", "selected");
 			$("#reviews [value='<?=$platform['reviews'];?>']").attr("selected", "selected");
 			$("#thematically [value='<?=$platform['thematically'];?>']").attr("selected", "selected");

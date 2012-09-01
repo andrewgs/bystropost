@@ -46,10 +46,10 @@
 							<td class="w275">
 						<?php endif;?>
 								<nobr>
-								<?=anchor('admin-panel/management/platforms/view-platform/'.$platforms[$i]['id'],'<i><b>'.$platforms[$i]['url'].'</b></i>',array('title'=>'Просмотреть площадку'));?>
+								<?=anchor('admin-panel/management/platforms/view-platform/'.$platforms[$i]['id'],'<b>'.$platforms[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>
 								<br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
-								<?=$platforms[$i]['fio'];?><br/><i><b><?=$platforms[$i]['login'];?></b></i><br/><br/>
-								<?=$platforms[$i]['manfio'];?><br/><i><b><?=$platforms[$i]['manemail'];?></b></i></nobr>
+								<?=$platforms[$i]['fio'];?><br/><b><?=$platforms[$i]['login'];?></b><br/><br/>
+								<?=$platforms[$i]['manfio'];?><br/><b><?=$platforms[$i]['manemail'];?></b></nobr>
 							</td>
 							<td class="w85" style="text-align:center; vertical-align:middle;">
 								<nobr>

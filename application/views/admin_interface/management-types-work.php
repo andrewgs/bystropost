@@ -29,8 +29,8 @@
 					<?php for($i=0;$i<count($tpswork);$i+=2):?>
 						<tr>
 						<?php if(isset($tpswork[$i]['id'])):?>
-							<td class="w85"><nobr><i><b><?=$tpswork[$i]['title'];?></b></i></nobr></td>
-							<td class="w85"><i><b><?=$tpswork[$i]['wprice'];?> руб.<br/><?=$tpswork[$i]['mprice'];?> руб.</b></i></td>
+							<td class="w85"><nobr><b><?=$tpswork[$i]['title'];?></b></nobr></td>
+							<td class="w85"><b><?=$tpswork[$i]['wprice'];?> руб.<br/><?=$tpswork[$i]['mprice'];?> руб.</b></td>
 							<td class="w85">
 								<div id="params<?=$i;?>" style="display:none" data-wid="<?=$tpswork[$i]['id'];?>" data-title="<?=$tpswork[$i]['title'];?>" data-wprice="<?=$tpswork[$i]['wprice'];?>" data-mprice="<?=$tpswork[$i]['mprice'];?>"></div>
 								<a class="btn btn-success editTypeWork" data-param="<?=$i;?>" data-toggle="modal" href="#editTypeWork" title="Редактировать тип"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
@@ -41,10 +41,10 @@
 						<?php if(isset($tpswork[$i+1]['id'])):?>
 							<td class="w85">
 								<nobr>
-									<i><b><?=$tpswork[$i+1]['title'];?></b></i>
+									<b><?=$tpswork[$i+1]['title'];?></b>
 								</nobr>
 							</td>
-							<td class="w85"><i><b><?=$tpswork[$i+1]['wprice'];?> руб.<br/><?=$tpswork[$i+1]['mprice'];?> руб.</b></i></td>
+							<td class="w85"><b><?=$tpswork[$i+1]['wprice'];?> руб.<br/><?=$tpswork[$i+1]['mprice'];?> руб.</b></td>
 							<td class="w85">
 								<div id="params<?=$i+1;?>" style="display:none" data-wid="<?=$tpswork[$i+1]['id'];?>" data-title="<?=$tpswork[$i+1]['title'];?>" data-wprice="<?=$tpswork[$i+1]['wprice'];?>" data-mprice="<?=$tpswork[$i+1]['mprice'];?>"></div>
 								<a class="btn btn-success editTypeWork" data-param="<?=$i+1;?>" data-toggle="modal" href="#editTypeWork" title="Редактировать тип"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>

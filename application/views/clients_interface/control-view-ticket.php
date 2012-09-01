@@ -12,7 +12,7 @@
 						<?=anchor("webmaster-panel/actions/tickets","Все сообщения");?><span class="divider">/</span>
 					</li>
 					<li class="active">
-						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<i><b>'.$ticket['url'].'</b></i>)');?>
+						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<b>'.$ticket['url'].'</b>)');?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
@@ -42,7 +42,7 @@
 							<td style="text-align:left;">
 						<?php endif;?>
 							<?php if($tkmsgs[$i]['reply']):?>
-								<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
+								<strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong><br/>
 								<?=$tkmsgs[$i]['text'];?>
 								<div class="clear"></div>
 							<?php else:?>

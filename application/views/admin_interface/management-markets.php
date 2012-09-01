@@ -28,8 +28,8 @@
 					<?php for($i=0;$i<count($markets);$i+=2):?>
 						<tr>
 						<?php if(isset($markets[$i]['id'])):?>
-							<td class="w85"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<i><b><?=$markets[$i]['title'];?></b></i></nobr></td>
-							<td class="w85"><i><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></i></td>
+							<td class="w85"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<b><?=$markets[$i]['title'];?></b></nobr></td>
+							<td class="w85"><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></td>
 							<td class="w85">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$markets[$i]['id'];?>" data-title="<?=$markets[$i]['title'];?>" data-url="<?=$markets[$i]['url'];?>"></div>
 								<a class="btn btn-success editMarket" data-param="<?=$i;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
@@ -40,10 +40,10 @@
 							<td class="w85">
 								<nobr>
 									<img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i+1]['id'];?>" alt=""/>&nbsp;
-									<i><b><?=$markets[$i+1]['title'];?></b></i>
+									<b><?=$markets[$i+1]['title'];?></b>
 								</nobr>
 							</td>
-							<td class="w85"><i><b><a href="<?=$markets[$i+1]['url'];?>"><?=$markets[$i+1]['url'];?></a></b></i></td>
+							<td class="w85"><b><a href="<?=$markets[$i+1]['url'];?>"><?=$markets[$i+1]['url'];?></a></b></td>
 							<td class="w85">
 								<div id="params<?=$i+1;?>" style="display:none" data-mid="<?=$markets[$i+1]['id'];?>" data-title="<?=$markets[$i+1]['title'];?>" data-url="<?=$markets[$i+1]['url'];?>"></div>
 								<a class="btn btn-success editMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#editMarket" title="Редактировать"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>

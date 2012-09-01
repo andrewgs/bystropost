@@ -27,7 +27,7 @@
 					<?php for($i=0;$i<count($mails);$i++):?>
 						<tr>
 							<td class="w100" style="text-align:center; vertical-align:middle;">
-								<i><b><?=$mails[$i]['position'];?></b></i><br/>
+								<b><?=$mails[$i]['position'];?></b><br/>
 								<nobr><?=$mails[$i]['date'];?></nobr>
 							</td>
 							<td class="w500" data-system="<?=$mails[$i]['system'];?>" data-type="<?=$mails[$i]['type'];?>"><?=$mails[$i]['text'];?></td>

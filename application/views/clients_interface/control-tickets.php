@@ -27,9 +27,9 @@
 						<tr>
 							<td class="w195 ttpl">
 								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
-								(<i><b><?=$tickets[$i]['url'];?></b></i>)<br/><br/>
+								(<b><?=$tickets[$i]['url'];?></b>)<br/><br/>
 								Направлено:<br/>
-								<i><b><?=$tickets[$i]['position'];?></b></i><br/>
+								<b><?=$tickets[$i]['position'];?></b><br/>
 								от <?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>

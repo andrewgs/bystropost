@@ -40,11 +40,11 @@
 					<?php for($i=0;$i<count($users);$i++):?>
 						<tr>
 							<td style="min-width:185px;">
-								<nobr><i><b><?=anchor('admin-panel/management/users/profile/id/'.$users[$i]['id'],$users[$i]['login']);?></b></i><br/>
+								<nobr><b><?=anchor('admin-panel/management/users/profile/id/'.$users[$i]['id'],$users[$i]['login']);?></b><br/>
 								<?=$users[$i]['fio'];?><br/>
 								<strong>(<?=$users[$i]['position'];?>)</strong><br/>
 							<?php if($users[$i]['manager']):?>	
-								<br/><?=$users[$i]['manfio'];?><br/><i><b><?=$users[$i]['manemail'];?></b></i>
+								<br/><?=$users[$i]['manfio'];?><br/><b><?=$users[$i]['manemail'];?></b>
 							<?php endif;?>
 								</nobr>
 							</td>
@@ -59,7 +59,7 @@
 								</nobr></center>
 							</td>
 							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
-							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><font style="color:#2fec13"><?=$users[$i]['lastlogin'];?></font></nobr></td>
+							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><span class="highlight"><?=$users[$i]['lastlogin'];?></span></nobr></td>
 							<td style="max-width:58px;">
 							<?php if($userinfo['uid']!=$users[$i]['id']):?>
 								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>" data-manager="<?=$users[$i]['manager'];?>"></div>

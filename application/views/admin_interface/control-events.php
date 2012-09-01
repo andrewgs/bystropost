@@ -26,12 +26,12 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($events);$i++):?>
-						<tr class="align-center">
+						<tr>
 							<td class="w100" style="vertical-align:middle;">
-								<nobr><?=$events[$i]['ufio'];?><br/><i><b><?=$events[$i]['ulogin'];?></b></i><br/><?=$events[$i]['uposition'];?></nobr>
+								<nobr><?=$events[$i]['ufio'];?><br/><b><?=$events[$i]['ulogin'];?></b><br/><?=$events[$i]['uposition'];?></nobr>
 							</td>
-							<td class="w100" style="vertical-align:middle; text-align:center;"><nobr><i><b><?=$events[$i]['date'];?></b></i></nobr></td>
-							<td class="w500"><i><?=$events[$i]['note'];?></i></td>
+							<td class="w100" style="vertical-align:middle; text-align:center;"><nobr><b><?=$events[$i]['date'];?></b></nobr></td>
+							<td class="w500"><?=$events[$i]['note'];?></td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>

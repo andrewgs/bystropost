@@ -11,7 +11,7 @@
 						<?=anchor('manager-panel/actions/tickets/inbox','Входящие тикеты');?> <span class="divider">/</span>
 					</li>
 					<li tnum="deactive">
-						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<i><b>'.$ticket['url'].'</b></i>)');?>
+						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<b>'.$ticket['url'].'</b>)');?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -38,7 +38,7 @@
 							<td class="w400">
 						<?php endif;?>
 							<?php if($tkmsgs[$i]['reply']):?>
-								<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
+								<strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong><br/>
 							<?php endif;?>
 								<?=$tkmsgs[$i]['text'];?>
 							</td>

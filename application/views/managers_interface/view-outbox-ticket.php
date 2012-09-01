@@ -38,7 +38,7 @@
 							<td class="w400">
 						<?php endif;?>
 							<?php if($tkmsgs[$i]['reply']):?>
-								<i><strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong></i><br/>
+								<strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong><br/>
 							<?php endif;?>
 								<?=$tkmsgs[$i]['text'];?>
 							</td>

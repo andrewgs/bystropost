@@ -9,7 +9,7 @@
 			<li num="platforms"><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
 		<?php endif;?>
 		<?php if($cntunit['mails']['new']):?>
-			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'</font>/'.$cntunit['mails']['total'].')');?></li>
+			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'/'.$cntunit['mails']['total'].')');?></li>
 		<?php else:?>
 			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')');?></li>
 		<?php endif;?>

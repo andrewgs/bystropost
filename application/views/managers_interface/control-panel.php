@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php $this->load->view('managers_interface/includes/head');?>
+
 <body>
 	<?php $this->load->view('managers_interface/includes/header');?>
 	<div class="container">
@@ -30,7 +31,7 @@
 					<?php for($i=0,$num=$this->uri->segment(5)+1;$i<count($delivers);$i++,$num++):?>
 						<tr>
 							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;"><?=$num;?></td>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><i><b><?=$delivers[$i]['date'];?></b></i></nobr></td>
+							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><b><?=$delivers[$i]['date'];?></b></nobr></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['twtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['mtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['mkprice'];?> руб.</nobr></td>

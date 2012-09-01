@@ -24,7 +24,7 @@
 					<tbody>
 					<?php for($i=0;$i<count($services);$i++):?>
 						<tr class="align-center">
-							<td class="w400"><i><b><?=$services[$i]['title'];?></b></i></td>
+							<td class="w400"><b><?=$services[$i]['title'];?></b></td>
 							<td class="w85" style="text-align:center;vertical-align:middle;"><?=$services[$i]['price'];?> руб.</td>
 							<td class="w50" style="text-align:center;vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$services[$i]['id'];?>" data-title="<?=$services[$i]['title'];?>" data-price="<?=$services[$i]['price'];?>"></div>
