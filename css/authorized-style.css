@@ -308,9 +308,10 @@ td { font: 13px trebuchet ms, sans-serif; }
 .ttpl a { font: 13px trebuchet ms,sans-serif; }
 footer { background: none; }
 nobr small { font: 11px arial, sans-serif; color: #999; }
-.breadcrumb { padding: 14px; }
+.breadcrumb { padding: 14px !important; }
 .table tr.align-center td { text-align: center; }
 footer a { font: 13px trebuchet ms, sans-serif; color: #666; display: inline-block; margin-right: 0.5em; }
 footer .copy { padding: 0; }
 #panel_table input { font: inherit; }
 .actpage { color: #FF0000; font-family: Arial,Helvetica,sans-serif; font-size: inherit; font-weight: bold; margin: 0 3px 0 7px; }
+.highlight { background: #f0e997; padding: 1px; margin: 2px 0 0; display: inline-block; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; }

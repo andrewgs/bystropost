@@ -129,6 +129,9 @@ class Clients_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
+			'loginstatus'	=> $this->loginstatus['status'],
+			'userinfo'		=> $this->user,
+			'cntunit'		=> array(),
 			'msgs'			=> $this->session->userdata('msgs'),
 			'msgr'			=> $this->session->userdata('msgr'),
 			'msgauth'		=> $this->session->userdata('msgauth')
@@ -138,6 +141,17 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		$this->session->unset_userdata('regsuc');
 		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$this->load->view("clients_interface/successfull",$pagevar);
 	}
 	

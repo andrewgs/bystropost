@@ -13,6 +13,11 @@
 					<?=form_open($this->uri->uri_string()); ?>
 						<h1>Забыли пароль? Мы напомним</h1>
 						<input type="text" id="RestoreEmail" name="email" placeholder="Введите Ваш E-mail" />
+						<?php if($msgr):?>
+							<div id="msgdealert">
+								<?=$msgr;?>
+							</div>
+						<?php endif; ?>
 						<input type="submit" name="rsubmit" id="btnRestore" value="">
 					<?= form_close(); ?>
 				</div>

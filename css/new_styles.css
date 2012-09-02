@@ -79,4 +79,4 @@ h1.whiteline { border: 0 none; }
 .left { float: left; }
 .avatar-wpapper { width: 120px; }
 .comment-body { width: 650px; }  
-#stable p a:hover { font-size: inherit !important; font-family: trebuchet ms, sans-serif; }
+#stable p a:hover, #white_line a:hover { font-size: inherit !important; font-family: trebuchet ms, sans-serif; }

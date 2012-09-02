@@ -19,7 +19,8 @@ $route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/readin
 
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";
-$route['users/registering/successfull']	= "users_interface/reg_successfull";
+
+//$route['users/registering/successfull']	= "clients_interface/reg_successfull";
 
 $route['users/restore-password']		= "users_interface/restore_password";
 

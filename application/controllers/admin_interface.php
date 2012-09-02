@@ -24,6 +24,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
 		$this->load->model('mdcms');
+		$this->load->model('mdvaluesrv');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -1456,16 +1457,15 @@ class Admin_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
 					'services'		=> $this->mdservices->read_records(),
+					'valuesrv'		=> $this->mdvaluesrv->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
 		if($this->input->post('assubmit')):
 			$_POST['amsubmit'] = NULL;
 			$this->form_validation->set_rules('title',' ','required|trim');
-			$this->form_validation->set_rules('price',' ','required|numeric|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
@@ -1476,18 +1476,54 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		if($this->input->post('asvsubmit')):
+			$_POST['asvsubmit'] = NULL;
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('sid',' ','required|trim');
+			$this->form_validation->set_rules('price',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$result = $this->mdvaluesrv->insert_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Значение услуги добавлено успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
 		
 		if($this->input->post('essubmit')):
 			$_POST['essubmit'] = NULL;
 			$this->form_validation->set_rules('sid',' ','required|trim');
 			$this->form_validation->set_rules('title',' ','required|trim');
-			$this->form_validation->set_rules('price',' ','required|numeric|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$result = $this->mdservices->update_record($_POST);
 				if($result):
 					$this->session->set_userdata('msgs','Услуга изменена успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		if($this->input->post('esvsubmit')):
+			$_POST['esvsubmit'] = NULL;
+			$this->form_validation->set_rules('svid',' ','required|trim');
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('price',' ','required|numeric|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				if(!isset($_POST['delsrvvalue'])):
+					$result = $this->mdvaluesrv->update_record($_POST);
+					if($result):
+						$this->session->set_userdata('msgs','Значение услуги сохранено успешно');
+					endif;
+				else:
+					$result = $this->mdvaluesrv->delete_record($_POST['svid']);
+					if($result):
+						$this->session->set_userdata('msgs','Значение услуги удалено успешно');
+					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -1502,6 +1538,7 @@ class Admin_interface extends CI_Controller{
 		if($sid):
 			$result = $this->mdservices->delete_record($sid);
 			if($result):
+				$this->mdvaluesrv->delete_records($sid);
 				$this->session->set_userdata('msgs','Услуга удалена успешно');
 			else:
 				$this->session->set_userdata('msgr','Услуга не удалена');

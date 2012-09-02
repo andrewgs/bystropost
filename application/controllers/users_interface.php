@@ -71,9 +71,14 @@ class Users_interface extends CI_Controller{
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
 		if(isset($_POST['rsubmit'])):
 			$_POST['rsubmit'] == NULL;
 			$this->form_validation->set_rules('email',' ','required|valid_email|trim');
@@ -82,11 +87,8 @@ class Users_interface extends CI_Controller{
 			else:
 				$user = $this->mdusers->read_email_record($_POST['email']);
 				if(!$user):
-					if(isset($_SERVER['HTTP_REFERER'])):
-						redirect($_SERVER['HTTP_REFERER']);
-					else:
-						redirect('/');
-					endif;
+					$this->session->set_userdata('msgr','Указаныый E-mail не зарегистрирован!');
+					redirect('users/restore-password');
 				else:
 					ob_start();
 					?>
@@ -336,10 +338,12 @@ class Users_interface extends CI_Controller{
 				ob_start();
 				?>
 				<p><strong>Здравствуйте, <?=$_POST['fio'];?></strong></p>
-				<p>Поздравляем! Вас успешно зарегистрировали в статусе <?=$tutype;?>. 
-				 Ваша работа будет осуществляться через личный кабинет.
-				 Для входа в личный кабинет используйте логином и паролем указанными при регистрации.</p>
-				<p>Желаем Вам удачи!</p> 
+				<p>Поздравляем! Вы успешно зарегистрировались в статусе вебмастера. Ваша работа будет осуществляться через личный кабинет пользователя. Для входа в личный кабинет используйте логин и пароль указанными при регистрации.</p>
+				<p>Ваш логин: <?=$_POST['login'];?></p>
+				<p>Ваш пароль: <?=$_POST['password'];?></p>
+				<p>Авторизация в личный кабинет, осуществляется с главной страницы сайта.</p>
+				<p><br/><br/>Желаем Вам удачи!</p>
+				<p>С Уважением, Администрация сервиса www.BystroPost.ru</p> 
 				<?
 				$mailtext = ob_get_clean();
 				
@@ -351,7 +355,7 @@ class Users_interface extends CI_Controller{
 				
 				$this->email->initialize($config);
 				$this->email->to($_POST['login']);
-				$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
+				$this->email->from('robot@bystropost.ru','Быстропост - система автоматической монетизации');
 				$this->email->bcc('');
 				$this->email->subject('Регистрация на Bystropost.ru');
 				$this->email->message($mailtext);	
