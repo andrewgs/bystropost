@@ -86,4 +86,9 @@ class Mdmarkets extends CI_Model{
 		$data = $query->result_array();
 		return $data[0]['icon'];
 	}
+
+	function count_all(){
+		
+		return $this->db->count_all('markets');
+	}
 }

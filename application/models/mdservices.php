@@ -58,4 +58,9 @@ class Mdservices extends CI_Model{
 		$this->db->delete('services');
 		return $this->db->affected_rows();
 	}
+	
+	function count_all(){
+		
+		return $this->db->count_all('services');
+	}
 }

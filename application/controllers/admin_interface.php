@@ -64,6 +64,11 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
@@ -103,6 +108,11 @@ class Admin_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/control-events",$pagevar);
 	}
@@ -175,6 +185,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		
@@ -330,6 +345,12 @@ class Admin_interface extends CI_Controller{
 				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
 			endif;
 		endfor;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-users",$pagevar);
@@ -528,6 +549,12 @@ class Admin_interface extends CI_Controller{
 			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
 			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
 		endfor;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/webmaster-platforms-list",$pagevar);
 	}
@@ -593,6 +620,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
 		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
@@ -865,6 +897,11 @@ class Admin_interface extends CI_Controller{
 			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
 			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
 		endfor;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-platforms",$pagevar);
@@ -1000,6 +1037,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/management-markets",$pagevar);
 	}
@@ -1044,7 +1086,11 @@ class Admin_interface extends CI_Controller{
 				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
-		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/user-finished-jobs",$pagevar);
 	}
@@ -1089,6 +1135,11 @@ class Admin_interface extends CI_Controller{
 				$pagevar['delivers'][$i]['link'] = $pagevar['delivers'][$i]['ulrlink'];
 			endif;
 		endfor;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
 	}
@@ -1156,6 +1207,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/management-types-work",$pagevar);
 	}
@@ -1218,7 +1274,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
-		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/management-ratings",$pagevar);
 	}
@@ -1253,6 +1313,11 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/actions-forum",$pagevar);
 	}
@@ -1277,7 +1342,11 @@ class Admin_interface extends CI_Controller{
 		$pagevar['income']['ten'] = $this->mddelivesworks->calc_summ('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-10,date("Y"))),1);
 		$pagevar['income']['managers'] = $this->mddelivesworks->calc_summ('wprice-mprice','2012-01-01',1);
 		$pagevar['income']['debt'] = $this->mddelivesworks->calc_summ('wprice','2012-01-01',0);
-		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/actions-balance",$pagevar);
 	}
@@ -1317,6 +1386,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-system",$pagevar);
 	}
@@ -1461,6 +1535,11 @@ class Admin_interface extends CI_Controller{
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-tickets",$pagevar);
 	}
@@ -1544,6 +1623,11 @@ class Admin_interface extends CI_Controller{
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
 			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
 		endfor;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-view-tickets",$pagevar);
 	}
@@ -1728,6 +1812,11 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/management-services",$pagevar);
 	}

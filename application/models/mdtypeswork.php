@@ -93,4 +93,9 @@ class Mdtypeswork extends CI_Model{
 		if(isset($data[0])) return $data[0];
 		return NULL;
 	}
+	
+	function count_all(){
+		
+		return $this->db->count_all('typeswork');
+	}
 }
