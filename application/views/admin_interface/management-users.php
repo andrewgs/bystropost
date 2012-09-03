@@ -31,7 +31,7 @@
 							<th><center><nobr>Е-mail (Логин) / Ф.И.О.</nobr></center></th>
 							<th><center><nobr>Баланс</nobr></center></th>
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr></center></th>
-							<th><center>WMID</center></th>
+							<th><center>WMID <?=($this->uri->segment(4) == 'webmasters')? '<br/>Площадки' :''?></center></th>
 							<th><center><nobr>Дата рег.<br/>Посл.вход</nobr></center></th>
 							<th>Управл.</th>
 						</tr>
@@ -58,7 +58,11 @@
 							<?php endif;?>
 								</nobr></center>
 							</td>
-							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr></td>
+							<td style="min-width:85px;"><nobr><?=$users[$i]['wmid'];?></nobr>
+							<?php if($this->uri->segment(4) == 'webmasters'):?>
+								<br/>[<?=anchor('admin-panel/management/users/usersid/'.$users[$i]['id'].'/platforms','площадок: <b>'.$users[$i]['platforms'].'</b>');?>]
+							<?php endif;?>	
+							</td>
 							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><span class="highlight"><?=$users[$i]['lastlogin'];?></span></nobr></td>
 							<td style="max-width:58px;">
 							<?php if($userinfo['uid']!=$users[$i]['id']):?>

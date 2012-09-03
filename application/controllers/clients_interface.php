@@ -583,7 +583,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-services",$pagevar);
 	}
 	
-	/******************************************************** markets *********************************************************/	
+	/*************************************************** markets *********************************************************/	
 	
 	public function control_markets(){
 		

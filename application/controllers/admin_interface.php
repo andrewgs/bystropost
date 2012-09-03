@@ -323,6 +323,7 @@ class Admin_interface extends CI_Controller{
 			if($pagevar['users'][$i]['type'] == 1):
 				if($pagevar['users'][$i]['manager']):
 					$pagevar['users'][$i]['manfio'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'fio');
+					$pagevar['users'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['users'][$i]['id']);
 					$pagevar['users'][$i]['manemail'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'login');
 				endif;
 				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
@@ -332,6 +333,203 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-users",$pagevar);
+	}
+	
+	public function user_platforms_list(){
+		
+		$user = $this->uri->segment(5);
+		$utype = $this->mdusers->read_field($user,'type');
+		if($utype != 1):
+			redirect('admin-panel/management/users/all');
+		endif;
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Список площадок',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'platforms'		=> $this->mdplatforms->read_records_by_webmaster($user),
+					'cntunit'		=> array(),
+					'managers'		=> $this->mdusers->read_users_by_type(2),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('epsubmit')):
+			$_POST['epsubmit'] = NULL;
+			$this->form_validation->set_rules('pid',' ','required|trim');
+			$this->form_validation->set_rules('uid',' ','required|trim');
+			$this->form_validation->set_rules('ccontext',' ','required|trim');
+			$this->form_validation->set_rules('mcontext',' ','required|trim');
+			$this->form_validation->set_rules('cnotice',' ','required|trim');
+			$this->form_validation->set_rules('mnotice',' ','required|trim');
+			$this->form_validation->set_rules('creview',' ','required|trim');
+			$this->form_validation->set_rules('mreview',' ','required|trim');
+			$this->form_validation->set_rules('cnews',' ','required|trim');
+			$this->form_validation->set_rules('mnews',' ','required|trim');
+			$this->form_validation->set_rules('manager',' ','required|trim');
+			$this->form_validation->set_rules('clinkpic',' ','required|trim');
+			$this->form_validation->set_rules('mlinkpic',' ','required|trim');
+			$this->form_validation->set_rules('cpressrel',' ','required|trim');
+			$this->form_validation->set_rules('mpressrel',' ','required|trim');
+			$this->form_validation->set_rules('clinkarh',' ','required|trim');
+			$this->form_validation->set_rules('mlinkarh',' ','required|trim');
+			
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				if(!isset($_POST['locked'])):
+					$_POST['locked'] = 0;
+				endif;
+				$prevman = $this->mdplatforms->read_field($_POST['pid'],'manager');
+				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
+				$result1 = $this->mdplatforms->update_lock($_POST['pid'],$_POST['uid'],$_POST['locked']);
+				$result2 = $this->mdplatforms->update_manager($_POST['pid'],$_POST['uid'],$_POST['manager']);
+				$result3 = $this->mdplatforms->update_price($_POST['pid'],$_POST['uid'],$_POST);
+				if($result1 || $result2 || $result3):
+					$platform = $this->mdplatforms->read_field($_POST['pid'],'url');
+					if(!$prevman && $_POST['manager']):
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' принята к работе';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],4,1,$text);
+						$text = 'Здравствуйте! За Вами закреплена площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							ob_start();
+							?>
+							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
+							<p>Ваша площадка <?=$platform;?> принята к работе</p>
+							<p>Желаем Вам удачи!</p> 
+							<?
+							$mailtext = ob_get_clean();
+							
+							$this->email->clear(TRUE);
+							$config['smtp_host'] = 'localhost';
+							$config['charset'] = 'utf-8';
+							$config['wordwrap'] = TRUE;
+							$config['mailtype'] = 'html';
+							
+							$this->email->initialize($config);
+							$this->email->to($this->mdusers->read_field($_POST['uid'],'login'));
+							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+							$this->email->bcc('');
+							$this->email->subject('Noreply: Bystropost.ru - Площадка в работе');
+							$this->email->message($mailtext);	
+							$this->email->send();
+						endif;
+						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
+							ob_start();
+							?>
+							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
+							<p>За Вами закреплена площадка  <?=$platform;?></p>
+							<p>Желаем Вам удачи!</p> 
+							<?
+							$mailtext = ob_get_clean();
+							
+							$this->email->clear(TRUE);
+							$config['smtp_host'] = 'localhost';
+							$config['charset'] = 'utf-8';
+							$config['wordwrap'] = TRUE;
+							$config['mailtype'] = 'html';
+							
+							$this->email->initialize($config);
+							$this->email->to($this->mdusers->read_field($_POST['manager'],'login'));
+							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+							$this->email->bcc('');
+							$this->email->subject('Noreply: Bystropost.ru - Новая площадка');
+							$this->email->message($mailtext);	
+							$this->email->send();
+						endif;
+					elseif($prevman && !$_POST['manager']):
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' снята с работы';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
+						$text = 'Здравствуйте! С Ваc снята площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$prevman,1,2,$text);
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+					elseif($prevman != $_POST['manager']):
+						$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+						$text = 'Здравствуйте! С Ваc снята площадка '.$platform;
+						$this->mdmessages->send_noreply_message($this->user['uid'],$prevman,1,2,$text);
+						
+						$this->mdtickets->change_sender_recipient_by_new_manager($_POST['manager'],$prevman,$_POST['pid']);
+						$this->mddelivesworks->change_managers($_POST['manager'],$prevman,$_POST['pid']);
+						
+						if($this->mdusers->read_field($prevman,'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+					endif;
+					$manager = $this->mdplatforms->read_field($platform,'manager');
+					$remote_id = $this->mdplatforms->read_field($platform,'remoteid');
+					if(!$prevlock && $_POST['locked']):
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
+						if($_POST['manager']):
+							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' заблокирована администратором';
+							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],1,2,$text);
+							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
+								//Высылать письмо-уведомление
+							endif;
+						endif;
+						if($manager == 2 && $remote_id):
+							$param = 'siteid='.$remote_id.'&value=0';
+							$res = $this->API('SetSiteActive',$param);
+						endif;
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+					elseif($prevlock && !$_POST['locked']):
+						$text = 'Здравствуйте! Ваша площадка '.$platform.' разблокирована администратором';
+						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],4,1,$text);
+						if($_POST['manager']):
+							$text = 'Здравствуйте! Закреплення за Вами площадка '.$platform.' разблокирована администратором';
+							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+							if($this->mdusers->read_field($_POST['manager'],'sendmail')):
+								//Высылать письмо-уведомление
+							endif;
+						endif;
+						if($manager == 2 && $remote_id):
+							$param = 'siteid='.$remote_id.'&value=1';
+							$res = $this->API('SetSiteActive',$param);
+						endif;
+						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
+							//Высылать письмо-уведомление
+						endif;
+					endif;
+					$this->session->set_userdata('msgs','Информация успешно сохранена.');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		$ufio = $this->mdusers->read_field($user,'fio');
+		$ulogin = $this->mdusers->read_field($user,'login');
+		for($i=0;$i<count($pagevar['platforms']);$i++):
+			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
+			$pagevar['platforms'][$i]['fio'] = $ufio;
+			$pagevar['platforms'][$i]['login'] = $ulogin;
+			$pagevar['platforms'][$i]['uid'] = $user;
+			if($pagevar['platforms'][$i]['manager']):
+				$pagevar['platforms'][$i]['manfio'] = $this->mdusers->read_field($pagevar['platforms'][$i]['manager'],'fio');
+				$pagevar['platforms'][$i]['manemail'] = $this->mdusers->read_field($pagevar['platforms'][$i]['manager'],'login');
+			else:
+				$pagevar['platforms'][$i]['manfio'] = '<font style="color:#ff0000;">Менеджер не закреплен</font>';
+				$pagevar['platforms'][$i]['manemail'] = '';
+			endif;
+			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
+			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
+		endfor;
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/webmaster-platforms-list",$pagevar);
 	}
 	
 	public function management_users_profile(){

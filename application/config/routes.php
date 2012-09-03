@@ -156,6 +156,8 @@ $route['admin-panel/management/users/read-messages/userid/:num']			= "admin_inte
 $route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "admin_interface/reading_users_messages";
 
+$route['admin-panel/management/users/usersid/:num/platforms']				= "admin_interface/user_platforms_list";
+
 $route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from']		= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";

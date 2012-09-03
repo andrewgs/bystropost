@@ -29,7 +29,7 @@
 					<li><?=anchor('site-map','Карта сайта');?></li>
 					<li><?=anchor('site-monetization','Монетизация сайта');?></li>
 					<li><?=anchor('additional-services','Дополнительные услуги');?></li>
-					<li><?=anchor('disclaimer','Уведомление об ответственности');?></li>
+					<!--<li><?=anchor('disclaimer','Уведомление об ответственности');?></li>-->
 				</ul>
 			</div>
 		</div>
