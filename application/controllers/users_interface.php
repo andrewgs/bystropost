@@ -94,8 +94,8 @@ class Users_interface extends CI_Controller{
 					?>
 					<p><strong>Здравствуйте,  <?=$user['fio'];?></strong></p>
 					<p>Вами был произведен запрос на восстановления данных для аторизации:</p>
-					<p><strong>Логин: <span style="font-size: 18px;"><?=$user['login'];?></span><br/>Пароль: <span style="font-size: 18px;"><?=$this->encrypt->decode($user['cryptpassword']);?></span></strong></p>
-					<p>Желаем Вам удачи!</p> 
+					<p><strong>Логин: <span style="font-size: 16px;"><?=$user['login'];?></span><br/>Пароль: <span style="font-size: 16px;"><?=$this->encrypt->decode($user['cryptpassword']);?></span></strong></p>
+					<p>Спасибо что пользуетесь нашими услугами!</p> 
 					<?
 					$mailtext = ob_get_clean();
 					
@@ -107,7 +107,7 @@ class Users_interface extends CI_Controller{
 					
 					$this->email->initialize($config);
 					$this->email->to($user['login']);
-					$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
+					$this->email->from('robot@bystropost.ru','Быстропост - система автоматической монетизации');
 					$this->email->bcc('');
 					$this->email->subject('Данные для доступа к профилю');
 					$this->email->message($mailtext);	
@@ -251,6 +251,123 @@ class Users_interface extends CI_Controller{
 		);
 		$this->session->unset_userdata('msgauth');
 		$this->load->view("users_interface/faq",$pagevar);
+	}
+	
+	public function site_monetization(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Монетизация сайта',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/site-monetization",$pagevar);
+	}
+	
+	public function additional_services(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Дополнительные услуги',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/additional-services",$pagevar);
+	}
+	
+	public function disclaimer(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Уведомление об ответственности',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/disclaimer",$pagevar);
+	}
+	
+	public function about_content(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | О контенте',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/about-content",$pagevar);
+	}
+	
+	public function capabilities(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Наши возможности',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/capabilities",$pagevar);
+	}
+	
+	public function site_interface(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Интерфейс',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/interface",$pagevar);
+	}
+	
+	public function news(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Новости',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/news",$pagevar);
+	}
+	
+	public function contacts(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Контакты',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/contacts",$pagevar);
+	}
+	
+	public function prices(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Цены',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/prices",$pagevar);
 	}
 	
 	public function access_cabinet($uid,$utype){

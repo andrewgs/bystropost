@@ -4,6 +4,7 @@ class Mdratings extends CI_Model{
 
 	var $id		= 0;
 	var $title 	= '';
+	var $resource 	= '';
 	var $text 	= 0;
 	var $date 	= '';
 	var $avatar = '';
@@ -16,6 +17,7 @@ class Mdratings extends CI_Model{
 	function insert_record($data,$type){
 			
 		$this->title 	= htmlspecialchars($data['title']);
+		$this->resource = $data['resource'];
 		$this->text 	= strip_tags($data['text']);
 		$this->avatar	= $data['avatar'];
 		$this->date		= date("Y-m-d");
@@ -28,6 +30,7 @@ class Mdratings extends CI_Model{
 	function update_record($data){
 		
 		$this->db->set('title',htmlspecialchars($data['title']));
+		$this->db->set('resource',$data['resource']);
 		$this->db->set('text',strip_tags($data['text']));
 		if(isset($data['avatar'])):
 			$this->db->set('avatar',$data['avatar']);
@@ -39,7 +42,7 @@ class Mdratings extends CI_Model{
 	
 	function read_records($type){
 		
-		$this->db->select('id,title,text,date');
+		$this->db->select('id,title,resource,text,date');
 		$this->db->order_by('date','DESC');
 		$this->db->where('type',$type);
 		$query = $this->db->get('ratings');
@@ -50,7 +53,7 @@ class Mdratings extends CI_Model{
 	
 	function read_record($id){
 		
-		$this->db->select('id,title,text,date');
+		$this->db->select('id,title,resource,text,date');
 		$this->db->where('id',$id);
 		$query = $this->db->get('ratings',1);
 		$data = $query->result_array();

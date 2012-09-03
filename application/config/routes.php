@@ -10,12 +10,22 @@ $route['about']							= "users_interface/about";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
 $route['faq']							= "users_interface/faq";
+$route['site-monetization']				= "users_interface/site_monetization";
+$route['additional-services']			= "users_interface/additional_services";
+$route['disclaimer']					= "users_interface/disclaimer";
+$route['about-content']					= "users_interface/about_content";
+$route['capabilities']					= "users_interface/capabilities";
+$route['interface']						= "users_interface/site_interface";
+$route['news']							= "users_interface/news";
+$route['contacts']						= "users_interface/contacts";
+$route['prices']						= "users_interface/prices";
+
 $route['markets-catalog/:any']			= "users_interface/markets_catalog";
 $route['users-ratings/advertisers']		= "users_interface/users_ratings";
 $route['users-ratings/webmasters']		= "users_interface/users_ratings";
 
 $route['users-ratings/advertisers/reading-rating/:num']= "users_interface/reading_rating";
-$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
+//$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
 
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";

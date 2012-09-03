@@ -1,29 +1,24 @@
-#top-logo {
-	background: url("../images/logo.png");
-	display: inline-block;
-	height: 100px;
-	margin-top: 1.5em;
-	width: 350px;
-}
+#top-logo { background: url("../images/logo.png"); display: inline-block; height: 100px; margin: 1.5em 0 0 -1em; width: 350px; }
 
-#top-links { display: inline-block; margin: 1em 0 0.5em; text-align: right; width: 97%; }
-#top-links a { font-family: arial,sans-serif;  font-size: 13px; text-decoration: underline; }
-#login-form { margin: 0; }
-#login { margin: 1em 0 0; }
+.top-links { display: inline-block; margin: 1em 0 0.5em; text-align: right; width: 97%; }
+.top-links a { font-family: arial,sans-serif;  font-size: 12px; text-decoration: underline; }
+#login-form { margin: 0 0 0 20px; }
+#login { margin: 0.5em 0 0; }
 #login a { font-size: 0.8em; margin-left: 14.25em; }
 #login .input { padding: 0.1em 0.5em; border-radius: 2px; width: 9.5em; }
 #login .go { margin-top: 7px; }
 
-#main-nav-wrapper { border-bottom: 1px solid #C2E2E7; border-top: 1px solid #C2E2E7;  margin: 1.5em 0; padding: 2em 0; width: 100%; }
+#main-nav-wrapper { border-bottom: 1px dotted #C2E2E7; border-top: 1px dotted #C2E2E7;  margin: 1.5em 0; padding: 2em 0; width: 100%; }
 #main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; position: relative; }
 #main-nav li { display: inline-block; }
 #main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 25px; margin: 0 2em 0 0; text-decoration: underline; color: #3995BF; }
-.banner-gogetlinks { position: absolute; right: 19px; top: -24px; }
+.banner-gogetlinks { position: absolute; right: 19px; top: -22px; }
 
 h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; }
 h1 span { font-size: 48px; /*color: #00b6dc;*/}
+h2 { color: #107CB1; font: italic 25px georgia,serif; margin-bottom: 0.5em; }
 
-#white_line { background: none; border: 1px solid #C2E2E7; border-style: solid none none; float: left; height: 63px; margin: 3em 0 2em 1.5em; padding: 1.25em 1em 1em 0.5em; width: 890px; }
+#white_line { background: none; border: 1px solid #C2E2E7; border-style: dotted none none; float: left; height: 63px; margin: 3em 0 1.5em 1.5em; padding: 1.25em 1em 1em 0.5em; width: 890px; }
 #white_line span { color: #4D4D4D; display: block; float: left; font-family: trebuchet ms,arial,sans-serif; font-size: 24px; font-weight: normal; margin-top: 15px; }
 #content { margin: 0; }
 #content tr td { font: 14px/19px trebuchet ms,arial,sans-serif; padding: 30px 7px 7px; }
@@ -75,8 +70,20 @@ h1.whiteline { border: 0 none; }
 #where_reviews p { float: none; width: auto; margin-bottom: 1em; }
 #where_reviews p a { float: none; } 
 .review_post { background: none; border: 0 none; border-top: 1px solid #e0e0e0; border-radius: 0; float: none; height: auto; width: auto; font-size: inherit; padding: 0; margin: 2em 0 0; padding-top: 2em; }
-.review_post .avatar { display: block; float: left; margin: 0.25em 0.5em 0 0; text-align: right; width: 100px; height: auto; padding: 0; position: inherit; }
-.left { float: left; }
-.avatar-wpapper { width: 120px; }
-.comment-body { width: 650px; }  
+.review_post .avatar { display: block; float: left; margin: 0.25em 0.5em 0 0; text-align: right; width: 100px; height: auto; padding: 0; position: inherit; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+
 #stable p a:hover, #white_line a:hover { font-size: inherit !important; font-family: trebuchet ms, sans-serif; }
+.avatar-wpapper { width: 120px; }
+.comment-body { width: 390px; }
+#stable .comment-body p a, #stable .comment-body p a:hover { font: 13px/27px trebuchet ms, sans-serif !important; color: #1983C6; }
+.comment-title { color: #999999; display: inline-block; font: bold 13px trebuchet ms,sans-serif; margin-bottom: 0.5em;} 
+#stable .span5 { width: 420px; }
+#content { background-position: 205px top; } 
+#webmaster { margin-left: 0; }
+#optimizator { margin-right: 25px }
+#footer .webmoney { background: #fff; -webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px; color: #333; font-size: 11px; left: 9px; padding: 3px 5px 1px; position: absolute; top: -15px; width: 189px; }
+
+
+#navigation { position: relative; }
+#navigation .top-main-nav { left: 415px; position: absolute; top: 3.2em; }
+#navigation .top-main-nav a { display: inline-block; font: 13px/24px trebuchet ms,sans-serif; margin: 0; padding: 0; text-decoration: underline; }

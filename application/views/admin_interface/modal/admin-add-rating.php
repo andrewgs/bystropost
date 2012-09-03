@@ -16,7 +16,14 @@
 				<div class="control-group">
 					<label for="text" class="control-label">Текст: </label>
 					<div class="controls">
-						<textarea rows="10" style="width:350px;" class="input-xlarge arinput" name="text"></textarea>
+						<textarea rows="6" style="width:350px;" class="input-xlarge arinput" name="text"></textarea>
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="resource" class="control-label">Источник: </label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="resource" size="43">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>

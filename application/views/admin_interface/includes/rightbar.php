@@ -7,7 +7,7 @@
 			<li num="markets"><?=anchor('admin-panel/management/markets','Список бирж');?></li>
 			<li num="services"><?=anchor('admin-panel/management/services','Список доп.услуг');?></li>
 			<li num="types-of-work"><?=anchor('admin-panel/management/types-of-work','Типы работ');?></li>
-			<li num="ratings"><?=anchor('admin-panel/management/ratings/advertisers','Отзывы о системе');?></li>
+			<li num="ratings"><?=anchor('admin-panel/management/ratings/webmasters','Отзывы о системе');?></li>
 			<li class="nav-header">Сообщения</li>
 		<?php if($cntunit['mails']):?>
 			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<b>'.$cntunit['mails'].'</b>)');?></li>

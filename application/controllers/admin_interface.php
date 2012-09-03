@@ -1004,6 +1004,7 @@ class Admin_interface extends CI_Controller{
 			$_POST['arsubmit'] = NULL;
 			$this->form_validation->set_rules('title',' ','required|trim');
 			$this->form_validation->set_rules('text',' ','required|trim');
+			$this->form_validation->set_rules('resource',' ','prep_url|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
