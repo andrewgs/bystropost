@@ -1408,6 +1408,32 @@ class Clients_interface extends CI_Controller{
 					$this->mdplatforms->run_query($sqlquery);
 					
 					if($pagevar['platform']['manager']):
+						
+						/********************************************************************/
+						if($pagevar['platform']['manager'] == 2):
+							$new_platform = $this->mdplatforms->read_record($platform);
+							$pl_data = array();
+							$pl_data['adminurl'] = $new_platform['adminpanel'];
+							$pl_data['cms'] = $new_platform['cms'];
+							$pl_data['cms_login'] = $new_platform['aplogin'];
+							$pl_data['cms_pass'] = $new_platform['appassword'];
+							$pl_data['tematic'] = $new_platform['subject'];
+							$pl_data['filter'] = $new_platform['illegal'];
+							$pl_data['subjects'] = $new_platform['thematically'];
+							$pl_data['review'] = $new_platform['reviews'];
+							$pl_data['review'] = $new_platform['reviews'];
+							$pl_data['param'] = array();
+							$pl_data['param']['image'] = array();
+							$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
+							$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
+							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
+							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
+							$pl_data['info'] = $new_platform['requests'];
+							$param = 'siteid='.$markets[$m]['market'].'&conf='.json_encode($pl_data);
+							$this->API('UpdateSiteOptions',$param);
+						endif;
+						/********************************************************************/
+						
 						$text = "Информация о площадке изменена. Проверьте свой E-mail что бы увидеть изменения";
 						$this->mdmessages->insert_record($this->user['uid'],$pagevar['platform']['manager'],$text);
 						

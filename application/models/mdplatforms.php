@@ -252,6 +252,7 @@ class Mdplatforms extends CI_Model{
 	function read_records_by_webmaster($uid){
 		
 		$this->db->order_by('date');
+		$this->db->order_by('url');
 		$this->db->where('webmaster',$uid);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
