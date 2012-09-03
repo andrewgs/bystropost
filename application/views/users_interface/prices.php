@@ -8,7 +8,9 @@
 		<?php $this->load->view("users_interface/includes/header");?>
 		
 		<div class="row">
-			
+			<div class="span12">
+				<h1>Временно недоступен</h1>
+			</div>
 		</div>
 		
 		<?php $this->load->view("users_interface/includes/social");?>

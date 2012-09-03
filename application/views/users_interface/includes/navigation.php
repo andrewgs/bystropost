@@ -8,9 +8,10 @@
 			<?=anchor('about','О проекте');?> &nbsp;&nbsp; 
 			<!--<?=anchor("support","Поддержка");?> &nbsp;&nbsp;-->
 			<?=anchor("faq","FAQ");?> &nbsp;&nbsp;
-			<?=anchor('#','Форум');?> &nbsp;&nbsp;
+			<?=anchor('forum','Форум');?> &nbsp;&nbsp;
 			<?=anchor('users-ratings/webmasters','Отзывы');?> &nbsp;&nbsp;
-			<?=anchor("contacts","Контакты");?>
+			<?=anchor("contacts","Контакты");?>&nbsp;&nbsp;
+			<?=anchor("site-map","Карта сайта");?>
 		</div>
 		<?php $this->load->view("forms/frmlogin");?>
 	</div>

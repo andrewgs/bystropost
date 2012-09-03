@@ -370,6 +370,32 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/prices",$pagevar);
 	}
 	
+	public function forum(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Форум',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/forum",$pagevar);
+	}
+	
+	public function site_map(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Карта сайта',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/site-map",$pagevar);
+	}
+	
 	public function access_cabinet($uid,$utype){
 		
 		if(!$uid || !$utype):
