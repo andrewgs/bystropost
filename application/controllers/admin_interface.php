@@ -25,6 +25,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdthematic');
 		$this->load->model('mdcms');
 		$this->load->model('mdvaluesrv');
+		$this->load->model('mdwebmarkets');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -1558,7 +1559,7 @@ class Admin_interface extends CI_Controller{
 	/*======================== Загрузка аккаунтов на биржах ========================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=17&datefrom=2012-08-13&dateto=2012-08-27');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=17' );
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=162');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);
@@ -1577,9 +1578,10 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
+		print_r($post);
 		print_r($mass_data);
 		echo '<br/>'.count($mass_data);
-	/*======================== Загрузка вебмастеров начало ============================
+	/*======================== Загрузка вебмастеров начало ============================ 
 		$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
@@ -1631,13 +1633,23 @@ class Admin_interface extends CI_Controller{
 		endforeach;
 		print_r('Импортировнно: '.$cnt.' вебмастеров');
 		=============================== Загрузка вебмастеров конец ============================*/
-		/*======================== Загрузка аккаунтов на биржах начало ========================
-		$data = array(); $cnt = 0;
+		/*======================== Загрузка аккаунтов на биржах начало ======================== */
+		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
-			print_r($key.' ');
+			if($key):
+				$data['id'] = $key;
+				$data['market'] = $mass_data[$key]['bizhid'];
+				$data['login'] = $mass_data[$key]['login'];
+				$data['password'] = $mass_data[$key]['pass'];
+				$data['webmaster'] = $mass_data[$key]['userid'];
+				if($data['webmaster'] && $data['market']):
+					$this->mdwebmarkets->insert_record($data['id'],$data['webmaster'],$data);
+					$cnt++;
+				endif;
+			endif;
 		endforeach;
-		print_r('Импортировнно: '.$cnt.' аккаунтов');
-		======================== Загрузка аккаунтов на биржах конец ========================*/
+		print_r('Импортировнно: '.$cnt.' аккаунтов');*/
+		/*======================== Загрузка аккаунтов на биржах конец ========================*/
 	}
 	
 	/******************************************************** functions ******************************************************/	

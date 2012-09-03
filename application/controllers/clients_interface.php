@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'remote'=>FALSE);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'remote'=>FALSE,'remoteid'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -41,6 +41,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['balance'] 			= $userinfo['balance'];
 					if($userinfo['manager'] == 2):
 						$this->user['remote'] = TRUE;
+						$this->user['remoteid'] = $userinfo['remoteid'];
 					endif;
 					$this->loginstatus['status'] 	= TRUE;
 				else:
@@ -62,7 +63,7 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		/*if($segment != 'markets' && $segment != 'logoff'):
-			if(!count($this->mdwebmarkets->read_records($this->user['uid']))):
+			if(!count($this->mdwebmarkets->read_records($this->user['remoteid']))):
 				$this->session->set_userdata('markets',FALSE);
 				redirect('webmaster-panel/actions/markets');
 			endif;
@@ -102,7 +103,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -283,7 +284,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -345,7 +346,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -387,7 +388,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -458,7 +459,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -506,7 +507,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -563,18 +564,6 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		$values = array();
-		
-		for($i=0;$i<count($pagevar['services']);$i++):
-			$values[$i]= $pagevar['services'][$i]['price'];
-		endfor;
-		if(count($values)):
-			$pagevar['minprice'] = min($values);
-		else:
-			$pagevar['minprice'] = 0;
-		endif;
-		unset($values);
-		
 		for($i=0;$i<count($pagevar['attached']);$i++):
 			$pagevar['attached'][$i]['date'] = $this->operation_dot_date($pagevar['attached'][$i]['date']);
 		endfor;
@@ -582,7 +571,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -609,7 +598,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'accounts'		=> $this->mdunion->read_markets_by_webmaster($this->user['uid']),
+					'accounts'		=> $this->mdunion->read_markets_by_webmaster($this->user['remoteid']),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -631,7 +620,7 @@ class Clients_interface extends CI_Controller{
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
 					if(!$this->mdwebmarkets->exist_market($market_id['id'])):
-						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['uid'],$_POST);
+						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['remoteid'],$_POST);
 						if($id):
 							$this->mdlog->insert_record($this->user['uid'],'Событие №9: Добавлена учетная запись на бирже');
 							$this->session->set_userdata('msgs','Запись создана успешно');
@@ -757,7 +746,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -770,9 +759,13 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_delete_markets(){
 		
+		if(!$this->user['remote']):
+			show_404();
+		endif;
+		
 		$mid = $this->uri->segment(6);
 		if($mid):
-			$result = $this->mdwebmarkets->delete_record($this->user['uid'],$mid);
+			$result = $this->mdwebmarkets->delete_record($this->user['remoteid'],$mid);
 			if($result):
 				$this->mdlog->insert_record($this->user['uid'],'Событие №10: Удалена учетная запись на бирже');
 				$this->session->set_userdata('msgs','Запись удалена успешно');
@@ -876,7 +869,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -1036,7 +1029,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -1155,14 +1148,16 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
-			if(intval(($pagevar['userinfo']['balance'])<500 || !$pagevar['cntunit']['markets']) && !$pagevar['cntunit']['platforms']):
-				redirect('webmaster-panel/actions/control');
+			if(!$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				if(intval($pagevar['userinfo']['balance'])<500):
+					redirect('webmaster-panel/actions/control');
+				endif;
 			endif;
 		else:
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
@@ -1305,7 +1300,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 ||!$pagevar['cntunit']['platforms']):
@@ -1481,7 +1476,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
 		
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
@@ -1499,7 +1494,7 @@ class Clients_interface extends CI_Controller{
 			show_404();
 		endif;
 		
-		$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+		$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
 		for($m=0;$m<count($markets);$m++):
 			$param = 'birzid='.$markets[$m]['market'].'&login='.$markets[$m]['login'].'&pass='.$markets[$m]['password'];
 			$market_id = $this->API('AddNewAccount',$param);
@@ -1705,7 +1700,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
@@ -1848,7 +1843,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);

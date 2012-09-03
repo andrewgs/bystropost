@@ -321,9 +321,9 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_markets_by_webmaster($uid){
+	function read_markets_by_webmaster($ruid){
 		
-		$query = "SELECT webmarkets.*,markets.title AS mtitle FROM webmarkets INNER JOIN markets ON webmarkets.market=markets.id WHERE webmarkets.webmaster = $uid";
+		$query = "SELECT webmarkets.*,markets.title AS mtitle FROM webmarkets INNER JOIN markets ON webmarkets.market=markets.id WHERE webmarkets.webmaster = $ruid";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

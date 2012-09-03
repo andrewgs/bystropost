@@ -19,7 +19,6 @@
 						<tr>
 							<th class="w100"><center>Подключена</center></th>
 							<th class="w500"><center>Название услуги</center></th>
-							<th class="w85"><center>Цена</center></th>
 							<th class="w50">&nbsp;</th>
 						</tr>
 					</thead>
@@ -69,25 +68,6 @@
 				});
 				if(err){event.preventDefault();}
 			});
-		<?php if($userinfo['balance'] >= $minprice):?>
-			$("#assend").click(function(event){
-				var err = false;
-				$(".control-group").removeClass('error');
-				$(".help-inline").hide();
-				$(".asinput").each(function(i,element){
-					if($(this).val()==''){
-						$(this).parents(".control-group").addClass('error');
-						$(this).siblings(".help-inline").html("Поле не может быть пустым").show();
-						err = true;
-					}
-				});
-				if(err){event.preventDefault();}
-			});
-			$("#ServicesList").change(function(){
-				var price = $("#ServicesList option:selected").attr('data-price');
-				$("#gonorar").html(price);
-			});
-		<?php endif;?>
 			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#ServicesList").val(1);});
 			$(".deleteService").click(function(){var Param = $(this).attr('data-param'); sID = $("div[id = params"+Param+"]").attr("data-sid");});
 			$("#DelService").click(function(){location.href='<?=$baseurl;?>admin-panel/management/services/serviceid/'+sID;});
