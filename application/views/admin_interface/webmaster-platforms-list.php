@@ -20,9 +20,9 @@
 					<thead>
 						<tr>
 							<th><center><nobr>URL / CMS<br/>Дата создания / Владелец<br/>Закрепленный менеджер</nobr></center></th>
+							<th><center>Биржи</center></th>
 							<th><center><nobr>Заявки: всего /</nobr><br/><nobr>не оплаченых</nobr><br/><nobr>тИЦ / PR</nobr></center></th>
 							<th><center>Цены:<br/><nobr>вебмастер /<br/>менеджер</nobr></center></th>
-							<th><center>Сумма для вебмастера</center></th>
 							<th>Управл.</th>
 						</tr>
 					</thead>
@@ -41,6 +41,19 @@
 								<?=$platforms[$i]['manfio'];?><br/><b><?=$platforms[$i]['manemail'];?></b></nobr>
 							</td>
 							<td class="w85" style="text-align:center; vertical-align:middle;">
+							<?php for($j=0,$cnt=0;$j<count($markets);$j++):?>
+								<?php if($platforms[$i]['id'] == $markets[$j]['platform']):?>
+									<?php if($cnt>=1):?>
+										<?php if($markets[$j]['id'] == $markets[$j-1]['id']):?>
+											<?php continue;?>
+										<?php endif;?>
+									<?php endif;?>
+									<?=anchor($markets[$j]['url'],'<img src="'.$baseurl.'markets/viewimage/'.$markets[$j]['id'].'" alt="'.$markets[$j]['title'].'" title="'.$markets[$j]['title'].'"/>',array("class"=>'','target'=>'_blank'));?>
+									<?php $cnt++;?>
+								<?php endif;?>
+							<?php endfor;?>
+							</td>
+							<td class="w85" style="text-align:center; vertical-align:middle;">
 								<nobr>
 									<?=anchor('admin-panel/management/platforms/platformid/'.$platforms[$i]['id'].'/finished-jobs',$platforms[$i]['torders'].' / <b>'.$platforms[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?><br/><br/>
 									<?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?>
@@ -57,7 +70,6 @@
 									<nobr><?=$platforms[$i]['cnews'];?> руб. / <?=$platforms[$i]['mnews'];?> руб.</nobr>
 								</center>
 							</td>
-							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$platforms[$i]['price'];?> руб.</nobr></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
 								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-uid="<?=$platforms[$i]['uid'];?>" data-fio="<?=$platforms[$i]['fio'];?>" data-login="<?=$platforms[$i]['login'];?>" data-ccontext="<?=$platforms[$i]['ccontext'];?>" data-mcontext="<?=$platforms[$i]['mcontext'];?>" data-cnotice="<?=$platforms[$i]['cnotice'];?>" data-mnotice="<?=$platforms[$i]['mnotice'];?>" data-creview="<?=$platforms[$i]['creview'];?>" data-mreview="<?=$platforms[$i]['mreview'];?>" data-cnews="<?=$platforms[$i]['cnews'];?>" data-mnews="<?=$platforms[$i]['mnews'];?>" data-clinkpic="<?=$platforms[$i]['clinkpic'];?>" data-mlinkpic="<?=$platforms[$i]['mlinkpic'];?>" data-cpressrel="<?=$platforms[$i]['cpressrel'];?>" data-mpressrel="<?=$platforms[$i]['mpressrel'];?>" data-clinkarh="<?=$platforms[$i]['clinkarh'];?>" data-mlinkarh="<?=$platforms[$i]['mlinkarh'];?>" data-locked="<?=$platforms[$i]['locked'];?>" data-manager="<?=$platforms[$i]['manager'];?>"></div>
 							<?php if(!empty($platforms[$i]['fio'])):?>

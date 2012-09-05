@@ -19,5 +19,10 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			window.setTimeout("window.location='<?=$baseurl;?>'",7000);
+		});
+	</script>
 </body>
 </html>

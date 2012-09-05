@@ -305,8 +305,8 @@ class Managers_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
-				if($this->mddelivesworks->exist_work($_POST['ulrlink'])):
-					$this->session->set_userdata('msgr','Работа по этому адресу уже выполена. Повторите ввод.');
+				if(!strstr($_POST['ulrlink'],$pagevar['platform']['url'])):
+					$this->session->set_userdata('msgr','URL не пренадлежит площадке. Повторите ввод.');
 					redirect($this->uri->uri_string());
 				endif;
 				$webmaster = $this->mdplatforms->read_field($platform,'webmaster');
@@ -352,7 +352,7 @@ class Managers_interface extends CI_Controller{
 			$arr[$i] = $value;
 			$i++;
 		endforeach;
-		for($i=0,$j=18;$i<count($pagevar['typeswork']);$i++,$j+=2):
+		for($i=0,$j=23;$i<count($pagevar['typeswork']);$i++,$j+=2):
 			$pagevar['typeswork'][$i]['mprice'] = $arr[$j];
 		endfor;
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
@@ -410,7 +410,7 @@ class Managers_interface extends CI_Controller{
 											$new_work['status'] 	= 0;
 											$new_work['date'] 		= $dateto;
 											$new_work['datepaid'] 	= '0000-00-00';
-											if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['link'])):
+											if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['id'])):
 												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
 												$kol++;
 											else:

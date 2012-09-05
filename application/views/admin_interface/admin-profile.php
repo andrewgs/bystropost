@@ -14,7 +14,16 @@
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
 				<?php $this->load->view('forms/frmuserprofile');?>
-				
+				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
+					<fieldset>
+						<div class="control-group">
+							<label for="text" class="control-label">Откуда узнал: </label>
+							<div class="controls">
+								<textarea id="knowus" name="text" class="span6" rows="3" disabled="disabled"><?=$user['knowus'];?></textarea>
+							</div>
+						</div>
+					</fieldset>
+				<?= form_close(); ?>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		</div>

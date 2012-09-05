@@ -372,6 +372,7 @@ class Admin_interface extends CI_Controller{
 					'platforms'		=> $this->mdplatforms->read_records_by_webmaster($user),
 					'cntunit'		=> array(),
 					'managers'		=> $this->mdusers->read_users_by_type(2),
+					'markets'		=> $this->mdunion->read_mkplatform_by_webmaster($user),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -882,6 +883,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
+			$pagevar['platforms'][$i]['markets'] = $this->mdmkplatform->read_records_platform($pagevar['platforms'][$i]['id']);
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
 			if(empty($pagevar['platforms'][$i]['fio'])):
 				$pagevar['platforms'][$i]['fio'] = '';
@@ -1443,7 +1445,7 @@ class Admin_interface extends CI_Controller{
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
-						$this->email->message($mailtext);	
+						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
 					$this->session->set_userdata('msgs','Сообщение отправлено');
@@ -1472,6 +1474,11 @@ class Admin_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		$this->mdmessages->set_read_mails_by_admin($this->user['uid']);
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$this->load->view("admin_interface/messages-private",$pagevar);
 	}
 	

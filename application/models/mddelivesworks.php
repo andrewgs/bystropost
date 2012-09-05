@@ -222,9 +222,9 @@ class Mddelivesworks extends CI_Model{
 		return $this->db->affected_rows();
 	}
 
-	function exist_work($url){
+	function exist_work($remoteid){
 		
-		$this->db->where('ulrlink',$url);
+		$this->db->where('remoteid',$remoteid);
 		$query = $this->db->get('delivesworks',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
