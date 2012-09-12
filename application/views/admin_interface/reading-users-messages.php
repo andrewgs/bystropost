@@ -22,8 +22,8 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($mails);$i++):?>
-						<tr class="align-center">
-							<td class="w500"><?=$mails[$i]['text'];?></td>
+						<tr>
+							<td class="w500">[<?=$mails[$i]['date'];?>]<br/><?=$mails[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$mails[$i]['id'];?>"></div>
 								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>

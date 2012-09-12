@@ -1434,7 +1434,7 @@ class Clients_interface extends CI_Controller{
 							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
 							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
 							$pl_data['info'] = $new_platform['requests'];
-							$param = 'siteid='.$markets[$m]['market'].'&conf='.json_encode($pl_data);
+							$param = 'siteid='.$new_platform['remoteid'].'&conf='.json_encode($pl_data);
 							$this->API('UpdateSiteOptions',$param);
 						endif;
 						/********************************************************************/

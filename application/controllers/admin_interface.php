@@ -1457,7 +1457,7 @@ class Admin_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['date'] = $this->operation_dot_date($pagevar['mails'][$i]['date']);
 		endfor;
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/mails/from/';
 		$config['uri_segment'] 	= 5;
@@ -1685,7 +1685,7 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['date'] = $this->operation_dot_date($pagevar['mails'][$i]['date']);
 		endfor;
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/read-messages/userid/'.$user.'/from/';
@@ -1703,6 +1703,14 @@ class Admin_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		$this->mdmessages->set_read_mails_by_admin($this->user['uid']);
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
 		$this->load->view("admin_interface/reading-users-messages",$pagevar);
 	}
 	
@@ -1854,7 +1862,9 @@ class Admin_interface extends CI_Controller{
 	/*======================== Загрузка аккаунтов на биржах ========================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=17&datefrom=2012-08-13&dateto=2012-08-27');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=162');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=162');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=55&datefrom=2012-08-23&dateto=2012-09-06');
+		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);
@@ -1873,7 +1883,6 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-		print_r($post);
 		print_r($mass_data);
 		echo '<br/>'.count($mass_data);
 	/*======================== Загрузка вебмастеров начало ============================ 

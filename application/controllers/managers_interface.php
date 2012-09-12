@@ -379,7 +379,11 @@ class Managers_interface extends CI_Controller{
 			$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-14,date("Y")));
 			$dateto = date("Y-m-d");
 			for($pl=0;$pl<count($platforms);$pl++):
-				$webmarkets = $this->mdwebmarkets->read_records($platforms[$pl]['webmaster']);
+				$remote_webmaster = $this->mdusers->read_field($platforms[$pl]['webmaster'],'remoteid');
+				if(!$remote_webmaster):
+					continue;
+				endif;
+				$webmarkets = $this->mdwebmarkets->read_records($remote_webmaster);
 				for($mk=0;$mk<count($markets);$mk++):
 					for($wmk=0;$wmk<count($webmarkets);$wmk++):
 						if($webmarkets[$wmk]['market'] == $markets[$mk]['id']):
@@ -394,7 +398,7 @@ class Managers_interface extends CI_Controller{
 									$dwd++;
 								endforeach;
 								for($dwd=0;$dwd<count($dw_data);$dwd++):
-									if($platforms[$pl]['remoteid'] == $dw_data[$dwd]['siteid']):
+									if($platforms[$pl]['remoteid'] === $dw_data[$dwd]['siteid']):
 										if($dw_data[$dwd]['type'] <= 7):
 											$new_work['id'] 		= $dw_data[$dwd]['id'];
 											$new_work['webmaster'] 	= $platforms[$pl]['webmaster'];
@@ -410,7 +414,7 @@ class Managers_interface extends CI_Controller{
 											$new_work['status'] 	= 0;
 											$new_work['date'] 		= $dateto;
 											$new_work['datepaid'] 	= '0000-00-00';
-											if(!$this->mddelivesworks->exist_work($dw_data[$dwd]['id'])):
+											if(!$this->mddelivesworks->exist_work($new_work['id'])):
 												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
 												$kol++;
 											else:
