@@ -260,6 +260,16 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function read_ids_by_webmaster($uid){
+		
+		$this->db->select('id');
+		$this->db->where('webmaster',$uid);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_records_by_webmaster_nolock($uid){
 		
 		$this->db->order_by('url','ASC');

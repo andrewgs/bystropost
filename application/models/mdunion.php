@@ -312,12 +312,21 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function services_attached($uid){
+	function services_attached_list($uid){
 		
-		$query = "SELECT attachedservices.*,services.title AS stitle FROM attachedservices INNER JOIN services ON attachedservices.service=services.id WHERE attachedservices.user = $uid ORDER BY attachedservices.date DESC";
+		$query = "SELECT attachedservices.*,services.title AS stitle FROM attachedservices INNER JOIN services ON attachedservices.service=services.id WHERE attachedservices.user = $uid GROUP BY attachedservices.service ORDER BY attachedservices.date DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
-		if(count($data)) return count($data);
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function services_attached($uid){
+		
+		$query = "SELECT attachedservices.*,platforms.url AS plurl FROM attachedservices INNER JOIN platforms ON attachedservices.platform=platforms.id WHERE attachedservices.user = $uid ORDER BY attachedservices.date DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
 		return NULL;
 	}
 	

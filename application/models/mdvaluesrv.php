@@ -4,7 +4,7 @@ class Mdvaluesrv extends CI_Model{
 
 	var $id		= 0;
 	var $title	= '';
-	var $serveice= 0;
+	var $service= 0;
 	var $price	= 0;
 	
 	function __construct(){
@@ -14,7 +14,7 @@ class Mdvaluesrv extends CI_Model{
 	function insert_record($data){
 			
 		$this->title 	= htmlspecialchars($data['title']);
-		$this->serveice = $data['sid'];
+		$this->service = $data['sid'];
 		$this->price 	= $data['price'];
 		
 		$this->db->insert('valuesrv',$this);
@@ -32,7 +32,16 @@ class Mdvaluesrv extends CI_Model{
 	
 	function read_records(){
 		
-		$this->db->order_by('serveice');
+		$this->db->order_by('service');
+		$query = $this->db->get('valuesrv');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_records_service($service){
+		
+		$this->db->where('service',$service);
 		$query = $this->db->get('valuesrv');
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -45,6 +54,17 @@ class Mdvaluesrv extends CI_Model{
 		$query = $this->db->get('valuesrv',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
+	function read_zero_price($service){
+		
+		$this->db->select('id');
+		$this->db->where('service',$service);
+		$this->db->where('price',0);
+		$query = $this->db->get('valuesrv',1);
+		$data = $query->result_array();
+		if(isset($data[0]['id'])) return $data[0]['id'];
 		return NULL;
 	}
 	
@@ -66,7 +86,7 @@ class Mdvaluesrv extends CI_Model{
 	
 	function delete_records($sid){
 	
-		$this->db->where('serveice',$sid);
+		$this->db->where('service',$sid);
 		$this->db->delete('valuesrv');
 		return $this->db->affected_rows();
 	}

@@ -85,6 +85,8 @@ $route['webmaster-panel/actions/balance/failed']					= "clients_interface/contro
 //$route['webmaster-panel/actions/balance/result']					= "clients_interface/control_balance_result";
 
 $route['webmaster-panel/actions/services']							= "clients_interface/control_services";
+$route['webmaster-panel/actions/services/serviceid/:num/platforms']	= "clients_interface/control_services_platforms";
+$route['admin-panel/management/services/delete/serviceid/:num']		= "clients_interface/control_services_delete";
 
 $route['views/market-profile']										= "clients_interface/views";
 

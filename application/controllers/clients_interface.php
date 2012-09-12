@@ -26,6 +26,7 @@ class Clients_interface extends CI_Controller{
 		$this->load->model('mdlog');
 		$this->load->model('mdthematic');
 		$this->load->model('mdcms');
+		$this->load->model('mdvaluesrv');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -534,7 +535,8 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'attached'		=> $this->mdunion->services_attached($this->user['uid']),
+					'attached'		=> $this->mdunion->services_attached_list($this->user['uid']),
+					'addservice'	=> TRUE,
 					'services'		=> $this->mdservices->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -543,13 +545,99 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('balance',' ','required|numeric|trim');
+			unset($_POST['submit']);
+			$this->form_validation->set_rules('service',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
-				$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
+				if(!$this->mdattachedservices->service_exist($this->user['uid'],$_POST['service'])):
+					$platforms = $this->mdplatforms->read_ids_by_webmaster($this->user['uid']);
+					$valuesrv = $this->mdvaluesrv->read_zero_price($_POST['service']);
+					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		$cnt = 0;
+		for($j=0;$j<count($pagevar['services']);$j++):
+			$pagevar['services'][$j]['attached'] = 0;
+			for($i=0;$i<count($pagevar['attached']);$i++):
+				if($pagevar['services'][$j]['id'] == $pagevar['attached'][$i]['service']):
+					$pagevar['services'][$j]['attached'] = 1;
+					$cnt++;
+				endif;
+			endfor;
+		endfor;
+		if($cnt == count($pagevar['services'])):
+			$pagevar['addservice']  =FALSE;
+		endif;
+		for($i=0;$i<count($pagevar['attached']);$i++):
+			$pagevar['attached'][$i]['date'] = $this->operation_dot_date($pagevar['attached'][$i]['date']);
+		endfor;
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if(!$pagevar['cntunit']['platforms']):
+			redirect('webmaster-panel/actions/control');
+		endif;
+		
+		$this->load->view("clients_interface/control-services",$pagevar);
+	}
+	
+	public function control_services_platforms(){
+		
+		$service = $this->uri->segment(5);
+		if(!$this->mdattachedservices->service_exist($this->user['uid'],$service)):
+			redirect('webmaster-panel/actions/services');
+		endif;
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Дополнительные услуги | Площадки',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'attached'		=> $this->mdunion->services_attached($this->user['uid']),
+					'srvvalues'		=> $this->mdvaluesrv->read_records_service($service),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+//		print_r($pagevar['attached']);exit;
+		
+		if($this->input->post('submit')):
+			unset($_POST['submit']);
+			$this->form_validation->set_rules('service',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				redirect($this->uri->uri_string());
+			else:
+				if(!$this->mdattachedservices->service_exist($this->user['uid'],$_POST['service'])):
+					$platforms = $this->mdplatforms->read_ids_by_webmaster($this->user['uid']);
+					$valuesrv = $this->mdvaluesrv->read_zero_price($_POST['service']);
+					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0);
+					$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
+				endif;
 				redirect($this->uri->uri_string());
 			endif;
 		endif;
@@ -564,10 +652,6 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		for($i=0;$i<count($pagevar['attached']);$i++):
-			$pagevar['attached'][$i]['date'] = $this->operation_dot_date($pagevar['attached'][$i]['date']);
-		endfor;
-		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
@@ -580,7 +664,25 @@ class Clients_interface extends CI_Controller{
 			redirect('webmaster-panel/actions/control');
 		endif;
 		
-		$this->load->view("clients_interface/control-services",$pagevar);
+		$this->load->view("clients_interface/control-services-platforms",$pagevar);
+	}
+	
+	public function control_services_delete(){
+		
+		$sid = $this->uri->segment(6);
+		if($sid):
+			$result = $this->mdattachedservices->delete_records($sid,$this->user['uid']);
+			if($result):
+				//Уменьшение стоимости работ по площадкам
+				$this->mdlog->insert_record($this->user['uid'],'Событие №25: Отключил дополнительную услугу');
+				$this->session->set_userdata('msgs','Дополнительна услуга отключена успешно');
+			else:
+				$this->session->set_userdata('msgr','Дополнительна услуга не отключена');
+			endif;
+			redirect('webmaster-panel/actions/services');
+		else:
+			show_404();
+		endif;
 	}
 	
 	/*************************************************** markets *********************************************************/	

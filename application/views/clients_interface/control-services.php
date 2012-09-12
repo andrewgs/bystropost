@@ -18,25 +18,27 @@
 					<thead>
 						<tr>
 							<th class="w100"><center>Подключена</center></th>
-							<th class="w500"><center>Название услуги</center></th>
-							<th class="w50">&nbsp;</th>
+							<th class="w400"><center>Название услуги</center></th>
+							<th class="w100">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($attached);$i++):?>
 						<tr>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$attached[$i]['date'];?></nobr></td>
-							<td class="w500"><?=$attached[$i]['stitle'];?></td>
-							<td class="w85" style="text-align:center; vertical-align:middle;"><?=$attached[$i]['price'];?></td>
-							<td class="w50" style="text-align:center; vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$attached[$i]['id'];?>" data-uid="<?=$mails[$i]['sender'];?>" data-position="<?=$mails[$i]['position'];?>"></div>
+							<td class="w100"><nobr><?=$attached[$i]['date'];?></nobr></td>
+							<td class="w400"><?=$attached[$i]['stitle'];?></td>
+							<td class="w100">
+								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$attached[$i]['service'];?>"></div>
+								<?=anchor('webmaster-panel/actions/services/serviceid/'.$attached[$i]['service'].'/platforms','&nbsp;&nbsp;<i class="icon-tasks icon-white"></i>&nbsp;&nbsp;',array('class'=>'btn btn-info','title'=>'Настройка свойств площадок'));?>
 								<a class="btn btn-danger deleteService" data-param="<?=$i;?>" data-toggle="modal" href="#deleteService" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>
 				</table>
+				<?php if($addservice):?>
 				<a class="btn btn-info" data-toggle="modal" href="#addService" title="Добавить"><nobr>&nbsp;&nbsp;<i class="icon-plus icon-white"></i> Добавить&nbsp;&nbsp;</nobr></a>
+				<?php endif;?>
 			</div>
 		<?php $this->load->view("clients_interface/includes/rightbar");?>
 		<?php $this->load->view('clients_interface/modal/clients-add-service');?>
@@ -48,29 +50,8 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var sID = 0;
-			var balance = <?=$userinfo['balance'];?>;
-			$(".editService").click(function(){
-				var Param = $(this).attr('data-param'); sID = $("div[id = params"+Param+"]").attr("data-sid");
-				var sTitle = $("div[id = params"+Param+"]").attr("data-title"); var sPrice = $("div[id = params"+Param+"]").attr("data-price");
-				$(".idService").val(sID);$("#esTitle").val(sTitle);$("#esPrice").val(sPrice);
-			});
-			
-			$("#essend").click(function(event){
-				var err = false;
-				$(".control-group").removeClass('error');
-				$(".help-inline").hide();
-				$(".esinput").each(function(i,element){
-					if($(this).val()==''){
-						$(this).parents(".control-group").addClass('error');
-						$(this).siblings(".help-inline").html("Поле не может быть пустым").show();
-						err = true;
-					}
-				});
-				if(err){event.preventDefault();}
-			});
-			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#ServicesList").val(1);});
 			$(".deleteService").click(function(){var Param = $(this).attr('data-param'); sID = $("div[id = params"+Param+"]").attr("data-sid");});
-			$("#DelService").click(function(){location.href='<?=$baseurl;?>admin-panel/management/services/serviceid/'+sID;});
+			$("#DelService").click(function(){location.href='<?=$baseurl;?>admin-panel/management/services/delete/serviceid/'+sID;});
 		});
 	</script>
 </body>
