@@ -5,7 +5,8 @@ class Mdvaluesrv extends CI_Model{
 	var $id		= 0;
 	var $title	= '';
 	var $service= 0;
-	var $price	= 0;
+	var $wprice	= 0;
+	var $mprice	= 0;
 	
 	function __construct(){
 		parent::__construct();
@@ -15,7 +16,8 @@ class Mdvaluesrv extends CI_Model{
 			
 		$this->title 	= htmlspecialchars($data['title']);
 		$this->service = $data['sid'];
-		$this->price 	= $data['price'];
+		$this->wprice 	= $data['wprice'];
+		$this->mprice 	= $data['mprice'];
 		
 		$this->db->insert('valuesrv',$this);
 		return $this->db->insert_id();
@@ -24,7 +26,8 @@ class Mdvaluesrv extends CI_Model{
 	function update_record($data){
 		
 		$this->db->set('title',htmlspecialchars($data['title']));
-		$this->db->set('price',$data['price']);
+		$this->db->set('wprice',$data['wprice']);
+		$this->db->set('mprice',$data['mprice']);
 		$this->db->where('id',$data['svid']);
 		$this->db->update('valuesrv');
 		return $this->db->affected_rows();
@@ -32,6 +35,8 @@ class Mdvaluesrv extends CI_Model{
 	
 	function read_records(){
 		
+		$this->db->order_by('wprice');
+		$this->db->order_by('mprice');
 		$this->db->order_by('service');
 		$query = $this->db->get('valuesrv');
 		$data = $query->result_array();
@@ -42,9 +47,20 @@ class Mdvaluesrv extends CI_Model{
 	function read_records_service($service){
 		
 		$this->db->where('service',$service);
+		$this->db->order_by('wprice');
 		$query = $this->db->get('valuesrv');
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_record_service($service){
+	
+		$this->db->select('id');
+		$this->db->where('service',$service);
+		$query = $this->db->get('valuesrv',1);
+		$data = $query->result_array();
+		if(isset($data[0]['id'])) return $data[0]['id'];
 		return NULL;
 	}
 	
@@ -61,7 +77,7 @@ class Mdvaluesrv extends CI_Model{
 		
 		$this->db->select('id');
 		$this->db->where('service',$service);
-		$this->db->where('price',0);
+		$this->db->where('wprice',0);
 		$query = $this->db->get('valuesrv',1);
 		$data = $query->result_array();
 		if(isset($data[0]['id'])) return $data[0]['id'];

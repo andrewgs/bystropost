@@ -15,10 +15,19 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label for="price" class="control-label">Цена: </label>
+					<label for="wprice" class="control-label">Цена (вебмастер): </label>
 					<div class="controls">
 						<div class="input-prepend input-append">
-							<span class="add-on">руб</span><input type="text" class="input-small esvinput digital" id="SVPrice" placeholder="" name="price"><span class="add-on">.00</span>
+							<span class="add-on">руб</span><input type="text" class="input-small esvinput digital" id="SVwPrice" placeholder="" name="wprice"><span class="add-on">.00</span>
+						</div>
+						<div class="help-inline" style="display:none;">&nbsp;</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="mprice" class="control-label">Цена (менеджер): </label>
+					<div class="controls">
+						<div class="input-prepend input-append">
+							<span class="add-on">руб</span><input type="text" class="input-small esvinput digital" id="SVmPrice" placeholder="" name="mprice"><span class="add-on">.00</span>
 						</div>
 						<div class="help-inline" style="display:none;">&nbsp;</div>
 					</div>

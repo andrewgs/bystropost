@@ -35,7 +35,7 @@
 							<td class="w100">
 								<select name="srvvalues[]" class="reg-form-input w205 h35">
 								<?php for($j=0;$j<count($srvvalues);$j++):?>
-									<option value="<?=$srvvalues[$j]['id'];?>" <?=($srvvalues[$j]['id'] == $attached[$i]['valuesrv'])?'selected	':'';?>><?=$srvvalues[$j]['title'];?></option>
+									<option value="<?=$attached[$i]['id'];?>-<?=$srvvalues[$j]['id'];?>" <?=($srvvalues[$j]['id'] == $attached[$i]['valuesrv'])?'selected	':'';?>><?=$srvvalues[$j]['title'];?></option>
 								<?php endfor;?>
 								</select>
 							</td>
@@ -44,8 +44,8 @@
 							<td class="w100"><?=$attached[$i+1]['plurl'];?></td>
 							<td class="w100">
 								<select name="srvvalues[]" class="reg-form-input w205 h35">
-								<?php for($j=0;$j<count($attached);$j++):?>
-									<option value="<?=$srvvalues[$j]['id'];?>" <?=($srvvalues[$j]['id'] == $attached[$i+1]['valuesrv'])?'selected':'';?>><?=$srvvalues[$j]['title'];?></option>
+								<?php for($j=0;$j<count($srvvalues);$j++):?>
+									<option value="<?=$attached[$i+1]['id'];?>-<?=$srvvalues[$j]['id'];?>" <?=($srvvalues[$j]['id'] == $attached[$i+1]['valuesrv'])?'selected':'';?>><?=$srvvalues[$j]['title'];?></option>
 								<?php endfor;?>
 								</select>
 							</td>

@@ -554,7 +554,10 @@ class Clients_interface extends CI_Controller{
 				if(!$this->mdattachedservices->service_exist($this->user['uid'],$_POST['service'])):
 					$platforms = $this->mdplatforms->read_ids_by_webmaster($this->user['uid']);
 					$valuesrv = $this->mdvaluesrv->read_zero_price($_POST['service']);
-					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0);
+					if(!$valuesrv):
+						$valuesrv = $this->mdvaluesrv->read_record_service($_POST['service']);
+					endif;
+					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
 				endif;
 				redirect($this->uri->uri_string());
@@ -615,7 +618,7 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'attached'		=> $this->mdunion->services_attached($this->user['uid']),
+					'attached'		=> $this->mdunion->services_attached($service,$this->user['uid']),
 					'srvvalues'		=> $this->mdvaluesrv->read_records_service($service),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -623,22 +626,58 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-//		print_r($pagevar['attached']);exit;
-		
 		if($this->input->post('submit')):
 			unset($_POST['submit']);
-			$this->form_validation->set_rules('service',' ','required|trim');
+			$this->form_validation->set_rules('srvvalues[]',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
-				if(!$this->mdattachedservices->service_exist($this->user['uid'],$_POST['service'])):
-					$platforms = $this->mdplatforms->read_ids_by_webmaster($this->user['uid']);
-					$valuesrv = $this->mdvaluesrv->read_zero_price($_POST['service']);
-					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0);
-					$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
-				endif;
-				redirect($this->uri->uri_string());
+				foreach($_POST['srvvalues'] AS $srvvalues):
+					$params = preg_split('/-/',$srvvalues);
+					$attached = $this->mdattachedservices->read_record($params[0],$this->user['uid']);
+					if($attached):
+						$sqlquery = "UPDATE platforms SET ";
+						$works = $this->mdtypeswork->read_records();
+						$arr_works = $this->mdservices->read_field($attached['service'],'types_works');
+						$arr_works = preg_split('/,/',$arr_works);
+						for($i=0;$i<count($works);$i++):
+							$wadd=$madd=0;
+							if(in_array($works[$i]['id'],$arr_works)):
+								$wadd = $attached['wprice'];
+								$madd = $attached['mprice'];
+							endif;
+							$sqlquery .= 'c'.$works[$i]['nickname'].' = c'.$works[$i]['nickname'].'-'.$wadd.', m'.$works[$i]['nickname'].' = m'.$works[$i]['nickname'].'-'.$madd;
+							if(isset($works[$i+1])):
+								$sqlquery .= ', ';
+							endif;
+						endfor;
+						$sqlquery .= ' WHERE platforms.id = '.$attached['platform'];
+						$this->mdplatforms->run_query($sqlquery);
+						$this->mdattachedservices->update_field($params[0],'valuesrv',$params[1]);
+						$wprice = $this->mdvaluesrv->read_field($params[1],'wprice');
+						$mprice = $this->mdvaluesrv->read_field($params[1],'mprice');
+						$this->mdattachedservices->update_field($params[0],'wprice',$wprice);
+						$this->mdattachedservices->update_field($params[0],'mprice',$mprice);
+						$attached = $this->mdattachedservices->read_record($params[0],$this->user['uid']);
+						$sqlquery = "UPDATE platforms SET ";
+						for($i=0;$i<count($works);$i++):
+							$wadd=$madd=0;
+							if(in_array($works[$i]['id'],$arr_works)):
+								$wadd = $attached['wprice'];
+								$madd = $attached['mprice'];
+							endif;
+							$sqlquery .= 'c'.$works[$i]['nickname'].' = c'.$works[$i]['nickname'].'+'.$wadd.', m'.$works[$i]['nickname'].' = m'.$works[$i]['nickname'].'+'.$madd;
+							if(isset($works[$i+1])):
+								$sqlquery .= ', ';
+							endif;
+						endfor;
+						$sqlquery .= ' WHERE platforms.id = '.$attached['platform'];
+						$this->mdplatforms->run_query($sqlquery);
+					endif;
+				endforeach;
+				$this->session->set_userdata('msgs','Свойства сохранены');
+				redirect('webmaster-panel/actions/services');
 			endif;
 		endif;
 		
@@ -671,9 +710,28 @@ class Clients_interface extends CI_Controller{
 		
 		$sid = $this->uri->segment(6);
 		if($sid):
+			$attached = $this->mdattachedservices->read_records_service($sid,$this->user['uid']);
+			$works = $this->mdtypeswork->read_records();
+			for($i=0;$i<count($attached);$i++):
+				$sqlquery = "UPDATE platforms SET ";
+				$arr_works = $this->mdservices->read_field($attached[$i]['service'],'types_works');
+				$arr_works = preg_split('/,/',$arr_works);
+				for($j=0;$j<count($works);$j++):
+					$wadd=$madd=0;
+					if(in_array($works[$j]['id'],$arr_works)):
+						$wadd = $attached[$i]['wprice'];
+						$madd = $attached[$i]['mprice'];
+					endif;
+					$sqlquery .= 'c'.$works[$j]['nickname'].' = c'.$works[$j]['nickname'].'-'.$wadd.', m'.$works[$j]['nickname'].' = m'.$works[$j]['nickname'].'-'.$madd;
+					if(isset($works[$j+1])):
+						$sqlquery .= ', ';
+					endif;
+				endfor;
+				$sqlquery .= ' WHERE platforms.id = '.$attached[$i]['platform'];
+				$this->mdplatforms->run_query($sqlquery);
+			endfor;
 			$result = $this->mdattachedservices->delete_records($sid,$this->user['uid']);
 			if($result):
-				//Уменьшение стоимости работ по площадкам
 				$this->mdlog->insert_record($this->user['uid'],'Событие №25: Отключил дополнительную услугу');
 				$this->session->set_userdata('msgs','Дополнительна услуга отключена успешно');
 			else:
@@ -1322,7 +1380,6 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
-			$this->form_validation->set_rules('amount',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
@@ -1362,17 +1419,7 @@ class Clients_interface extends CI_Controller{
 					$sqlquery = "UPDATE platforms SET ";
 					$works = $this->mdtypeswork->read_records();
 					for($i=0;$i<count($works);$i++):
-						$wadd = $addwtic;
-						$madd = $addmtic;
-						$arr_works = array(1,2,4,5);
-						if(in_array($works[$i]['id'],$arr_works)):
-							switch($_POST['amount']):
-								case 1 : $wadd += 0; $madd += 0; break;
-								case 2 : $wadd += 11; $madd += 9; break;
-								case 3 : $wadd += 23; $madd += 18; break;
-							endswitch;
-						endif;
-						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$wadd).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$madd);
+						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$addwtic).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$addmtic);
 						if(isset($works[$i+1])):
 							$sqlquery .= ', ';
 						endif;
@@ -1441,6 +1488,7 @@ class Clients_interface extends CI_Controller{
 					'thematic'		=> $this->mdthematic->read_records(),
 					'cms'			=> $this->mdcms->read_records(),
 					'mymarkets'		=> $this->mdmkplatform->read_records_by_platform($platform,$this->user['uid']),
+					'services'		=> array(),
 					'msginfo'		=> '<span class="alert-attention">Внимание!</span> Перед добавлением площадки убедитесь в наличии всех бирж в каталоге. Если необходимая биржа отсутствует в каталоге - обратитесь к администрации. Доступ к администрации сайта осуществляется через интерфейс технической поддержки.',
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -1456,7 +1504,10 @@ class Clients_interface extends CI_Controller{
 				unset($userdata);
 			endif;
 		endif;
-		
+		$attached = $this->mdunion->services_attached_list($this->user['uid']);
+		for($i=0;$i<count($attached);$i++):
+			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$this->user['uid']);
+		endfor;
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('url',' ','required|trim');
@@ -1465,7 +1516,6 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
-			$this->form_validation->set_rules('amount',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
@@ -1486,36 +1536,7 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
 				if($result):
-					$addtic = 0;
-					$pr = $this->getpagerank($_POST['url']);
-					$this->mdplatforms->update_field($platform,'pr',$pr);
-					$tic = $this->getTIC('http://'.$_POST['url']);
-					$this->mdplatforms->update_field($platform,'tic',$tic);
-					if($tic >= 50):
-						$addtic = 5;
-					endif;
-					$sqlquery = "UPDATE platforms SET ";
-					$works = $this->mdtypeswork->read_records();
-					for($i=0;$i<count($works);$i++):
-						$wadd=$madd=$addtic;
-						$arr_works = array(1,2,4,5);
-						if(in_array($works[$i]['id'],$arr_works)):
-							switch($_POST['amount']):
-								case 1 : $wadd += 0; $madd += 0; break;
-								case 2 : $wadd += 11; $madd += 9; break;
-								case 3 : $wadd += 23; $madd += 18; break;
-							endswitch;
-						endif;
-						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$wadd).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$madd);
-						if(isset($works[$i+1])):
-							$sqlquery .= ', ';
-						endif;
-					endfor;
-					$sqlquery .= ' WHERE platforms.id = '.$platform;
-					$this->mdplatforms->run_query($sqlquery);
-					
 					if($pagevar['platform']['manager']):
-						
 						/********************************************************************/
 						if($pagevar['platform']['manager'] == 2):
 							$new_platform = $this->mdplatforms->read_record($platform);
@@ -1555,7 +1576,6 @@ class Clients_interface extends CI_Controller{
 						URL админки: <?=$pagevar['platform']['adminpanel'].' - '.$_POST['adminpanel'];?><br/>
 						Логин к админке: <?=$pagevar['platform']['aplogin'].' - '.$_POST['aplogin'];?><br/>
 						Пароль к админке: <?=$pagevar['platform']['appassword'].' - '.$_POST['appassword'];?><br/>
-						Диапазон знаков: <?=$pagevar['platform']['amount'].' - '.$_POST['amount'];?><br/>
 						Обзоры: <?=($pagevar['platform']['reviews'] == 1)?'да':'нет';?> - <?=($_POST['reviews'] == 1)?'да':'нет';?><br/>
 						Тематичность: <?=($pagevar['platform']['thematically'] == 1)?'да':'нет';?> - <?=($_POST['thematically'] == 1)?'да':'нет';?><br/>
 						Размещать задания которые противоречат законам РФ: <?=($pagevar['platform']['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?> - <?=($_POST['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?></p>

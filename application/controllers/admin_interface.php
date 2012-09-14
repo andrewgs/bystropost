@@ -26,6 +26,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdcms');
 		$this->load->model('mdvaluesrv');
 		$this->load->model('mdwebmarkets');
+		$this->load->model('mdattachedservices');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -968,6 +969,7 @@ class Admin_interface extends CI_Controller{
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
 					'thematic'		=> $this->mdthematic->read_records(),
+					'services'		=> array(),
 					'cms'			=> $this->mdcms->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -976,7 +978,10 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		$pagevar['mymarkets'] = $this->mdmkplatform->read_records_by_platform($platform,$pagevar['platform']['webmaster']);
-		
+		$attached = $this->mdunion->services_attached_list($pagevar['platform']['webmaster']);
+		for($i=0;$i<count($attached);$i++):
+			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$pagevar['platform']['webmaster']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '-';
@@ -1779,7 +1784,8 @@ class Admin_interface extends CI_Controller{
 			$_POST['asvsubmit'] = NULL;
 			$this->form_validation->set_rules('title',' ','required|trim');
 			$this->form_validation->set_rules('sid',' ','required|trim');
-			$this->form_validation->set_rules('price',' ','required|trim');
+			$this->form_validation->set_rules('wprice',' ','required|trim');
+			$this->form_validation->set_rules('mprice',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
@@ -1809,7 +1815,8 @@ class Admin_interface extends CI_Controller{
 			$_POST['esvsubmit'] = NULL;
 			$this->form_validation->set_rules('svid',' ','required|trim');
 			$this->form_validation->set_rules('title',' ','required|trim');
-			$this->form_validation->set_rules('price',' ','required|numeric|trim');
+			$this->form_validation->set_rules('wprice',' ','required|numeric|trim');
+			$this->form_validation->set_rules('mprice',' ','required|numeric|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
@@ -1840,12 +1847,17 @@ class Admin_interface extends CI_Controller{
 		
 		$sid = $this->uri->segment(5);
 		if($sid):
-			$result = $this->mdservices->delete_record($sid);
-			if($result):
-				$this->mdvaluesrv->delete_records($sid);
-				$this->session->set_userdata('msgs','Услуга удалена успешно');
+			$attched = $this->mdattachedservices->service_admin_exist($sid);
+			if(!$attched):
+				$result = $this->mdservices->delete_record($sid);
+				if($result):
+					$this->mdvaluesrv->delete_records($sid);
+					$this->session->set_userdata('msgs','Услуга удалена успешно');
+				else:
+					$this->session->set_userdata('msgr','Услуга не удалена');
+				endif;
 			else:
-				$this->session->set_userdata('msgr','Услуга не удалена');
+				$this->session->set_userdata('msgr','Услуга используется. Удалить не возможно.');
 			endif;
 			redirect('admin-panel/management/services');
 		else:

@@ -249,6 +249,7 @@ class Managers_interface extends CI_Controller{
 					'platform'		=> $this->mdplatforms->read_record($platform),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'mymarkets'		=> array(),
+					'services'		=> array(),
 					'thematic'		=> $this->mdthematic->read_records(),
 					'cms'			=> $this->mdcms->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -258,7 +259,10 @@ class Managers_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		$pagevar['mymarkets'] = $this->mdmkplatform->read_records_by_platform($platform,$pagevar['platform']['webmaster']);
-		
+		$attached = $this->mdunion->services_attached_list($pagevar['platform']['webmaster']);
+		for($i=0;$i<count($attached);$i++):
+			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$pagevar['platform']['webmaster']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '-';

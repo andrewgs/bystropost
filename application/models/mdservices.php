@@ -4,6 +4,7 @@ class Mdservices extends CI_Model{
 
 	var $id		= 0;
 	var $title	= '';
+	var $types_works	= '';
 	
 	function __construct(){
 		parent::__construct();
@@ -12,6 +13,7 @@ class Mdservices extends CI_Model{
 	function insert_record($data){
 			
 		$this->title = htmlspecialchars($data['title']);
+		$this->types_works = htmlspecialchars($data['types_works']);
 		
 		$this->db->insert('services',$this);
 		return $this->db->insert_id();
@@ -20,6 +22,7 @@ class Mdservices extends CI_Model{
 	function update_record($data){
 		
 		$this->db->set('title',htmlspecialchars($data['title']));
+		$this->db->set('types_works',htmlspecialchars($data['types_works']));
 		$this->db->where('id',$data['sid']);
 		$this->db->update('services');
 		return $this->db->affected_rows();
@@ -27,7 +30,7 @@ class Mdservices extends CI_Model{
 	
 	function read_records(){
 		
-		$this->db->order_by('title');
+		$this->db->order_by('title,types_works');
 		$query = $this->db->get('services');
 		$data = $query->result_array();
 		if(count($data)) return $data;

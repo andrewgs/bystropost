@@ -12,7 +12,6 @@ class Mdplatforms extends CI_Model{
 	var $adminpanel 	= '';
 	var $aplogin 		= '';
 	var $appassword 	= '';
-	var $amount 		= 1;
 	var $reviews 		= 1;
 	var $thematically 	= 1;
 	var $illegal 		= 0;
@@ -53,6 +52,7 @@ class Mdplatforms extends CI_Model{
 	}
 	
 	function insert_record($uid,$data){
+	
 		if(isset($data['id'])):
 			$this->remoteid 	= $data['id'];
 		endif;
@@ -63,11 +63,9 @@ class Mdplatforms extends CI_Model{
 		$this->adminpanel 	= $data['adminpanel'];
 		$this->aplogin 		= $data['aplogin'];
 		$this->appassword 	= $data['appassword'];
-		$this->amount 		= $data['amount'];
 		$this->reviews 		= $data['reviews'];
 		$this->thematically = $data['thematically'];
 		$this->illegal 		= $data['illegal'];
-//		$this->criteria 	= $data['criteria'];
 		$this->requests 	= $data['requests'];
 		$this->imgstatus 	= $data['imgstatus'];
 		$this->imgwidth 	= $data['imgwidth'];
@@ -117,7 +115,6 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('reviews',$data['reviews']);
 		$this->db->set('thematically',$data['thematically']);
 		$this->db->set('illegal',$data['illegal']);
-//		$this->db->set('criteria',$data['criteria']);
 		$this->db->set('requests',$data['requests']);
 		$this->db->set('imgstatus',$data['imgstatus']);
 		$this->db->set('imgwidth',$data['imgwidth']);

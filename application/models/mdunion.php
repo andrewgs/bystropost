@@ -321,9 +321,9 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function services_attached($uid){
+	function services_attached($service,$uid){
 		
-		$query = "SELECT attachedservices.*,platforms.url AS plurl FROM attachedservices INNER JOIN platforms ON attachedservices.platform=platforms.id WHERE attachedservices.user = $uid ORDER BY attachedservices.date DESC";
+		$query = "SELECT attachedservices.*,platforms.url AS plurl FROM attachedservices INNER JOIN platforms ON attachedservices.platform=platforms.id WHERE attachedservices.user = $uid AND attachedservices.service = $service ORDER BY attachedservices.date DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -345,6 +345,15 @@ class Mdunion extends CI_Model{
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+
+	function read_srvvalue_service_platform($service,$platform,$uid){
+		
+		$query = "SELECT attachedservices.*,valuesrv.title AS tsrvval,services.title AS tservice FROM attachedservices INNER JOIN valuesrv ON attachedservices.valuesrv=valuesrv.id INNER JOIN services ON attachedservices.service=services.id WHERE attachedservices.user = $uid AND attachedservices.service = $service AND attachedservices.platform = $platform LIMIT 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
 		return NULL;
 	}
 }

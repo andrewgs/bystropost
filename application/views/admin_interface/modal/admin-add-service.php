@@ -13,6 +13,14 @@
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label for="types_works" class="control-label">Типы работ: </label>
+					<div class="controls">
+						<input type="text" class="span2 asinput" name="types_works" value="1,2,3,4,5,6,7">
+						<p class="help-block">Например: 1,2,4,5</p>
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

@@ -28,15 +28,15 @@
 							<td class="w275">
 								<ul>
 						<?php for($j=0;$j<count($valuesrv);$j++):?>
-							<?php if($valuesrv[$j]['serveice'] == $services[$i]['id']):?>
-									<div id="jprm<?=$j;?>" style="display:none" data-svid="<?=$valuesrv[$j]['id'];?>" data-title="<?=$valuesrv[$j]['title'];?>" data-price="<?=$valuesrv[$j]['price'];?>"></div>
-									<li><?=$valuesrv[$j]['title'];?> (<?=$valuesrv[$j]['price'];?> руб.) [<a class="editSrvValue" data-jprm="<?=$j;?>" data-toggle="modal" href="#editSrvValue">Изменить</a>]</li>
+							<?php if($valuesrv[$j]['service'] == $services[$i]['id']):?>
+									<div id="jprm<?=$j;?>" style="display:none" data-svid="<?=$valuesrv[$j]['id'];?>" data-title="<?=$valuesrv[$j]['title'];?>" data-wprice="<?=$valuesrv[$j]['wprice'];?>" data-mprice="<?=$valuesrv[$j]['mprice'];?>"></div>
+									<li><?=$valuesrv[$j]['title'];?> (<?=$valuesrv[$j]['wprice'];?> руб.) [<a class="editSrvValue" data-jprm="<?=$j;?>" data-toggle="modal" href="#editSrvValue">Изменить</a>]</li>
 							<?php endif;?>
 						<?php endfor; ?>
 								</ul>
 							</td>
 							<td class="w50" style="text-align:center;vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$services[$i]['id'];?>" data-title="<?=$services[$i]['title'];?>"></div>
+								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$services[$i]['id'];?>" data-title="<?=$services[$i]['title'];?>" data-types="<?=$services[$i]['types_works'];?>"></div>
 								<a class="btn btn-info addSrvValue" data-param="<?=$i;?>" data-toggle="modal" href="#addSrvValue" title="Добавить значение"><nobr>&nbsp;&nbsp;<i class="icon-plus icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-success editService" data-param="<?=$i;?>" data-toggle="modal" href="#editService" title="Редактировать"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteService" data-param="<?=$i;?>" data-toggle="modal" href="#deleteService" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
@@ -62,13 +62,13 @@
 			var sID = 0;
 			$(".editService").click(function(){
 				var Param = $(this).attr('data-param'); sID = $("div[id = params"+Param+"]").attr("data-sid");
-				var sTitle = $("div[id = params"+Param+"]").attr("data-title");
-				$(".idService").val(sID);$("#esTitle").val(sTitle);
+				var sTitle = $("div[id = params"+Param+"]").attr("data-title"); var sTypes = $("div[id = params"+Param+"]").attr("data-types");
+				$(".idService").val(sID);$("#esTitle").val(sTitle);$("#esTypes").val(sTypes);
 			});
 			$(".editSrvValue").click(function(){
 				var Param = $(this).attr('data-jprm'); svID = $("div[id = jprm"+Param+"]").attr("data-svid");
-				var svTitle = $("div[id = jprm"+Param+"]").attr("data-title");var svPrice = $("div[id = jprm"+Param+"]").attr("data-price");
-				$(".idSrvValue").val(svID);$("#SVTitle").val(svTitle);$("#SVPrice").val(svPrice);
+				var svTitle = $("div[id = jprm"+Param+"]").attr("data-title");var svwPrice = $("div[id = jprm"+Param+"]").attr("data-wprice");var svmPrice = $("div[id = jprm"+Param+"]").attr("data-mprice");
+				$(".idSrvValue").val(svID);$("#SVTitle").val(svTitle);$("#SVwPrice").val(svwPrice); $("#SVmPrice").val(svmPrice);
 			});
 			$(".addSrvValue").click(function(){
 				var Param = $(this).attr('data-param'); sID = $("div[id = params"+Param+"]").attr("data-sid");$(".idService").val(sID);

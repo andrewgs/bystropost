@@ -69,16 +69,16 @@
 							</div>
 						</td>
 					</tr>
+				<?php for($i=0;$i<count($services);$i++):?>
 					<tr>
-						<td>Объем знаков: </td>
+						<td><?=$services[$i]['tservice']?>:</td>
 						<td>
-							<select name="amount" id="amount" class="reg-form-input w195 h35" disabled="disabled">
-								<option value="1" >от 1000 до 1499</option>
-								<option value="2" >от 1500 до 1999</option>
-								<option value="3" >от 2000 до 2500</option>
+							<select name="data<?=$services[$i]['id']?>" class="reg-form-input w205 h35 disabled" disabled="disabled">
+								<option value="<?=$services[$i]['valuesrv']?>" ><?=$services[$i]['tsrvval']?></option>
 							</select>
 						</td>
 					</tr>
+				<?php endfor;?>
 					<tr>
 						<td>Обзоры:</td>
 						<td>
@@ -144,7 +144,6 @@
 			$("#cms").attr("disabled","disabled");
 			$("#tsbj").html('<b>'+$("#subject option:selected").html()+'</b>');
 			$("#tsbj").html('<b>'+$("#subject option:selected").html()+'</b>');
-			$("#amount [value='<?=$platform['amount'];?>']").attr("selected", "selected");
 			$("#reviews [value='<?=$platform['reviews'];?>']").attr("selected", "selected");
 			$("#thematically [value='<?=$platform['thematically'];?>']").attr("selected", "selected");
 			$("#illegal [value='<?=$platform['illegal'];?>']").attr("selected", "selected");

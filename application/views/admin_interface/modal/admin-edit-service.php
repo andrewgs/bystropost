@@ -14,6 +14,14 @@
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label for="types_works" class="control-label">Типы работ: </label>
+					<div class="controls">
+						<input type="text" id="esTypes" class="input-xlarge esinput" name="types_works" value="">
+						<p class="help-block">Например: 1,2,4,5</p>
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

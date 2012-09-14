@@ -1,7 +1,6 @@
 <?=form_open($this->uri->uri_string(),array('id'=>'frmaddplatform')); ?>
 	<input type="hidden" name="imgstatus" value="<?=$platform['imgstatus'];?>"/>
 	<input type="hidden" name="url" value="<?=$platform['url'];?>"/>
-	<input type="hidden" name="amount" value="<?=$platform['amount'];?>"/>
 	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
 		<tr>
 			<td width="200">URL площадки:</td>
@@ -55,16 +54,16 @@
 			<?php endif;?>
 			</td>
 		</tr>
+	<?php for($i=0;$i<count($services);$i++):?>
 		<tr>
-			<td>Объем знаков: </td>
+			<td><?=$services[$i]['tservice']?>:</td>
 			<td>
-				<select name="amount" id="damount" class="reg-form-input w195 h35 disabled" disabled="disabled">
-					<option value="1" >от 1000 до 1499 +0 руб</option>
-					<option value="2" >от 1500 до 1999 +11 руб</option>
-					<option value="3" >от 2000 до 2500 +23 руб</option>
+				<select name="data<?=$services[$i]['id']?>" class="reg-form-input w205 h35 disabled" disabled="disabled">
+					<option value="<?=$services[$i]['valuesrv']?>" ><?=$services[$i]['tsrvval']?></option>
 				</select>
 			</td>
 		</tr>
+	<?php endfor;?>
 		<tr>
 			<td>Обзоры:</td>
 			<td>
