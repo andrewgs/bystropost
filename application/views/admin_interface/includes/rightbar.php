@@ -17,6 +17,7 @@
 			<li num="tickets"><?=anchor('admin-panel/messages/tickets','Тикеты');?></li>
 			<li num="system-message"><?=anchor('admin-panel/messages/system-message','Рассылка');?></li>
 			<li class="nav-header">Действия</li>
+			<li num="statistic"><?=anchor('admin-panel/actions/statistic','Статистика долгов');?></li>
 			<li num="balance"><?=anchor('admin-panel/actions/balance','Баланс');?></li>
 			<li num="forum"><?=anchor('admin-panel/actions/forum','Форум');?></li>
 			<li num="events"><?=anchor('admin-panel/actions/events','События');?></li>

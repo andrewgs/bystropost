@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'remote'=>FALSE,'remoteid'=>0);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -38,11 +38,15 @@ class Clients_interface extends CI_Controller{
 					$this->user['uname'] 			= $userinfo['fio'];
 					$this->user['utype'] 			= $userinfo['type'];
 					$this->user['lock'] 			= $userinfo['locked'];
+					$this->user['debetor'] 			= $userinfo['debetor'];
 					$this->user['signdate'] 		= $userinfo['signdate'];
 					$this->user['balance'] 			= $userinfo['balance'];
 					if($userinfo['manager'] == 2):
 						$this->user['remote'] = TRUE;
 						$this->user['remoteid'] = $userinfo['remoteid'];
+					endif;
+					if($this->user['debetor']):
+						$this->user['locked'] = TRUE;
 					endif;
 					$this->loginstatus['status'] 	= TRUE;
 				else:
@@ -245,6 +249,13 @@ class Clients_interface extends CI_Controller{
 					if($result):
 						$managers = $this->mdplatforms->read_managers_platform_online($this->user['uid']);
 						$this->mdplatforms->platforms_status_offline($this->user['uid']);
+						$platforms = $this->mdplatforms->read_records_by_webmaster($this->user['uid']);
+						for($i=0;$i<count($platforms);$i++):
+							if($platforms[$i]['manager'] == 2 && $platforms[$i]['remoteid']):
+								$param = 'siteid='.$platforms[$i]['remoteid'].'&value=0';
+								$this->API('SetSiteActive',$param);
+							endif;
+						endfor;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №4: Профиль заблокирован');
 						$msgs = 'Профиль заблокирован. Все площадки не активны.<br/>'.$this->session->userdata('msgs');
 						$this->session->set_userdata('msgs',$msgs);
@@ -606,6 +617,10 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_services_platforms(){
 		
+		if($this->user['lock']):
+			redirect('webmaster-panel/actions/services');
+		endif;
+		
 		$service = $this->uri->segment(5);
 		if(!$this->mdattachedservices->service_exist($this->user['uid'],$service)):
 			redirect('webmaster-panel/actions/services');
@@ -707,6 +722,10 @@ class Clients_interface extends CI_Controller{
 	}
 	
 	public function control_services_delete(){
+		
+		if($this->user['lock']):
+			redirect('webmaster-panel/actions/services');
+		endif;
 		
 		$sid = $this->uri->segment(6);
 		if($sid):
@@ -1141,7 +1160,16 @@ class Clients_interface extends CI_Controller{
 							$this->mdusers->change_admins_balance($wprice-$mprice);
 							$this->mdfillup->insert_record(0,$wprice-$mprice); // Запись о том что перечислены деньги админу с указанием суммы
 						endfor;
+						
 						$message = 'Спасибо за оплату.';
+						
+						$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
+						$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
+						if(!$debetor):
+							$this->mdusers->update_field($this->user['uid'],'debetor',0);
+							$message .= '<br/>Внимание! Ваш аккаунт разблокирован.';
+						endif;
+						
 						if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
 							$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
 						endif;
@@ -1236,6 +1264,14 @@ class Clients_interface extends CI_Controller{
 		endfor;
 		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
 		$message = 'Спасибо за оплату.';
+		
+		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
+		$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
+		if(!$debetor):
+			$this->mdusers->update_field($this->user['uid'],'debetor',0);
+			$message .= '<br/>Внимание! Ваш аккаунт разблокирован.';
+		endif;
+		
 		if($this->mdusers->read_field($this->user['uid'],'balance') == 0):
 			$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
 		endif;
@@ -1341,8 +1377,8 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_add_platform(){
 		
-		if($this->user['remote']):
-			show_404();
+		if($this->user['remote'] || $this->user['lock']):
+			redirect('webmaster-panel/actions/platforms');
 		endif;
 		
 		$pagevar = array(

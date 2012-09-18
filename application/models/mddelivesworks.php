@@ -71,6 +71,7 @@ class Mddelivesworks extends CI_Model{
 	function read_records_webmaster_status($webmaster,$status){
 		
 		$this->db->where('webmaster',$webmaster);
+		$this->db->where('status',$status);
 		$query = $this->db->get('delivesworks');
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -253,5 +254,26 @@ class Mddelivesworks extends CI_Model{
 			return $data[0];
 		endif;
 		return $data[0];
+	}
+
+	function calc_debet($field,$date,$znak){
+		
+		$query = "SELECT SUM($field) AS sum,COUNT($field) AS cnt FROM delivesworks WHERE date $znak '$date' AND status = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if($data[0]['sum'] == NULL): 
+			$data[0]['sum'] = 0;
+			return $data[0];
+		endif;
+		return $data[0];
+	}
+	
+	function calc_user_debet($uid,$date,$znak){
+		
+		$query = "SELECT COUNT(wprice) AS cnt FROM delivesworks WHERE date $znak '$date' AND webmaster = $uid AND status = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return NULL;
 	}
 }

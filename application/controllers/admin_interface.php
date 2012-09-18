@@ -1,7 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Admin_interface extends CI_Controller{
-	
+
 	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','balance'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
@@ -1349,6 +1349,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['income']['ten'] = $this->mddelivesworks->calc_summ('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-10,date("Y"))),1);
 		$pagevar['income']['managers'] = $this->mddelivesworks->calc_summ('wprice-mprice','2012-01-01',1);
 		$pagevar['income']['debt'] = $this->mddelivesworks->calc_summ('wprice','2012-01-01',0);
+		
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
 		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
@@ -1872,10 +1873,7 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=17&datefrom=2012-08-13&dateto=2012-08-27');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=162');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=1&accid=55&datefrom=2012-08-23&dateto=2012-09-06');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetThematic','param'=>'');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -1968,6 +1966,102 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка аккаунтов на биржах конец ========================*/
 	}
 	
+	/******************************************************** statistic ******************************************************/	
+	
+	public function actions_statistic(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Статистика',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'stat'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$pagevar['stat']['to3days'] = $this->mddelivesworks->calc_debet('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-3,date("Y"))),'=');
+		$pagevar['stat']['to4days'] = $this->mddelivesworks->calc_debet('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-4,date("Y"))),'=');
+		$pagevar['stat']['to5days'] = $this->mddelivesworks->calc_debet('wprice-mprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y"))),'=');
+		$pagevar['stat']['from5days'] = $this->mddelivesworks->calc_debet('wprice',date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y"))),"<");
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/actions-statistic",$pagevar);
+	}
+
+	public function alert_debet(){
+		
+		$statusval = array('status'=>TRUE,);
+		$days = trim($this->input->post('days'));
+		if(!$days):
+			show_404();
+		endif;
+		if($days<=5):
+			$znak = '=';
+		else:
+			$znak = '<';
+			$days = 5;
+		endif;
+		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-$days,date("Y")));
+		$debetors = $this->mdunion->read_debetors_list($date,$znak);
+		for($i=0;$i<count($debetors);$i++):
+			if($debetors[$i]['cnt']):
+				ob_start();
+				?>
+				<p><strong>Здравствуйте, <?=$debetors[$i]['ufio'];?></strong></p>
+				<p>У Вас есть не оплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
+				<p>Напоминаем Вам. Если у Вас будут не оплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
+				<?php if($days>=5):?>
+				<p>ВНИМАНИЕ! Ваш аккаунт заблокирован через задолженность. Оплатите завершенные работы от 5 дней (включительно) для разблокировки.</p>
+				<?php endif;?>
+				<p>Спасибо что пользуетесь нашим сайтом!</p>
+				<?
+				$mailtext = ob_get_clean();
+				
+				$this->email->clear(TRUE);
+				$config['smtp_host'] = 'localhost';
+				$config['charset'] = 'utf-8';
+				$config['wordwrap'] = TRUE;
+				$config['mailtype'] = 'html';
+				
+				$this->email->initialize($config);
+				$this->email->to($debetors[$i]['ulogin']);
+				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+				$this->email->bcc('');
+				$this->email->subject('Noreply: Bystropost.ru - Уведомление о задолженности');
+				$this->email->message($mailtext);
+				$this->email->send();
+			endif;
+		endfor;
+		echo json_encode($statusval);
+	}
+	
+	public function locked_debet(){
+		
+		$statusval = array('status'=>TRUE,);
+		$days = trim($this->input->post('days'));
+		if(!$days):
+			show_404();
+		endif;
+		if($days<=5):
+			$znak = '=';
+		elseif($days>5):
+			$znak = '<';
+		endif;
+		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
+		$debetors = $this->mdunion->update_debetors_status($date,$znak,1);
+		echo json_encode($statusval);
+	}
+
 	/******************************************************** functions ******************************************************/	
 	
 	public function fileupload($userfile,$overwrite,$catalog){

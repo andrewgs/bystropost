@@ -11,15 +11,20 @@
 					<li class="active">
 						<?=anchor("webmaster-panel/actions/finished-jobs","Готовые задания");?>
 					</li>
+				<?php if($userinfo['balance'] >= $minprice):?>
 					<li style="float:right;">
 						<?=anchor('webmaster-panel/actions/finished-jobs/pay-all','Оплатить все',array('class'=>'btn btn-info payall','style'=>'margin-top: -5px;'));?>
 					</li>
+				<?php endif;?>
 					<li style="float:right;">
 						Сумма к оплате: <?=$total['sum'];?>.00 руб&nbsp;&nbsp;
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
+				<div class="alert alert-info" id="mspayall" style="display:none;">
+					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
+				</div>
 			<?php if($cntunit['delivers']['notpaid'] && $userinfo['balance'] >= $minprice):?>
 				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 					<input type="hidden" id="summa" value="" name="summa" />
@@ -114,7 +119,7 @@
 				$(this).addClass('paid'); $(this).siblings('td').addClass('paid');
 			});
 		<?php if($userinfo['balance'] >= $minprice):?>
-			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false;});
+			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false; $(".alert ").hide();$("#mspayall").show();});
 			var balance = <?=$userinfo['balance'];?>;
 			var tprice = 0;
 			$("#ValidWork").removeAttr('checked').attr('disabled','disabled');
@@ -153,7 +158,7 @@
 				}
 				tprice = price;
 			});
-			$("#inverse").click(function(){calculate(2,balance);$("#changeAll").removeAttr('checked');});
+			$("#inverse").click(function(){tprice = calculate(2,balance);$("#changeAll").removeAttr('checked');});
 			$("#ValidWork").removeAttr('checked');
 			$("#ValidWork").click(function(){
 				if($(this).attr("checked") == 'checked'){$("#send").removeClass('disabled');$("#summa").val(tprice);}else{$("#send").addClass('disabled');};

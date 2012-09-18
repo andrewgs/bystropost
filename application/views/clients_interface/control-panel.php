@@ -11,9 +11,15 @@
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
 				<div class="clear"></div>
-			<?php if($userinfo['locked']):?>
+			<?php if($userinfo['locked'] && !$userinfo['debetor']):?>
 				<div class="alert alert-error">
 					<center>Перед началом работы в системе Bystropost необходимо пополнить баланс минимум на 500 рублей.<br/>После пополнения, Вам будут доступны дополнительные разделы.<br/><?=anchor('webmaster-panel/actions/balance','Пополнить баланс');?></center>
+				</div>
+				<div class="clear"></div>
+			<?php endif;?>
+			<?php if($userinfo['debetor']):?>
+				<div class="alert alert-error">
+					<center>Внимание! Ваш аккаунт заблокирован по причине задолженности.<br/>Оплатите выполненные задания за 5 дней и более для разблокировки. Если не хватает средств  пополните Ваш баланс.<br/><?=anchor('webmaster-panel/actions/balance','Пополнить баланс');?></center>
 				</div>
 				<div class="clear"></div>
 			<?php endif;?>

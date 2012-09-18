@@ -28,9 +28,14 @@
 							<td class="w100"><nobr><?=$attached[$i]['date'];?></nobr></td>
 							<td class="w400"><?=$attached[$i]['stitle'];?></td>
 							<td class="w100">
+							<?php if(!$userinfo['lock']):?>
 								<div id="params<?=$i;?>" style="display:none" data-sid="<?=$attached[$i]['service'];?>"></div>
 								<?=anchor('webmaster-panel/actions/services/serviceid/'.$attached[$i]['service'].'/platforms','&nbsp;&nbsp;<i class="icon-tasks icon-white"></i>&nbsp;&nbsp;',array('class'=>'btn btn-info','title'=>'Настройка свойств площадок'));?>
 								<a class="btn btn-danger deleteService" data-param="<?=$i;?>" data-toggle="modal" href="#deleteService" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php else:?>
+								<?=anchor('#','&nbsp;&nbsp;<i class="icon-tasks icon-white"></i>&nbsp;&nbsp;',array('class'=>'btn btn-info none disabled','disabled'=>'disabled'));?>
+								<a class="btn btn-danger disabled none" href="#"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php endif;?>
 							</td>
 						</tr>
 					<?php endfor; ?>

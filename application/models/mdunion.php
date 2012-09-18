@@ -356,4 +356,25 @@ class Mdunion extends CI_Model{
 		if(isset($data[0])) return $data[0];
 		return NULL;
 	}
+
+	function read_debetors_list($data,$znak){
+		
+		$query = "SELECT SUM(delivesworks.wprice) AS sum,COUNT(delivesworks.wprice) AS cnt,users.id AS uid, users.fio AS ufio, users.login AS ulogin FROM delivesworks INNER JOIN users ON delivesworks.webmaster=users.id WHERE date $znak '$data' AND status = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		for($i=0;$i<count($data);$i++):
+			if($data[$i]['sum'] == NULL): 
+				$data[$i]['sum'] = 0;
+			endif;
+		endfor;
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function update_debetors_status($data,$znak,$status){
+	
+		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks  WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0)";
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
 }
