@@ -15,12 +15,10 @@ class Mdattachedservices extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$serveice,$valuesrv,$platform,$wprice,$mprice){
+	function insert_record($uid,$service,$valuesrv,$platform){
 			
 		$this->user 	= $uid;
-		$this->serveice = $serveice;
-		$this->wprice 	= $wprice;
-		$this->mprice 	= $mprice;
+		$this->service = $service;
 		$this->valuesrv = $valuesrv;
 		$this->platform = $platform;
 		$this->date 	= date("Y-m-d");

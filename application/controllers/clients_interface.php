@@ -1437,7 +1437,14 @@ class Clients_interface extends CI_Controller{
 					$_POST['imgstatus'] = 1;
 				endif;
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
-				
+				$attached = $this->mdunion->services_attached_list($this->user['uid']);
+				for($i=0;$i<count($attached);$i++):
+					$valuesrv = $this->mdvaluesrv->read_zero_price($attached[$i]['service']);
+					if(!$valuesrv):
+						$valuesrv = $this->mdvaluesrv->read_record_service($attached[$i]['service']);
+					endif;
+					$this->mdattachedservices->insert_record($this->user['uid'],$attached[$i]['service'],$valuesrv,$platform);
+				endfor;
 				$manager = $this->mdusers->read_field($this->user['uid'],'manager');
 				if($manager):
 					$this->mdplatforms->update_field($platform,'manager',$manager);
@@ -1743,6 +1750,14 @@ class Clients_interface extends CI_Controller{
 						if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 							$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 							if($platform):
+								$attached = $this->mdunion->services_attached_list($this->user['uid']);
+								for($i=0;$i<count($attached);$i++):
+									$valuesrv = $this->mdvaluesrv->read_zero_price($attached[$i]['service']);
+									if(!$valuesrv):
+										$valuesrv = $this->mdvaluesrv->read_record_service($attached[$i]['service']);
+									endif;
+									$this->mdattachedservices->insert_record($this->user['uid'],$attached[$i]['service'],$valuesrv,$platform);
+								endfor;
 								$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password']);
 								$addwtic = $addmtic = 0;
 								$pr = $this->getpagerank($new_platform['url']);
