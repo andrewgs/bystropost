@@ -825,8 +825,8 @@ class Admin_interface extends CI_Controller{
 							//Высылать письмо-уведомление
 						endif;
 					endif;
-					$manager = $this->mdplatforms->read_field($platform,'manager');
-					$remote_id = $this->mdplatforms->read_field($platform,'remoteid');
+					$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
+					$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
@@ -837,6 +837,7 @@ class Admin_interface extends CI_Controller{
 								//Высылать письмо-уведомление
 							endif;
 						endif;
+						
 						if($manager == 2 && $remote_id):
 							$param = 'siteid='.$remote_id.'&value=0';
 							$res = $this->API('SetSiteActive',$param);
@@ -1873,7 +1874,7 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetThematic','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -1893,10 +1894,10 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-		print_r($mass_data);
-		echo '<br/>'.count($mass_data);
-	/*======================== Загрузка вебмастеров начало ============================ 
-		$data = array(); $cnt = 0;
+//		print_r($mass_data);
+//		echo '<br/>'.count($mass_data);
+	/*======================== Загрузка вебмастеров начало ============================ */
+		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
 				$data['login'] = $mass_data[$key]['email'];
@@ -1914,29 +1915,6 @@ class Admin_interface extends CI_Controller{
 						$this->mdusers->update_field($uid,'remoteid',$key);
 						$cnt++;
 						print_r(' Добавлен. ID = '.$uid.'<br/>');
-						ob_start();
-						?>
-						<p><strong>Здравствуйте, <?=$_POST['login'];?></strong></p>
-						<p>Поздравляем! Вас успешно зарегистрировали в статусе вебмастера. 
-						Ваша работа будет осуществляться через личный кабинет.
-						Для входа в личный кабинет используйте логин: <?=$data['login'];?> и пароль: <?=$data['password'];?></p>
-						<p>Желаем Вам удачи!</p> 
-						<?
-						$mailtext = ob_get_clean();
-						
-						$this->email->clear(TRUE);
-						$config['smtp_host'] = 'localhost';
-						$config['charset'] = 'utf-8';
-						$config['wordwrap'] = TRUE;
-						$config['mailtype'] = 'html';
-						
-						$this->email->initialize($config);
-						$this->email->to($data['login']);
-						$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
-						$this->email->bcc('');
-						$this->email->subject('Регистрация на Bystropost.ru');
-						$this->email->message($mailtext);
-						$this->email->send();
 					else:
 						print_r(' Не добавлен.<br/>');
 					endif;
@@ -1945,10 +1923,10 @@ class Admin_interface extends CI_Controller{
 				endif;
 			endif;
 		endforeach;
-		print_r('Импортировнно: '.$cnt.' вебмастеров');
-		=============================== Загрузка вебмастеров конец ============================*/
+		print_r('Импортировнно: '.$cnt.' вебмастеров');*/
+		/*=============================== Загрузка вебмастеров конец ============================*/
 		/*======================== Загрузка аккаунтов на биржах начало ======================== */
-		/*$data = array(); $cnt = 0;
+		$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
 				$data['id'] = $key;
@@ -1962,8 +1940,31 @@ class Admin_interface extends CI_Controller{
 				endif;
 			endif;
 		endforeach;
-		print_r('Импортировнно: '.$cnt.' аккаунтов');*/
+		print_r('Импортировнно: '.$cnt.' аккаунтов');
 		/*======================== Загрузка аккаунтов на биржах конец ========================*/
+	}
+	
+	private function API($action,$param){
+	
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>$action,'param'=>$param);
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
+		curl_setopt($ch,CURLOPT_POST,1);
+		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
+		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch,CURLOPT_TIMEOUT,30);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		 if($data!==false):
+			$res = json_decode($data, true);
+			if((int)$res['status']==1):
+				return $res['data'];
+			else:
+				return FALSE;
+			endif;
+		else:
+			return FALSE;
+		endif;
 	}
 	
 	/******************************************************** statistic ******************************************************/	

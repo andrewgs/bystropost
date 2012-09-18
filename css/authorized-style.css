@@ -297,7 +297,7 @@ header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.
 .panel_segment big a { color: #fff; }
 .right { float: right; }
 .underline { display: inline-block; }
-.user-info { border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em; }  
+.user-info {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em; }  
 #panel_segments { width: 940px; }
 .panel_segment .text { float: left; font: 13px/18px trebuchet ms,sans-serif; margin: 20px 7px 10px; width: 180px; }
 td.paid { background: #FCF8E3; }
