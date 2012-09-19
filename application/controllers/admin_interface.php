@@ -503,7 +503,7 @@ class Admin_interface extends CI_Controller{
 							endif;
 						endif;
 						if($manager == 2 && $remote_id):
-							$param = 'siteid='.$remote_id.'&value=0';
+							$param = 'siteid='.$remote_id.'&value=1';
 							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
@@ -520,7 +520,7 @@ class Admin_interface extends CI_Controller{
 							endif;
 						endif;
 						if($manager == 2 && $remote_id):
-							$param = 'siteid='.$remote_id.'&value=1';
+							$param = 'siteid='.$remote_id.'&value=0';
 							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
@@ -838,7 +838,7 @@ class Admin_interface extends CI_Controller{
 						endif;
 						
 						if($manager == 2 && $remote_id):
-							$param = 'siteid='.$remote_id.'&value=0';
+							$param = 'siteid='.$remote_id.'&value=1';
 							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
@@ -855,7 +855,7 @@ class Admin_interface extends CI_Controller{
 							endif;
 						endif;
 						if($manager == 2 && $remote_id):
-							$param = 'siteid='.$remote_id.'&value=1';
+							$param = 'siteid='.$remote_id.'&value=0';
 							$res = $this->API('SetSiteActive',$param);
 						endif;
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):

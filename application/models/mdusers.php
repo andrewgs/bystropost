@@ -35,7 +35,7 @@ class Mdusers extends CI_Model{
 		$this->password			= md5($data['password']);
 		$this->fio 				= $data['fio'];
 		$this->wmid 			= $data['wmid'];
-		$this->knowus 			= $data['knowus'];
+		$this->knowus 			= strip_tags(nl2br($data['knowus'],'<br/>'));
 		$this->signdate 		= date("Y-m-d");
 		$this->sendmail 		= $data['sendmail'];
 		$this->type 			= $utype;
@@ -55,45 +55,45 @@ class Mdusers extends CI_Model{
 	
 	function update_record($data){
 		
-		if(isset($_POST['login'])):
-			$this->db->set('login',$_POST['login']);
+		if(isset($data['login'])):
+			$this->db->set('login',$data['login']);
 		endif;
-		if(isset($_POST['password'])):
+		if(isset($data['password'])):
 			$this->db->set('password',md5($data['password']));
 			$this->db->set('cryptpassword',$this->encrypt->encode($data['password']));
 		endif;
-		if(isset($_POST['wmid'])):
-			$this->db->set('wmid',$_POST['wmid']);
+		if(isset($data['wmid'])):
+			$this->db->set('wmid',$data['wmid']);
 		endif;
-		if(isset($_POST['knowus'])):
-			$this->db->set('knowus',$_POST['knowus']);
+		if(isset($data['knowus'])):
+			$this->db->set('knowus',strip_tags(nl2br($data['knowus'],'<br/>')));
 		endif;
-		if(isset($_POST['fio'])):
-			$this->db->set('fio',$_POST['fio']);
+		if(isset($data['fio'])):
+			$this->db->set('fio',$data['fio']);
 		endif;
-		if(isset($_POST['phones'])):
-			$this->db->set('phones',$_POST['phones']);
+		if(isset($data['phones'])):
+			$this->db->set('phones',$data['phones']);
 		endif;
-		if(isset($_POST['balance'])):
-			$this->db->set('balance',$_POST['balance']);
+		if(isset($data['balance'])):
+			$this->db->set('balance',$data['balance']);
 		endif;
-		if(isset($_POST['icq'])):
-			$this->db->set('icq',$_POST['icq']);
+		if(isset($data['icq'])):
+			$this->db->set('icq',$data['icq']);
 		endif;
-		if(isset($_POST['skype'])):
-			$this->db->set('skype',$_POST['skype']);
+		if(isset($data['skype'])):
+			$this->db->set('skype',$data['skype']);
 		endif;
-		if(isset($_POST['forum'])):
-			$this->db->set('forum',$_POST['forum']);
+		if(isset($data['forum'])):
+			$this->db->set('forum',$data['forum']);
 		endif;
-		if(isset($_POST['logo'])):
-			$this->db->set('logo',$_POST['logo']);
+		if(isset($data['logo'])):
+			$this->db->set('logo',$data['logo']);
 		endif;
-		if(isset($_POST['sendmail'])):
-			$this->db->set('sendmail',$_POST['sendmail']);
+		if(isset($data['sendmail'])):
+			$this->db->set('sendmail',$data['sendmail']);
 		endif;
-		if(isset($_POST['type'])):
-			$this->db->set('type',$_POST['type']);
+		if(isset($data['type'])):
+			$this->db->set('type',$data['type']);
 			switch ($_POST['type']):
 				case 1 : $this->db->set('position','Вебмастер');break;
 				case 2 : $this->db->set('position','Менеджер');break;
@@ -103,10 +103,10 @@ class Mdusers extends CI_Model{
 				default: $this->db->set('position','Не определен');break;
 			endswitch;
 		endif;
-		if(isset($_POST['manager'])):
-			$this->db->set('manager',$_POST['manager']);
+		if(isset($data['manager'])):
+			$this->db->set('manager',$data['manager']);
 		endif;
-		$this->db->where('id',$_POST['uid']);
+		$this->db->where('id',$data['uid']);
 		$this->db->update('users');
 		return $this->db->affected_rows();
 	}

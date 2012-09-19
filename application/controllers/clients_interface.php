@@ -252,7 +252,7 @@ class Clients_interface extends CI_Controller{
 						$platforms = $this->mdplatforms->read_records_by_webmaster($this->user['uid']);
 						for($i=0;$i<count($platforms);$i++):
 							if($platforms[$i]['manager'] == 2 && $platforms[$i]['remoteid']):
-								$param = 'siteid='.$platforms[$i]['remoteid'].'&value=0';
+								$param = 'siteid='.$platforms[$i]['remoteid'].'&value=1';
 								$this->API('SetSiteActive',$param);
 							endif;
 						endfor;
@@ -820,6 +820,9 @@ class Clients_interface extends CI_Controller{
 							if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
 								continue;
 							endif;
+							if($pl_data[$i]['off']):
+								continue;
+							endif;
 							$new_platform['id'] = $pl_data[$i]['id'];
 							$new_platform['webmaster'] = $this->user['uid'];
 							$new_platform['manager'] = 2;
@@ -1325,6 +1328,11 @@ class Clients_interface extends CI_Controller{
 					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 					$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 					if($manager == 2 && $remote_id):
+						if($status):
+							$status = 0;
+						else:
+							$status = 1;
+						endif;
 						$param = 'siteid='.$remote_id.'&value='.$status;
 						$res = $this->API('SetSiteActive',$param);
 					endif;
@@ -1707,6 +1715,14 @@ class Clients_interface extends CI_Controller{
 					endforeach;
 					for($i=0;$i<count($pl_data);$i++):
 						if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
+							continue;
+						endif;
+						if($pl_data[$i]['off']):
+							$plid = $this->mdplatforms->find_remote_platform($pl_data[$i]['id']);
+							if($plid):
+								$this->mdplatforms->delete_record($plid);
+								$this->mdmkplatform->delete_records_by_platform($plid,$this->user['uid']);
+							endif;
 							continue;
 						endif;
 						$new_platform['id'] = $pl_data[$i]['id'];

@@ -23,7 +23,7 @@ class Mdtkmsgs extends CI_Model{
 		$this->recipient= $recipient;
 		$this->reply	= $reply;
 		$this->date 	= date("Y-m-d");
-		$this->text 	= $text;
+		$this->text 	= strip_tags(nl2br($text,'<br/>'));
 		
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();

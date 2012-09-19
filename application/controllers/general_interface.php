@@ -24,9 +24,8 @@ class General_interface extends CI_Controller{
 	
 	public function balance_result(){
 		
-		$result = '';
+		$result = 'Ошибок не обнаружено';
 		if(!$this->input->post('LMI_PAYEE_PURSE') && !$this->input->post('LMI_HASH')):
-			//show_404();
 			exit();
 		endif;
 		$hash = strtoupper(md5($_POST["LMI_PAYEE_PURSE"].$_POST["LMI_PAYMENT_AMOUNT"].$_POST["LMI_PAYMENT_NO"].$_POST["LMI_MODE"].$_POST["LMI_SYS_INVS_NO"].$_POST["LMI_SYS_TRANS_NO"].$_POST["LMI_SYS_TRANS_DATE"].'fjQlfu1kfi8qk'.$_POST["LMI_PAYER_PURSE"].$_POST["LMI_PAYER_WM"]));
@@ -34,12 +33,11 @@ class General_interface extends CI_Controller{
 			$result .= $index.' = '.$value.' <br>';
 		endforeach;
 		if($hash != $_POST["LMI_HASH"]):
-			//show_404();
 			exit();
 		endif;
 		
-		/*
-		$_POST["LMI_PAYER_WM"] = 915236488902;
+		/*$result = '';
+		$_POST["LMI_PAYER_WM"] = '984698000000';
 		$_POST["LMI_PAYMENT_AMOUNT"] = 100;*/
 		if(isset($_POST["LMI_PAYER_WM"]) && isset($_POST["LMI_PAYMENT_AMOUNT"])):
 			$user = array();

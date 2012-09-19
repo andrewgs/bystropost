@@ -6,16 +6,18 @@ class Mdfillup extends CI_Model{
 	var $user 	= 0;
 	var $summa 	= 0;
 	var $date 	= '';
+	var $result = '';
 	
 	function __construct(){
 		parent::__construct();
 	}
 	
-	function insert_record($user,$summa){
+	function insert_record($user,$summa,$result){
 			
 		$this->user 	= $user;
 		$this->summa	= $summa;
 		$this->date		= date("Y-m-d");
+		$this->result	= $result;
 		
 		$this->db->insert('fillup',$this);
 		return $this->db->insert_id();

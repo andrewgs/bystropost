@@ -18,7 +18,7 @@ class Mdratings extends CI_Model{
 			
 		$this->title 	= htmlspecialchars($data['title']);
 		$this->resource = $data['resource'];
-		$this->text 	= strip_tags($data['text']);
+		$this->text 	= strip_tags(nl2br($data['text'],'<br/>'));
 		$this->avatar	= $data['avatar'];
 		$this->date		= date("Y-m-d");
 		$this->type		= $type;
@@ -31,7 +31,7 @@ class Mdratings extends CI_Model{
 		
 		$this->db->set('title',htmlspecialchars($data['title']));
 		$this->db->set('resource',$data['resource']);
-		$this->db->set('text',strip_tags($data['text']));
+		$this->db->set('text',strip_tags(nl2br($data['text'],'<br/>')));
 		if(isset($data['avatar'])):
 			$this->db->set('avatar',$data['avatar']);
 		endif;

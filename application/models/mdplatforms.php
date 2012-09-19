@@ -66,7 +66,7 @@ class Mdplatforms extends CI_Model{
 		$this->reviews 		= $data['reviews'];
 		$this->thematically = $data['thematically'];
 		$this->illegal 		= $data['illegal'];
-		$this->requests 	= $data['requests'];
+		$this->requests 	= strip_tags(nl2br($data['requests'],'<br/>'));
 		$this->imgstatus 	= $data['imgstatus'];
 		$this->imgwidth 	= $data['imgwidth'];
 		$this->imgheight 	= $data['imgheight'];
@@ -115,7 +115,7 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('reviews',$data['reviews']);
 		$this->db->set('thematically',$data['thematically']);
 		$this->db->set('illegal',$data['illegal']);
-		$this->db->set('requests',$data['requests']);
+		$this->db->set('requests',strip_tags(nl2br($data['requests'],'<br/>')));
 		$this->db->set('imgstatus',$data['imgstatus']);
 		$this->db->set('imgwidth',$data['imgwidth']);
 		$this->db->set('imgheight',$data['imgheight']);
@@ -244,6 +244,16 @@ class Mdplatforms extends CI_Model{
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
 		return FALSE;
+	}
+	
+	function find_remote_platform($remoteid){
+		
+		$this->db->select('id');
+		$this->db->where('remoteid',$remoteid);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(isset($data[0]['id'])) return $data[0]['id'];
+		return NULL;
 	}
 	
 	function read_records_by_webmaster($uid){
