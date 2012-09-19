@@ -101,6 +101,7 @@ $route['manager-panel/actions/logoff']							= "managers_interface/actions_logof
 
 $route['manager-panel/actions/platforms']						= "managers_interface/control_platforms";
 $route['manager-panel/actions/platforms/view-platform/:num']	= "managers_interface/control_view_platform";
+$route['manager-panel/actions/platforms/edit-platform/:num']	= "managers_interface/control_edit_platform";
 
 $route['manager-panel/actions/platforms/:num/deliver-work']		= "managers_interface/deliver_work";
 $route['manager-panel/actions/platforms/remote_deliver_work']	= "managers_interface/remote_deliver_work";
@@ -176,6 +177,7 @@ $route['admin-panel/management/platforms/from']			= "admin_interface/management_
 $route['admin-panel/management/platforms/from/:num']	= "admin_interface/management_platforms";
 $route['admin-panel/management/platforms/delete/platformid/:num'] = "admin_interface/management_delete_platform";
 $route['admin-panel/management/platforms/view-platform/:num']= "admin_interface/management_view_platform";
+$route['admin-panel/management/platforms/edit-platform/:num']	= "admin_interface/control_edit_platform";
 
 $route['admin-panel/management/platforms/platformid/:num/finished-jobs']			= "admin_interface/platform_finished_jobs";
 $route['admin-panel/management/platforms/platformid/:num/finished-jobs/from']		= "admin_interface/platform_finished_jobs";

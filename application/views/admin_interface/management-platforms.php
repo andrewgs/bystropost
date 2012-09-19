@@ -46,7 +46,7 @@
 							<td class="w275">
 						<?php endif;?>
 								<nobr>
-								<?=anchor('admin-panel/management/platforms/view-platform/'.$platforms[$i]['id'],'<b>'.$platforms[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>
+								<?=anchor('admin-panel/management/platforms/edit-platform/'.$platforms[$i]['id'],'<b>'.$platforms[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>
 								<br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
 								<?=$platforms[$i]['fio'];?><br/><b><?=$platforms[$i]['login'];?></b><br/><br/>
 								<?=$platforms[$i]['manfio'];?><br/><b><?=$platforms[$i]['manemail'];?></b></nobr>

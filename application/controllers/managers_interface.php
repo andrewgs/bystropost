@@ -233,6 +233,125 @@ class Managers_interface extends CI_Controller{
 		$this->load->view("managers_interface/control-platforms",$pagevar);
 	}
 	
+	public function control_edit_platform(){
+		
+		$platform = $this->uri->segment(5);
+		if(!$this->mdplatforms->ownew_manager_platform($this->user['uid'],$platform)):
+			show_404();
+		endif;
+		$webmaster = $this->mdplatforms->read_field($platform,'webmaster');
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Менеджера | Назначенные площадки | Редактирование площадки',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'platform'		=> $this->mdplatforms->read_record($platform),
+					'markets'		=> $this->mdmarkets->read_records(),
+					'thematic'		=> $this->mdthematic->read_records(),
+					'cms'			=> $this->mdcms->read_records(),
+					'mymarkets'		=> $this->mdmkplatform->read_records_by_platform($platform,$webmaster),
+					'services'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$pagevar['userinfo']['remote'] = TRUE;
+		
+		$attached = $this->mdunion->services_attached_list($webmaster);
+		for($i=0;$i<count($attached);$i++):
+			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$webmaster);
+		endfor;
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('url',' ','required|trim');
+			$this->form_validation->set_rules('subject',' ','required|trim');
+			$this->form_validation->set_rules('cms',' ','required|trim');
+			$this->form_validation->set_rules('adminpanel',' ','required|trim');
+			$this->form_validation->set_rules('aplogin',' ','required|trim');
+			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('reviews',' ','trim');
+			$this->form_validation->set_rules('thematically',' ','trim');
+			$this->form_validation->set_rules('illegal',' ','trim');
+			$this->form_validation->set_rules('imgstatus',' ','trim');
+			$this->form_validation->set_rules('imgwidth',' ','trim');
+			$this->form_validation->set_rules('imgheight',' ','trim');
+			$this->form_validation->set_rules('imgpos',' ','trim');
+			$this->form_validation->set_rules('requests',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+				redirect($this->uri->uri_string());
+			else:
+				if($_POST['imgwidth'] && $_POST['imgheight']):
+					$_POST['imgstatus'] = 1;
+				else:
+					$_POST['imgstatus'] = 0;
+					$_POST['imgpos'] = 'right';
+				endif;
+				$result = $this->mdplatforms->update_record($platform,$webmaster,$_POST);
+				if($result):
+					if($pagevar['platform']['manager']):
+						/********************************************************************/
+						if($pagevar['platform']['manager'] == 2):
+							$new_platform = $this->mdplatforms->read_record($platform);
+							$pl_data = array();
+							$pl_data['adminurl'] = $new_platform['adminpanel'];
+							$pl_data['cms'] = $new_platform['cms'];
+							$pl_data['cms_login'] = $new_platform['aplogin'];
+							$pl_data['cms_pass'] = $new_platform['appassword'];
+							$pl_data['tematic'] = $new_platform['subject'];
+							$pl_data['filter'] = $new_platform['illegal'];
+							$pl_data['subjects'] = $new_platform['thematically'];
+							$pl_data['review'] = $new_platform['reviews'];
+							$pl_data['review'] = $new_platform['reviews'];
+							$pl_data['param'] = array();
+							$pl_data['param']['image'] = array();
+							$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
+							$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
+							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
+							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
+							$pl_data['info'] = $new_platform['requests'];
+							$param = 'siteid='.$new_platform['remoteid'].'&conf='.json_encode($pl_data);
+							$this->API('UpdateSiteOptions',$param);
+						endif;
+						/********************************************************************/
+					endif;
+					$this->mdlog->insert_record($webmaster,'Событие №16: Состояние площадки - изменена');
+					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
+				endif;
+				$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
+				if(isset($_POST['markets'])):
+					$cntmarkets = count($_POST['markets']);
+					$marketslist = array();
+					if($cntmarkets > 0):
+						for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+							if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
+							$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
+							$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
+							$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+							$j++;
+						endfor;
+					endif;
+					if(count($marketslist)):
+						$this->mdmkplatform->group_insert($webmaster,$platform,$marketslist);
+					endif;
+				endif;
+			endif;
+			redirect('manager-panel/actions/platforms');
+		endif;
+		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
+			$pagevar['platform']['imgstatus'] = 0;
+			$pagevar['platform']['imgwidth'] = '';
+			$pagevar['platform']['imgheight'] = '';
+		endif;
+		
+		$this->load->view("managers_interface/control-edit-platform",$pagevar);
+	}
+	
 	public function control_view_platform(){
 		
 		$platform = $this->uri->segment(5);

@@ -51,7 +51,7 @@
 						<?php endif;?>
 								<center><nobr><?=$platforms[$i]['date'];?></nobr></center>
 							</td>
-							<td class="w50" style="text-align: center; vertical-align: middle;">
+							<td class="w100" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['status']):?>
 								<i class="icon-exclamation-sign" title="Не активна"></i>
 							<?php endif;?>
@@ -59,6 +59,7 @@
 								<i class="icon-lock" title="Заблокирована"></i>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
+								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-tags icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
 								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase"></i>&nbsp',array('class'=>'btn btn-info DeliverWork','title'=>'Сдать задание'));?>
 							<?php endif;?>
 							</td>

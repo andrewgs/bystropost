@@ -568,6 +568,15 @@ class Clients_interface extends CI_Controller{
 					if(!$valuesrv):
 						$valuesrv = $this->mdvaluesrv->read_record_service($_POST['service']);
 					endif;
+					$pllist = '';
+					for($i=0;$i<count($platforms);$i++):
+						$pllist .= $platforms[$i]['id'];
+						if($i+1<count($platforms)):
+							$pllist .=',';
+						endif;
+					endfor;
+					$param = "siteid=$pllist&optionid=".$_POST['service']."&value=$valuesrv";
+					$this->API('UpdateAdditionalService',$param);
 					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №8: Подключил дополнительную услугу');
 				endif;
@@ -689,6 +698,9 @@ class Clients_interface extends CI_Controller{
 						endfor;
 						$sqlquery .= ' WHERE platforms.id = '.$attached['platform'];
 						$this->mdplatforms->run_query($sqlquery);
+						
+						$param = "siteid=".$attached['platform']."&optionid=".$attached['service']."&value=".$params[1];
+						$this->API('UpdateAdditionalService',$param);
 					endif;
 				endforeach;
 				$this->session->set_userdata('msgs','Свойства сохранены');
@@ -1718,11 +1730,12 @@ class Clients_interface extends CI_Controller{
 							continue;
 						endif;
 						if($pl_data[$i]['off']):
-							$plid = $this->mdplatforms->find_remote_platform($pl_data[$i]['id']);
+							/*$plid = $this->mdplatforms->find_remote_platform($pl_data[$i]['id']);
 							if($plid):
+								$this->session->set_userdata('msgs','Найдены заблокированные площадки. Удалены!');
 								$this->mdplatforms->delete_record($plid);
 								$this->mdmkplatform->delete_records_by_platform($plid,$this->user['uid']);
-							endif;
+							endif;*/
 							continue;
 						endif;
 						$new_platform['id'] = $pl_data[$i]['id'];
@@ -1766,6 +1779,7 @@ class Clients_interface extends CI_Controller{
 						if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 							$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 							if($platform):
+								$this->session->set_userdata('msgs','Добавлены новые площадки. Назначьте на них дополнительные услуги если требуется.');
 								$attached = $this->mdunion->services_attached_list($this->user['uid']);
 								for($i=0;$i<count($attached);$i++):
 									$valuesrv = $this->mdvaluesrv->read_zero_price($attached[$i]['service']);

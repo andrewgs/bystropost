@@ -414,9 +414,8 @@ class Users_interface extends CI_Controller{
 		if(!$uid || !$utype):
 			show_404();
 		endif;
-		
 		switch ($utype):
-			case 1 : redirect('webmaster-panel/actions/control');break;
+			case 1 : redirect('webmaster-panel/actions/platforms');break;
 			case 2 : redirect('manager-panel/actions/control');break;
 			case 3 : redirect('optimizator-panel/actions/control');break;
 			case 4 : show_404();break;
