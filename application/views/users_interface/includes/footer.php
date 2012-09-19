@@ -13,11 +13,13 @@
 			<a rel="nofollow" href="http://www.megastock.ru/" target="_blank">
 				<img src="<?=$baseurl;?>images/acc_blue_on_white_ru.png" alt="www.megastock.ru" border="0">
 			</a>
-			<a rel="nofollow" href="https://passport.webmoney.ru/asp/certview.asp?wmid=915236488902" target="_blank">
-				<img src="http://www.megastock.ru/doc/88x31_merchant/blue_rus.gif" alt="Здесь находится аттестат Быстропоста, нашего WM идентификатора" border="0">
-			</a> 
+			<!-- begin WebMoney Transfer : attestation label -->
+			<img src="/images/v_blue_on_white_ru.png" alt="Здесь находится аттестат нашего WM идентификатора 915236488902" border="0" />
 			<!-- end WebMoney Transfer : accept label -->
-			<img src="<?=$baseurl;?>images/counter.gif">
+			<img class="ml05" src="<?=$baseurl;?>images/counter.gif">
+			<a class="check-certificate" href="https://passport.webmoney.ru/asp/certview.asp?wmid=915236488902" target="_blank">
+				Проверить аттестат
+			</a>
 		</div>
 	</div>
 </div>
