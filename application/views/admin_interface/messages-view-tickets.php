@@ -11,7 +11,7 @@
 						<?=anchor('admin-panel/messages/tickets','Тикеты');?> <span class="divider">/</span>
 					</li>
 					<li tnum="deactive">
-						<?=anchor($this->uri->uri_string(),$ticket);?>
+						<?=anchor($this->uri->uri_string(),$ticket['title']);?>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -27,7 +27,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($tkmsgs);$i++):?>
-						<tr class="align-center">
+						<tr>
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tkmsgs[$i]['id'];?></td>
 							<td class="w195"><b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><?=$tkmsgs[$i]['fio'];?><br/><b><?=$tkmsgs[$i]['login'];?></b><br/><?=$tkmsgs[$i]['date'];?></td>
 						<?php if(($tkmsgs[$i]['recipient'] == $userinfo['uid']) OR !$tkmsgs[$i]['recipient']):?>

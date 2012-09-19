@@ -24,7 +24,7 @@
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($tickets);$i++):?>
-						<tr class="align-center">
+						<tr>
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tickets[$i]['id'];?></td>
 							<td class="w195"><?=$tickets[$i]['fio'];?><br/><b><?=$tickets[$i]['login'];?></b><br/><?=$tickets[$i]['date'];?></td>
 							<td class="w400">

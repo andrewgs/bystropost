@@ -1578,7 +1578,6 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('mid',' ','required|trim');
@@ -1649,9 +1648,6 @@ class Admin_interface extends CI_Controller{
 		
 		$message = $this->uri->segment(6);
 		if($message):
-			if(!$this->mdtkmsgs->ownew_message($this->user['uid'])):
-				redirect($_SERVER['HTTP_REFERER']);
-			endif;
 			$result = $this->mdtkmsgs->delete_record($message);
 			if($result):
 				$this->session->set_userdata('msgs','Сообшение удалено успешно');

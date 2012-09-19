@@ -20,11 +20,9 @@
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
-	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var mID = 0;
-			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$(".mailUser").click(function(){
 				var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
