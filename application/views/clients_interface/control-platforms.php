@@ -39,8 +39,9 @@
 					<?php for($i=0;$i<count($platforms);$i++):?>
 						<tr class="align-center">
 							<td class="w275 ttpl">
-							<?php if(!$platforms[$i]['locked']):?>
-								<?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],$platforms[$i]['url'],array('title'=>'Редактировать площадку'));?>
+							<?php if(!$platforms[$i]['locked'] && !$userinfo['lock']):?>
+								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-status="<?=$platforms[$i]['status'];?>"></div>
+								<a class="editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Свойства"><?=$platforms[$i]['url'];?></a>
 							<?php else:?>
 								<?=$platforms[$i]['url'];?>
 							<?php endif;?>
@@ -72,9 +73,8 @@
 							<td class="w85"><center><nobr><?=anchor('webmaster-panel/actions/finished-jobs/platform/platformid/'.$platforms[$i]['id'],$platforms[$i]['torders'].' / <b>'.$platforms[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?></nobr></center></td>
 							<td class="w85"><center><nobr><?=$platforms[$i]['date'];?></nobr></center></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
-							<?php if(!$platforms[$i]['locked'] && !$userinfo['lock']):?>
-								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-status="<?=$platforms[$i]['status'];?>"></div>
-								<a class="btn btn-success editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Свойства"><nobr>&nbsp;&nbsp;<i class="icon-tags icon-white"></i>&nbsp;&nbsp;</nobr></a>
+							<?php if(!$platforms[$i]['locked']):?>
+								<?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-tags icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['status']):?>
 								<i class="icon-exclamation-sign" title="Не активна" style="margin-top:10px;"></i>
