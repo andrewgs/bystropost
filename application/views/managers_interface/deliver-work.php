@@ -25,7 +25,6 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
-	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#TypesWork").val(1);

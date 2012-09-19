@@ -356,9 +356,17 @@ class Managers_interface extends CI_Controller{
 			$arr[$i] = $value;
 			$i++;
 		endforeach;
-		for($i=0,$j=23;$i<count($pagevar['typeswork']);$i++,$j+=2):
+		/*for($i=0,$j=22;$i<count($pagevar['typeswork']);$i++,$j+=2):
 			$pagevar['typeswork'][$i]['mprice'] = $arr[$j];
-		endfor;
+		endfor;*/
+		$pagevar['typeswork'][0]['mprice'] = $arr[24]; //context
+		$pagevar['typeswork'][1]['mprice'] = $arr[22]; //notice
+		$pagevar['typeswork'][2]['mprice'] = $arr[26]; //rewiew
+		$pagevar['typeswork'][3]['mprice'] = $arr[30]; //linkpic
+		$pagevar['typeswork'][4]['mprice'] = $arr[32]; //press
+		$pagevar['typeswork'][5]['mprice'] = $arr[34]; //linkarh
+		$pagevar['typeswork'][6]['mprice'] = $arr[28]; //news
+		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);

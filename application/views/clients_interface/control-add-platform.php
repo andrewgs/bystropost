@@ -26,11 +26,9 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
-	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script src="<?=$baseurl;?>javascript/scrollto-min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#addMarket").click(function(event){
 				var err = false;
 				$(".ErrImg").remove();

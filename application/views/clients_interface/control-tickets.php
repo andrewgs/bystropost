@@ -62,14 +62,12 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
-	<script src="<?=$baseurl;?>javascript/redactor/redactor.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var tID = 0;
 			$("td[data-closed='closed']").each(function(e){
 				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
 			});
-			$(".redactor").redactor({toolbar:'default',lang: 'ru','fixed': true});
 			$("#InsTicket").click(function(){
 				$(".ErrImg").remove();
 				if($("#frmInsTicket").is(":hidden")){

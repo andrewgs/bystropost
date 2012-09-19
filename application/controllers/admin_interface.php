@@ -339,14 +339,13 @@ class Admin_interface extends CI_Controller{
 			if($pagevar['users'][$i]['type'] == 1):
 				if($pagevar['users'][$i]['manager']):
 					$pagevar['users'][$i]['manfio'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'fio');
-					$pagevar['users'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['users'][$i]['id']);
 					$pagevar['users'][$i]['manemail'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'login');
 				endif;
+				$pagevar['users'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['users'][$i]['id']);
 				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
 				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
 			endif;
 		endfor;
-		
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
 		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
