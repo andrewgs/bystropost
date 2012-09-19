@@ -10,6 +10,7 @@ $route['about']							= "users_interface/about";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
 $route['faq']							= "users_interface/faq";
+$route['manner-of-payment']				= "users_interface/manner_payment";
 $route['site-monetization']				= "users_interface/site_monetization";
 $route['additional-services']			= "users_interface/additional_services";
 $route['disclaimer']					= "users_interface/disclaimer";

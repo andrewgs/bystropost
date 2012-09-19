@@ -86,4 +86,4 @@ h1.whiteline { border: 0 none; }
 
 #navigation { position: relative; }
 #navigation .top-main-nav { left: 415px; position: absolute; top: 3.2em; }
-#navigation .top-main-nav a { display: inline-block; font: 13px/24px trebuchet ms,sans-serif; margin: 0; padding: 0; text-decoration: underline; }
+#navigation .top-main-nav a { display: inline-block; font: 12px/21px arial,sans-serif; margin: 0; padding: 0; text-decoration: underline; }

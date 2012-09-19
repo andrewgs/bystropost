@@ -16,6 +16,7 @@
 		<?php $this->load->view("forms/frmlogin");?>
 	</div>
 	<div class="top-main-nav">
+		<?=anchor("manner-of-payment","Порядок оплаты");?> <br />
 		<?=anchor("about-content","О контенте");?> <br />
 		<?=anchor("capabilities","Наши возможности");?> <br />
 		<?=anchor("interface","Интерфейс");?>

@@ -11,7 +11,7 @@
 			<table id="content" border="0" style="background-image:none;">
 				<tr>
 					<td width="100%" valign=top>
-						<big><center>На указынный Вами адрес высланы данные рагистрации. Спасибо что пользуетесь нашим сайтом.</center></big>
+						<big><center>На указанный Вами адрес высланы данные регистрации. Спасибо что пользуетесь нашим сайтом.</center></big>
 					</td>
 				</tr>
 				<tr>

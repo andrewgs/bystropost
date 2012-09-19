@@ -253,6 +253,19 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/faq",$pagevar);
 	}
 	
+	public function manner_payment(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Порядок оплаты',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/manner-payment",$pagevar);
+	}
+	
 	public function site_monetization(){
 		
 		$pagevar = array(
@@ -448,7 +461,7 @@ class Users_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				if($this->mdusers->user_exist('login ',$_POST['login'])):
-					$this->session->set_userdata('msgr','Ошибка. Ваш E-mail уже зареристрирован!');
+					$this->session->set_userdata('msgr','Ошибка. Ваш E-mail уже зарегистрирован!');
 					redirect($this->uri->uri_string());
 				endif;
 				if($_POST['password']!=$_POST['confpass']):
@@ -456,7 +469,7 @@ class Users_interface extends CI_Controller{
 					redirect($this->uri->uri_string());
 				endif;
 				if($this->mdusers->read_by_wmid($_POST['wmid'])):
-					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зарегистрирован!');
 					redirect($this->uri->uri_string());
 				endif;
 				if(!isset($_POST['sendmail'])):
