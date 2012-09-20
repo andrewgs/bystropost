@@ -24,7 +24,7 @@
 				<div class="control-group">
 					<label for="wmid" class="control-label">WMID: </label>
 					<div class="controls">
-						<input type="text" id="eWMID" class="input-xlarge euinput digital" name="wmid">
+						<input type="text" id="eWMID" class="input-xlarge euinput digital" maxlength="12" name="wmid">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
