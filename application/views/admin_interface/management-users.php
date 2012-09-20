@@ -8,16 +8,16 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li tnum="webmasters">
-						<?=anchor('admin-panel/management/users/webmasters','Группа "Вебмастера"');?> <span class="divider">/</span>
+						<?=anchor('admin-panel/management/users/webmasters','Вебмастера');?> <span class="divider">/</span>
 					</li>
 					<li tnum="optimizators">
-						<?=anchor('admin-panel/management/users/optimizators','Группа "Оптимизаторы"');?> <span class="divider">/</span>
+						<?=anchor('admin-panel/management/users/optimizators','Оптимизаторы');?> <span class="divider">/</span>
 					</li>
 					<li tnum="manegers">
-						<?=anchor('admin-panel/management/users/manegers','Группа "Менеджеры"');?> <span class="divider">/</span>
+						<?=anchor('admin-panel/management/users/manegers','Менеджеры');?> <span class="divider">/</span>
 					</li>
 					<li tnum="admin">
-						<?=anchor('admin-panel/management/users/admin','Группа "Администраторы"');?> <span class="divider">/</span>
+						<?=anchor('admin-panel/management/users/admin','Администраторы');?> <span class="divider">/</span>
 					</li>
 					<li tnum="all">
 						<?=anchor('admin-panel/management/users/all','Все');?>
@@ -26,10 +26,14 @@
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
 				<div style="float:right;">
-					<form class="form-search">
-						<input type="text" class="span4 search-query">
-						<button type="submit" class="btn">Показать</button>
-					</form>
+				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
+					<input type="hidden" id="srusrid" name="srusrid" value="">
+					<input type="text" class="span4 search-query" id="srusrlogin" name="srusrlogin" value="" autocomplete="off" placeholder="Поиск от 2-х символов">
+					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
+						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+					</div>
+					<button type="submit" class="btn btn-primary disabled" disabled="disabled" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+				<?= form_close(); ?>
 				</div>
 				<table class="table table-striped table-bordered">
 					<thead>
@@ -126,6 +130,37 @@
 				};
 				if(err){event.preventDefault();}
 			});
+			
+			function suggest(inputString){
+				if(inputString.length < 2){
+					$("#suggestions").fadeOut();
+				}else{
+					$("#srusrlogin").addClass('load');
+					$.post("<?=$baseurl;?>admin-panel/management/users/<?=$this->uri->segment(4);?>/search",{squery: ""+inputString+""},
+						function(data){
+							if(data.status){
+								$("#suggestions").fadeIn();
+								$("#suggestionsList").html(data.retvalue);
+								$(".usrorg").live('click',function(){fill($(this).html(),$(this).attr("data-usrid"));$("#seacrh").removeClass('disabled');$("#seacrh").removeAttr('disabled');});
+							}else{
+								$('#suggestions').fadeOut();
+							};
+							$("#srusrlogin").removeClass('load');
+					},"json");
+				}
+			};
+			
+			function fill(login,usrid){
+				$("#srusrlogin").val(login);
+				$("#srusrid").val(usrid);
+				setTimeout("$('#suggestions').fadeOut();", 600);
+			};
+			
+			$("#srusrlogin").keyup(function(){$("#seacrh").addClass('disabled');$("#seacrh").attr('disabled','disabled');$("#srusrid").val('');suggest(this.value)});
+			$("#srusrlogin").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
+			
+			$("#seacrh").click(function(event){if($("#srusrid").val() == ''){event.preventDefault();}});
+			
 			$(".mailUser").click(function(){
 				var Param = $(this).attr('data-param'); uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");

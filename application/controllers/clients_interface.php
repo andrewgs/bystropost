@@ -810,6 +810,8 @@ class Clients_interface extends CI_Controller{
 				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
+					$param = 'userid='.$this->user['remoteid'].'&accid='.$market_id['id'];
+					$this->API('AddAccountToUser',$param);
 					if(!$this->mdwebmarkets->exist_market($market_id['id'])):
 						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['remoteid'],$_POST);
 						if($id):

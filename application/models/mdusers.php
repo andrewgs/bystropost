@@ -229,4 +229,22 @@ class Mdusers extends CI_Model{
 		
 		return $this->db->count_all('users');
 	}
+
+	function search_users($user){
+		
+		$query = "SELECT id,login FROM users WHERE login LIKE '%$user%'";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_users($uid){
+		
+		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE id = $uid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }

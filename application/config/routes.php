@@ -170,6 +170,7 @@ $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/managem
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 
 $route['admin-panel/management/users/profile/id/:num']	= "admin_interface/management_users_profile";
+$route['admin-panel/management/users/:any/search']		= "admin_interface/search_users";
 $route['admin-panel/management/users/:any']				= "admin_interface/management_users";
 
 $route['admin-panel/management/platforms']				= "admin_interface/management_platforms";
@@ -183,6 +184,7 @@ $route['admin-panel/management/platforms/platformid/:num/finished-jobs']			= "ad
 $route['admin-panel/management/platforms/platformid/:num/finished-jobs/from']		= "admin_interface/platform_finished_jobs";
 $route['admin-panel/management/platforms/platformid/:num/finished-jobs/from/:num']	= "admin_interface/platform_finished_jobs";
 
+$route['admin-panel/management/platforms/search']		= "admin_interface/search_platforms";
 
 $route['admin-panel/management/platforms/calculate/tic']= "admin_interface/calculate_tic";
 $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calculate_pr";

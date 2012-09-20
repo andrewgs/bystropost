@@ -25,6 +25,16 @@
 				<div class="alert alert-info" id="mscalculation" style="display:none;">
 					<h3>Ожидайте!</h3>Производится расчет. Это может занять некоторое время...
 				</div>
+				<div style="float:right;">
+				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
+					<input type="hidden" id="srplid" name="srplid" value="">
+					<input type="text" class="span4 search-query" id="srplurl" name="srplurl" value="" autocomplete="off" placeholder="Поиск от 2-х символов">
+					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
+						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+					</div>
+					<button type="submit" class="btn btn-primary disabled" disabled="disabled" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+				<?= form_close(); ?>
+				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -141,7 +151,35 @@
 				if(locked == 1){$("#lockPlatform").attr('checked','checked');}else{$("#lockPlatform").removeAttr('checked');}
 			});
 			
+			function suggest(inputString){
+				if(inputString.length < 2){
+					$("#suggestions").fadeOut();
+				}else{
+					$("#srplurl").addClass('load');
+					$.post("<?=$baseurl;?>admin-panel/management/platforms/search",{squery: ""+inputString+""},
+						function(data){
+							if(data.status){
+								$("#suggestions").fadeIn();
+								$("#suggestionsList").html(data.retvalue);
+								$(".plorg").live('click',function(){fill($(this).html(),$(this).attr("data-plid"));$("#seacrh").removeClass('disabled');$("#seacrh").removeAttr('disabled');});
+							}else{
+								$('#suggestions').fadeOut();
+							};
+							$("#srplurl").removeClass('load');
+					},"json");
+				}
+			};
 			
+			function fill(url,plid){
+				$("#srplurl").val(url);
+				$("#srplid").val(plid);
+				setTimeout("$('#suggestions').fadeOut();", 600);
+			};
+			
+			$("#srplurl").keyup(function(){$("#seacrh").addClass('disabled');$("#seacrh").attr('disabled','disabled');$("#srplid").val('');suggest(this.value)});
+			$("#srplurl").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
+			
+			$("#seacrh").click(function(event){if($("#srplid").val() == ''){event.preventDefault();}});
 			
 			$("#eusend").click(function(event){
 				var err = false;

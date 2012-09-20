@@ -390,4 +390,12 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function search_platforms($platforms){
+		
+		$query = "SELECT id,url FROM platforms WHERE url LIKE '%$platforms%'";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }

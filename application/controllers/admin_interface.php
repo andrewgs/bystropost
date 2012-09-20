@@ -329,6 +329,21 @@ class Admin_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		
+		if($this->input->post('scsubmit')):
+			$_POST['scsubmit'] = NULL;
+			$this->form_validation->set_rules('srusrid',' ','required|numeric|trim');
+			if(!$this->form_validation->run()):
+				redirect($this->uri->uri_string());
+			else:
+				$result = $this->mdusers->read_users($_POST['srusrid']);
+				if($result):
+					$pagevar['title'] .= 'Поиск выполнен';
+					$pagevar['users'] = $result;
+					$pagevar['pages'] = NULL;
+				endif;
+			endif;
+		endif;
+		
 		for($i=0;$i<count($pagevar['users']);$i++):
 			$pagevar['users'][$i]['signdate'] = $this->operation_dot_date($pagevar['users'][$i]['signdate']);
 			if($pagevar['users'][$i]['lastlogin'] != '0000-00-00'):
@@ -354,6 +369,40 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-users",$pagevar);
+	}
+	
+	public function search_users(){
+		
+		$statusval = array('status'=>FALSE,'retvalue'=>'');
+		$search = $this->input->post('squery');
+		if(!$search) show_404();
+		$users = $this->mdusers->search_users($search);
+		if($users):
+			$statusval['retvalue'] = '<ul>';
+			for($i=0;$i<count($users);$i++):
+				$statusval['retvalue'] .= '<li class="usrorg" data-usrid="'.$users[$i]['id'].'">'.$users[$i]['login'].'</li>';
+			endfor;
+			$statusval['retvalue'] .= '</ul>';
+			$statusval['status'] = TRUE;
+		endif;
+		echo json_encode($statusval);
+	}
+	
+	public function search_platforms(){
+		
+		$statusval = array('status'=>FALSE,'retvalue'=>'');
+		$search = $this->input->post('squery');
+		if(!$search) show_404();
+		$platforms = $this->mdplatforms->search_platforms($search);
+		if($platforms):
+			$statusval['retvalue'] = '<ul>';
+			for($i=0;$i<count($platforms);$i++):
+				$statusval['retvalue'] .= '<li class="plorg" data-plid="'.$platforms[$i]['id'].'">'.$platforms[$i]['url'].'</li>';
+			endfor;
+			$statusval['retvalue'] .= '</ul>';
+			$statusval['status'] = TRUE;
+		endif;
+		echo json_encode($statusval);
 	}
 	
 	public function user_platforms_list(){
@@ -882,6 +931,22 @@ class Admin_interface extends CI_Controller{
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
+		
+		if($this->input->post('scsubmit')):
+			$_POST['scsubmit'] = NULL;
+			$this->form_validation->set_rules('srplid',' ','required|numeric|trim');
+			if(!$this->form_validation->run()):
+				redirect($this->uri->uri_string());
+			else:
+				
+				$result = $this->mdunion->read_platform_by_id($_POST['srplid']);
+				if($result):
+					$pagevar['title'] .= 'Администрирование | Площадки | Поиск выполнен';
+					$pagevar['platforms'] = $result;
+					$pagevar['pages'] = NULL;
+				endif;
+			endif;
+		endif;
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
 			$pagevar['platforms'][$i]['markets'] = $this->mdmkplatform->read_records_platform($pagevar['platforms'][$i]['id']);

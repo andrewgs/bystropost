@@ -4981,3 +4981,10 @@ a.badge:hover {
 .invisible {
   visibility: hidden;
 }
+
+input.search-query {
+    border-radius: 15px 15px 15px 15px;
+    margin-bottom: 0;
+    padding: 5px 14px;
+	
+}
