@@ -25,6 +25,12 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<div style="float:right;">
+					<form class="form-search">
+						<input type="text" class="span4 search-query">
+						<button type="submit" class="btn">Показать</button>
+					</form>
+				</div>
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
