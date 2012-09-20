@@ -1058,6 +1058,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('tematcustom',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');

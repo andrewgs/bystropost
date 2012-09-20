@@ -11,6 +11,10 @@
 			<td><?php $this->load->view("clients_interface/includes/thematically");?></td>
 		</tr>
 		<tr>
+			<td>Уточнение тематики:</td>
+			<td><input name="tematcustom" class="reg-form-input w230" id="tematcustom" maxlength="20" type="text" size="80" value="<?=$platform['tematcustom'];?>"></td>
+		</tr>
+		<tr>
 			<td>Укажите вашу CMS:</td>
 			<td><?php $this->load->view("clients_interface/includes/cms");?></td>
 		</tr>

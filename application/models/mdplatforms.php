@@ -12,6 +12,7 @@ class Mdplatforms extends CI_Model{
 	var $adminpanel 	= '';
 	var $aplogin 		= '';
 	var $appassword 	= '';
+	var $tematcustom 	= '';
 	var $reviews 		= 1;
 	var $thematically 	= 1;
 	var $illegal 		= 0;
@@ -63,6 +64,7 @@ class Mdplatforms extends CI_Model{
 		$this->adminpanel 	= $data['adminpanel'];
 		$this->aplogin 		= $data['aplogin'];
 		$this->appassword 	= $data['appassword'];
+		$this->tematcustom 	= $data['tematcustom'];
 		$this->reviews 		= $data['reviews'];
 		$this->thematically = $data['thematically'];
 		$this->illegal 		= $data['illegal'];
@@ -112,6 +114,7 @@ class Mdplatforms extends CI_Model{
 		$this->db->set('adminpanel',$data['adminpanel']);
 		$this->db->set('aplogin',$data['aplogin']);
 		$this->db->set('appassword',$data['appassword']);
+		$this->db->set('tematcustom',$data['tematcustom']);
 		$this->db->set('reviews',$data['reviews']);
 		$this->db->set('thematically',$data['thematically']);
 		$this->db->set('illegal',$data['illegal']);

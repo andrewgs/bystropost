@@ -846,6 +846,7 @@ class Clients_interface extends CI_Controller{
 							$new_platform['adminpanel'] = ($pl_data[$i]['adminurl'])? $pl_data[$i]['adminurl'] : '';
 							$new_platform['aplogin'] = ($pl_data[$i]['cms_login'])? $pl_data[$i]['cms_login'] : '';
 							$new_platform['appassword'] = ($pl_data[$i]['cms_pass'])? $pl_data[$i]['cms_pass'] : '';
+							$new_platform['tematcustom'] = $pl_data[$i]['tematcustom'];
 							$new_platform['amount'] = 1;
 							$new_platform['reviews'] = ($pl_data[$i]['review'])? 1 : 0;
 							$new_platform['thematically'] = ($pl_data[$i]['subjects'])? 1 : 0;
@@ -1438,6 +1439,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('tematcustom',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
@@ -1581,6 +1583,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('tematcustom',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
@@ -1611,9 +1614,9 @@ class Clients_interface extends CI_Controller{
 							$pl_data['cms_login'] = $new_platform['aplogin'];
 							$pl_data['cms_pass'] = $new_platform['appassword'];
 							$pl_data['tematic'] = $new_platform['subject'];
+							$pl_data['tematcustom'] = $new_platform['tematcustom'];
 							$pl_data['filter'] = $new_platform['illegal'];
 							$pl_data['subjects'] = $new_platform['thematically'];
-							$pl_data['review'] = $new_platform['reviews'];
 							$pl_data['review'] = $new_platform['reviews'];
 							$pl_data['param'] = array();
 							$pl_data['param']['image'] = array();
@@ -1641,6 +1644,7 @@ class Clients_interface extends CI_Controller{
 						URL админки: <?=$pagevar['platform']['adminpanel'].' - '.$_POST['adminpanel'];?><br/>
 						Логин к админке: <?=$pagevar['platform']['aplogin'].' - '.$_POST['aplogin'];?><br/>
 						Пароль к админке: <?=$pagevar['platform']['appassword'].' - '.$_POST['appassword'];?><br/>
+						Уточнение тематики: <?=$pagevar['platform']['tematcustom'].' - '.$_POST['tematcustom'];?><br/>
 						Обзоры: <?=($pagevar['platform']['reviews'] == 1)?'да':'нет';?> - <?=($_POST['reviews'] == 1)?'да':'нет';?><br/>
 						Тематичность: <?=($pagevar['platform']['thematically'] == 1)?'да':'нет';?> - <?=($_POST['thematically'] == 1)?'да':'нет';?><br/>
 						Размещать задания которые противоречат законам РФ: <?=($pagevar['platform']['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?> - <?=($_POST['illegal'] == 1)?'Да, размещать':'Нет, не размещать';?></p>
@@ -1749,6 +1753,7 @@ class Clients_interface extends CI_Controller{
 						$new_platform['adminpanel'] = ($pl_data[$i]['adminurl'])? $pl_data[$i]['adminurl'] : '';
 						$new_platform['aplogin'] = ($pl_data[$i]['cms_login'])? $pl_data[$i]['cms_login'] : '';
 						$new_platform['appassword'] = ($pl_data[$i]['cms_pass'])? $pl_data[$i]['cms_pass'] : '';
+						$new_platform['tematcustom'] = $pl_data[$i]['tematcustom'];
 						$new_platform['amount'] = 1;
 						$new_platform['reviews'] = ($pl_data[$i]['review'])? 1 : 0;
 						$new_platform['thematically'] = ($pl_data[$i]['subjects'])? 1 : 0;
