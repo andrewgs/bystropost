@@ -81,8 +81,7 @@ h1.whiteline { border: 0 none; }
 #content { background-position: 205px top; } 
 #webmaster { margin-left: 0; }
 #optimizator { margin-right: 25px }
-#footer .webmoney { background: #fff; -webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px; color: #333; font-size: 11px; left: 9px; padding: 3px 5px 1px; position: absolute; top: -15px; width: 189px; }
-
+#footer .webmoney { background: #fff; -webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px; color: #333; font-size: 11px; left: 9px; padding: 3px 1px 1px; position: absolute; top: -15px; width: 189px; }
 
 #navigation { position: relative; }
 #navigation .top-main-nav { left: 415px; position: absolute; top: 3.2em; }
