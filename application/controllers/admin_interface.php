@@ -197,6 +197,8 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/admin-profile",$pagevar);
 	}
 	
+	/******************************************************** users ******************************************************/
+	
 	public function management_users(){
 		
 		$pagevar = array(
@@ -387,6 +389,123 @@ class Admin_interface extends CI_Controller{
 		endif;
 		echo json_encode($statusval);
 	}
+	
+	public function management_users_profile(){
+		
+		$user = $this->uri->segment(6);
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Личный кабинет',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'user'			=> $this->mdusers->read_record($user),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('fio',' ','required|trim');
+			$this->form_validation->set_rules('oldpas',' ','trim');
+			$this->form_validation->set_rules('password',' ','trim');
+			$this->form_validation->set_rules('confpass',' ','trim');
+			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('phones',' ','trim');
+			$this->form_validation->set_rules('icq',' ','trim');
+			$this->form_validation->set_rules('skype',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				redirect($this->uri->uri_string());
+			else:
+				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
+					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
+						$this->session->set_userdata('msgr',' Не верный старый пароль!');
+					elseif($_POST['password']!=$_POST['confpass']):
+						$this->session->set_userdata('msgr',' Пароли не совпадают.');
+					else:
+						$this->mdusers->update_field($user,'password',md5($_POST['password']));
+						$this->mdusers->update_field($user,'cryptpassword',$this->encrypt->encode($_POST['password']));
+						$this->session->set_userdata('msgs',' Пароль успешно изменен');
+					endif;
+				endif;
+				if(!isset($_POST['sendmail'])):
+					$_POST['sendmail'] = 0;
+				endif;
+				unset($_POST['password']);unset($_POST['login']);
+				$_POST['uid'] = $user;
+				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
+				if($wmid && $wmid != $user):
+					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
+					redirect($this->uri->uri_string());
+				endif;
+				$result = $this->mdusers->update_record($_POST);
+				if($result):
+					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
+					$this->session->set_userdata('msgs',$msgs);
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		$this->load->view("admin_interface/admin-profile",$pagevar);
+	}
+	
+	public function management_users_deleting(){
+		
+		$uid = $this->uri->segment(5);
+		if($uid):
+			$user = $this->mdusers->read_record($uid);
+			$result = $this->mdusers->delete_record($uid);
+			if($result):
+				$this->mdmessages->delete_records_by_user($uid);
+				$this->mdtickets->delete_records_by_user($uid);
+				$this->mdtkmsgs->delete_records_by_user($uid);
+				$this->mdplatforms->close_platform_by_user_delete($uid);
+				ob_start();
+				?>
+				<p><strong>Здравствуйте, <?=$user['fio'];?></strong></p>
+				<p>Ваша учетная запись удалена Администратором</p>
+				<p>Желаем Вам удачи!</p> 
+				<?
+				$mailtext = ob_get_clean();
+				
+				$this->email->clear(TRUE);
+				$config['smtp_host'] = 'localhost';
+				$config['charset'] = 'utf-8';
+				$config['wordwrap'] = TRUE;
+				$config['mailtype'] = 'html';
+				
+				$this->email->initialize($config);
+				$this->email->to($user['login']);
+				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+				$this->email->bcc('');
+				$this->email->subject('Noreply: Bystropost.ru - Учетная запись удалена');
+				$this->email->message($mailtext);	
+				$this->email->send();
+				$this->session->set_userdata('msgs','Пользователь удален успешно.');
+			else:
+				$this->session->set_userdata('msgr','Пользователь не удален.');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
+	/******************************************************** platforms ******************************************************/
 	
 	public function search_platforms(){
 		
@@ -607,121 +726,6 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/webmaster-platforms-list",$pagevar);
-	}
-	
-	public function management_users_profile(){
-		
-		$user = $this->uri->segment(6);
-		$pagevar = array(
-					'description'	=> '',
-					'author'		=> '',
-					'title'			=> 'Администрирование | Личный кабинет',
-					'baseurl' 		=> base_url(),
-					'userinfo'		=> $this->user,
-					'user'			=> $this->mdusers->read_record($user),
-					'cntunit'		=> array(),
-					'msgs'			=> $this->session->userdata('msgs'),
-					'msgr'			=> $this->session->userdata('msgr')
-			);
-		$this->session->unset_userdata('msgs');
-		$this->session->unset_userdata('msgr');
-		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('fio',' ','required|trim');
-			$this->form_validation->set_rules('oldpas',' ','trim');
-			$this->form_validation->set_rules('password',' ','trim');
-			$this->form_validation->set_rules('confpass',' ','trim');
-			$this->form_validation->set_rules('wmid',' ','required|trim');
-			$this->form_validation->set_rules('phones',' ','trim');
-			$this->form_validation->set_rules('icq',' ','trim');
-			$this->form_validation->set_rules('skype',' ','trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
-				redirect($this->uri->uri_string());
-			else:
-				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
-					if(!$this->mdusers->user_exist('password',md5($_POST['oldpas']))):
-						$this->session->set_userdata('msgr',' Не верный старый пароль!');
-					elseif($_POST['password']!=$_POST['confpass']):
-						$this->session->set_userdata('msgr',' Пароли не совпадают.');
-					else:
-						$this->mdusers->update_field($user,'password',md5($_POST['password']));
-						$this->mdusers->update_field($user,'cryptpassword',$this->encrypt->encode($_POST['password']));
-						$this->session->set_userdata('msgs',' Пароль успешно изменен');
-					endif;
-				endif;
-				if(!isset($_POST['sendmail'])):
-					$_POST['sendmail'] = 0;
-				endif;
-				unset($_POST['password']);unset($_POST['login']);
-				$_POST['uid'] = $user;
-				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
-				if($wmid && $wmid != $user):
-					$this->session->set_userdata('msgr','Ошибка. WMID уже зареристрирован!');
-					redirect($this->uri->uri_string());
-				endif;
-				$result = $this->mdusers->update_record($_POST);
-				if($result):
-					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
-					$this->session->set_userdata('msgs',$msgs);
-				endif;
-				redirect($this->uri->uri_string());
-			endif;
-		endif;
-		
-		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
-		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
-		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
-		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
-		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
-		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
-		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
-		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		
-		$this->load->view("admin_interface/admin-profile",$pagevar);
-	}
-	
-	public function management_users_deleting(){
-		
-		$uid = $this->uri->segment(5);
-		if($uid):
-			$user = $this->mdusers->read_record($uid);
-			$result = $this->mdusers->delete_record($uid);
-			if($result):
-				$this->mdmessages->delete_records_by_user($uid);
-				$this->mdtickets->delete_records_by_user($uid);
-				$this->mdtkmsgs->delete_records_by_user($uid);
-				$this->mdplatforms->close_platform_by_user_delete($uid);
-				ob_start();
-				?>
-				<p><strong>Здравствуйте, <?=$user['fio'];?></strong></p>
-				<p>Ваша учетная запись удалена Администратором</p>
-				<p>Желаем Вам удачи!</p> 
-				<?
-				$mailtext = ob_get_clean();
-				
-				$this->email->clear(TRUE);
-				$config['smtp_host'] = 'localhost';
-				$config['charset'] = 'utf-8';
-				$config['wordwrap'] = TRUE;
-				$config['mailtype'] = 'html';
-				
-				$this->email->initialize($config);
-				$this->email->to($user['login']);
-				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
-				$this->email->bcc('');
-				$this->email->subject('Noreply: Bystropost.ru - Учетная запись удалена');
-				$this->email->message($mailtext);	
-				$this->email->send();
-				$this->session->set_userdata('msgs','Пользователь удален успешно.');
-			else:
-				$this->session->set_userdata('msgr','Пользователь не удален.');
-			endif;
-			redirect($_SERVER['HTTP_REFERER']);
-		else:
-			show_404();
-		endif;
 	}
 	
 	public function management_platforms(){
@@ -1011,6 +1015,10 @@ class Admin_interface extends CI_Controller{
 					$this->mdmessages->send_noreply_message($this->user['uid'],$info['manager'],1,2,$text);
 				endif;
 				$this->session->set_userdata('msgs','Площадка удалена успешно.');
+				if($info['manager'] == 2 && $info['remoteid']):
+					$param = 'siteid='.$info['remoteid'].'&value=1';
+					$res = $this->API('SetSiteActive',$param);
+				endif;
 			else:
 				$this->session->set_userdata('msgr','Площадка не удалена.');
 			endif;
@@ -1128,6 +1136,9 @@ class Admin_interface extends CI_Controller{
 			endif;
 			redirect($this->session->userdata('backpath'));
 		endif;
+		for($i=0;$i<count($pagevar['mymarkets']);$i++):
+			$pagevar['mymarkets'][$i]['password'] = $this->encrypt->decode($pagevar['mymarkets'][$i]['cryptpassword']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '';
@@ -1164,6 +1175,9 @@ class Admin_interface extends CI_Controller{
 		for($i=0;$i<count($attached);$i++):
 			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$pagevar['platform']['webmaster']);
 		endfor;
+		for($i=0;$i<count($pagevar['mymarkets']);$i++):
+			$pagevar['mymarkets'][$i]['password'] = $this->encrypt->decode($pagevar['mymarkets'][$i]['cryptpassword']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '-';
@@ -1172,6 +1186,8 @@ class Admin_interface extends CI_Controller{
 		
 		$this->load->view("admin_interface/management-view-platform",$pagevar);
 	}
+
+	/******************************************************** markets ******************************************************/
 
 	public function management_markets(){
 		
@@ -1235,6 +1251,24 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/management-markets",$pagevar);
 	}
 	
+	public function management_markets_deleting(){
+		
+		$mid = $this->uri->segment(5);
+		if($mid):
+			$result = $this->mdmarkets->delete_record($mid);
+			if($result):
+				$this->session->set_userdata('msgs','Биржа удалена успешно');
+			else:
+				$this->session->set_userdata('msgr','Биржа не удалена');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
+	/******************************************************** jobs ******************************************************/
+	
 	public function user_finished_jobs(){
 		
 		$from = intval($this->uri->segment(8));
@@ -1268,6 +1302,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
+			$pagevar['delivers'][$i]['date'] = $this->operation_dot_date($pagevar['delivers'][$i]['date']);
 			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
 				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
 				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
@@ -1317,6 +1352,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
+			$pagevar['delivers'][$i]['date'] = $this->operation_dot_date($pagevar['delivers'][$i]['date']);
 			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
 				$pagevar['delivers'][$i]['link'] = mb_substr($pagevar['delivers'][$i]['ulrlink'],0,15,'UTF-8');
 				$pagevar['delivers'][$i]['link'] .= ' ... '.mb_substr($pagevar['delivers'][$i]['ulrlink'],strlen($pagevar['delivers'][$i]['ulrlink'])-10,10,'UTF-8');;
@@ -1333,21 +1369,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
 	}
 	
-	public function management_markets_deleting(){
-		
-		$mid = $this->uri->segment(5);
-		if($mid):
-			$result = $this->mdmarkets->delete_record($mid);
-			if($result):
-				$this->session->set_userdata('msgs','Биржа удалена успешно');
-			else:
-				$this->session->set_userdata('msgr','Биржа не удалена');
-			endif;
-			redirect($_SERVER['HTTP_REFERER']);
-		else:
-			show_404();
-		endif;
-	}
+	/******************************************************** works ******************************************************/
 	
 	public function management_types_work(){
 		
@@ -1421,6 +1443,8 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
+	/******************************************************** ratings ******************************************************/
+	
 	public function management_ratings(){
 		
 		switch($this->uri->segment(4)):
@@ -1487,6 +1511,8 @@ class Admin_interface extends CI_Controller{
 			show_404();
 		endif;
 	}
+	
+	/******************************************************** other ******************************************************/
 	
 	public function actions_forum(){
 		
@@ -2051,7 +2077,8 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=375');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -2073,6 +2100,19 @@ class Admin_interface extends CI_Controller{
 		endif;
 //		print_r($mass_data);
 //		echo '<br/>'.count($mass_data);
+		$srv_data = array();
+		foreach($mass_data as $key => $value):
+			$service = $value;$srv = 0; $pl = $key;
+			foreach($service as $key => $value):
+				$srv_data[$srv]['service'] = $key;
+				$srv_data[$srv]['srvval'] = $value;
+				$srv_data[$srv]['platform'] = $pl;
+				$srv++;
+			endforeach;
+		endforeach;
+		print_r($srv_data);
+		exit;
+
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
@@ -2103,7 +2143,7 @@ class Admin_interface extends CI_Controller{
 		print_r('Импортировнно: '.$cnt.' вебмастеров');*/
 		/*=============================== Загрузка вебмастеров конец ============================*/
 		/*======================== Загрузка аккаунтов на биржах начало ======================== */
-		$data = array(); $cnt = 0;
+		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
 				$data['id'] = $key;
@@ -2117,7 +2157,7 @@ class Admin_interface extends CI_Controller{
 				endif;
 			endif;
 		endforeach;
-		print_r('Импортировнно: '.$cnt.' аккаунтов');
+		print_r('Импортировнно: '.$cnt.' аккаунтов');*/
 		/*======================== Загрузка аккаунтов на биржах конец ========================*/
 	}
 	
@@ -2196,12 +2236,12 @@ class Admin_interface extends CI_Controller{
 				ob_start();
 				?>
 				<p><strong>Здравствуйте, <?=$debetors[$i]['ufio'];?></strong></p>
-				<p>У Вас есть не оплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
-				<p>Напоминаем Вам. Если у Вас будут не оплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
+				<p>У Вас есть неоплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
+				<p>Напоминаем Вам. Если у Вас будут неоплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
 				<?php if($days>=5):?>
 				<p>ВНИМАНИЕ! Ваш аккаунт заблокирован через задолженность. Оплатите завершенные работы от 5 дней (включительно) для разблокировки.</p>
 				<?php endif;?>
-				<p>Спасибо что пользуетесь нашим сайтом!</p>
+				<p>Спасибо, что пользуетесь нашим сайтом!</p>
 				<?
 				$mailtext = ob_get_clean();
 				

@@ -26,7 +26,7 @@
 							<th class="w100"><center><nobr>Цена<br/>на бирже</nobr></center></th>
 							<th class="w100"><center>URL-адрес</center></th>
 							<th class="w100"><center><nobr>Колич.<br/>символов</nobr></center></th>
-							<th class="w100"><center>Стоим.</center></th>
+							<th class="w100"><center>Стоим.(веб/мен)</center></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,8 +38,8 @@
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['mtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['mkprice'];?> руб.</nobr></td>
 							<td class="w100" style="vertical-align:middle;"><?=anchor($delivers[$i]['ulrlink'],$delivers[$i]['link'],array('target'=>'_blank'));?></td>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['countchars'];?> шт.<nobr></td>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['mprice'];?> руб.</nobr></td>
+							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['countchars'];?> шт.</nobr></td>
+							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$delivers[$i]['wprice'];?> руб.<br/><?=$delivers[$i]['mprice'];?> руб.</nobr></td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>

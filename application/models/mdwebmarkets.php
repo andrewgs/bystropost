@@ -7,6 +7,7 @@ class Mdwebmarkets extends CI_Model{
 	var $market		= 0;
 	var $login		= '';
 	var $password	= '';
+	var $cryptpassword 	= '';
 	
 	function __construct(){
 		parent::__construct();
@@ -18,7 +19,8 @@ class Mdwebmarkets extends CI_Model{
 		$this->webmaster	= $webmaster;
 		$this->market 		= $data['market'];
 		$this->login		= $data['login'];
-		$this->password		= $data['password'];
+		$this->password 	= md5($data['password']);
+		$this->cryptpassword= $this->encrypt->encode($data['password']);
 		
 		$this->db->insert('webmarkets',$this);
 		return $this->db->insert_id();
@@ -27,7 +29,8 @@ class Mdwebmarkets extends CI_Model{
 	function update_record($data){
 		
 		$this->db->set('login',$data['login']);
-		$this->db->set('password',$data['password']);
+		$this->db->set('password',md5($data['password']));
+		$this->db->set('cryptpassword',$this->encrypt->encode($data['password']));
 		
 		$this->db->where('id',$data['mid']);
 		$this->db->update('webmarkets');

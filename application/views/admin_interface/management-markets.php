@@ -16,44 +16,21 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th class="w85"><center><nobr>Название</nobr></center></th>
-							<th class="w85"><center><nobr>URL</nobr></center></th>
-							<th class="w85">&nbsp;</th>
-							<th class="w85"><center><nobr>Название</nobr></center></th>
-							<th class="w85"><center><nobr>URL</nobr></center></th>
-							<th class="w85">&nbsp;</th>
+							<th class="w50"><center><nobr>Название</nobr></center></th>
+							<th class="w400"><center><nobr>URL</nobr></center></th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0;$i<count($markets);$i+=2):?>
+					<?php for($i=0;$i<count($markets);$i++):?>
 						<tr>
-						<?php if(isset($markets[$i]['id'])):?>
-							<td class="w85"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<b><?=$markets[$i]['title'];?></b></nobr></td>
-							<td class="w85"><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></td>
-							<td class="w85">
+							<td class="w50"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<b><?=$markets[$i]['title'];?></b></nobr></td>
+							<td class="w400"><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></td>
+							<td style="width:105px;">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$markets[$i]['id'];?>" data-title="<?=$markets[$i]['title'];?>" data-url="<?=$markets[$i]['url'];?>"></div>
 								<a class="btn btn-success editMarket" data-param="<?=$i;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить биржу"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
-						<?php endif;?>
-						<?php if(isset($markets[$i+1]['id'])):?>
-							<td class="w85">
-								<nobr>
-									<img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i+1]['id'];?>" alt=""/>&nbsp;
-									<b><?=$markets[$i+1]['title'];?></b>
-								</nobr>
-							</td>
-							<td class="w85"><b><a href="<?=$markets[$i+1]['url'];?>"><?=$markets[$i+1]['url'];?></a></b></td>
-							<td class="w85">
-								<div id="params<?=$i+1;?>" style="display:none" data-mid="<?=$markets[$i+1]['id'];?>" data-title="<?=$markets[$i+1]['title'];?>" data-url="<?=$markets[$i+1]['url'];?>"></div>
-								<a class="btn btn-success editMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#editMarket" title="Редактировать"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteMarket" data-param="<?=$i+1;?>" data-toggle="modal" href="#deleteMarket" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
-							</td>
-						<?php else:?>
-							<td class="w85">&nbsp;</td>
-							<td class="w85">&nbsp;</td>
-							<td class="w85">&nbsp;</td>
-						<?php endif;?>
 						</tr>
 					<?php endfor; ?>
 					</tbody>

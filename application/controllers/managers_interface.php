@@ -343,6 +343,9 @@ class Managers_interface extends CI_Controller{
 			endif;
 			redirect('manager-panel/actions/platforms');
 		endif;
+		for($i=0;$i<count($pagevar['mymarkets']);$i++):
+			$pagevar['mymarkets'][$i]['password'] = $this->encrypt->decode($pagevar['mymarkets'][$i]['cryptpassword']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '';
@@ -381,6 +384,9 @@ class Managers_interface extends CI_Controller{
 		$attached = $this->mdunion->services_attached_list($pagevar['platform']['webmaster']);
 		for($i=0;$i<count($attached);$i++):
 			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$pagevar['platform']['webmaster']);
+		endfor;
+		for($i=0;$i<count($pagevar['mymarkets']);$i++):
+			$pagevar['mymarkets'][$i]['password'] = $this->encrypt->decode($pagevar['mymarkets'][$i]['cryptpassword']);
 		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
@@ -502,7 +508,7 @@ class Managers_interface extends CI_Controller{
 		$kol = 0;
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid']);
 		if(!count($platforms)):
-			$this->session->set_userdata('msgr','Ошибка. Нет площадок. Импорт не возможен.');
+			$this->session->set_userdata('msgr','Ошибка. Нет площадок. Импорт невозможен.');
 			redirect('manager-panel/actions/platforms');
 		else:
 			$markets = $this->mdmarkets->read_records();
@@ -537,14 +543,20 @@ class Managers_interface extends CI_Controller{
 											$new_work['manager'] 	= $this->user['uid'];
 											$new_work['typework'] 	= $dw_data[$dwd]['type'];
 											$new_work['market'] 	= $markets[$mk]['id'];
-											$new_work['mkprice'] 	= 0;
+											$new_work['mkprice'] 	= ( isset($dw_data[$dwd]['birzprice']) && !is_null($dw_data[$dwd]['birzprice']) ) ? $dw_data[$dwd]['birzprice'] : 0; // andrewgs
 											$new_work['ulrlink'] 	= $dw_data[$dwd]['link'];
-											$new_work['countchars'] = 0;
-											$new_work['wprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'c'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
-											$new_work['mprice'] 	= $this->mdplatforms->read_field($platforms[$pl]['id'],'m'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+											$new_work['countchars'] = ( isset($dw_data[$dwd]['size']) && !is_null($dw_data[$dwd]['size']) ) ? $dw_data[$dwd]['size'] : 0; // andrewgs
+											if(isset($dw_data[$dwd]['our_price']) && isset($dw_data[$dwd]['client_price'])):
+												$new_work['wprice']	= $dw_data[$dwd]['client_price'];
+												$new_work['mprice']	= $dw_data[$dwd]['our_price'];
+											else:
+												$new_work['wprice']	= $this->mdplatforms->read_field($platforms[$pl]['id'],'c'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+												$new_work['mprice']	= $this->mdplatforms->read_field($platforms[$pl]['id'],'m'.$typeswork[$dw_data[$dwd]['type']-1]['nickname']);
+											endif;
 											$new_work['status'] 	= 0;
-											$new_work['date'] 		= $dateto;
+											$new_work['date'] 		= $dw_data[$dwd]['date'];
 											$new_work['datepaid'] 	= '0000-00-00';
+											
 											if(!$this->mddelivesworks->exist_work($new_work['id'])):
 												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
 												$kol++;
@@ -559,6 +571,7 @@ class Managers_interface extends CI_Controller{
 					endfor;
 				endfor;
 			endfor;
+			
 			$this->mdlog->insert_record($this->user['uid'],'Событие №23: Произведена загрузка выполненных заданий. '.$kol.' записей');
 			$this->session->set_userdata('msgs','Выполненные работы импортированы. '.$kol.' записей');
 			redirect('manager-panel/actions/control');

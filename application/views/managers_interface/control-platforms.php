@@ -60,7 +60,7 @@
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-tags icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
-								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase"></i>&nbsp',array('class'=>'btn btn-info DeliverWork','title'=>'Сдать задание'));?>
+								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase icon-white"></i>&nbsp',array('class'=>'btn btn-info DeliverWork','title'=>'Сдать задание'));?>
 							<?php endif;?>
 							</td>
 						</tr>

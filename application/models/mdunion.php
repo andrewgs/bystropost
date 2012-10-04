@@ -332,7 +332,7 @@ class Mdunion extends CI_Model{
 	
 	function services_attached($service,$uid){
 		
-		$query = "SELECT attachedservices.*,platforms.url AS plurl FROM attachedservices INNER JOIN platforms ON attachedservices.platform=platforms.id WHERE attachedservices.user = $uid AND attachedservices.service = $service ORDER BY attachedservices.date DESC";
+		$query = "SELECT attachedservices.*,platforms.url AS plurl FROM attachedservices INNER JOIN platforms ON attachedservices.platform=platforms.id WHERE attachedservices.user = $uid AND attachedservices.service = $service AND platforms.locked = 0 AND platforms.status = 1 ORDER BY attachedservices.date DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -385,5 +385,14 @@ class Mdunion extends CI_Model{
 		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks  WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0)";
 		$this->db->query($query);
 		return $this->db->affected_rows();
+	}
+	
+	function free_platforms($uid){
+	
+		$query = "SELECT platforms.id,platforms.remoteid,mkplatform.id AS mkid FROM `platforms` LEFT JOIN mkplatform ON platforms.`id` = mkplatform.platform WHERE platforms.webmaster = $uid AND platforms.remoteid !=0 AND platforms.manager = 2 GROUP BY platforms.id;";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
 	}
 }

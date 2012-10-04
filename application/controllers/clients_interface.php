@@ -834,9 +834,6 @@ class Clients_interface extends CI_Controller{
 							if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
 								continue;
 							endif;
-							if($pl_data[$i]['off']):
-								continue;
-							endif;
 							$new_platform['id'] = $pl_data[$i]['id'];
 							$new_platform['webmaster'] = $this->user['uid'];
 							$new_platform['manager'] = 2;
@@ -874,8 +871,11 @@ class Clients_interface extends CI_Controller{
 							$new_platform['clinkarh'] = 0;
 							$new_platform['mlinkarh'] = 0;
 							$new_platform['price'] = 0;
-							$new_platform['locked'] = 0;
+							$new_platform['locked'] = ($pl_data[$i]['off'])? 1 : 0;
 							$new_platform['status'] = 1;
+							if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
+								$new_platform['status'] = 0;
+							endif;
 							if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 								$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 								if($platform):
@@ -911,6 +911,21 @@ class Clients_interface extends CI_Controller{
 									$this->mdplatforms->run_query($sqlquery);
 									$cntpl++;
 									$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+									$param = 'siteid='.$new_platform['id'];
+									$services = $this->API('GetAdditionalService',$param);
+									foreach($services as $key => $value):
+										$service = $value; $srv_data = array();
+										$srv = 0; $pl = $key;
+										foreach($service as $key => $value):
+											$srv_data[$srv]['service'] = $key;
+											$srv_data[$srv]['srvval'] = $value;
+											$srv_data[$srv]['platform'] = $pl;
+											$srv++;
+										endforeach;
+									endforeach;
+									for($srv = 0;$srv<count($srv_data);$srv++):
+										$this->mdattachedservices->insert_record($this->user['uid'],$srv_data[$srv]['service'],$srv_data[$srv]['srvval'],$srv_data[$srv]['platform']);
+									endfor;
 								endif;
 							else:
 								$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
@@ -955,7 +970,9 @@ class Clients_interface extends CI_Controller{
 		if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
 			redirect('webmaster-panel/actions/control');
 		endif;
-		
+		for($i=0;$i<count($pagevar['accounts']);$i++):
+			$pagevar['accounts'][$i]['password'] = $this->encrypt->decode($pagevar['accounts'][$i]['cryptpassword']);
+		endfor;
 		$this->load->view("clients_interface/control-markets",$pagevar);
 	}
 	
@@ -967,8 +984,20 @@ class Clients_interface extends CI_Controller{
 		
 		$mid = $this->uri->segment(6);
 		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
 			$result = $this->mdwebmarkets->delete_record($this->user['remoteid'],$mid);
 			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.$this->encrypt->decode($info['cryptpassword']).'&act=0';
+				$this->API('UpdateAccount',$param);
+				$this->mdmkplatform->delete_records_by_webmarket($this->user['uid'],$info['market'],$info['login'],$info['password']);
+				$plmarkets = $this->mdunion->free_platforms($this->user['uid']);
+				for($i=0;$i<count($plmarkets);$i++):
+					if(is_null($plmarkets[$i]['mkid'])):
+						$param = 'siteid='.$plmarkets[$i]['remoteid'].'&value=1';
+						print_r($param);exit;
+						$this->API('SetSiteActive',$param);
+					endif;
+				endfor;
 				$this->mdlog->insert_record($this->user['uid'],'Событие №10: Удалена учетная запись на бирже');
 				$this->session->set_userdata('msgs','Запись удалена успешно');
 			else:
@@ -1296,7 +1325,7 @@ class Clients_interface extends CI_Controller{
 		redirect('webmaster-panel/actions/finished-jobs');
 	}
 	
-	/******************************************************** platforms ******************************************************/	
+	/******************************************************** platforms ******************************************************/
 	
 	public function control_platforms(){
 		
@@ -1326,6 +1355,11 @@ class Clients_interface extends CI_Controller{
 				$status = 0;
 				if(isset($_POST['status'])):
 					$status = $_POST['status'];
+					$pl_data = $this->mdplatforms->read_record($_POST['pid']);
+					if(!$pl_data['cms'] || empty($pl_data['adminpanel']) || empty($pl_data['aplogin']) || empty($pl_data['appassword'])):
+						$this->session->set_userdata('msgr','Ошибка при активации площадки.<br/>Не заполены необходимые поля в карточке площадке.');
+						redirect($this->uri->uri_string());
+					endif;
 				endif;
 				$result = $this->mdplatforms->update_status($_POST['pid'],$this->user['uid'],$status);
 				if($result):
@@ -1352,8 +1386,6 @@ class Clients_interface extends CI_Controller{
 						$res = $this->API('SetSiteActive',$param);
 					endif;
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Информация не изменилась.');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -1536,11 +1568,15 @@ class Clients_interface extends CI_Controller{
 		
 		$platform = $this->uri->segment(5);
 		if(!$this->mdplatforms->ownew_platform($this->user['uid'],$platform)):
-			if(isset($_SERVER['HTTP_REFERER'])):
-				redirect($_SERVER['HTTP_REFERER']);
-			else:
-				redirect('webmaster-panel/actions/control');
+			$pl_data = $this->mdplatforms->read_record($platform);
+			if($pl_data['cms'] && !empty($pl_data['adminpanel']) && !empty($pl_data['aplogin']) && !empty($pl_data['appassword'])):
+				if(isset($_SERVER['HTTP_REFERER'])):
+					redirect($_SERVER['HTTP_REFERER']);
+				else:
+					redirect('webmaster-panel/actions/control');
+				endif;
 			endif;
+			$this->session->set_userdata('msgr','Есть не заполненные обязательные поля!<br/>Внимание! После заполнения необходимых полей сохраните и активируйте площадку.');
 		endif;
 		
 		$pagevar = array(
@@ -1627,6 +1663,11 @@ class Clients_interface extends CI_Controller{
 							$pl_data['info'] = $new_platform['requests'];
 							$param = 'siteid='.$new_platform['remoteid'].'&conf='.json_encode($pl_data);
 							$this->API('UpdateSiteOptions',$param);
+							/*if(!$pagevar['platform']['status']):
+								$this->mdplatforms->update_field($platform,'status',1);
+								$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
+								$this->API('SetSiteActive',$param);
+							endif;*/
 						endif;
 						/********************************************************************/
 						
@@ -1700,7 +1741,9 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
-		
+		for($i=0;$i<count($pagevar['mymarkets']);$i++):
+			$pagevar['mymarkets'][$i]['password'] = $this->encrypt->decode($pagevar['mymarkets'][$i]['cryptpassword']);
+		endfor;
 		if(!$pagevar['platform']['imgwidth'] && !$pagevar['platform']['imgheight']):
 			$pagevar['platform']['imgstatus'] = 0;
 			$pagevar['platform']['imgwidth'] = '';
@@ -1717,6 +1760,9 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
+		for($i=0;$i<count($markets);$i++):
+			$markets[$i]['password'] = $this->encrypt->decode($markets[$i]['cryptpassword']);
+		endfor;
 		for($m=0;$m<count($markets);$m++):
 			$param = 'birzid='.$markets[$m]['market'].'&login='.$markets[$m]['login'].'&pass='.$markets[$m]['password'];
 			$market_id = $this->API('AddNewAccount',$param);
@@ -1733,15 +1779,6 @@ class Clients_interface extends CI_Controller{
 					endforeach;
 					for($i=0;$i<count($pl_data);$i++):
 						if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
-							continue;
-						endif;
-						if($pl_data[$i]['off']):
-							/*$plid = $this->mdplatforms->find_remote_platform($pl_data[$i]['id']);
-							if($plid):
-								$this->session->set_userdata('msgs','Найдены заблокированные площадки. Удалены!');
-								$this->mdplatforms->delete_record($plid);
-								$this->mdmkplatform->delete_records_by_platform($plid,$this->user['uid']);
-							endif;*/
 							continue;
 						endif;
 						$new_platform['id'] = $pl_data[$i]['id'];
@@ -1781,8 +1818,13 @@ class Clients_interface extends CI_Controller{
 						$new_platform['clinkarh'] = 0;
 						$new_platform['mlinkarh'] = 0;
 						$new_platform['price'] = 0;
-						$new_platform['locked'] = 0;
+						$new_platform['locked'] = ($pl_data[$i]['off'])? 1 : 0;
 						$new_platform['status'] = 1;
+						
+						if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
+							$new_platform['status'] = 0;
+						endif;
+						
 						if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 							$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 							if($platform):
@@ -1826,6 +1868,21 @@ class Clients_interface extends CI_Controller{
 								$sqlquery .= ' WHERE platforms.id = '.$platform;
 								$this->mdplatforms->run_query($sqlquery);
 								$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+								$param = 'siteid='.$new_platform['id'];
+								$services = $this->API('GetAdditionalService',$param);
+								foreach($services as $key => $value):
+									$service = $value; $srv_data = array();
+									$srv = 0; $pl = $key;
+									foreach($service as $key => $value):
+										$srv_data[$srv]['service'] = $key;
+										$srv_data[$srv]['srvval'] = $value;
+										$srv_data[$srv]['platform'] = $pl;
+										$srv++;
+									endforeach;
+								endforeach;
+								for($srv = 0;$srv<count($srv_data);$srv++):
+									$this->mdattachedservices->insert_record($this->user['uid'],$srv_data[$srv]['service'],$srv_data[$srv]['srvval'],$srv_data[$srv]['platform']);
+								endfor;
 							endif;
 						else:
 							$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');

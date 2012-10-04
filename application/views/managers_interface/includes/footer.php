@@ -7,11 +7,11 @@
 				</div>
 			</div>
 			<div class="span7">
-				<!--<div id="bt-contacts">
+				<div id="bt-contacts">
 					<?=anchor('support','Техподдержка');?>
 					<?=anchor('#','Ссылки под Google');?>
 					<?=anchor('#','Статьи Биржасайтов');?><br/>
-				</div>-->
+				</div>	
 			</div>
 		</div>
 	</footer>

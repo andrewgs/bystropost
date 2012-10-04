@@ -30,6 +30,11 @@
 			</td>
 		</tr>
 		<tr>
+			<?php if($userinfo['remote'] || $platform['manager'] == 2):
+				$disabled = TRUE;
+			else:
+				$disabled = FALSE;
+			endif;?>
 			<td>Биржи:</td>
 			<td style="text-align: left;">
 				<div id="exp">
@@ -40,21 +45,26 @@
 						<label class="label-input left w250">Логин</label>
 						<label class="label-input left w85">Пароль</label>
 						<div class="clear"></div>
-						<select class="reg-form-input w195 h30" name="markets[]" style="vertical-align:top;padding: 5px;">
+						<select class="reg-form-input w195 h30" name="markets[]" style="vertical-align:top;padding: 5px;" <?=($disabled)?'disabled':'';?>>
 						<?php for($i=0;$i<count($markets);$i++):?>
 							<option value="<?=$markets[$i]['id'];?>" <?php if($markets[$i]['id'] == $mymarkets[$j]['market']) echo 'selected="selected"';?>><?=$markets[$i]['title'];?></option>
 						<?php endfor; ?>
 						</select>
-						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>"/>
-						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>"/>
+						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>" <?=($disabled)?'disabled="disabled"':'';?>/>
+						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>" <?=($disabled)?'disabled="disabled"':'';?>/>
 						<div class="clear"></div>
 					</div>
 				<?php endfor;?>
 				</div>
 				<div class="clear"></div>
-			<?php if(!$userinfo['remote'] || $platform['manager'] != 2):?>
+			<?php if(!$disabled):?>
 				<input class="goog-button mt7 mb10" style="height: 30px;" id="btnAddMarketLine" type="button" value="Добавить аккаунт"/>
 				<input class="goog-button mt7 mb10" style="height: 30px;" id="btnDelMarketLine" type="button" value="Удалить аккаунт"/>
+			<?php endif;?>
+			<?php if(!count($mymarkets)):?>
+				<div class="alert alert-info" style="margin:0;">
+					Отсутствуют биржи. Работа с площадкой прекращена.<br/>Если информация не верна, обратитесь к администрации сайта.
+				</div>
 			<?php endif;?>
 			</td>
 		</tr>

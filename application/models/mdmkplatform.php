@@ -8,6 +8,7 @@ class Mdmkplatform extends CI_Model{
 	var $market 	= 0;
 	var $login 		= '';
 	var $password 	= '';
+	var $cryptpassword 	= '';
 	
 	function __construct(){
 		parent::__construct();
@@ -19,7 +20,8 @@ class Mdmkplatform extends CI_Model{
 		$this->platform 	= $platform;
 		$this->market 		= $market;
 		$this->login 		= $login;
-		$this->password 	= $password;
+		$this->password 	= md5($password);
+		$this->cryptpassword= $this->encrypt->encode($password);
 		
 		$this->db->insert('mkplatform',$this);
 		return $this->db->insert_id();
@@ -28,12 +30,13 @@ class Mdmkplatform extends CI_Model{
 	function group_insert($uid,$platform,$data){
 		$query = '';
 		for($i=0;$i<count($data);$i++):
-			$query .= '('.$uid.','.$platform.','.$data[$i]['mkid'].',"'.$data[$i]['mklogin'].'","'.$data[$i]['mkpass'].'") ';
+			
+			$query .= '('.$uid.','.$platform.','.$data[$i]['mkid'].',"'.$data[$i]['mklogin'].'","'.md5($data[$i]['mkpass']).'","'.$this->encrypt->encode($data[$i]['mkpass']).'") ';
 			if($i+1<count($data)):
 				$query.=',';
 			endif;
 		endfor;
-		$this->db->query("INSERT INTO mkplatform (webmaster,platform,market,login,password) VALUES ".$query);
+		$this->db->query("INSERT INTO mkplatform (webmaster,platform,market,login,password,cryptpassword) VALUES ".$query);
 	}
 	
 	function read_records(){
@@ -105,7 +108,7 @@ class Mdmkplatform extends CI_Model{
 		$this->db->where('market',$market);
 		$this->db->where('platform',$platform);
 		$this->db->where('login',$login);
-		$this->db->where('password',$password);
+		$this->db->where('password',md5($password));
 		$query = $this->db->get('mkplatform');
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
@@ -116,6 +119,16 @@ class Mdmkplatform extends CI_Model{
 	
 		$this->db->where('platform',$platform);
 		$this->db->where('webmaster',$uid);
+		$this->db->delete('mkplatform');
+		return $this->db->affected_rows();
+	}
+	
+	function delete_records_by_webmarket($webmaster,$market,$login,$password){
+	
+		$this->db->where('webmaster',$webmaster);
+		$this->db->where('market',$market);
+		$this->db->where('login',$login);
+		$this->db->where('password',$password);
 		$this->db->delete('mkplatform');
 		return $this->db->affected_rows();
 	}
