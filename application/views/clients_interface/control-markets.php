@@ -56,17 +56,17 @@
 				var Param = $(this).attr('data-param');
 				var objSpan = $("span[id = timer"+Param+"]");
 				mID = $("div[id = params"+Param+"]").attr("data-mid");
-				var timer = 10;
+				var timer = 40;
 				$("div[id = params"+Param+"]").parents('tr').addClass('alert alert-info');
-//				parsing_platforms(mID,objSpan,timer);
-				$("#load").load("<?=$baseurl;?>webmaster-panel/actions/markets/loading",{'market':mID},function(data){
-					if(data.status){
-						if(plcnt){
-							$(objSpan).html('Загружено площадок: '+plcnt);
-						}
-					}},"json");
+				parsing_platforms(mID,objSpan,timer);
 			});
 			
+			function load_platforms(market,objSpan){
+				$.post("<?=$baseurl;?>webmaster-panel/actions/markets/loading",{'market':market},function(data){
+					if(data.status){
+						$(objSpan).html('Загружено площадок: '+data.plcnt);
+					}},"json");
+			}
 			function parsing_platforms(market,objSpan,timer){
 				$.post("<?=$baseurl;?>webmaster-panel/actions/markets/parsing",{'market':mID},function(data){
 					if(data.status){
@@ -84,16 +84,6 @@
 					}
 				},"json");
 			}
-			
-			function load_platforms(market,objSpan){
-				$.post("<?=$baseurl;?>webmaster-panel/actions/markets/loading",{'market':market},function(data){
-					if(data.status){
-						if(plcnt){
-							$(objSpan).html('Загружено площадок: '+plcnt);
-						}
-					}},"json");
-			}
-			
 			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);$(".inpval").val('');$("#loading").val('');});
 			$(".deleteMarket").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
 			$("#DelMarket").click(function(){location.href='<?=$baseurl;?>webmaster-panel/actions/markets/delete/marketid/'+mID;});
