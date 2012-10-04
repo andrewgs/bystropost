@@ -994,7 +994,6 @@ class Clients_interface extends CI_Controller{
 				for($i=0;$i<count($plmarkets);$i++):
 					if(is_null($plmarkets[$i]['mkid'])):
 						$param = 'siteid='.$plmarkets[$i]['remoteid'].'&value=1';
-						print_r($param);exit;
 						$this->API('SetSiteActive',$param);
 					endif;
 				endfor;

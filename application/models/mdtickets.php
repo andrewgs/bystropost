@@ -124,7 +124,14 @@ class Mdtickets extends CI_Model{
 		$this->db->delete('tickets');
 		return $this->db->affected_rows();
 	}
-
+	
+	function delete_records_by_platform($platform){
+	
+		$this->db->where('platform',$platform);
+		$this->db->delete('tickets');
+		return $this->db->affected_rows();
+	}
+	
 	function ownew_ticket($sender,$id){
 		
 		$this->db->where('id',$id);

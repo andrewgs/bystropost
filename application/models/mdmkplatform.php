@@ -70,7 +70,7 @@ class Mdmkplatform extends CI_Model{
 	function read_records_platform($platform){
 		
 		$this->db->order_by('platform,id');
-		$this->db->group_by('platform');
+		$this->db->group_by('market');
 		$this->db->where('platform',$platform);
 		$query = $this->db->get('mkplatform');
 		$data = $query->result_array();

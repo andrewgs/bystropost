@@ -144,4 +144,12 @@ class Mdattachedservices extends CI_Model{
 		if(count($data)) return TRUE;
 		return FALSE;
 	}
+
+	function delete_records_by_platform($platform,$user){
+	
+		$this->db->where('platform',$platform);
+		$this->db->where('user',$user);
+		$this->db->delete('attachedservices');
+		return $this->db->affected_rows();
+	}
 }

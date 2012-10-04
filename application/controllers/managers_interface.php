@@ -204,6 +204,7 @@ class Managers_interface extends CI_Controller{
 	
 	public function control_platforms(){
 		
+		$from = intval($this->uri->segment(5));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -212,12 +213,29 @@ class Managers_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'platforms'		=> $this->mdplatforms->read_records_by_manager($this->user['uid']),
+					'platforms'		=> $this->mdplatforms->read_records_by_manager($this->user['uid'],10,$from),
+					'count'			=> $this->mdplatforms->count_records_by_manager($this->user['uid']),
+					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'manager-panel/actions/platforms/from/';
+		$config['uri_segment'] 		= 5;
+		$config['total_rows'] 		= $pagevar['count']; 
+		$config['per_page'] 		= 10;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<span class="actpage">';
+		$config['cur_tag_close'] 	= '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
@@ -227,9 +245,25 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
+		if($this->input->post('scsubmit')):
+			$_POST['scsubmit'] = NULL;
+			$this->form_validation->set_rules('srplid',' ','required|numeric|trim');
+			if(!$this->form_validation->run()):
+				redirect($this->uri->uri_string());
+			else:
+				$result = $this->mdunion->read_platform_by_id($_POST['srplid']);
+				if($result):
+					$pagevar['title'] .= 'Кабинет Менеджера | Назначенные площадки | Поиск выполнен';
+					$pagevar['platforms'] = $result;
+					$pagevar['pages'] = NULL;
+				endif;
+			endif;
+		endif;
+		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
 		endfor;
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("managers_interface/control-platforms",$pagevar);
 	}
 	
@@ -395,6 +429,23 @@ class Managers_interface extends CI_Controller{
 		endif;
 		
 		$this->load->view("managers_interface/control-view-platform",$pagevar);
+	}
+	
+	public function search_platforms(){
+		
+		$statusval = array('status'=>FALSE,'retvalue'=>'');
+		$search = $this->input->post('squery');
+		if(!$search) show_404();
+		$platforms = $this->mdplatforms->search_platforms($search);
+		if($platforms):
+			$statusval['retvalue'] = '<ul>';
+			for($i=0;$i<count($platforms);$i++):
+				$statusval['retvalue'] .= '<li class="plorg" data-plid="'.$platforms[$i]['id'].'">'.$platforms[$i]['url'].'</li>';
+			endfor;
+			$statusval['retvalue'] .= '</ul>';
+			$statusval['status'] = TRUE;
+		endif;
+		echo json_encode($statusval);
 	}
 	
 	/**************************************************** deliver work ****************************************************/	

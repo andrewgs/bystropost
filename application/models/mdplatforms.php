@@ -302,10 +302,11 @@ class Mdplatforms extends CI_Model{
 		return 0;
 	}
 	
-	function read_records_by_manager($uid){
+	function read_records_by_manager($uid,$count,$from){
 		
 		$this->db->order_by('date');
 		$this->db->where('manager',$uid);
+		$this->db->limit($count,$from);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(count($data)) return $data;

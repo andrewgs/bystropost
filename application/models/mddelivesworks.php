@@ -276,4 +276,12 @@ class Mddelivesworks extends CI_Model{
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return NULL;
 	}
+
+	function delete_records_by_platform($platform,$webmaster){
+	
+		$this->db->where('platform',$platform);
+		$this->db->where('webmaster',$webmaster);
+		$this->db->delete('delivesworks');
+		return $this->db->affected_rows();
+	}
 }

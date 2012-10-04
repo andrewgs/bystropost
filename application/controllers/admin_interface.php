@@ -942,7 +942,6 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				redirect($this->uri->uri_string());
 			else:
-				
 				$result = $this->mdunion->read_platform_by_id($_POST['srplid']);
 				if($result):
 					$pagevar['title'] .= 'Администрирование | Площадки | Поиск выполнен';
@@ -988,6 +987,10 @@ class Admin_interface extends CI_Controller{
 			if($result):
 				$text = 'Площадка '.$info['url'].'. Удалена администратором';
 				if($info['webmaster']):
+					$this->mdmkplatform->delete_records_by_platform($pid,$info['webmaster']);
+					$this->mddelivesworks->delete_records_by_platform($pid,$info['webmaster']);
+					$this->mdattachedservices->delete_records_by_platform($pid,$info['webmaster']);
+//					$this->mdtickets->delete_records_by_platform($pid);
 					$this->mdmessages->send_noreply_message($this->user['uid'],$info['webmaster'],1,1,$text);
 					ob_start();
 					?>
