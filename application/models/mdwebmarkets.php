@@ -65,6 +65,16 @@ class Mdwebmarkets extends CI_Model{
 		return NULL;
 	}
 	
+	function read_owner_market($id,$uid){
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$uid);
+		$query = $this->db->get('webmarkets',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
 	function read_field($id,$field){
 			
 		$this->db->where('id',$id);

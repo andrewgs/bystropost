@@ -2279,7 +2279,12 @@ class Admin_interface extends CI_Controller{
 			$znak = '<';
 		endif;
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
-		$debetors = $this->mdunion->update_debetors_status($date,$znak,1);
+		$this->mdunion->update_debetors_status($date,$znak,1);
+		$debetors = $this->mdunion->debetors_webmarkets();
+		for($i=0;$i<count($debetors);$i++):
+			$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.$this->encrypt->decode($debetors[$i]['cryptpassword']).'&act=2';
+			$this->API('UpdateAccount',$param);
+		endfor;
 		echo json_encode($statusval);
 	}
 

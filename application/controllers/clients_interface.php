@@ -892,17 +892,7 @@ class Clients_interface extends CI_Controller{
 									$sqlquery = "UPDATE platforms SET ";
 									$works = $this->mdtypeswork->read_records();
 									for($j=0;$j<count($works);$j++):
-										$wadd = $addwtic;
-										$madd = $addmtic;
-										$arr_works = array(1,2,4,5);
-										if(in_array($works[$j]['id'],$arr_works)):
-											switch($new_platform['amount']):
-												case 1 : $wadd += 0; $madd += 0; break;
-												case 2 : $wadd += 11; $madd += 9; break;
-												case 3 : $wadd += 23; $madd += 18; break;
-											endswitch;
-										endif;
-										$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+										$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$addwtic).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$addmtic);
 										if(isset($works[$j+1])):
 											$sqlquery .= ', ';
 										endif;
@@ -1007,7 +997,34 @@ class Clients_interface extends CI_Controller{
 			show_404();
 		endif;
 	}
-
+	
+	public function control_market_parsing(){
+		
+		$statusval = array('status'=>TRUE,);
+		$market = trim($this->input->post('market'));
+		if(!$market):
+			show_404();
+		endif;
+		$info = $this->mdwebmarkets->read_owner_market($market,$this->user['uid']);
+		$param = 'accid='.$info['id'].'&birzid='.$info['market'];
+		$this->API('ImportSitesFromAccount',$param);
+		echo json_encode($statusval);
+	}
+	
+	public function control_market_loading(){
+		
+		$statusval = array('status'=>TRUE,'plcnt'=>0);
+		$market = trim($this->input->post('market'));
+		if(!$market):
+			show_404();
+		endif;
+		$info = $this->mdwebmarkets->read_owner_market($market,$this->user['uid']);
+		$param = 'birzid='.$info['market'].'&accid='.$info['id'];
+		$platforms = $this->API('GetSitesFromAccount',$param);
+		$statusval['plcnt'] = $this->load_platforms($platforms,$market);
+		echo json_encode($statusval);
+	}
+	
 /******************************************************** mails *********************************************************/	
 	
 	public function control_mails(){
@@ -1139,7 +1156,7 @@ class Clients_interface extends CI_Controller{
 	/**************************************************** finished jobs ******************************************************/	
 	
 	public function control_finished_jobs(){
-		
+
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1213,6 +1230,11 @@ class Clients_interface extends CI_Controller{
 						$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
 						if(!$debetor):
 							$this->mdusers->update_field($this->user['uid'],'debetor',0);
+							$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+							for($i=0;$i<count($markets);$i++):
+								$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
+								$this->API('UpdateAccount',$param);
+							endfor;
 							$message .= '<br/>Внимание! Ваш аккаунт разблокирован.';
 						endif;
 						
@@ -1305,7 +1327,7 @@ class Clients_interface extends CI_Controller{
 					$this->mdusers->change_user_balance($works[$i]['manager'],$works[$i]['mprice']);
 				endif;
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
-				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice']); // Запись о том что перечислены деньги админу с указанием суммы
+				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice'],'Автоматическая оплата'); // Запись о том что перечислены деньги админу с указанием суммы
 			endif;
 		endfor;
 		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
@@ -1315,6 +1337,11 @@ class Clients_interface extends CI_Controller{
 		$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
 		if(!$debetor):
 			$this->mdusers->update_field($this->user['uid'],'debetor',0);
+			$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+			for($i=0;$i<count($markets);$i++):
+				$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
+				$this->API('UpdateAccount',$param);
+			endfor;
 			$message .= '<br/>Внимание! Ваш аккаунт разблокирован.';
 		endif;
 		
@@ -1849,17 +1876,7 @@ class Clients_interface extends CI_Controller{
 								$sqlquery = "UPDATE platforms SET ";
 								$works = $this->mdtypeswork->read_records();
 								for($j=0;$j<count($works);$j++):
-									$wadd = $addwtic;
-									$madd = $addmtic;
-									$arr_works = array(1,2,4,5);
-									if(in_array($works[$j]['id'],$arr_works)):
-										switch($new_platform['amount']):
-											case 1 : $wadd += 0; $madd += 0; break;
-											case 2 : $wadd += 11; $madd += 9; break;
-											case 3 : $wadd += 23; $madd += 18; break;
-										endswitch;
-									endif;
-									$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+									$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$addwtic).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$addmtic);
 									if(isset($works[$j+1])):
 										$sqlquery .= ', ';
 									endif;
@@ -2274,7 +2291,118 @@ class Clients_interface extends CI_Controller{
 		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
 	}
-
+	
+	private function load_platforms($platforms,$market){
+		
+		if($platforms):
+			$i = $cntpl = 0;
+			$pl_data = array();
+			foreach($platforms as $key => $value):
+				$pl_data[$i] = $value;
+				$pl_data[$i]['id'] = $key;
+				$i++;
+			endforeach;
+			for($i=0;$i<count($pl_data);$i++):
+				if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
+					continue;
+				endif;
+				$new_platform['id'] = $pl_data[$i]['id'];
+				$new_platform['webmaster'] = $this->user['uid'];
+				$new_platform['manager'] = 2;
+				$new_platform['url'] = $pl_data[$i]['url'];
+				$new_platform['subject'] = ($pl_data[$i]['tematic'])? $pl_data[$i]['tematic'] : 1;
+				$new_platform['cms'] = ($pl_data[$i]['cms'])? $pl_data[$i]['cms'] : 1;
+				$new_platform['adminpanel'] = ($pl_data[$i]['adminurl'])? $pl_data[$i]['adminurl'] : '';
+				$new_platform['aplogin'] = ($pl_data[$i]['cms_login'])? $pl_data[$i]['cms_login'] : '';
+				$new_platform['appassword'] = ($pl_data[$i]['cms_pass'])? $pl_data[$i]['cms_pass'] : '';
+				$new_platform['tematcustom'] = $pl_data[$i]['tematcustom'];
+				$new_platform['reviews'] = ($pl_data[$i]['review'])? 1 : 0;
+				$new_platform['thematically'] = ($pl_data[$i]['subjects'])? 1 : 0;
+				$new_platform['illegal'] = ($pl_data[$i]['filter'])? 1 : 0;
+				$new_platform['criteria'] = '';
+				$new_platform['imgstatus'] = $pl_data[$i]['param']['image']['status'];
+				$new_platform['imgwidth'] = $pl_data[$i]['param']['image']['imgwidth'];
+				$new_platform['imgheight'] = $pl_data[$i]['param']['image']['imgheight'];
+				$new_platform['imgpos'] = $pl_data[$i]['param']['image']['imgpos'];
+				$new_platform['requests'] = ($pl_data[$i]['info'])? $pl_data[$i]['info'] : '';
+				$new_platform['tic'] = 0;
+				$new_platform['pr'] = 0;
+				$new_platform['ccontext'] = 0;
+				$new_platform['mcontext'] = 0;
+				$new_platform['cnotice'] = 0;
+				$new_platform['mnotice'] = 0;
+				$new_platform['creview'] = 0;
+				$new_platform['mreview'] = 0;
+				$new_platform['cnews'] = 0;
+				$new_platform['mnews'] = 0;
+				$new_platform['clinkpic'] = 0;
+				$new_platform['mlinkpic'] = 0;
+				$new_platform['cpressrel'] = 0;
+				$new_platform['mpressrel'] = 0;
+				$new_platform['clinkarh'] = 0;
+				$new_platform['mlinkarh'] = 0;
+				$new_platform['price'] = 0;
+				$new_platform['locked'] = ($pl_data[$i]['off'])? 1 : 0;
+				$new_platform['status'] = 1;
+				if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
+					$new_platform['status'] = 0;
+				endif;
+				if(!$this->mdplatforms->exist_platform($new_platform['url'])):
+					$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
+					if($platform):
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password']);
+						$addwtic = $addmtic = 0;
+						$pr = $this->getpagerank($new_platform['url']);
+						$this->mdplatforms->update_field($platform,'pr',$pr);
+						$tic = $this->getTIC('http://'.$new_platform['url']);
+						$this->mdplatforms->update_field($platform,'tic',$tic);
+						if($tic >= 30):
+							$addwtic = 5;
+							$addmtic = 2;
+						endif;
+						$sqlquery = "UPDATE platforms SET ";
+						$works = $this->mdtypeswork->read_records();
+						for($j=0;$j<count($works);$j++):
+							$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$addwtic).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$addmtic);
+							if(isset($works[$j+1])):
+								$sqlquery .= ', ';
+							endif;
+						endfor;
+						$sqlquery .= ' WHERE platforms.id = '.$platform;
+						$this->mdplatforms->run_query($sqlquery);
+						$cntpl++;
+						$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
+						$param = 'siteid='.$new_platform['id'];
+						$services = $this->API('GetAdditionalService',$param);
+						foreach($services as $key => $value):
+							$service = $value; $srv_data = array();
+							$srv = 0; $pl = $key;
+							foreach($service as $key => $value):
+								$srv_data[$srv]['service'] = $key;
+								$srv_data[$srv]['srvval'] = $value;
+								$srv_data[$srv]['platform'] = $pl;
+								$srv++;
+							endforeach;
+						endforeach;
+						for($srv = 0;$srv<count($srv_data);$srv++):
+							$this->mdattachedservices->insert_record($this->user['uid'],$srv_data[$srv]['service'],$srv_data[$srv]['srvval'],$srv_data[$srv]['platform']);
+						endfor;
+					endif;
+				else:
+					$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
+					if(!$this->mdmkplatform->exist_market_platform($platform,$_POST['market'],$_POST['login'],$_POST['password'])):
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
+					endif;
+					continue;
+				endif;
+				unset($new_platform);
+			endfor;
+			return $cntpl;
+		else:
+			return 0;
+		endif;
+	}
+	
 	/******************************************************** Расчет парсинга ПР и ТИЦ ******************************************************/
 	
 	public function StrToNum($Str, $Check, $Magic){
