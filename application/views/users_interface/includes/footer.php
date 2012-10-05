@@ -16,17 +16,11 @@
 			<!-- begin WebMoney Transfer : attestation label -->
 			<img src="/images/v_blue_on_white_ru.png" alt="Здесь находится аттестат нашего WM идентификатора 915236488902" border="0" />
 			<!-- end WebMoney Transfer : accept label -->
-			<!--LiveInternet counter--><script type="text/javascript"><!--
-document.write("<a href='http://www.liveinternet.ru/click' "+
-"target=_blank><img src='//counter.yadro.ru/hit?t57.1;r"+
-escape(document.referrer)+((typeof(screen)=="undefined")?"":
-";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
-screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
-";"+Math.random()+
-"' alt='' title='LiveInternet' "+
-"border='0' width='88' height='31'><\/a>")
-//--></script><!--/LiveInternet-->
-
+			<!--LiveInternet counter-->
+			<script type="text/javascript">
+				document.write("<a href='http://www.liveinternet.ru/click' " + "target=_blank><img src='//counter.yadro.ru/hit?t57.1;r" + escape(document.referrer) + (( typeof (screen) == "undefined") ? "" : ";s" + screen.width + "*" + screen.height + "*" + (screen.colorDepth ? screen.colorDepth : screen.pixelDepth)) + ";u" + escape(document.URL) + ";" + Math.random() + "' alt='' title='LiveInternet' " + "border='0' width='88' height='31'><\/a>");
+			</script>
+			<!--/LiveInternet-->
 			<a class="check-certificate" href="https://passport.webmoney.ru/asp/certview.asp?wmid=915236488902" target="_blank">
 				Проверить аттестат
 			</a>

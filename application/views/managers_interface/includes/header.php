@@ -15,7 +15,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
-			<h1 class="admin-h1">Система управления продажами <span>/ Профиль &laquo;Менеджера&raquo;</span></h1>
+			<h1 class="admin-h1">Система мониторинга и управления <span>/ Профиль &laquo;Менеджера&raquo;</span></h1>
 		</div>
 	</div>
 </div>
