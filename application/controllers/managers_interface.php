@@ -216,6 +216,7 @@ class Managers_interface extends CI_Controller{
 					'platforms'		=> $this->mdplatforms->read_records_by_manager($this->user['uid'],10,$from),
 					'count'			=> $this->mdplatforms->count_records_by_manager($this->user['uid']),
 					'pages'			=> array(),
+					'workplatform'	=> $this->mdplatforms->count_works_records_by_manager($this->user['uid']),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -556,11 +557,15 @@ class Managers_interface extends CI_Controller{
 	
 	public function remote_deliver_work(){
 		
-		$kol = 0;
-		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid']);
+		$statusval = array('nextstep'=>TRUE,'plcount'=>0,'count'=>'','from'=>'','wkol'=>0);
+		$count = trim($this->input->post('count'));
+		$from = trim($this->input->post('from'));
+		if(!$count):
+			show_404();
+		endif;
+		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
 		if(!count($platforms)):
-			$this->session->set_userdata('msgr','Ошибка. Нет площадок. Импорт невозможен.');
-			redirect('manager-panel/actions/platforms');
+			$statusval['nextstep'] = FALSE;
 		else:
 			$markets = $this->mdmarkets->read_records();
 			$typeswork = $this->mdtypeswork->read_records_id();
@@ -577,7 +582,7 @@ class Managers_interface extends CI_Controller{
 						if($webmarkets[$wmk]['market'] == $markets[$mk]['id']):
 							$param = 'birzid='.$markets[$mk]['id'].'&accid='.$webmarkets[$wmk]['id'].'&datefrom='.$datefrom.'&dateto='.$dateto;
 							$deliver_works = $this->API('GetFinishedOrder',$param);
-							if(isset($deliver_works) && count($deliver_works)):
+							if($deliver_works):
 								$dwd = 0;
 								$dw_data = array();
 								foreach($deliver_works as $key => $value):
@@ -610,7 +615,7 @@ class Managers_interface extends CI_Controller{
 											
 											if(!$this->mddelivesworks->exist_work($new_work['id'])):
 												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
-												$kol++;
+												$statusval['wkol']++;
 											else:
 												continue;
 											endif;
@@ -622,11 +627,11 @@ class Managers_interface extends CI_Controller{
 					endfor;
 				endfor;
 			endfor;
-			
-			$this->mdlog->insert_record($this->user['uid'],'Событие №23: Произведена загрузка выполненных заданий. '.$kol.' записей');
-			$this->session->set_userdata('msgs','Выполненные работы импортированы. '.$kol.' записей');
-			redirect('manager-panel/actions/control');
 		endif;
+		$statusval['plcount'] = count($platforms);
+		$statusval['count'] = $count;
+		$statusval['from'] = $from;
+		echo json_encode($statusval);
 	}
 
 	/******************************************************* mails *********************************************************/	

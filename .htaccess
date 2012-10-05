@@ -1,4 +1,4 @@
-﻿AddDefaultCharset utf-8
+AddDefaultCharset utf-8
 Options +FollowSymLinks
 Options -Indexes
 DirectoryIndex index.php
@@ -6,8 +6,17 @@ php_value upload_max_filesize 10M
 
 RewriteEngine On
 RewriteBase /
-RewriteCond $1 !^(index\.php|images|robots\.txt|public)
-RewriteCond %{REQUEST_URI} !\.(css│js│jpg│gif)$
+
+RewriteCond	%{HTTP_HOST}	^(www\.)?bistropost\.ru$	[NC,OR]
+RewriteCond	%{HTTP_HOST}	^(www\.)?bystropost\.com$	[NC]
+RewriteRule	^(.*)$		http://bystropost.ru/$1		[R=301,L]
+
+RewriteCond $1 !^(index\.php|images|robots\.txt|javascript)
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|gif)$
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d	
-RewriteRule ^(.*)$ index.php/$1 [L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+
+RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+#RewriteRule ^(admin-panel/) https://%{HTTP_HOST}%{REQUEST_URI}

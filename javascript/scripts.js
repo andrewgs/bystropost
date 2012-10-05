@@ -23,7 +23,7 @@ function isFindDomenToURL(platform,url){
 };
 
 (function($){
-	var baseurl = "http://bystropost/";
+	var baseurl = "http://bystropost.ru/";
 	
 	$("#msgeclose").click(function(){$("#msgdealert").fadeOut(1000,function(){$(this).remove();});});
 	$("#msgsclose").click(function(){$("#msgdsalert").fadeOut(1000,function(){$(this).remove();});});

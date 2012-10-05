@@ -13,7 +13,8 @@
 					</li>
 				<?php if($userinfo['uid'] == 2):?>
 					<li style="float:right;">
-						<?=anchor('manager-panel/actions/platforms/remote_deliver_work','Импортировать работы',array('class'=>'btn btn-info DLWorks','style'=>'margin-top: -5px;'));?>
+						<a class="btn btn-info DLWorks none" style="margin-top: -5px;" href="#" title="Импортировать работы"><i class="icon-download-alt icon-white"></i> Импортировать работы</a>
+						<span id="SpLoadWorks" class="btn btn-warning" style="display:none;margin-top: -5px;"></span>
 					</li>
 				<?php endif;?>
 				</ul>
@@ -94,7 +95,42 @@
 			$("td[data-locked='locked']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
-			$(".DLWorks").click(function(event){$("#msdownloading").show();});
+		<?php if($userinfo['uid'] == 2):?>
+			var stopRequest = false;
+			$(".DLWorks").click(function(){
+				var objSpan = $("#SpLoadWorks");
+				 var intervalID; var plcount = <?=$workplatform;?>;
+				var from=0;var count = 1;
+				$(objSpan).siblings('a').remove();
+				stopRequest = ajaxRequest(count,from);
+				$(objSpan).show().html('Обработка площадок: '+parseInt(from+1)+' из '+plcount);
+				intervalID = setInterval(
+					function(){
+						if(stopRequest || (from+1) >=plcount){
+							$(objSpan).show().html('Обработка завершена!');
+							clearInterval(intervalID);
+						}else{
+							from = from + count;
+							stopRequest = ajaxRequest(count,from);
+							$(objSpan).show().html('Обработка площадок: '+parseInt(from+1)+' из '+plcount);
+						}
+					}
+				,1000);
+			});
+			function ajaxRequest(count,from){
+				$.ajax({
+					url: "<?=$baseurl;?>manager-panel/actions/platforms/remote_deliver_work",
+					data: ({'count':count,'from':from}),
+					type: "POST",
+					dataType: "JSON",
+					success: function(data){
+						if(!data.nextstep){stopRequest = true;console.log(stopRequest);}
+					}
+				});
+				return stopRequest;
+			}
+		<?php endif?>
+		
 			function suggest(inputString){
 				if(inputString.length < 2){
 					$("#suggestions").fadeOut();

@@ -95,12 +95,13 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
-	function read_managers_platform_remote($manager){
+	function read_managers_platform_remote($manager,$count,$from){
 		
 		$this->db->where('remoteid >',0);
 		$this->db->where('manager',$manager);
 		$this->db->where('locked',0);
 		$this->db->where('status',1);
+		$this->db->limit($count,$from);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -322,6 +323,20 @@ class Mdplatforms extends CI_Model{
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return 0;
 	}
+	
+	function count_works_records_by_manager($uid){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('manager',$uid);
+		$this->db->where('locked',0);
+		$this->db->where('status',1);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	
 	
 	function read_record($id){
 		

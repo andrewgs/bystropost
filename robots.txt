@@ -1,0 +1,3 @@
+User-agent: *
+Host: bystropost.ru
+Sitemap: http://bystropost.ru/sitemap.xml
