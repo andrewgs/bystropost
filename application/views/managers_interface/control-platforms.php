@@ -97,37 +97,48 @@
 			});
 		<?php if($userinfo['uid'] == 2):?>
 			var stopRequest = false;
+			var stopScript = false;
 			$(".DLWorks").click(function(){
 				var objSpan = $("#SpLoadWorks");
 				 var intervalID; var plcount = <?=$workplatform;?>;
-				var from=0;var count = 1;
+				var from=0;var count = <?=($workplatform<4)?$workplatform:4;?>;
 				$(objSpan).siblings('a').remove();
-				stopRequest = ajaxRequest(count,from);
-				$(objSpan).show().html('Обработка площадок: '+parseInt(from+1)+' из '+plcount);
+				ajaxRequest(count,from);
+				$(objSpan).show().html('Обработка площадок: '+parseInt(from+count)+' из '+plcount);
 				intervalID = setInterval(
 					function(){
-						if(stopRequest || (from+1) >=plcount){
-							$(objSpan).show().html('Обработка завершена!');
-							clearInterval(intervalID);
-						}else{
-							from = from + count;
-							stopRequest = ajaxRequest(count,from);
-							$(objSpan).show().html('Обработка площадок: '+parseInt(from+1)+' из '+plcount);
+						if(stopRequest){
+							if(stopScript || (from+1) >=plcount){
+								$(objSpan).show().html('Обработка завершена!');
+								clearInterval(intervalID);
+							}else{
+								from = from + count;
+								ajaxRequest(count,from);
+								if((from+count) <=plcount){
+									$(objSpan).show().html('Обработка площадок: '+parseInt(from+count)+' из '+plcount);
+								}else{
+									$(objSpan).show().html('Обработка площадок: '+plcount+' из '+plcount);
+								}
+								
+							}
 						}
 					}
 				,1000);
 			});
 			function ajaxRequest(count,from){
+			
+				stopRequest = false;
+				stopScript = false;
 				$.ajax({
 					url: "<?=$baseurl;?>manager-panel/actions/platforms/remote_deliver_work",
 					data: ({'count':count,'from':from}),
 					type: "POST",
 					dataType: "JSON",
 					success: function(data){
-						if(!data.nextstep){stopRequest = true;console.log(stopRequest);}
+						stopRequest = true;
+						if(!data.nextstep){stopScript = true;}
 					}
 				});
-				return stopRequest;
 			}
 		<?php endif?>
 		
