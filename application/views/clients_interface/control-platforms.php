@@ -107,7 +107,7 @@
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
 		<?php if($userinfo['remote']):?>
-			$(".refresh").click(function(){$("#msrefresh").show();});
+			$(".refresh").click(function(){$(".alert ").hide();$("#msrefresh").show();});
 		<?php endif;?>
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");

@@ -11,7 +11,7 @@
 						<i class="icon-lock" title="Профиль заблокирован" style="float:left; margin-top:-15px;"></i>
 					<?php endif;?>
 					<?php if($userinfo['debetor']):?>
-						<i class="icon-warning-sign" title="Профиль заблокирован по задолженности" style="float:left; margin:-15px 0 0 25px"></i>
+						<i class="icon-warning-sign" title="Профиль заблокирован по задолженоости" style="float:left; margin:-15px 0 0 25px"></i>
 					<?php endif;?>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
-			<h1 class="admin-h1">Система управления продажами <span>/ Профиль &laquo;Вебмастера&raquo;</span></h1>
+			<h1 class="admin-h1">Система мониторинга и управления <span>/ Профиль &laquo;Вебмастера&raquo;</span></h1>
 		</div>
 	</div>
 </div>

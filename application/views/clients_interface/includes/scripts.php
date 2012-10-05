@@ -5,3 +5,6 @@
 <script type="text/javascript">
 	$("li[num='<?=$this->uri->segment(3);?>']").addClass('active');
 </script>
+<!-- RedHelper -->
+<script id="rhlpscrtg" type="text/javascript" charset="utf-8" async="async" src="https://web.redhelper.ru/service/main.js?c=bystropost"></script>
+<!--/Redhelper -->
