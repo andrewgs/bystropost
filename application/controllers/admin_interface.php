@@ -2080,8 +2080,8 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=375');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=375');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -2103,18 +2103,6 @@ class Admin_interface extends CI_Controller{
 		endif;
 //		print_r($mass_data);
 //		echo '<br/>'.count($mass_data);
-		$srv_data = array();
-		foreach($mass_data as $key => $value):
-			$service = $value;$srv = 0; $pl = $key;
-			foreach($service as $key => $value):
-				$srv_data[$srv]['service'] = $key;
-				$srv_data[$srv]['srvval'] = $value;
-				$srv_data[$srv]['platform'] = $pl;
-				$srv++;
-			endforeach;
-		endforeach;
-		print_r($srv_data);
-		exit;
 
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;

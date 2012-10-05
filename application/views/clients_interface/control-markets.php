@@ -39,7 +39,6 @@
 					<?php endfor; ?>
 					</tbody>
 				</table>
-				<div id="load"></div>
 				<a class="btn btn-info" data-toggle="modal" href="#addMarket" title="Добавить"><nobr>&nbsp;&nbsp;<i class="icon-plus icon-white"></i> Добавить&nbsp;&nbsp;</nobr></a>
 			</div>
 		<?php $this->load->view("clients_interface/includes/rightbar");?>
@@ -64,7 +63,7 @@
 			function load_platforms(market,objSpan){
 				$.post("<?=$baseurl;?>webmaster-panel/actions/markets/loading",{'market':market},function(data){
 					if(data.status){
-						$(objSpan).html('Загружено площадок: '+data.plcnt);
+						$(objSpan).html('Добавленно новых площадок: '+data.plcnt);
 					}},"json");
 			}
 			function parsing_platforms(market,objSpan,timer){

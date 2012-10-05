@@ -1014,12 +1014,12 @@ class Clients_interface extends CI_Controller{
 	public function control_market_loading(){
 		
 		$statusval = array('status'=>TRUE,'plcnt'=>0);
-		$market = trim($this->input->post('market'));
-		if(!$market):
+		$webmarket = trim($this->input->post('market'));
+		if(!$webmarket):
 			show_404();
 		endif;
-		$info = $this->mdwebmarkets->read_owner_market($market,$this->user['uid']);
-		$param = 'birzid='.$info['market'].'&accid='.$info['id'];
+		$market = $this->mdwebmarkets->read_owner_market($webmarket,$this->user['remoteid']);
+		$param = 'birzid='.$market['market'].'&accid='.$webmarket;
 		$platforms = $this->API('GetSitesFromAccount',$param);
 		$statusval['plcnt'] = $this->load_platforms($platforms,$market);
 		echo json_encode($statusval);
@@ -1779,142 +1779,6 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-edit-platform",$pagevar);
 	}
 	
-	public function control_platforms_refresh(){
-		
-		if(!$this->user['remote']):
-			show_404();
-		endif;
-		
-		$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
-		for($i=0;$i<count($markets);$i++):
-			$markets[$i]['password'] = $this->encrypt->decode($markets[$i]['cryptpassword']);
-		endfor;
-		for($m=0;$m<count($markets);$m++):
-			$param = 'birzid='.$markets[$m]['market'].'&login='.$markets[$m]['login'].'&pass='.$markets[$m]['password'];
-			$market_id = $this->API('AddNewAccount',$param);
-			if($market_id['id']):
-				$param = 'birzid='.$markets[$m]['market'].'&accid='.$market_id['id'];
-				$platforms = $this->API('GetSitesFromAccount',$param);
-				if(count($platforms)):
-					$i = 0;
-					$pl_data = array();
-					foreach($platforms as $key => $value):
-						$pl_data[$i] = $value;
-						$pl_data[$i]['id'] = $key;
-						$i++;
-					endforeach;
-					for($i=0;$i<count($pl_data);$i++):
-						if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
-							continue;
-						endif;
-						$new_platform['id'] = $pl_data[$i]['id'];
-						$new_platform['webmaster'] = $this->user['uid'];
-						$new_platform['manager'] = 2;
-						$new_platform['url'] = $pl_data[$i]['url'];
-						$new_platform['subject'] = ($pl_data[$i]['tematic'])? $pl_data[$i]['tematic'] : 1;
-						$new_platform['cms'] = ($pl_data[$i]['cms'])? $pl_data[$i]['cms'] : 1;
-						$new_platform['adminpanel'] = ($pl_data[$i]['adminurl'])? $pl_data[$i]['adminurl'] : '';
-						$new_platform['aplogin'] = ($pl_data[$i]['cms_login'])? $pl_data[$i]['cms_login'] : '';
-						$new_platform['appassword'] = ($pl_data[$i]['cms_pass'])? $pl_data[$i]['cms_pass'] : '';
-						$new_platform['tematcustom'] = $pl_data[$i]['tematcustom'];
-						$new_platform['amount'] = 1;
-						$new_platform['reviews'] = ($pl_data[$i]['review'])? 1 : 0;
-						$new_platform['thematically'] = ($pl_data[$i]['subjects'])? 1 : 0;
-						$new_platform['illegal'] = ($pl_data[$i]['filter'])? 1 : 0;
-						$new_platform['criteria'] = '';
-						$new_platform['imgstatus'] = $pl_data[$i]['param']['image']['status'];
-						$new_platform['imgwidth'] = $pl_data[$i]['param']['image']['imgwidth'];
-						$new_platform['imgheight'] = $pl_data[$i]['param']['image']['imgheight'];
-						$new_platform['imgpos'] = $pl_data[$i]['param']['image']['imgpos'];
-						$new_platform['requests'] = ($pl_data[$i]['info'])? $pl_data[$i]['info'] : '';
-						$new_platform['tic'] = 0;
-						$new_platform['pr'] = 0;
-						$new_platform['ccontext'] = 0;
-						$new_platform['mcontext'] = 0;
-						$new_platform['cnotice'] = 0;
-						$new_platform['mnotice'] = 0;
-						$new_platform['creview'] = 0;
-						$new_platform['mreview'] = 0;
-						$new_platform['cnews'] = 0;
-						$new_platform['mnews'] = 0;
-						$new_platform['clinkpic'] = 0;
-						$new_platform['mlinkpic'] = 0;
-						$new_platform['cpressrel'] = 0;
-						$new_platform['mpressrel'] = 0;
-						$new_platform['clinkarh'] = 0;
-						$new_platform['mlinkarh'] = 0;
-						$new_platform['price'] = 0;
-						$new_platform['locked'] = ($pl_data[$i]['off'])? 1 : 0;
-						$new_platform['status'] = 1;
-						
-						if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
-							$new_platform['status'] = 0;
-						endif;
-						
-						if(!$this->mdplatforms->exist_platform($new_platform['url'])):
-							$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
-							if($platform):
-								$this->session->set_userdata('msgs','Добавлены новые площадки. Назначьте на них дополнительные услуги если требуется.');
-								$attached = $this->mdunion->services_attached_list($this->user['uid']);
-								for($i=0;$i<count($attached);$i++):
-									$valuesrv = $this->mdvaluesrv->read_zero_price($attached[$i]['service']);
-									if(!$valuesrv):
-										$valuesrv = $this->mdvaluesrv->read_record_service($attached[$i]['service']);
-									endif;
-									$this->mdattachedservices->insert_record($this->user['uid'],$attached[$i]['service'],$valuesrv,$platform);
-								endfor;
-								$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password']);
-								$addwtic = $addmtic = 0;
-								$pr = $this->getpagerank($new_platform['url']);
-								$this->mdplatforms->update_field($platform,'pr',$pr);
-								$tic = $this->getTIC('http://'.$new_platform['url']);
-								$this->mdplatforms->update_field($platform,'tic',$tic);
-								if($tic >= 30):
-									$addwtic = 5;
-									$addmtic = 2;
-								endif;
-								$sqlquery = "UPDATE platforms SET ";
-								$works = $this->mdtypeswork->read_records();
-								for($j=0;$j<count($works);$j++):
-									$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$addwtic).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$addmtic);
-									if(isset($works[$j+1])):
-										$sqlquery .= ', ';
-									endif;
-								endfor;
-								$sqlquery .= ' WHERE platforms.id = '.$platform;
-								$this->mdplatforms->run_query($sqlquery);
-								$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
-								$param = 'siteid='.$new_platform['id'];
-								$services = $this->API('GetAdditionalService',$param);
-								foreach($services as $key => $value):
-									$service = $value; $srv_data = array();
-									$srv = 0; $pl = $key;
-									foreach($service as $key => $value):
-										$srv_data[$srv]['service'] = $key;
-										$srv_data[$srv]['srvval'] = $value;
-										$srv_data[$srv]['platform'] = $pl;
-										$srv++;
-									endforeach;
-								endforeach;
-								for($srv = 0;$srv<count($srv_data);$srv++):
-									$this->mdattachedservices->insert_record($this->user['uid'],$srv_data[$srv]['service'],$srv_data[$srv]['srvval'],$srv_data[$srv]['platform']);
-								endfor;
-							endif;
-						else:
-							$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
-							if(!$this->mdmkplatform->exist_market_platform($platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password'])):
-								$this->mdmkplatform->insert_record($this->user['uid'],$platform,$markets[$m]['market'],$markets[$m]['login'],$markets[$m]['password']);
-							endif;
-							continue;
-						endif;
-						unset($new_platform);
-					endfor;
-				endif;
-			endif;
-		endfor;
-		redirect($this->session->userdata('backpath'));
-	}
-	
 	/******************************************************** tickets ******************************************************/	
 	
 	public function control_tickets(){
@@ -2390,10 +2254,9 @@ class Clients_interface extends CI_Controller{
 					endif;
 				else:
 					$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
-					if(!$this->mdmkplatform->exist_market_platform($platform,$_POST['market'],$_POST['login'],$_POST['password'])):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$_POST['market'],$_POST['login'],$_POST['password']);
+					if(!$this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password'])):
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password']);
 					endif;
-					continue;
 				endif;
 				unset($new_platform);
 			endfor;

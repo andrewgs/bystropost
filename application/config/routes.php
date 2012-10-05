@@ -50,10 +50,7 @@ $route['webmaster-panel/actions/markets/delete/marketid/:num']		= "clients_inter
 $route['webmaster-panel/actions/markets/parsing']					= "clients_interface/control_market_parsing";
 $route['webmaster-panel/actions/markets/loading']					= "clients_interface/control_market_loading";
 
-
-
 $route['webmaster-panel/actions/platforms']							= "clients_interface/control_platforms";
-$route['webmaster-panel/actions/platforms/refresh-list']			= "clients_interface/control_platforms_refresh";
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
 
