@@ -1,3 +1,6 @@
+<!-- RedHelper -->
+	<script id="rhlpscrtg" type="text/javascript" charset="utf-8" async="async" src="https://web.redhelper.ru/service/main.js?c=bystropost"></script>
+<!--/Redhelper -->
 <div id="footer_bg">
 	<div id="footer">
 		<?=anchor('forum','Форум');?>
