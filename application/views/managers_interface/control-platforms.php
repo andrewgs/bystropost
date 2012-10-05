@@ -101,7 +101,7 @@
 			$(".DLWorks").click(function(){
 				var objSpan = $("#SpLoadWorks");
 				 var intervalID; var plcount = <?=$workplatform;?>;
-				var from=0;var count = <?=($workplatform<4)?$workplatform:4;?>;
+				var from=0;var count = <?=($workplatform<10)?$workplatform:10;?>;
 				$(objSpan).siblings('a').remove();
 				ajaxRequest(count,from);
 				$(objSpan).show().html('Обработка площадок: '+parseInt(from+count)+' из '+plcount);
