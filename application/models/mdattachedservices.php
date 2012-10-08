@@ -15,23 +15,25 @@ class Mdattachedservices extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$service,$valuesrv,$platform){
+	function insert_record($uid,$service,$valuesrv,$platform,$wprice,$mprice){
 			
 		$this->user 	= $uid;
 		$this->service = $service;
 		$this->valuesrv = $valuesrv;
 		$this->platform = $platform;
 		$this->date 	= date("Y-m-d");
+		$this->wprice 	= $wprice;
+		$this->mprice 	= $mprice;
 		
 		$this->db->insert('attachedservices',$this);
 		return $this->db->insert_id();
 	}
 	
-	function group_insert($uid,$service,$valuesrv,$platforms){
+	function group_insert($uid,$service,$valuesrv,$platforms,$wprice,$mprice){
 	
 		$query = '';
 		for($i=0;$i<count($platforms);$i++):
-			$query .= '('.$uid.','.$valuesrv.','.$platforms[$i]['id'].','.$service.',"'.date("Y-m-d").'",0,0)';
+			$query .= '('.$uid.','.$valuesrv.','.$platforms[$i]['id'].','.$service.',"'.date("Y-m-d").'",'.$wprice.','.$mprice.')';
 			if($i+1<count($platforms)):
 				$query.=',';
 			endif;

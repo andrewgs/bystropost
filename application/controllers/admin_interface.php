@@ -1937,10 +1937,10 @@ class Admin_interface extends CI_Controller{
 			if($oldtic != $tic):
 				$addwtic = 5; $addmtic = 2;
 				if($oldtic < 30 AND $tic >= 30):
-					$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,creview=creview+$addwtic,mreview=mreview+$addmtic,cnews=cnews+$addwtic,mnews=mnews+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
 					$this->mdplatforms->run_query($sqlquery);
 				elseif($oldtic >= 30 AND $tic < 30):
-					$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,creview=creview-$addwtic,mreview=mreview-$addmtic,cnews=cnews-$addwtic,mnews=mnews-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
 					$this->mdplatforms->run_query($sqlquery);
 				endif;
 			endif;
@@ -2080,8 +2080,8 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=375');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=57');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -2101,13 +2101,23 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-//		print_r($mass_data);
-//		echo '<br/>'.count($mass_data);
-
+		print_r($mass_data);
+		echo '<br/>'.count($mass_data);
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
+				if($mass_data[$key]['email'] == 'Sacred3'):
+					continue;
+				endif;
+				switch($mass_data[$key]['email']):
+					case 'Sacred3' :continue; break;
+					case 'chistyakoveo' :$mass_data[$key]['email'] = 'chistyakoveo@yandex.ru'; break;
+					case 'dokmaster' :$mass_data[$key]['email'] = 'lingon@inbox.ru'; break;
+					case 'Dolgoff' :$mass_data[$key]['email'] = 'ilya.dolgoff@gmail.com'; break;
+					case 'Dolgoff' :$mass_data[$key]['email'] = 'ilya.dolgoff@gmail.com'; break;
+					case 'TigerV' :$mass_data[$key]['email'] = 'wwwwizard@mail.ru'; break;
+				endswitch;
 				$data['login'] = $mass_data[$key]['email'];
 				$data['password'] = $this->randomPassword(8);
 				$data['fio'] = 'Имя не указанно';

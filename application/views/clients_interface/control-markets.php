@@ -55,7 +55,7 @@
 				var Param = $(this).attr('data-param');
 				var objSpan = $("span[id = timer"+Param+"]");
 				mID = $("div[id = params"+Param+"]").attr("data-mid");
-				var timer = 40;
+				var timer = 10;
 				$("div[id = params"+Param+"]").parents('tr').addClass('alert alert-info');
 				parsing_platforms(mID,objSpan,timer);
 			});
@@ -63,7 +63,7 @@
 			function load_platforms(market,objSpan){
 				$.post("<?=$baseurl;?>webmaster-panel/actions/markets/loading",{'market':market},function(data){
 					if(data.status){
-						$(objSpan).html('Добавленно новых площадок: '+data.plcnt);
+						$(objSpan).html('Загружено: '+data.plload+'<br/>Добавленно: '+data.plcnt);
 					}},"json");
 			}
 			function parsing_platforms(market,objSpan,timer){

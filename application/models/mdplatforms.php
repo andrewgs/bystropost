@@ -74,6 +74,7 @@ class Mdplatforms extends CI_Model{
 		$this->imgheight 	= $data['imgheight'];
 		$this->imgpos 		= $data['imgpos'];
 		$this->date 		= date("Y-m-d");
+		$this->status 		= $data['status'];
 		
 		if(isset($data['manager'])):
 			$this->manager 	= $data['manager'];
@@ -273,7 +274,7 @@ class Mdplatforms extends CI_Model{
 	
 	function read_ids_by_webmaster($uid){
 		
-		$this->db->select('id');
+		$this->db->select('id,remoteid');
 		$this->db->where('webmaster',$uid);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
@@ -335,8 +336,6 @@ class Mdplatforms extends CI_Model{
 		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
 		return 0;
 	}
-	
-	
 	
 	function read_record($id){
 		
