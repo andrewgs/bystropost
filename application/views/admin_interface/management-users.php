@@ -53,7 +53,7 @@
 								<nobr><b><?=anchor('admin-panel/management/users/profile/id/'.$users[$i]['id'],$users[$i]['login']);?></b><br/>
 								<?=$users[$i]['fio'];?><br/>
 								<strong>(<?=$users[$i]['position'];?>)</strong><br/>
-							<?php if($users[$i]['manager']):?>
+							<?php if($users[$i]['manager']):?>	
 								<br/><?=$users[$i]['manfio'];?><br/><b><?=$users[$i]['manemail'];?></b>
 							<?php endif;?>
 								</nobr>
