@@ -230,6 +230,10 @@ class Admin_interface extends CI_Controller{
 			else:
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
+					if($_POST['type'] != 1):
+						$this->mdusers->update_field($_POST['uid'],'manager',0);
+						$_POST['manager'] = 0;
+					endif;
 					if($_POST['manager']):
 						$platforms = $this->mdplatforms->read_managers_platform_online($_POST['uid']);
 						for($i=0;$i<count($platforms);$i++):
@@ -2081,7 +2085,7 @@ class Admin_interface extends CI_Controller{
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=57');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=5&accid=418');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');

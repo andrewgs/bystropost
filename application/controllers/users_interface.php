@@ -50,6 +50,10 @@ class Users_interface extends CI_Controller{
 					$this->session->set_userdata('msgauth','Не верные данные для авторизации');
 					redirect($_SERVER['HTTP_REFERER']);
 				else:
+					if($user['type'] == 4 || $user['type'] == 3):
+						$this->session->set_userdata('msgauth','Авторизация запрещена!');
+						redirect($_SERVER['HTTP_REFERER']);
+					endif;
 					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
 					$this->mdusers->update_field($user['id'],'lastlogin',date("Y-m-d"));
 					$this->access_cabinet($user['id'],$user['type']);

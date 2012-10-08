@@ -55,8 +55,10 @@
 				var Param = $(this).attr('data-param');
 				var objSpan = $("span[id = timer"+Param+"]");
 				mID = $("div[id = params"+Param+"]").attr("data-mid");
-				var timer = 10;
+				var timer = 40;
 				$("div[id = params"+Param+"]").parents('tr').addClass('alert alert-info');
+				$(objSpan).siblings('a').hide();
+				$(objSpan).show().html('Запуск. Ожидайте...');
 				parsing_platforms(mID,objSpan,timer);
 			});
 			
@@ -72,8 +74,7 @@
 						var	intervalID = 0;
 						intervalID = setInterval(function(){
 							timer = timer - 1;
-							$(objSpan).siblings('a').hide();
-							$(objSpan).show().html('Обработка данных: '+timer+' cек.');
+							$(objSpan).show().html('Обработка данных:<br/>'+timer+' cек.');
 							if(timer == 0){
 								clearInterval(intervalID);
 								$(objSpan).html('Pагрузка данных! Ожидайте ...');

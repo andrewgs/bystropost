@@ -60,13 +60,13 @@ class Clients_interface extends CI_Controller{
 		else:
 			redirect('');
 		endif;
-		/*$segment = $this->uri->segment(3);
+		$segment = $this->uri->segment(3);
 		if($segment != 'profile' && $segment != 'logoff'):
 			if(empty($userinfo['wmid'])):
 				$this->session->set_userdata('wmid',1);
 				redirect('webmaster-panel/actions/profile');
 			endif;
-		endif;*/
+		endif;
 		/*if($segment != 'markets' && $segment != 'logoff'):
 			if(!count($this->mdwebmarkets->read_records($this->user['remoteid']))):
 				$this->session->set_userdata('markets',FALSE);
@@ -904,14 +904,14 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_market_parsing(){
 		
-		$statusval = array('status'=>TRUE,);
+		$statusval = array('status'=>TRUE,'import'=>0);
 		$market = trim($this->input->post('market'));
 		if(!$market):
 			show_404();
 		endif;
-		$info = $this->mdwebmarkets->read_owner_market($market,$this->user['uid']);
+		$info = $this->mdwebmarkets->read_owner_market($market,$this->user['remoteid']);
 		$param = 'accid='.$info['id'].'&birzid='.$info['market'];
-		$this->API('ImportSitesFromAccount',$param);
+		$statusval['import'] = $this->API('ImportSitesFromAccount',$param);
 		echo json_encode($statusval);
 	}
 	
@@ -2143,7 +2143,7 @@ class Clients_interface extends CI_Controller{
 						$arr_works = array(1,2,4,5,6);
 						for($j=0;$j<count($works);$j++):
 							$wadd = $madd = 0;
-							if(in_array($works[$i]['id'],$arr_works)):
+							if(in_array($works[$j]['id'],$arr_works)):
 								$wadd = $addwtic;
 								$madd = $addmtic;
 							endif;
