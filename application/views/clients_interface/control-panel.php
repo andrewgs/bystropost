@@ -30,7 +30,7 @@
 							<big><?=anchor('webmaster-panel/actions/finished-jobs','Задания (<b>'.$cntunit['delivers']['notpaid'].'</b>/'.$cntunit['delivers']['total'].')',array('title'=>$cntunit['delivers']['notpaid'].' не оплаченных'));?></big>
 							<img src="<?=$baseurl;?>images/panel_pic1.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+								Отображение общего числа заявок и готовых заданий на оплату
 							</div>
 						</div>
 					<?php endif;?>
@@ -39,7 +39,11 @@
 							<big><?=anchor('webmaster-panel/actions/platforms','Площадки ('.$cntunit['platforms'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic2.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+							<?php if($userinfo['remote']):?>
+								Список и настройка ваших площадок. Добавления площадок через раздел Биржи.
+							<?php else:?>
+								Список и настройка ваших площадок. Ручное добавление площадок.
+							<?php endif;?>
 							</div>
 						</div>
 					<?php endif;?>
@@ -47,7 +51,7 @@
 							<big><?=anchor('webmaster-panel/actions/tickets','Тикеты ('.$cntunit['tickets'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic3.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+								Система взаимодействия между клиентом и системой быстропост. Обсуждение вопросов по работе.
 							</div>
 						</div>
 						<div class="panel_segment">
@@ -58,7 +62,7 @@
 						<?php endif;?>
 							<img src="<?=$baseurl;?>images/panel_pic4.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+								Приём писем от менеджера или администратора. Системные сообщения. Для отправки письма, используйте тикеты.
 							</div>
 						</div>
 					<?php if(!$userinfo['locked'] && $cntunit['platforms']):?>
@@ -66,7 +70,7 @@
 							<big><?=anchor('webmaster-panel/actions/services','Дополнительные услуги');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic5.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+								Управление дополнительными услугами. Услугу можно подключить отдельно к каждой площадке.
 							</div>
 						</div>
 					<?php endif;?>
@@ -75,7 +79,7 @@
 							<big><?=anchor('webmaster-panel/actions/markets','Биржи ('.$cntunit['markets'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic6.jpg">
 							<div class="text">
-								Перед началом продвижения сайта мы тщательно исследуем как сам сайт, так и рыночный спрос в интересующей
+								Управление аккаунтами бирж. Настройка и добавления новых логинов. Автоматический импорт сайтов.
 							</div>
 						</div>
 					<?php endif;?>

@@ -1,9 +1,9 @@
 <div class="container">
-	<footer>
+	<footer class="admin">
 		<div class="row">
 			<div class="span5">
 				<div class="copy">
-					&copy; Система управления продажами Bystropost, 2012
+					&copy; Система мониторинга и управления Bystropost, 2012
 				</div>
 			</div>
 			<div class="span7">

@@ -3,7 +3,7 @@
 	<div id="editPlatform" class="modal hide fade dmodal">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3>Редактирование информации о площадке</h3>
+			<h3>Свойства площадки</h3>
 		</div>
 		<div class="modal-body" style="max-height: 500px;">
 			<fieldset>
