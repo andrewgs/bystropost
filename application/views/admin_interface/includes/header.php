@@ -1,17 +1,5 @@
 <header class="admin">
 	<div class="container">
-		<div class="row header-subnav">
-			<div class="span8 offset4">
-				<?=anchor("news","Новости");?>
-				<?=anchor("faq","FAQ");?>
-				<?=anchor("manner-of-payment","Порядок оплаты");?>
-				<?=anchor('prices','Цены');?>
-				<?=anchor("about-content","О контенте");?>
-				<?=anchor("capabilities","Наши возможности");?>
-				<?=anchor("interface","Интерфейс");?>
-				<?=anchor("contacts","Контакты");?>	
-			</div>
-		</div>
 		<div class="row">
 			<div class="span7">
 				<?=anchor("webmaster-panel/actions/control",' ',array('id'=>'logo'));?>
