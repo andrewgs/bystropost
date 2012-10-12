@@ -102,7 +102,7 @@ p.caption .next { color: #e3e3e3; opacity: 0.7; font-size: 36px; display: inline
 
 footer { height: 50px; line-height: 50px; background: #eeeee2; color: #777; font-size: 13px; margin: 30px 0 0; }
 footer .copy { padding-left: 20px; }
-footer.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-top: 1px dotted #CCCCCC; height: 145px; margin: 0; line-height: 1.8em; padding-top: 1.75em; margin-top: 2em; }
+footer.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-top: 1px dotted #CCCCCC; height: 80px; margin: 0; line-height: 1.8em; padding-top: 1.75em; margin-top: 2em; }
 footer.admin a { font: 0.9em Arial, sans-serif; color: #999; display: inline-block; margin: 0 0.5em 1em 0; }
 footer.admin .opacity img { opacity: 0.8; border: 1px solid #e0e0e0; }
 
