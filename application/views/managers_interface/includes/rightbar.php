@@ -11,8 +11,6 @@
 		<?php endif;?>
 			<li num="tickets"><?=anchor('manager-panel/actions/tickets/inbox','Тикеты ('.$cntunit['tickets']['inbox'].'/'.$cntunit['tickets']['outbox'].')');?></li>
 			<li num="forum"><?=anchor('#','Форум');?></li>
-			<!--<li num="profile"><?=anchor('manager-panel/actions/profile','Мой профиль');?></li>
-			<li><?=anchor('manager-panel/actions/logoff','Завершить сеанс');?></li>-->
 		</ul>
 	</div>
 </div>

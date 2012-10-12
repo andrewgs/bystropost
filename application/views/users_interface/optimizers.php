@@ -7,8 +7,11 @@
 		<?php $this->load->view("users_interface/includes/navigation");?>
 		<?php $this->load->view("users_interface/includes/header");?>
 		<div class="clear"></div>
-		<div class="row">
+		<div class="row smaller">
 			<div class="span12">
+				<div id="register_tree" class="no-margin">
+					<?=anchor('users/registering/optimizer','<img src="'.$baseurl.'images/spacer.gif" width="500px" height="450px" border="0">');?>
+				</div>			
 				<p>
 					Система Быстропост для Оптимизаторов очень проста и требует минимальных знаний для того, чтобы вы поняли, как она работает. 
 					Стоимость услуги фиксирована, 20% от вашего баланса рекламной кампании. А теперь внимательно прочитайте текст о самой системе.
@@ -32,9 +35,6 @@
 					Для того чтобы отдать пыльную работу и заняться уже сейчас продвижением своего сайта, нажмите на эту красивую кнопочку ниже.
 				</p>
 			</div>
-		</div>
-		<div id="register_tree">
-			<?=anchor('users/registering/optimizer','<img src="'.$baseurl.'images/spacer.gif" width="500px" height="450px" border="0">');?>
 		</div>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>

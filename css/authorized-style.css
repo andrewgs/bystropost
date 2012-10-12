@@ -3,9 +3,12 @@ p { font: 14px/21px 'PT Sans', "Times New Roman", Times, serif; margin-bottom: 1
 /* ==|== header ====================================================== */
 
 header { margin: 10px 0 0; }
-header.admin { margin: 10px 0 20px; }
+header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-bottom: 1px dotted #CCCCCC; height: 175px; margin: 0 0 1.25em; }
 
-#logo { font-family: 'PT Sans', "Times New Roman", Times, serif; background: url("../images/logo.png") no-repeat scroll 0 5px transparent; display: block; color: #00699f; font-size: 30px; line-height: 36px; font-weight: bold; text-transform: uppercase; padding: 0 0 0 115px; position: relative; outline: 0 none; text-decoration: none; margin: 0;height:100px;}
+.header-subnav { height: 2em; margin: 1em 0 0; }
+.header-subnav a { font: 0.9em Arial, sans-serif; color: #777; display: inline-block; margin: 0.5em 0 0 0.95em; }
+
+#logo { font-family: 'PT Sans', "Times New Roman", Times, serif; background: url("../images/logo.png") no-repeat scroll 0 5px transparent; display: block; color: #00699f; font-size: 30px; line-height: 36px; font-weight: bold; text-transform: uppercase; padding: 0 0 0 115px; position: relative; outline: 0 none; text-decoration: none; height:100px; margin: 0.1em 0 0.6em; }
 #logo span { font-size: 22px; font-weight: normal; left: 230px; position: absolute; text-transform: none;}
 
 .form-header { color: #999; font-size: 11px; letter-spacing: 0.25px; line-height: 18px; margin: 0 0 5px; text-align: right; text-transform: uppercase; }
@@ -99,6 +102,9 @@ p.caption .next { color: #e3e3e3; opacity: 0.7; font-size: 36px; display: inline
 
 footer { height: 50px; line-height: 50px; background: #eeeee2; color: #777; font-size: 13px; margin: 30px 0 0; }
 footer .copy { padding-left: 20px; }
+footer.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-top: 1px dotted #CCCCCC; height: 145px; margin: 0; line-height: 1.8em; padding-top: 1.75em; margin-top: 2em; }
+footer.admin a { font: 0.9em Arial, sans-serif; color: #999; display: inline-block; margin: 0 0.5em 1em 0; }
+footer.admin .opacity img { opacity: 0.8; border: 1px solid #e0e0e0; }
 
 #bt-contacts { color: #333; font-size: 16px; text-align: right; padding-right: 20px; }
 #bt-contacts b { font-weight: normal; color: #999; }
@@ -295,8 +301,6 @@ h1.admin-h1 span { color: #999; font-size: 16px; }
 	padding: 9px 15px;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
 }
-#logo {  margin: 0.5em 0 1.5em;}
-header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-bottom: 1px dotted #CCCCCC; height: 145px; margin: 0; }	
 .panel_segment big a:hover { font-weight: normal; }
 .panel_segment big a { color: #fff; }
 .right { float: right; }

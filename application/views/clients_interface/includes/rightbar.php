@@ -22,10 +22,6 @@
 		<?php endif;?>
 			<li num="forum"><?=anchor('#','Форум');?></li>
 			<li num="balance"><?=anchor('webmaster-panel/actions/balance','Баланс');?></li>
-			<!--
-			<li num="profile"><?=anchor('webmaster-panel/actions/profile','Мой профиль');?></li>
-			<li><?=anchor('webmaster-panel/actions/logoff','Завершить сеанс');?></li>
-			-->
 		</ul>
 	</div>
 </div>

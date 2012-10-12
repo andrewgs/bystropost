@@ -63,6 +63,7 @@ p { margin: 0 0 1.25em; }
 #msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); } 
 #footer a, #footer a:hover {color: #fff; display: inline-block; font: 13px trebuchet ms,arial,sans-serif; margin: 1em 0.75em 0; }
 #white_line.no-margin { margin: 0 0 0.5em 1.5em; border: 0 none; }
+#register_tree.no-margin { margin: 1em 0 0; float: left; width: 440px; background-position: -63px 0; }
 h1.whiteline { border: 0 none; }
 #who_reviews, #where_reviews { width: auto; margin-top: 0.5em; float: none; }
 #who_reviews a, #who_reviews a:hover { display: inline-block; font: 24px trebuchet ms,arial,sans-serif; float: none; }
@@ -71,6 +72,9 @@ h1.whiteline { border: 0 none; }
 #where_reviews { font: 13px trebuchet ms,arial,sans-serif; }
 #where_reviews p { float: none; width: auto; margin-bottom: 1em; }
 #where_reviews p a { float: none; } 
+.smaller p { font-size: 0.9em; }
+.smaller ul { list-style: none; } 
+	.smaller ul li { line-height: 1.5em; color: #666; font-style: italic; }
 .review_post { background: none; border: 0 none; border-top: 1px solid #e0e0e0; border-radius: 0; float: none; height: auto; width: auto; font-size: inherit; padding: 0; margin: 2em 0 0; padding-top: 2em; }
 .review_post .avatar { display: block; float: left; margin: 0.25em 0.5em 0 0; text-align: right; width: 100px; height: auto; padding: 0; position: inherit; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
 
