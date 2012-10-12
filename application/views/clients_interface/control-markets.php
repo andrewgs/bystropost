@@ -51,6 +51,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var mID = 0;
+			$("#MarketList").val(1);
 			$(".updateMarket").click(function(){
 				var Param = $(this).attr('data-param');
 				var objSpan = $("span[id = timer"+Param+"]");
@@ -60,6 +61,11 @@
 				$(objSpan).siblings('a').hide();
 				$(objSpan).show().html('Запуск. Ожидайте...');
 				parsing_platforms(mID,objSpan,timer);
+			});
+			
+			$("#MarketList").change(function(){
+				if($(this).val() == 3){$("#prsape").slideDown(400);
+				}else{$("#prsape").slideUp(400);}
 			});
 			
 			function load_platforms(market,objSpan){
@@ -84,7 +90,7 @@
 					}
 				},"json");
 			}
-			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);$(".inpval").val('');$("#loading").val('');});
+			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);$(".inpval").val('');$("#loading").val('');$("#prsape").hide();});
 			$(".deleteMarket").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
 			$("#DelMarket").click(function(){location.href='<?=$baseurl;?>webmaster-panel/actions/markets/delete/marketid/'+mID;});
 		});

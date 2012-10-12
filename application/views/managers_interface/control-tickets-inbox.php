@@ -22,7 +22,7 @@
 						<tr>
 							<th class="w195"><center>Тема тикета</center></th>
 							<th class="w500"><center><nobr>Последний ответ</nobr></center></th>
-							<th class="w50">Управл.</th>
+							<th class="w50">Состояние</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,8 +35,9 @@
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
+							<?=anchor('manager-panel/actions/tickets/inbox/view-ticket/'.$tickets[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-list-alt icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Читать тикет','class'=>"btn btn-success"));?>
 							<?php if($tickets[$i]['status']):?>
-								<i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
+								<br/><i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
 							<?php endif;?>
 							</td>
 						</tr>

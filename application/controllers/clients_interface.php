@@ -131,7 +131,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$pagevar = array(
-			'title'			=> 'Bystropost.ru - Система управления продажами | Регистрация завершена',
+			'title'			=> 'Bystropost.ru - Система мониторинга и управления | Регистрация завершена',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
@@ -221,7 +221,7 @@ class Clients_interface extends CI_Controller{
 						
 						$this->email->initialize($config);
 						$this->email->to($this->user['ulogin']);
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Смена пароля в системе Bystropost.ru');
 						$this->email->message($mailtext);	
@@ -462,7 +462,7 @@ class Clients_interface extends CI_Controller{
 		
 		$this->email->initialize($config);
 		$this->email->to($this->user['ulogin']);
-		$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+		$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 		$this->email->bcc('');
 		$this->email->subject('Noreply: Пополнение баланса в системе Bystropost.ru');
 		$this->email->message($mailtext);	
@@ -993,7 +993,7 @@ class Clients_interface extends CI_Controller{
 					
 					$this->email->initialize($config);
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
-					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
 					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
 					$this->email->message($mailtext);	
@@ -1647,7 +1647,7 @@ class Clients_interface extends CI_Controller{
 						ob_start();
 						?>
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($pagevar['platform']['manager'],'fio');?></strong></p>
-						<p>Вебмастер изменил информацию о площадке: <?=$this->mdplatforms->read_field($pagevar['platform']['manager'],'url');?><br/>
+						<p>Вебмастер изменил информацию о площадке: <?=$this->mdplatforms->read_field($platform,'url');?><br/>
 						Что изменилось (Было - Сейчас):</p>
 						<p>URL: <?=$pagevar['platform']['url'].' - '.$_POST['url'];?><br/>
 						Тематика: <?=$pagevar['platform']['subject'].' - '.$_POST['subject'];?><br/>
@@ -1678,7 +1678,7 @@ class Clients_interface extends CI_Controller{
 						
 						$this->email->initialize($config);
 						$this->email->to($this->mdusers->read_field($pagevar['platform']['manager'],'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Изменения по площадке.');
 						$this->email->message($mailtext);	
@@ -1746,6 +1746,7 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
 			$this->form_validation->set_rules('title',' ','required|trim');
@@ -1779,11 +1780,12 @@ class Clients_interface extends CI_Controller{
 						
 						$this->email->initialize($config);
 						$this->email->to($this->mdusers->read_field($recipient,'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Новый тикет');
 						$this->email->message($mailtext);	
 						$this->email->send();
+						$this->mdmessages->insert_record($this->user['uid'],$recipient,'Новое сообщение через тикет-систему');
 					endif;
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
@@ -1791,6 +1793,7 @@ class Clients_interface extends CI_Controller{
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
+					$this->mdmessages->insert_record($this->user['uid'],0,'Новое сообщение через тикет-систему');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
 				endif;
@@ -1843,6 +1846,7 @@ class Clients_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->read_finish_message($this->user['uid'],$pagevar['tickets'][$i]['id']);
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
 			else:
@@ -1921,7 +1925,7 @@ class Clients_interface extends CI_Controller{
 						
 						$this->email->initialize($config);
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
 						$this->email->message($mailtext);	

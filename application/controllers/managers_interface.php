@@ -501,8 +501,8 @@ class Managers_interface extends CI_Controller{
 						ob_start();
 						?>
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
-						<p>Для Вас новое завершенное задение</p>
-						<p>Что бы просмотреть его вводите в личный кабинет и перейдите в раздел "Готовые задания"</p>
+						<p>Для Вас новое завершенное задание</p>
+						<p>Что бы просмотреть его ввойдите в <?=anchor('','личный кабинет');?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
 						<p>Желаем Вам удачи!</p> 
 						<?
 						$mailtext = ob_get_clean();
@@ -515,9 +515,9 @@ class Managers_interface extends CI_Controller{
 						
 						$this->email->initialize($config);
 						$this->email->to($this->mdusers->read_field($webmaster,'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задение');
+						$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задание');
 						$this->email->message($mailtext);	
 						$this->email->send();
 					endif;
@@ -685,7 +685,7 @@ class Managers_interface extends CI_Controller{
 					
 					$this->email->initialize($config);
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
-					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система управления продажами');
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
 					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
 					$this->email->message($mailtext);	
@@ -774,6 +774,7 @@ class Managers_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$_POST['type'] = 2; $_POST['platform'] = 0;
+				$this->mdmessages->insert_record($this->user['uid'],0,'Вам новое сообщение через тикет-систему');
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],0,$_POST);
 				if($ticket):
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],0,0,$_POST['text']);
@@ -810,6 +811,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
+			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->noowner_finish_message($pagevar['tickets'][$i]['id']);
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
 		endfor;
 		$this->load->view("managers_interface/control-tickets-outbox",$pagevar);
@@ -858,6 +860,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
+			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->noowner_finish_message($pagevar['tickets'][$i]['id']);
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
 		endfor;
 		$this->load->view("managers_interface/control-tickets-inbox",$pagevar);
@@ -981,6 +984,7 @@ class Managers_interface extends CI_Controller{
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
+					$this->mdmessages->insert_record($this->user['uid'],0,'Новое сообщение через тикет-систему');
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;

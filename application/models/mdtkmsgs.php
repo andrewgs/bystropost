@@ -38,6 +38,31 @@ class Mdtkmsgs extends CI_Model{
 		return NULL;
 	}
 	
+	function read_finish_message($owner,$ticket){
+		
+		$this->db->select('text');
+		$this->db->where('owner',$owner);
+		$this->db->where('ticket',$ticket);
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['text'];
+		return '';
+	}
+	
+	function noowner_finish_message($ticket){
+		
+		$this->db->select('text');
+		$this->db->where('ticket',$ticket);
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['text'];
+		return '';
+	}
+	
 	function read_records_by_owner($owner){
 		
 		$this->db->where('owner',$owner);

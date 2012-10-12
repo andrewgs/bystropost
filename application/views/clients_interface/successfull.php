@@ -21,7 +21,7 @@
 	<?php $this->load->view("clients_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			window.setTimeout("window.location='<?=$baseurl;?>'",7000);
+			window.setTimeout("window.location='<?=$baseurl;?>'",10000);
 		});
 	</script>
 </body>
