@@ -57,9 +57,10 @@ class Admin_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Администрирование | Панель управления',
+					'title'			=> 'Администрирование | Дополнительные возможности',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
+					'webmasters'	=> count($this->mdusers->read_users_by_type(1)),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -1521,6 +1522,49 @@ class Admin_interface extends CI_Controller{
 	
 	/******************************************************** other ******************************************************/
 	
+	public function sendind_registering_info(){
+		
+		$statusval = array('nextstep'=>TRUE,'count'=>'','from'=>'','sending'=>0,'webmaster'=>'');
+		$count = trim($this->input->post('count'));
+		$from = trim($this->input->post('from'));
+		if(!$count):
+			show_404();
+		endif;
+		$webmasters = $this->mdusers->read_users_type(1,$count,$from);
+		for($i=0;$i<count($webmasters);$i++):
+			ob_start();
+			?>
+			<img src="<?=base_url();?>images/logo.png" alt="" />
+			<p><strong>Здравствуйте, <?=$webmasters[$i]['login'];?></strong></p>
+			<p>Поздравляем! Вас успешно зарегистрированы в статусе вебмастера.</p>
+			<p>Ваша работа будет осуществляться через <a href="http://bystropost.ru/">личный кабинет.</a></p>
+			<p>Для входа в личный кабинет используйте:</p>
+			<p>Логин: <strong><?=$webmasters[$i]['login'];?></strong></p>
+			<p>Пароль: <strong><?=$this->encrypt->decode($webmasters[$i]['cryptpassword']);?></strong></p>
+			<p>Желаем Вам удачи!</p>
+			<?
+			$mailtext = ob_get_clean();
+			$this->email->clear(TRUE);
+			$config['smtp_host'] = 'localhost';
+			$config['charset'] = 'utf-8';
+			$config['wordwrap'] = TRUE;
+			$config['mailtype'] = 'html';
+			
+			$this->email->initialize($config);
+			$this->email->to($webmasters[$i]['login']);
+			$this->email->from('admin@bystropost.ru','Быстропост - система автоматической монетизации');
+			$this->email->bcc('');
+			$this->email->subject('Регистрация на Bystropost.ru');
+			$this->email->message($mailtext);
+			$this->email->send();
+			$statusval['sending']++;
+			$statusval['webmaster'] = $webmasters[$i]['login'];
+		endfor;
+		$statusval['count'] = $count;
+		$statusval['from'] = $from;
+		echo json_encode($statusval);
+	}
+	
 	public function actions_forum(){
 		
 		$pagevar = array(
@@ -2082,10 +2126,11 @@ class Admin_interface extends CI_Controller{
 	function actions_api(){
 		$mass_data = array();
 		/*======================== Загрузка вебмастеров ============================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=5&accid=418');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=413');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=1232');
 		
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -2270,7 +2315,7 @@ class Admin_interface extends CI_Controller{
 	
 	public function locked_debet(){
 		
-		$statusval = array('status'=>TRUE,);
+		$statusval = array('status'=>TRUE,'debetors'=>0);
 		$days = trim($this->input->post('days'));
 		if(!$days):
 			show_404();
@@ -2281,7 +2326,7 @@ class Admin_interface extends CI_Controller{
 			$znak = '<';
 		endif;
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
-		$this->mdunion->update_debetors_status($date,$znak,1);
+		$statusval['debetors'] = $this->mdunion->update_debetors_status($date,$znak,1);
 		$debetors = $this->mdunion->debetors_webmarkets();
 		for($i=0;$i<count($debetors);$i++):
 			$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.$this->encrypt->decode($debetors[$i]['cryptpassword']).'&act=2';

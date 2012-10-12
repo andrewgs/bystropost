@@ -51,6 +51,7 @@
 			<div class="controls">
 				<input type="text" id="wmid" class="input-medium digital" name="wmid" maxlength="12" value="<?=$user['wmid'];?>">
 				<span class="help-inline" style="display:none;">&nbsp;</span>
+				<span class="help-block">Пример: 831923923923 (12 цифр)</span>
 			</div>
 		</div>
 		<div class="control-group">

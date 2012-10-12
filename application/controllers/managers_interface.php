@@ -557,20 +557,20 @@ class Managers_interface extends CI_Controller{
 	
 	public function remote_deliver_work(){
 		
-		$statusval = array('nextstep'=>TRUE,'plcount'=>0,'count'=>'','from'=>'','wkol'=>0);
+		$statusval = array('nextstep'=>TRUE,'plcount'=>0,'count'=>'','from'=>'','wkol'=>0,'datefrom'=>'','dateto'=>'');
 		$count = trim($this->input->post('count'));
 		$from = trim($this->input->post('from'));
 		if(!$count):
 			show_404();
 		endif;
+		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date("Y")));
+		$dateto = date("Y-m-d");
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
 		if(!count($platforms)):
 			$statusval['nextstep'] = FALSE;
 		else:
 			$markets = $this->mdmarkets->read_records();
 			$typeswork = $this->mdtypeswork->read_records_id();
-			$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-14,date("Y")));
-			$dateto = date("Y-m-d");
 			for($pl=0;$pl<count($platforms);$pl++):
 				$remote_webmaster = $this->mdusers->read_field($platforms[$pl]['webmaster'],'remoteid');
 				if(!$remote_webmaster):
@@ -631,6 +631,8 @@ class Managers_interface extends CI_Controller{
 		$statusval['plcount'] = count($platforms);
 		$statusval['count'] = $count;
 		$statusval['from'] = $from;
+		$statusval['datefrom'] = $datefrom;
+		$statusval['dateto'] = $dateto;
 		echo json_encode($statusval);
 	}
 

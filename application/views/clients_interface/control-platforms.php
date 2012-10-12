@@ -14,6 +14,11 @@
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
+			<?php if($userinfo['remote']):?>
+				<div class="alert alert-info">
+					Для импорта новых площадок перейдите в раздел Биржи и нажмите <span class="btn btn-info"><i class="icon-repeat"></i></span> рядом с нужным аккаунтом.
+				</div>
+			<?php endif;?>
 				<table class="table table-bordered">
 					<thead>
 						<tr>

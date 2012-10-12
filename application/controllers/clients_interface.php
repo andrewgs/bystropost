@@ -190,7 +190,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Поля "Полное имя" и "WMID" должны быть заполнены');
 				redirect($this->uri->uri_string());
 			else:
 				$this->session->unset_userdata('wmid');
@@ -539,6 +539,10 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_services(){
 		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
+		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -633,7 +637,9 @@ class Clients_interface extends CI_Controller{
 		if($this->user['lock']):
 			redirect('webmaster-panel/actions/services');
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$service = $this->uri->segment(5);
 		if(!$this->mdattachedservices->service_exist($this->user['uid'],$service)):
 			redirect('webmaster-panel/actions/services');
@@ -744,7 +750,9 @@ class Clients_interface extends CI_Controller{
 		if($this->user['lock']):
 			redirect('webmaster-panel/actions/services');
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$sid = $this->uri->segment(6);
 		if($sid):
 			$attached = $this->mdattachedservices->read_records_service($sid,$this->user['uid']);
@@ -787,7 +795,9 @@ class Clients_interface extends CI_Controller{
 		if(!$this->user['remote']):
 			show_404();
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -818,7 +828,7 @@ class Clients_interface extends CI_Controller{
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
 					$param = 'userid='.$this->user['remoteid'].'&accid='.$market_id['id'];
-					$this->API('AddAccountToUser',$param);
+					$res = $this->API('AddAccountToUser',$param);
 					if(!$this->mdwebmarkets->exist_market($market_id['id'])):
 						$id = $this->mdwebmarkets->insert_record($market_id['id'],$this->user['remoteid'],$_POST);
 						if($id):
@@ -875,7 +885,9 @@ class Clients_interface extends CI_Controller{
 		if(!$this->user['remote']):
 			show_404();
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$mid = $this->uri->segment(6);
 		if($mid):
 			$info = $this->mdwebmarkets->read_record($mid);
@@ -1098,7 +1110,9 @@ class Clients_interface extends CI_Controller{
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
 			$config['uri_segment'] 	= 5;
 		endif;
-		
+		if(!$pagevar['delivers']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		if($this->input->post('submit')):
 			unset($_POST['submit']);
 			$this->form_validation->set_rules('summa',' ','required|trim');
@@ -1114,8 +1128,8 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgr','Ошибка. Не верны суммы!');
 					redirect($this->uri->uri_string());
 				else:
-					$result = $this->mdusers->change_user_balance($this->user['uid'],-$_POST['summa']);
-					if($result):
+					$bresult = $this->mdusers->change_user_balance($this->user['uid'],-$_POST['summa']);
+					if($bresult):
 						$this->mddelivesworks->update_status($this->user['uid'],$_POST['works']);
 						$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
 						$mprice = 0;
@@ -1127,7 +1141,7 @@ class Clients_interface extends CI_Controller{
 								$this->mdusers->change_user_balance($manager,$mprice);
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
-							$this->mdfillup->insert_record(0,$wprice-$mprice); // Запись о том что перечислены деньги админу с указанием суммы
+							$this->mdfillup->insert_record(0,$wprice-$mprice,'Ошибок не обнаружено'); // Запись о том что перечислены деньги админу с указанием суммы
 						endfor;
 						
 						$message = 'Спасибо за оплату.';
@@ -1136,8 +1150,8 @@ class Clients_interface extends CI_Controller{
 						$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
 						if(!$debetor):
 							$this->mdusers->update_field($this->user['uid'],'debetor',0);
-							if($this->user['remote']):
-								$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+							if($this->user['remoteid']):
+								$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
 								for($i=0;$i<count($markets);$i++):
 									$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
 									$this->API('UpdateAccount',$param);
@@ -1223,6 +1237,9 @@ class Clients_interface extends CI_Controller{
 			redirect('webmaster-panel/actions/finished-jobs');
 		endif;
 		$works = $this->mddelivesworks->read_records_webmaster_status($this->user['uid'],0);
+		if(!$works):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		for($i=0;$i<count($works);$i++):
 			if($balance < $works[$i]['wprice']):
 				continue;
@@ -1245,8 +1262,8 @@ class Clients_interface extends CI_Controller{
 		$debetor = $this->mddelivesworks->calc_user_debet($this->user['uid'],$date,'<=');
 		if(!$debetor):
 			$this->mdusers->update_field($this->user['uid'],'debetor',0);
-			if($this->user['remote']):
-				$markets = $this->mdwebmarkets->read_records($this->user['uid']);
+			if($this->user['remoteid']):
+				$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
 				for($i=0;$i<count($markets);$i++):
 					$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
 					$this->API('UpdateAccount',$param);
@@ -1264,6 +1281,10 @@ class Clients_interface extends CI_Controller{
 	/******************************************************** platforms ******************************************************/
 	
 	public function control_platforms(){
+		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		
 		$pagevar = array(
 					'description'	=> '',
@@ -1319,9 +1340,13 @@ class Clients_interface extends CI_Controller{
 							$status = 1;
 						endif;
 						$param = 'siteid='.$remote_id.'&value='.$status;
-						$res = $this->API('SetSiteActive',$param);
+						$res =  $this->API('SetSiteActive',$param);
 					endif;
-					$this->session->set_userdata('msgs','Информация успешно сохранена.');
+					if($status):
+						$this->session->set_userdata('msgs','Площадка активирована.');
+					else:
+						$this->session->set_userdata('msgs','Площадка деактивирована.');
+					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -1347,9 +1372,9 @@ class Clients_interface extends CI_Controller{
 		
 		if($pagevar['userinfo']['remote']):
 			if(!$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
-				if(intval($pagevar['userinfo']['balance'])<500):
+//				if(intval($pagevar['userinfo']['balance'])<500):
 					redirect('webmaster-panel/actions/control');
-				endif;
+//				endif;
 			endif;
 		else:
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
@@ -1371,7 +1396,9 @@ class Clients_interface extends CI_Controller{
 		if($this->user['remote'] || $this->user['lock']):
 			redirect('webmaster-panel/actions/platforms');
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1428,6 +1455,7 @@ class Clients_interface extends CI_Controller{
 				if($_POST['imgwidth'] && $_POST['imgheight']):
 					$_POST['imgstatus'] = 1;
 				endif;
+				$_POST['status'] = 1;
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
 				$attached = $this->mdunion->services_attached_list($this->user['uid']);
 				for($i=0;$i<count($attached);$i++):
@@ -1514,7 +1542,9 @@ class Clients_interface extends CI_Controller{
 			endif;
 			$this->session->set_userdata('msgr','Есть не заполненные обязательные поля!<br/>Внимание! После заполнения необходимых полей сохраните и активируйте площадку.');
 		endif;
-		
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1572,7 +1602,7 @@ class Clients_interface extends CI_Controller{
 					$_POST['imgstatus'] = 1;
 				else:
 					$_POST['imgstatus'] = 0;
-					$_POST['imgpos'] = 'right';
+					$_POST['imgpos'] = 'left';
 				endif;
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
 				if($result):
@@ -1580,30 +1610,34 @@ class Clients_interface extends CI_Controller{
 						/********************************************************************/
 						if($pagevar['platform']['manager'] == 2):
 							$new_platform = $this->mdplatforms->read_record($platform);
-							$pl_data = array();
-							$pl_data['adminurl'] = $new_platform['adminpanel'];
-							$pl_data['cms'] = $new_platform['cms'];
-							$pl_data['cms_login'] = $new_platform['aplogin'];
-							$pl_data['cms_pass'] = $new_platform['appassword'];
-							$pl_data['tematic'] = $new_platform['subject'];
-							$pl_data['tematcustom'] = $new_platform['tematcustom'];
-							$pl_data['filter'] = $new_platform['illegal'];
-							$pl_data['subjects'] = $new_platform['thematically'];
-							$pl_data['review'] = $new_platform['reviews'];
-							$pl_data['param'] = array();
-							$pl_data['param']['image'] = array();
-							$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
-							$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
-							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
-							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
-							$pl_data['info'] = $new_platform['requests'];
-							$param = 'siteid='.$new_platform['remoteid'].'&conf='.json_encode($pl_data);
-							$this->API('UpdateSiteOptions',$param);
-							/*if(!$pagevar['platform']['status']):
-								$this->mdplatforms->update_field($platform,'status',1);
-								$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
-								$this->API('SetSiteActive',$param);
-							endif;*/
+							if($new_platform['remoteid']):
+								$pl_data = array();
+								$pl_data['adminurl'] = $new_platform['adminpanel'];
+								$pl_data['cms'] = $new_platform['cms'];
+								$pl_data['cms_login'] = $new_platform['aplogin'];
+								$pl_data['cms_pass'] = $new_platform['appassword'];
+								$pl_data['tematic'] = $new_platform['subject'];
+								$pl_data['tematcustom'] = $new_platform['tematcustom'];
+								$pl_data['filter'] = $new_platform['illegal'];
+								$pl_data['subjects'] = $new_platform['thematically'];
+								$pl_data['review'] = $new_platform['reviews'];
+								$pl_data['param'] = array();
+								$pl_data['param']['image'] = array();
+								$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
+								$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
+								$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
+								$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
+								$pl_data['info'] = $new_platform['requests'];
+								$pl_data['size'] = 0;
+								$param = 'siteid='.$new_platform['remoteid'].'&conf='.base64_encode(json_encode($pl_data));
+								$res = $this->API('UpdateSiteOptions',$param);
+								/*if(!$pagevar['platform']['status']):
+									$this->mdplatforms->update_field($platform,'status',1);
+									$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
+									$this->API('SetSiteActive',$param);
+								endif;*/
+//								$this->session->set_userdata('msgs',$res);
+							endif;
 						endif;
 						/********************************************************************/
 						
@@ -2324,7 +2358,8 @@ class Clients_interface extends CI_Controller{
 			if((int)$res['status']==1):
 				return $res['data'];
 			else:
-				return FALSE;
+				return $res;
+//				return FALSE;
 			endif;
 		else:
 			return FALSE;

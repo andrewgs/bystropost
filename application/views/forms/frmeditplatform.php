@@ -106,10 +106,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="200">Критерии к публикации фотографий к контенту (если поля не заполнены – фотографии будут отсутствовать)</td>
+			<td width="200">Критерии к публикации фотографий к контенту <strong>(если все поля не заполнены – фотографии будут отсутствовать)</strong></td>
 			<td>
-				<span style="margin-left:10px;">Ширина изображения:</span><input name="imgwidth" class="reg-form-input w50 digital" type="text" value="<?=$platform['imgwidth']?>" style="margin-left:10px;"><br/>
-				<span style="margin-left:15px;">Высота изображения:</span><input name="imgheight" type="text" class="reg-form-input w50 digital" value="<?=$platform['imgheight']?>" style="margin-left:10px;"><br/>
+				<span style="margin-left:10px;"><strong>Ширина изображения:</strong></span><input name="imgwidth" class="reg-form-input w50 digital" type="text" value="<?=$platform['imgwidth']?>" style="margin-left:10px; color:#00ca00"><br/>
+				<span style="margin-left:15px;"><strong>Высота изображения:</strong></span><input name="imgheight" type="text" class="reg-form-input w50 digital" value="<?=$platform['imgheight']?>" style="margin-left:10px; color:#00ca00"><br/>
+				<span class="help-block">[Например: 250х200]</span>
 				<span style="margin-left:15px;">Позиция изображения:</span>
 				<select name="imgpos" id="imgpos" class="reg-form-input w195 h35">
 					<option value="left">Слева</option>

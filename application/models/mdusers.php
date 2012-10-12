@@ -149,6 +149,17 @@ class Mdusers extends CI_Model{
 		return NULL;
 	}
 	
+	function read_users_type($type,$count,$from){
+		
+		$this->db->where('type',$type);
+		$this->db->where('locked',0);
+		$this->db->limit($count,$from);
+		$query = $this->db->get('users');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_small_info($id){
 		
 		$this->db->select('id,login,fio,phones,icq,skype,balance,signdate,position');

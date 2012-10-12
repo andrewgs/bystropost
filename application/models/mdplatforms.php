@@ -53,7 +53,7 @@ class Mdplatforms extends CI_Model{
 	}
 	
 	function insert_record($uid,$data){
-	
+		
 		if(isset($data['id'])):
 			$this->remoteid 	= $data['id'];
 		endif;

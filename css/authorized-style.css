@@ -304,8 +304,8 @@ header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.
 .user-info {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em; }  
 #panel_segments { width: 940px; }
 .panel_segment .text { float: left; font: 13px/18px trebuchet ms,sans-serif; margin: 20px 7px 10px; width: 180px; }
-td.paid { background: #FCF8E3; }
-td.notpaid { background: #fff; }
+td.paid { background: #c9fec5;}
+td.notpaid { background: #ffd7d7;}
 
 td { font: 13px trebuchet ms, sans-serif; }
 .table thead th { vertical-align: middle !important; } 

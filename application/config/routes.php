@@ -151,6 +151,9 @@ $route[':any/viewimage/:num']	= "general_interface/viewimage";
 $route['balance/result']		= "general_interface/balance_result";
 $route['support']				= "general_interface/support";
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
+
+$route['admin-panel/actions/control']					= "admin_interface/control_panel";
+
 $route['admin-panel/actions/profile']					= "admin_interface/actions_profile";
 $route['admin-panel/actions/forum']						= "admin_interface/actions_forum";
 $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
@@ -231,3 +234,5 @@ $route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_inter
 $route['admin-panel/actions/statistic']									= "admin_interface/actions_statistic";
 $route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet";
 $route['admin-panel/actions/locked-debet']								= "admin_interface/locked_debet";
+
+$route['admin-panel/actions/control/sendind-registering-info'] = "admin_interface/sendind_registering_info";

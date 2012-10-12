@@ -15,8 +15,8 @@
 				<?php $this->load->view('alert_messages/alert-success');?>
 			<?php if($this->session->userdata('wmid')):?>
 				<div class="alert alert-info" id="msginfoalert">
-					Что бы пользоватся системой Быстропост необходимо указать идентификатор участника WebMoney (WMID)<br/>
-					Внимание! WMID - уникальное поле, повторы запрещены. Вы должны производить оптату только с указанного Вами WMID.
+					Чтобы пользоваться системой Быстропост необходимо указать идентификатор участника WebMoney (WMID)<br/>
+					Внимание! WMID - уникальное поле, повторы запрещены. Вы должны производить оплату только с указанного Вами WMID.
 				</div>
 			<?php endif;?>
 				<?php $this->load->view('forms/frmuserprofile');?>

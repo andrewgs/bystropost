@@ -69,6 +69,8 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_never_allowed_str = array(
+					'"'					=> '&Prime;',
+					"'"					=> '&prime;',
 					'document.cookie'	=> '[removed]',
 					'document.write'	=> '[removed]',
 					'.parentNode'		=> '[removed]',

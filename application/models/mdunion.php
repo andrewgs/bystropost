@@ -398,7 +398,7 @@ class Mdunion extends CI_Model{
 	
 	function debetors_webmarkets(){
 	
-		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.id = webmarkets.webmaster WHERE users.debetor = 1";
+		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.remoteid = webmarkets.webmaster WHERE users.debetor = 1";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
