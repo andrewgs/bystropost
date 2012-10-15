@@ -38,9 +38,9 @@
 							</td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 						<?php if(!$tickets[$i]['status']):?>
-								<font style="color:#ff00ff">Активный</font>
+								<span class="active">Активный</span>
 						<?php else:?>
-								<font style="color:#00ff00">Закрытый</font>
+								<span class="deactive">Закрытый</span>
 						<?php endif;?>
 							</td>
 						</tr>

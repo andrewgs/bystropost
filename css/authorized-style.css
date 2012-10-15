@@ -251,21 +251,15 @@ table.sel td {border: 1px dotted #999999;font-size: 14px;}
 	text-decoration: none;
 }
 .btn-action{display: block;float: left;	margin-top: 20px;background-color: #3ec3e6;	color:#000040;padding: 10px;text-decoration:none;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
-.small{width:63px; margin:0 3px;;}
+.small{width:63px; margin:0 3px;}
 
 input.mb10 {margin-bottom: 10px;}
 input.mt7 {margin-top: 7px;}
 
-.ttpl a{
-	font: bold 14px arial,sans-serif;
-}
-.ttpl a:hover{
-	text-decoration:none;
-}
-.ErrImg{
-	margin-left:5px;
-	cursor:help;
-}
+.ttpl a{font: bold 14px arial,sans-serif;}
+.ttpl a:hover{text-decoration:none;}
+.ErrImg{margin-left:5px;cursor:help;}
+
 .w100{width: 100px;}
 .w250{width: 250px;}
 .w205{width: 205px;}
@@ -284,9 +278,7 @@ input.mt7 {margin-top: 7px;}
 .h35{height: 35px;}
 .h35{height: 35px;}
 
-.redactor{
-	width: 95%;
-}
+.redactor{width: 95%;}
 
 h1.admin-h1 { border-bottom: 4px solid #ccc; color: #4D4D4D; display: block; font: 23px/32px trebuchet ms,arial,sans-serif; margin: 0.35em 0 1em; padding-bottom: 3px; text-transform: none; 
 	font: 27px/32px georgia,serif;
@@ -297,19 +289,21 @@ h1.admin-h1 span { color: #999; font-size: 16px; }
 .user-panel { margin: 1em 0 0; }
 .panel_segment big { border-bottom: 1px solid #5eb4df; color: #4D4D4D; font: 15px trebuchet ms,arial,sans-serif; padding: 7px 5px; width: 265px;  
 	background: #43a4d4;
-	box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0,0,0,0.1) inset;
 	padding: 9px 15px;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
 }
-.panel_segment big a:hover { font-weight: normal; }
+.panel_segment big a:hover { font-weight: normal;}
 .panel_segment big a { color: #fff; }
 .right { float: right; }
 .underline { display: inline-block; }
-.user-info {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em; }  
+.user-info {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em;}
 #panel_segments { width: 940px; }
-.panel_segment .text { float: left; font: 13px/18px trebuchet ms,sans-serif; margin: 20px 7px 10px; width: 180px; }
+.panel_segment .text { float: left; font: 13px/18px trebuchet ms,sans-serif; margin: 20px 7px 10px; width: 180px;}
 td.paid { background: #c9fec5;}
-td.notpaid { background: #ffd7d7;}
+td.notpaid { background: #ffecec;}
+span.active{color: #008000;}
+span.deactive{color: #ff8080;}
 
 td { font: 13px trebuchet ms, sans-serif; }
 .table thead th { vertical-align: middle !important; } 

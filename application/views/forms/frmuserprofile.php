@@ -82,6 +82,17 @@
 			</div>
 		</div>
 	<?php if($userinfo['utype'] == 1):?>
+		<?php if(!$userinfo['lock']):?>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" id="AutoPaid" name="autopaid" value="1" <?= ($user['autopaid'] == 1)? 'checked="checked"': '';?>>
+					Режим "Беззаботный"
+				</label>
+				<span class="help-block">Автоматически оплачивать поступающие заявки</span>
+			</div>
+		</div>
+		<?php endif;?>
 		<div class="control-group">
 			<div class="controls">
 				<label class="checkbox">

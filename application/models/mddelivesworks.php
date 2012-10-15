@@ -106,6 +106,11 @@ class Mddelivesworks extends CI_Model{
 		return NULL;
 	}
 	
+	function count_all(){
+		
+		return $this->db->count_all('delivesworks');
+	}
+	
 	function count_records_by_manager_status($manager,$status){
 		
 		$this->db->select('COUNT(*) AS cnt');

@@ -14,6 +14,7 @@
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
 				<?php $this->load->view('forms/frmuserprofile');?>
+			<?php if($this->uri->segment(3) == 'users'):?>
 				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 					<fieldset>
 						<div class="control-group">
@@ -24,6 +25,7 @@
 						</div>
 					</fieldset>
 				<?= form_close(); ?>
+			<?php endif;?>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		</div>

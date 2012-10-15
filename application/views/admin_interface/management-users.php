@@ -81,6 +81,15 @@
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteUser" data-param="<?=$i;?>" data-toggle="modal" href="#deleteUser" title="Удалить пользователя"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>
+							<?php if($users[$i]['locked']):?>
+								<i class="icon-lock" title="Профиль заблокирован" style="float:left; margin:10px 0 0 0;"></i>
+							<?php endif;?>
+							<?php if($users[$i]['debetor']):?>
+								<i class="icon-warning-sign" title="Профиль заблокирован по задолженоости" style="float:left; margin:10px 0 0 20px"></i>
+							<?php endif;?>
+							<?php if($users[$i]['autopaid']):?>
+								<i class="icon-star" title="Режим &quot;Беззаботный&quot;" style="float:left; margin:10px 0 0 40px"></i>
+							<?php endif;?>
 							</td>
 						</tr>
 					<?php endfor; ?>

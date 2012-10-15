@@ -1837,16 +1837,23 @@ class Admin_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('mid',' ','required|trim');
 			$this->form_validation->set_rules('recipient',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if(isset($_POST['closeticket'])):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
+					$_POST['text'] .= '<br/><strong>Тикет закрыт!</strong>';
+					$this->mdtickets->update_field($ticket,'status',1);
+				endif;
 				$id = $this->mdtkmsgs->insert_record($_POST['recipient'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($id):
+					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],'Новое сообщение через тикет-систему');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
@@ -1855,7 +1862,7 @@ class Admin_interface extends CI_Controller{
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
 					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
-					<p>Желаем Вам удачи!</p> 
+					<p>Желаем Вам удачи!</p>
 					<?
 					$mailtext = ob_get_clean();
 					
@@ -1870,7 +1877,7 @@ class Admin_interface extends CI_Controller{
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
 					$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
-					$this->email->message($mailtext);	
+					$this->email->message($mailtext);
 					$this->email->send();
 				endif;
 			endif;

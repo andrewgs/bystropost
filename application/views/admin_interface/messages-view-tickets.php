@@ -42,10 +42,10 @@
 							</td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$tkmsgs[$i]['id'];?>" data-uid="<?=$tkmsgs[$i]['uid'];?>" data-fio="<?=$tkmsgs[$i]['fio'];?>" data-login="<?=$tkmsgs[$i]['login'];?>"></div>
-							<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>	
+							<?php if(($tkmsgs[$i]['sender'] != $userinfo['uid']) && !$ticket['status']):?>
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Ответить на сообщение"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>
+								<a class="btn btn-danger deleteMail" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMail" title="Удалить сообщение"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
 						</tr>
 					<?php endfor; ?>
@@ -78,13 +78,15 @@
 				var err = false;
 				$(".control-group").removeClass('error');
 				$(".help-inline").hide();
-				if($("#mailText").val() == ''){
-					$("#mailText").parents(".control-group").addClass('error');
-					$("#mailText").siblings(".help-inline").html("Поле не может быть пустым").show();
-					event.preventDefault();
+				if($("#closeTicket:not(:checked)").length){
+					if($("#mailText").val() == ''){
+						$("#mailText").parents(".control-group").addClass('error');
+						$("#mailText").siblings(".help-inline").html("Поле не может быть пустым").show();
+						event.preventDefault();
+					}
 				}
 			});
-			
+			$("#mailUser").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide();$("#mailText").val('');$("#closeTicket").removeAttr('checked');});
 			$(".deleteMail").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
 			$("#DelMail").click(function(){location.href='<?=$baseurl;?>admin-panel/messages/tickets/delete-mail/mail-id/'+mID;});
 		});

@@ -26,11 +26,11 @@
 					<label class="control-label" for="sendmail"></label>
 					<div class="controls">
 						<label class="checkbox">
-						<input id="sendMail" name="sendmail" type="checkbox" value="1">
+							<input id="sendMail" name="sendmail" type="checkbox" value="1">
 							Установите если нужно уведомить по почте
 						</label>
 						<label class="checkbox">
-						<input id="closeTicket" name="closeticket" type="checkbox" value="1">
+							<input id="closeTicket" name="closeticket" type="checkbox" value="1">
 							Поблагодарить и закрыть тикет
 						</label>
 					</div>

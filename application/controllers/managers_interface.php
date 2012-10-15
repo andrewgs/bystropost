@@ -23,6 +23,7 @@ class Managers_interface extends CI_Controller{
 		$this->load->model('mdthematic');
 		$this->load->model('mdcms');
 		$this->load->model('mdwebmarkets');
+		$this->load->model('mdfillup');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -97,7 +98,7 @@ class Managers_interface extends CI_Controller{
 		endfor;
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -171,7 +172,7 @@ class Managers_interface extends CI_Controller{
 		endif;
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -239,7 +240,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -495,33 +496,46 @@ class Managers_interface extends CI_Controller{
 				$wprice = $this->mdplatforms->read_field($platform,'c'.$nickname);
 				$mprice = $this->mdplatforms->read_field($platform,'m'.$nickname);
 				if($webmaster):
-					$this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$wprice,$mprice,$_POST);
-					$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
-					if($this->mdusers->read_field($webmaster,'sendmail')):
-						ob_start();
-						?>
-						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
-						<p>Для Вас новое завершенное задание</p>
-						<p>Что бы просмотреть его ввойдите в <?=anchor('','личный кабинет');?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
-						<p>Желаем Вам удачи!</p> 
-						<?
-						$mailtext = ob_get_clean();
-						
-						$this->email->clear(TRUE);
-						$config['smtp_host'] = 'localhost';
-						$config['charset'] = 'utf-8';
-						$config['wordwrap'] = TRUE;
-						$config['mailtype'] = 'html';
-						
-						$this->email->initialize($config);
-						$this->email->to($this->mdusers->read_field($webmaster,'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
-						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задание');
-						$this->email->message($mailtext);	
-						$this->email->send();
+					$work = $this->mddelivesworks->insert_record($webmaster,$platform,$this->user['uid'],$wprice,$mprice,$_POST);
+					if($work):
+						$user = $this->mdusers->read_record($webmaster);
+						if($user['autopaid'] && ($user['balance'] >= $wprice)):
+							$this->mdusers->change_user_balance($webmaster,-$wprice);
+							$this->mddelivesworks->update_status_ones($webmaster,$work);
+							if($user['manager']):
+								$this->mdusers->change_user_balance($user['manager'],$mprice);
+							endif;
+							$this->mdusers->change_admins_balance($wprice-$mprice);
+							$this->mdfillup->insert_record(0,$wprice-$mprice,'Ошибок не обнаружено');
+							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
+						endif;
+						$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
+						if($this->mdusers->read_field($webmaster,'sendmail')):
+							ob_start();
+							?>
+							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
+							<p>Для Вас новое завершенное задание</p>
+							<p>Что бы просмотреть его ввойдите в <?=anchor('','личный кабинет');?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
+							<p>Желаем Вам удачи!</p> 
+							<?
+							$mailtext = ob_get_clean();
+							
+							$this->email->clear(TRUE);
+							$config['smtp_host'] = 'localhost';
+							$config['charset'] = 'utf-8';
+							$config['wordwrap'] = TRUE;
+							$config['mailtype'] = 'html';
+							
+							$this->email->initialize($config);
+							$this->email->to($this->mdusers->read_field($webmaster,'login'));
+							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+							$this->email->bcc('');
+							$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задание');
+							$this->email->message($mailtext);	
+							$this->email->send();
+						endif;
+						$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
 					endif;
-					$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
 				else:
 					$this->session->set_userdata('msgr','Отчет о выполенной работе не создан');
 				endif;
@@ -536,16 +550,16 @@ class Managers_interface extends CI_Controller{
 		/*for($i=0,$j=22;$i<count($pagevar['typeswork']);$i++,$j+=2):
 			$pagevar['typeswork'][$i]['mprice'] = $arr[$j];
 		endfor;*/
-		$pagevar['typeswork'][0]['mprice'] = $arr[24]; //context
-		$pagevar['typeswork'][1]['mprice'] = $arr[22]; //notice
-		$pagevar['typeswork'][2]['mprice'] = $arr[26]; //rewiew
-		$pagevar['typeswork'][3]['mprice'] = $arr[30]; //linkpic
-		$pagevar['typeswork'][4]['mprice'] = $arr[32]; //press
-		$pagevar['typeswork'][5]['mprice'] = $arr[34]; //linkarh
-		$pagevar['typeswork'][6]['mprice'] = $arr[28]; //news
+		$pagevar['typeswork'][0]['mprice'] = $arr[23]; //context
+		$pagevar['typeswork'][1]['mprice'] = $arr[25]; //notice
+		$pagevar['typeswork'][2]['mprice'] = $arr[27]; //rewiew
+		$pagevar['typeswork'][3]['mprice'] = $arr[31]; //linkpic
+		$pagevar['typeswork'][4]['mprice'] = $arr[33]; //press
+		$pagevar['typeswork'][5]['mprice'] = $arr[35]; //linkarh
+		$pagevar['typeswork'][6]['mprice'] = $arr[29]; //news
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -614,7 +628,19 @@ class Managers_interface extends CI_Controller{
 											$new_work['datepaid'] 	= '0000-00-00';
 											
 											if(!$this->mddelivesworks->exist_work($new_work['id'])):
-												$this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
+												$work = $this->mddelivesworks->insert_record($new_work['webmaster'],$platforms[$pl]['id'],$this->user['uid'],$new_work['wprice'],$new_work['mprice'],$new_work);
+												if($work):
+													$user = $this->mdusers->read_record($new_work['webmaster']);
+													if($user['autopaid'] && ($user['balance'] >= $new_work['wprice'])):
+														$this->mdusers->change_user_balance($new_work['webmaster'],-$new_work['wprice']);
+														$this->mddelivesworks->update_status_ones($new_work['webmaster'],$work);
+														if($user['manager']):
+															$this->mdusers->change_user_balance($user['manager'],$new_work['mprice']);
+														endif;
+														$this->mdusers->change_admins_balance($new_work['wprice']-$new_work['mprice']);
+														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Ошибок не обнаружено');
+													endif;
+												endif;
 												$statusval['wkol']++;
 											else:
 												continue;
@@ -716,7 +742,7 @@ class Managers_interface extends CI_Controller{
 		$this->mdmessages->set_read_mails_by_recipient($this->user['uid'],$this->user['utype']);
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -803,7 +829,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -852,7 +878,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -935,7 +961,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -1019,7 +1045,7 @@ class Managers_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);

@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -41,6 +41,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['debetor'] 			= $userinfo['debetor'];
 					$this->user['signdate'] 		= $userinfo['signdate'];
 					$this->user['balance'] 			= $userinfo['balance'];
+					$this->user['autopaid'] 		= $userinfo['autopaid'];
 					if($userinfo['manager'] == 2):
 						$this->user['remote'] = TRUE;
 						$this->user['remoteid'] = $userinfo['remoteid'];
@@ -232,6 +233,9 @@ class Clients_interface extends CI_Controller{
 				if(!isset($_POST['sendmail'])):
 					$_POST['sendmail'] = 0;
 				endif;
+				if(!isset($_POST['autopaid'])):
+					$_POST['autopaid'] = 0;
+				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $this->user['uid'];
 				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
@@ -242,11 +246,15 @@ class Clients_interface extends CI_Controller{
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
+					if($_POST['autopaid']):
+						$msgs .= 'Включен режим "Беззаботный".<br/>';
+					endif;
 					$this->session->set_userdata('msgs',$msgs);
 				endif;
 				if(!$this->user['lock'] && isset($_POST['lockprofile'])):
 					$result = $this->mdusers->update_field($this->user['uid'],'locked',1);
 					if($result):
+						$this->mdusers->update_field($this->user['uid'],'autopaid',0);
 						$managers = $this->mdplatforms->read_managers_platform_online($this->user['uid']);
 						$this->mdplatforms->platforms_status_offline($this->user['uid']);
 						$platforms = $this->mdplatforms->read_records_by_webmaster($this->user['uid']);
@@ -1906,6 +1914,7 @@ class Clients_interface extends CI_Controller{
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
+					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],'Новое сообщение через тикет-систему');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
 						ob_start();

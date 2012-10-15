@@ -54,10 +54,10 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("td[data-status='0']").each(function(e){
-				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
+				$(this).addClass("notpaid"); $(this).siblings('td').addClass("notpaid");
 			});
 			$("td[data-status='1']").each(function(e){
-				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
+				$(this).addClass("paid"); $(this).siblings('td').addClass("paid");
 			});
 		});
 	</script>

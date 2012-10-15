@@ -23,6 +23,9 @@ class Mdusers extends CI_Model{
 	var $type	  		= 1;
 	var $manager 		= 0;
 	var $position	  	= '';
+	var $autopaid	  	= 0;
+	var $locked	  		= 0;
+	var $debetor  		= 0;
 
 	function __construct(){
 		parent::__construct();
@@ -105,6 +108,9 @@ class Mdusers extends CI_Model{
 		endif;
 		if(isset($data['manager'])):
 			$this->db->set('manager',$data['manager']);
+		endif;
+		if(isset($data['autopaid'])):
+			$this->db->set('autopaid',$data['autopaid']);
 		endif;
 		$this->db->where('id',$data['uid']);
 		$this->db->update('users');

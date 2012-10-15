@@ -33,9 +33,15 @@
 					<label class="control-label" for="sendmail"></label>
 					<div class="controls">
 						<label class="checkbox">
-						<input id="sendMail" name="sendmail" type="checkbox" value="1" checked="checked">
+							<input id="sendMail" name="sendmail" type="checkbox" value="1" checked="checked">
 							Установите если нужно уведомить по почте
 						</label>
+					<?php if($this->uri->segment(3) == 'tickets'):?>
+						<label class="checkbox">
+							<input id="closeTicket" name="closeticket" type="checkbox" value="1">
+							Закрыть тикет
+						</label>
+					<?php endif;?>
 					</div>
 				</div>
 			</fieldset>

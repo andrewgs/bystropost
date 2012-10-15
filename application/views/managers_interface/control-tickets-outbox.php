@@ -35,10 +35,10 @@
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
 								<div id="params<?=$i;?>" style="display:none" data-tid="<?=$tickets[$i]['id'];?>"></div>
-								<?=anchor('manager-panel/actions/tickets/outbox/view-ticket/'.$tickets[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-list-alt icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Читать тикет','class'=>"btn btn-success"));?><br/><br/>
+								<?=anchor('manager-panel/actions/tickets/outbox/view-ticket/'.$tickets[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-list-alt icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Читать тикет','class'=>"btn btn-success"));?><br/>
 								<a class="btn btn-danger deleteTicket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteTicket" title="Удалить тикет"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php if($tickets[$i]['status']):?>
-								<i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
+								<br/><i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
 							<?php endif;?>
 							</td>
 						</tr>
