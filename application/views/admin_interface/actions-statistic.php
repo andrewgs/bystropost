@@ -65,6 +65,10 @@
 							<?php endif;?>
 							</td>
 						</tr>
+						<tr>
+							<td class="w400">Статус:</td>
+							<td class="w195" colspan="3" id="Result">&nbsp;</td>
+						</tr>
 					</tbody>
 				</table>
 				<div id="load"></div>
@@ -81,10 +85,12 @@
 			
 			$(".AlertByDay").click(function(){
 				var days = $(this).attr("data-days");
+				$(this).html('<i class="icon-time icon-white"></i>');
 				send_alert(days,this);
 			});
 			$(".Locked5Day").click(function(){
 				var days = $(this).attr("data-days");
+				$(this).html('<i class="icon-time icon-white"></i>');
 				send_locked(days,this);
 			});
 			
@@ -94,6 +100,7 @@
 						$(object).html('<i class="icon-ok icon-white"></i>');
 						$(object).addClass("disabled");
 						$(object).attr("disabled","disabled");
+						$("#Result").html('Отправлено уведомлений: '+data.count);
 					}
 				},"json");
 			}
@@ -104,6 +111,7 @@
 						$(object).html('<i class="icon-ok icon-white"></i>');
 						$(object).addClass("disabled");
 						$(object).attr("disabled","disabled");
+						$("#Result").html('Должников: '+data.debetors+". Pаблокировано бирж: "+data.birzlock);
 					}
 				},"json");
 			}

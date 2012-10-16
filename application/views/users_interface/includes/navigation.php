@@ -11,7 +11,7 @@
 			<?=anchor('forum','Форум');?> &nbsp;&nbsp;
 			<?=anchor('users-ratings/webmasters','Отзывы');?> &nbsp;&nbsp;
 			<?=anchor("contacts","Контакты");?>&nbsp;&nbsp;
-			<?=anchor("site-map","Карта сайта");?>
+			<?=anchor("idea","Ваши идеи");?>
 		</div>
 		<?php $this->load->view("forms/frmlogin");?>
 	</div>

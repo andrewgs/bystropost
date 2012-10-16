@@ -440,6 +440,9 @@ class Admin_interface extends CI_Controller{
 				if(!isset($_POST['sendmail'])):
 					$_POST['sendmail'] = 0;
 				endif;
+				if(!isset($_POST['antihold'])):
+					$_POST['antihold'] = 0;
+				endif;
 				unset($_POST['password']);unset($_POST['login']);
 				$_POST['uid'] = $user;
 				$wmid = $this->mdusers->read_by_wmid($_POST['wmid']);
@@ -2359,7 +2362,7 @@ class Admin_interface extends CI_Controller{
 
 	public function alert_debet(){
 		
-		$statusval = array('status'=>TRUE,);
+		$statusval = array('status'=>TRUE,'count'=>0,'bdate'=>'');
 		$days = trim($this->input->post('days'));
 		if(!$days):
 			show_404();
@@ -2373,10 +2376,9 @@ class Admin_interface extends CI_Controller{
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-$days,date("Y")));
 		$debetors = $this->mdunion->read_debetors_list($date,$znak);
 		for($i=0;$i<count($debetors);$i++):
-			if($debetors[$i]['cnt']):
 				ob_start();
 				?>
-				<p><strong>Здравствуйте, <?=$debetors[$i]['ufio'];?></strong></p>
+				<p><strong>Здравствуйте, <?=$debetors[$i]['ulogin'];?> </strong></p>
 				<p>У Вас есть неоплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
 				<p>Напоминаем Вам. Если у Вас будут неоплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
 				<?php if($days>=5):?>
@@ -2399,14 +2401,15 @@ class Admin_interface extends CI_Controller{
 				$this->email->subject('Noreply: Bystropost.ru - Уведомление о задолженности');
 				$this->email->message($mailtext);
 				$this->email->send();
-			endif;
+				$statusval['count']++;
 		endfor;
+		$statusval['bdate'] = $date;
 		echo json_encode($statusval);
 	}
 	
 	public function locked_debet(){
 		
-		$statusval = array('status'=>TRUE,'debetors'=>0);
+		$statusval = array('status'=>TRUE,'debetors'=>0,'birzlock'=>0);
 		$days = trim($this->input->post('days'));
 		if(!$days):
 			show_404();
@@ -2418,11 +2421,14 @@ class Admin_interface extends CI_Controller{
 		endif;
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$statusval['debetors'] = $this->mdunion->update_debetors_status($date,$znak,1);
-		$debetors = $this->mdunion->debetors_webmarkets();
-		for($i=0;$i<count($debetors);$i++):
-			$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.$this->encrypt->decode($debetors[$i]['cryptpassword']).'&act=2';
-			$this->API('UpdateAccount',$param);
-		endfor;
+		if($statusval['debetors']):
+			$debetors = $this->mdunion->debetors_webmarkets();
+			for($i=0;$i<count($debetors);$i++):
+				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.$this->encrypt->decode($debetors[$i]['cryptpassword']).'&act=2';
+				$this->API('UpdateAccount',$param);
+				$statusval['birzlock']++;
+			endfor;
+		endif;
 		echo json_encode($statusval);
 	}
 

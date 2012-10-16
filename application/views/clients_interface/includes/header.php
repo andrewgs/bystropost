@@ -20,13 +20,16 @@
 				<div class="user-panel">
 					<?php $this->load->view("topblock/clients");?>
 					<?php if($userinfo['lock']):?>
-						<i class="icon-lock" title="Профиль заблокирован" style="float:left; margin-top:-15px;"></i>
+						<i class="icon-lock" title="Профиль заблокирован" style="margin-top:-15px;"></i>
 					<?php endif;?>
 					<?php if($userinfo['debetor']):?>
-						<i class="icon-warning-sign" title="Профиль заблокирован по задолженности" style="float:left; margin:-15px 0 0 25px"></i>
+						<i class="icon-warning-sign" title="Профиль заблокирован по задолженности" style="margin-top:-15px;"></i>
 					<?php endif;?>
 					<?php if($userinfo['autopaid']):?>
-						<i class="icon-star" title="Режим &quot;Беззаботный&quot;" style="float:left; margin:-15px 0 0 50px"></i>
+						<i class="icon-star" title="Режим &quot;Беззаботный&quot;" style="margin-top:-15px;"></i>
+					<?php endif;?>
+					<?php if($userinfo['antihold']):?>
+						<i class="icon-check" title="Аккаунт не блокируется" style="margin-top:-15px;"></i>
 					<?php endif;?>
 				</div>
 			</div>

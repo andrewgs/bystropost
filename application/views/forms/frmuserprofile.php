@@ -109,6 +109,17 @@
 			</div>
 		</div>	
 	<?php endif;?>
+	<?php if($userinfo['utype'] == 5):?>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" id="AntiHold" name="antihold" value="1" <?= ($user['antihold'] == 1)? 'checked="checked"': '';?>>
+					Не блокировать вебмастера
+				</label>
+				<span class="help-block">Клиент сможет работать в системе, если даже есть не оплаченные заявки более 5 дней.</span>
+			</div>
+		</div>
+	<?php endif;?>
 		<div class="form-actions">
 			<button class="btn btn-primary" type="submit" name="submit" id="submit" value="submit">Сохранить</button>
 			<input class="btn btn-inverse" id="reset" style="height: 28px; cursor:pointer;" type="button" value="Отменить">

@@ -21,7 +21,7 @@
 			<li num="balance"><?=anchor('admin-panel/actions/balance','Баланс');?></li>
 			<li num="forum"><?=anchor('admin-panel/actions/forum','Форум');?></li>
 			<li num="events"><?=anchor('admin-panel/actions/events','События');?></li>
-			<li num="control"><?=anchor('admxxin-panel/actions/control','Дополнительно');?></li>
+			<li num="control"><?=anchor('admin-panel/actions/control','Дополнительно');?></li>
 		</ul>
 	</div>
 </div>

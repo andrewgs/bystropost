@@ -1,10 +1,10 @@
 <div id="footer_bg">
 	<div id="footer">
-		<?=anchor('forum','Форум');?>
 		<!-- <?=anchor('support','Техподдержка');?> -->
 		<?=anchor('site-monetization','Монетизация сайта');?>
 		<?=anchor('additional-services','Дополнительные услуги');?>
 		<?=anchor('disclaimer','Уведомление об ответственности');?>
+		<?=anchor("site-map","Карта сайта");?>
 		<br />
 		<?=anchor('','&#169; 2012 bystropost.ru');?>
 		<div id="counters">

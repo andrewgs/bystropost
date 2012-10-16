@@ -28,7 +28,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#TypesWork").val(1);
-			$("#Market").val(5);
+			$("#Market").val(1);
 		<?php if(isset($typeswork[0]['mprice'])):?>
 			$("#gonorar").html("<?=$typeswork[0]['mprice'];?>")
 		<?php endif;?>

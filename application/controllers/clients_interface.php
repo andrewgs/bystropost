@@ -2,7 +2,7 @@
 
 class Clients_interface extends CI_Controller{
 	
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -42,6 +42,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['signdate'] 		= $userinfo['signdate'];
 					$this->user['balance'] 			= $userinfo['balance'];
 					$this->user['autopaid'] 		= $userinfo['autopaid'];
+					$this->user['antihold'] 		= $userinfo['antihold'];
 					if($userinfo['manager'] == 2):
 						$this->user['remote'] = TRUE;
 						$this->user['remoteid'] = $userinfo['remoteid'];

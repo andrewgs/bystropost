@@ -23,8 +23,10 @@
 						Вы можете оставить свой отзыв для отображения на сайте на следующих форумах:
 					</p>
 					<p>
-						<?=anchor('http://forum.searchengines.ru/','forum.searchengines.ru',array('class'=>'se'));?>
-						<?=anchor('http://maultalk.com/','maultalk.com',array('class'=>'maultalk'));?>
+						<?=anchor('http://forum.searchengines.ru/showthread.php?t=628588','Forum.Searchengines.ru',array('class'=>'se'));?>
+						<?=anchor('http://www.maultalk.com/topic88216.html','Maultalk.com',array('class'=>'maultalk'));?>
+						<?=anchor('http://mastertalk.ru/discussion/145163/monetizaciya-vashih-saytov-gogetlinksmiralinksrotapost-etc','MasterTalk.ru',array('class'=>'mastertalk'));?>
+						<?=anchor('http://webmasters.ru/forum/f114/rabotayu-za-vas-v-gogetlinks-advego-prosto-poluchai-passivnyi-dohod-13860/','WebMasters.ru',array('class'=>'webmasters'));?>
 					</p>
 				</div>
 				<div class="span5">

@@ -26,6 +26,7 @@ class Mdusers extends CI_Model{
 	var $autopaid	  	= 0;
 	var $locked	  		= 0;
 	var $debetor  		= 0;
+	var $antihold  		= 0;
 
 	function __construct(){
 		parent::__construct();
@@ -111,6 +112,9 @@ class Mdusers extends CI_Model{
 		endif;
 		if(isset($data['autopaid'])):
 			$this->db->set('autopaid',$data['autopaid']);
+		endif;
+		if(isset($data['antihold'])):
+			$this->db->set('antihold',$data['antihold']);
 		endif;
 		$this->db->where('id',$data['uid']);
 		$this->db->update('users');

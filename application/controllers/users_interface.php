@@ -205,6 +205,20 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/reading-rating",$pagevar);
 	}
 	
+	public function idea(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Ваши идеи',
+			'description'	=> '',
+			'author'		=> '',
+			'rating'		=> $this->mdratings->read_record($this->uri->segment(4)),
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/idea",$pagevar);
+	}
+	
 	public function about(){
 		
 		$pagevar = array(
