@@ -33,8 +33,6 @@ $route['users-ratings/advertisers/reading-rating/:num']= "users_interface/readin
 $route['users/registering/webmaster']	= "users_interface/registering";
 $route['users/registering/optimizer']	= "users_interface/registering";
 
-//$route['users/registering/successfull']	= "clients_interface/reg_successfull";
-
 $route['users/restore-password']		= "users_interface/restore_password";
 
 $route['ratings/viewimage/:num']		= "users_interface/viewimage";
@@ -85,14 +83,12 @@ $route['webmaster-panel/actions/balance']							= "clients_interface/control_bal
 $route['webmaster-panel/actions/balance/paid']						= "clients_interface/control_balance_paid";
 $route['webmaster-panel/actions/balance/successfull']				= "clients_interface/control_balance_successfull";
 $route['webmaster-panel/actions/balance/failed']					= "clients_interface/control_balance_failed";
-//$route['webmaster-panel/actions/balance/result']					= "clients_interface/control_balance_result";
 
 $route['webmaster-panel/actions/services']							= "clients_interface/control_services";
 $route['webmaster-panel/actions/services/serviceid/:num/platforms']	= "clients_interface/control_services_platforms";
 $route['admin-panel/management/services/delete/serviceid/:num']		= "clients_interface/control_services_delete";
 
 $route['views/market-profile']										= "clients_interface/views";
-
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
@@ -174,6 +170,10 @@ $route['admin-panel/management/users/usersid/:num/platforms']				= "admin_interf
 $route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from']		= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";
+
+$route['admin-panel/management/finished-jobs/delete/jobid/:num']			= "admin_interface/delete_finished_jobs";
+$route['admin-panel/management/finished-jobs/delete/user/:num']				= "admin_interface/delete_user_jobs";
+$route['admin-panel/management/finished-jobs/delete/platform/:num']			= "admin_interface/delete_platform_jobs";
 
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";

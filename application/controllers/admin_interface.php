@@ -1288,11 +1288,32 @@ class Admin_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
 					'delivers'		=> $this->mdunion->delivers_works_webmaster($this->uri->segment(5),10,$from),
+					'typeswork'		=> $this->mdtypeswork->read_records(),
+					'markets'		=> $this->mdmarkets->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('wid',' ','required|trim');
+			$this->form_validation->set_rules('typework',' ','required|trim');
+			$this->form_validation->set_rules('market',' ','required|trim');
+			$this->form_validation->set_rules('mkprice',' ','required|trim');
+			$this->form_validation->set_rules('ulrlink',' ','required|prep_url|trim');
+			$this->form_validation->set_rules('countchars',' ','required|trim');
+			$this->form_validation->set_rules('wprice',' ','required|trim');
+			$this->form_validation->set_rules('mprice',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$this->mddelivesworks->update_record($_POST['wid'],$_POST);
+				$this->session->set_userdata('msgs','Запись о работе сохранена');
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/userid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
@@ -1338,11 +1359,32 @@ class Admin_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
 					'delivers'		=> $this->mdunion->delivers_works_platform($this->uri->segment(5),10,$from),
+					'typeswork'		=> $this->mdtypeswork->read_records(),
+					'markets'		=> $this->mdmarkets->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			$_POST['submit'] = NULL;
+			$this->form_validation->set_rules('wid',' ','required|trim');
+			$this->form_validation->set_rules('typework',' ','required|trim');
+			$this->form_validation->set_rules('market',' ','required|trim');
+			$this->form_validation->set_rules('mkprice',' ','required|trim');
+			$this->form_validation->set_rules('ulrlink',' ','required|prep_url|trim');
+			$this->form_validation->set_rules('countchars',' ','required|trim');
+			$this->form_validation->set_rules('wprice',' ','required|trim');
+			$this->form_validation->set_rules('mprice',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$this->mddelivesworks->update_record($_POST['wid'],$_POST);
+				$this->session->set_userdata('msgs','Запись о работе сохранена');
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/platforms/platformid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
@@ -1375,6 +1417,48 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
+	}
+	
+	public function delete_finished_jobs(){
+		
+		$wid = $this->uri->segment(6);
+		if($wid):
+			$result = $this->mddelivesworks->delete_record($wid);
+			if($result):
+				$this->session->set_userdata('msgs','Работа удалена.');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			redirect($this->session->userdata('backpath'));
+		endif;
+	}
+	
+	public function delete_user_jobs(){
+		
+		$uid = $this->uri->segment(6);
+		if($uid):
+			$result = $this->mddelivesworks->delete_records_user($uid);
+			if($result):
+				$this->session->set_userdata('msgs','Работы удалены.');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			redirect($this->session->userdata('backpath'));
+		endif;
+	}
+	
+	public function delete_platform_jobs(){
+		
+		$pid = $this->uri->segment(6);
+		if($pid):
+			$result = $this->mddelivesworks->delete_records_platform($pid);
+			if($result):
+				$this->session->set_userdata('msgs','Работы удалены.');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			redirect($this->session->userdata('backpath'));
+		endif;
 	}
 	
 	/******************************************************** works ******************************************************/

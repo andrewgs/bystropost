@@ -44,17 +44,17 @@ class Mddelivesworks extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
-	function update_record($id,$webmaster,$platform,$data){
+	function update_record($id,$data){
 		
 		$this->db->set('typework',$data['typework']);
 		$this->db->set('market',$data['market']);
 		$this->db->set('mkprice',$data['mkprice']);
 		$this->db->set('ulrlink',$data['ulrlink']);
 		$this->db->set('countchars',$data['countchars']);
+		$this->db->set('wprice',$data['wprice']);
+		$this->db->set('mprice',$data['mprice']);
 
 		$this->db->where('id',$id);
-		$this->db->where('webmaster',$webmaster);
-		$this->db->where('platform',$platform);
 		$this->db->update('delivesworks');
 		return $this->db->affected_rows();
 	}
@@ -155,6 +155,20 @@ class Mddelivesworks extends CI_Model{
 	function delete_record($id){
 	
 		$this->db->where('id',$id);
+		$this->db->delete('delivesworks');
+		return $this->db->affected_rows();
+	}
+	
+	function delete_records_user($uid){
+	
+		$this->db->where('webmaster',$uid);
+		$this->db->delete('delivesworks');
+		return $this->db->affected_rows();
+	}
+	
+	function delete_records_platform($platform){
+	
+		$this->db->where('platform',$platform);
 		$this->db->delete('delivesworks');
 		return $this->db->affected_rows();
 	}
