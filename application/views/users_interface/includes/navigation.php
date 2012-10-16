@@ -1,6 +1,6 @@
 <div id="navigation" class="row">
 	<div class="span6">
-		<a href="<?=$baseurl;?>" id="top-logo"></a>	
+		<a href="<?=$baseurl;?>" id="top-logo"></a>
 	</div>
 	<div id="login-form" class="span6">
 		<div class="top-links">
@@ -13,7 +13,9 @@
 			<?=anchor("contacts","Контакты");?>&nbsp;&nbsp;
 			<?=anchor("idea","Ваши идеи");?>
 		</div>
-		<?php $this->load->view("forms/frmlogin");?>
+		<?php if(!$this->session->userdata('logon')):
+			$this->load->view("forms/frmlogin");
+		endif;?>
 	</div>
 	<div class="top-main-nav">
 		<?=anchor("manner-of-payment","Порядок оплаты");?> <br />

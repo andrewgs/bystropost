@@ -8,7 +8,7 @@
 		<?php $this->load->view("users_interface/includes/header");?>
 		<div class="row">
 			<div class="span12">
-				<?php $this->load->view("forms/frmregistering");?>			
+				<?php $this->load->view("forms/frmregistering");?>
 			</div>
 		</div>
 	</div>

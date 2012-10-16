@@ -43,7 +43,6 @@
 				</div>
 			</div>
 		</div>
-		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

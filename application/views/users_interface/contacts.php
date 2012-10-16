@@ -14,8 +14,6 @@
 				Альтернативный вариант: создайте тикет или напишите письмо, используя внутренний интерфейс пользователя. Функция доступна после регистрации.
 			</div>
 		</div>
-		
-		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

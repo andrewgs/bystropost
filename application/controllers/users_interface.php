@@ -17,7 +17,14 @@ class Users_interface extends CI_Controller{
 			if($uid):
 				$userinfo = $this->mdusers->read_record($uid);
 				if($userinfo):
-					$this->access_cabinet($userinfo['id'],$userinfo['type']);
+					switch ($this->uri->uri_string()):
+						case '' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+						case 'webmasters' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+						case 'users/registering/webmaster' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+						case 'optimizers' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+						case 'users/registering/optimizer' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+						case 'users/restore-password' : $this->access_cabinet($userinfo['id'],$userinfo['type']); break;
+					endswitch;
 				endif;
 			endif;
 		endif;

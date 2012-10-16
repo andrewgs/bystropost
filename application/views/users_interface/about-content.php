@@ -76,8 +76,6 @@
 <p class="MsoNormal" style="text-align: left;"><o:p><i style="font-weight: normal;">&nbsp;</i></o:p></p>
 </h4>
 		</div>
-		
-		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

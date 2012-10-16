@@ -39,8 +39,6 @@
 <p class="MsoNormal" style="margin-bottom: 0.0001pt; "><font face="Arial, sans-serif" size="3"><span style="font-weight: normal;">5. Качественная работа, <a href="http://bystropost.ru/about-content" target="_blank">качественные тексты</a>, открывают дорогу вашему ресурсу в белые списки оптимизаторов.</span></font></p>
 <p></p>
 		</div>
-		
-		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>
