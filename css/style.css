@@ -1061,3 +1061,14 @@ input.mt7 {
 .w85 {
 	width: 85px;
 }
+
+#tree {
+	FLOAT: left;
+	MARGIN-TOP: 30px;
+	BACKGROUND-IMAGE: url('../images/tree.png');
+	BACKGROUND-REPEAT: no-repeat;
+	COLOR: #60696d;
+	min-height: 500px;
+	FONT-FAMILY: Verdana;
+	FONT-SIZE: 14px;
+}

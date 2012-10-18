@@ -451,11 +451,18 @@ class Users_interface extends CI_Controller{
 	
 	public function registering(){
 		
+		$redirect = $this->uri->segment(3).'s';
+		
+		if(isset($_SERVER['HTTP_REFERER'])):
+			$redirect = $_SERVER['HTTP_REFERER'];
+		endif;
+		
 		$usertype = $this->uri->segment(3);
 		switch ($usertype):
 			case 'webmaster': $tutype = 'вебмастера';$utype = 1; break;
-			case 'optimizer': $tutype = 'оптимизатора';$utype = 3; break;
-			default			: redirect($_SERVER['HTTP_REFERER']);break;
+			case 'optimizer': 	redirect($redirect);break;
+//								$tutype = 'оптимизатора';$utype = 3; break;
+			default			: redirect($redirect);break;
 		endswitch;
 		
 		$pagevar = array(

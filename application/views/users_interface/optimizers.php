@@ -9,7 +9,7 @@
 		<div class="clear"></div>
 		<div class="row smaller">
 			<div class="span12">
-				<div id="register_tree" class="no-margin">
+				<div id="tree" class="no-margin">
 					<?=anchor('users/registering/optimizer','<img src="'.$baseurl.'images/spacer.gif" width="500px" height="450px" border="0">');?>
 				</div>			
 				<p>
