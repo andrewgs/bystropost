@@ -112,12 +112,8 @@
 	<?php $this->load->view("clients_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("td[data-status='notpaid']").each(function(e){
-				$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');
-			});
-			$("td[data-status='paid']").each(function(e){
-				$(this).addClass('paid'); $(this).siblings('td').addClass('paid');
-			});
+			$("td[data-status='notpaid']").each(function(e){$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');});
+			$("td[data-status='paid']").each(function(e){$(this).addClass('paid'); $(this).siblings('td').addClass('paid');});
 		<?php if($userinfo['balance'] >= $minprice):?>
 			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false; $(".alert ").hide();$("#mspayall").show();});
 			var balance = <?=$userinfo['balance'];?>;

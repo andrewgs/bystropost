@@ -30,6 +30,9 @@
 							Установите если нужно уведомить по почте
 						</label>
 						<label class="checkbox">
+							<input id="closeTicket" name="closeticket" type="checkbox" value="1">
+							Поблагодарить и закрыть тикет
+						</label>
 					</div>
 				</div>
 			</fieldset>

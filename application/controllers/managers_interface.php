@@ -698,8 +698,9 @@ class Managers_interface extends CI_Controller{
 					?>
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У Вас новое сообщение</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел Почта</p>
-					<p>Желаем Вам удачи!</p> 
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+					<p>Желаем Вам удачи!</p>
+					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
 					
@@ -925,10 +926,41 @@ class Managers_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
 			else:
+				if(isset($_POST['closeticket'])):
+					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
+					$_POST['text'] .= '<br/><strong>Тикет закрыт!</strong>';
+					$this->mdtickets->update_field($ticket,'status',1);
+				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
+					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
+					if(isset($_POST['sendmail'])):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p>У Вас новое сообщение</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);
+						$this->email->send();
+					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -986,6 +1018,7 @@ class Managers_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdtickets->read_field($ticket,'title'),
+					'tstatus'		=> $this->mdtickets->read_field($ticket,'status'),
 					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_manager_pages($this->user['uid'],$ticket,5,$from),
 					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_manager_pages($this->user['uid'],$ticket),
 					'pages'			=> array(),
@@ -995,6 +1028,7 @@ class Managers_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
+		
 		if($this->input->post('mtsubmit')):
 			$_POST['mtsubmit'] = NULL;
 			$this->form_validation->set_rules('mid',' ','required|trim');
@@ -1013,6 +1047,31 @@ class Managers_interface extends CI_Controller{
 					$this->mdmessages->insert_record($this->user['uid'],0,'Новое сообщение через тикет-систему');
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
+					if(isset($_POST['sendmail'])):
+						ob_start();
+						?>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p>У Вас новое сообщение</p>
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);
+						$this->email->send();
+					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());

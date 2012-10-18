@@ -43,7 +43,7 @@
 								<?=$tkmsgs[$i]['text'];?>
 							</td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">
-							<?php if(($tkmsgs[$i]['sender'] != $userinfo['uid']) && !$ticket['status']):?>
+							<?php if(($tkmsgs[$i]['sender'] != $userinfo['uid']) && !$tstatus):?>
 								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$tkmsgs[$i]['id'];?>" data-uid="<?=$tkmsgs[$i]['sender'];?>" data-position="<?=$tkmsgs[$i]['position'];?>"></div>
 								<a class="btn btn-info mailTicket" data-param="<?=$i;?>" data-toggle="modal" href="#mailTicket" title="Ответить"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>
@@ -57,7 +57,7 @@
 				<?php endif;?>
 			</div>
 		<?php $this->load->view('managers_interface/includes/rightbar');?>
-		<?php $this->load->view('clients_interface/modal/clients-ticket-message');?>
+		<?php $this->load->view('managers_interface/modal/manager-ticket-message');?>
 		<?php $this->load->view('admin_interface/modal/admin-delete-mail');?>
 		</div>
 	</div>
@@ -65,9 +65,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var mID = 0;
-			$("td[data-incoming='incoming']").each(function(e){
-				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
-			});
+			$("td[data-incoming='incoming']").each(function(e){$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');});
 			var mID = 0;
 			$(".mailTicket").click(function(){
 				var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");uID = $("div[id = params"+Param+"]").attr("data-uid");

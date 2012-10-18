@@ -53,12 +53,8 @@
 	<?php $this->load->view('managers_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("td[data-status='0']").each(function(e){
-				$(this).addClass("notpaid"); $(this).siblings('td').addClass("notpaid");
-			});
-			$("td[data-status='1']").each(function(e){
-				$(this).addClass("paid"); $(this).siblings('td').addClass("paid");
-			});
+			$("td[data-status='0']").each(function(e){$(this).addClass("notpaid"); $(this).siblings('td').addClass("notpaid");});
+			$("td[data-status='1']").each(function(e){$(this).addClass("paid"); $(this).siblings('td').addClass("paid");});
 		});
 	</script>
 </body>

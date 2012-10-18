@@ -269,8 +269,9 @@ class Admin_interface extends CI_Controller{
 						?>
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
-						<p>Желаем Вам удачи!</p> 
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						
@@ -285,13 +286,10 @@ class Admin_interface extends CI_Controller{
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
-						$this->email->message($mailtext);	
+						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
 					$this->session->set_userdata('msgs','Сообщение отправлено');
-				endif;
-				if(isset($_POST['sendmail'])):
-					
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -768,7 +766,29 @@ class Admin_interface extends CI_Controller{
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
-					//Высылать письмо-уведомление
+					ob_start();
+					?>
+					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+					<p>У Вас новое сообщение</p>
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+					<p>Желаем Вам удачи!</p>
+					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+					<?
+					$mailtext = ob_get_clean();
+					
+					$this->email->clear(TRUE);
+					$config['smtp_host'] = 'localhost';
+					$config['charset'] = 'utf-8';
+					$config['wordwrap'] = TRUE;
+					$config['mailtype'] = 'html';
+					
+					$this->email->initialize($config);
+					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
+					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+					$this->email->bcc('');
+					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->message($mailtext);
+					$this->email->send();
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -1781,8 +1801,9 @@ class Admin_interface extends CI_Controller{
 						?>
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел Почта</p>
-						<p>Желаем Вам удачи!</p> 
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						
@@ -1948,8 +1969,9 @@ class Admin_interface extends CI_Controller{
 					?>
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
 					<p>Желаем Вам удачи!</p>
+					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
 					
