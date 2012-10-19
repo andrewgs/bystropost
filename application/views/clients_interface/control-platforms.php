@@ -38,8 +38,9 @@
 						<tr class="align-center">
 							<td class="w275 ttpl">
 							<?php if(!$platforms[$i]['locked'] && !$userinfo['lock']):?>
+								<?=$platforms[$i]['url'];?>
 								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-status="<?=$platforms[$i]['status'];?>"></div>
-								<a class="editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Свойства"><?=$platforms[$i]['url'];?></a>
+								<br/><a class="attrPlatform" data-param="<?=$i;?>" data-activate="<?=$platforms[$i]['status'];?>" data-toggle="modal" href="#attrPlatform" title="Свойства"><?=($platforms[$i]['status'])?'[Отключить площадку]':'[Включить площадку]';?></a>
 							<?php else:?>
 								<?=$platforms[$i]['url'];?>
 							<?php endif;?>
@@ -113,7 +114,7 @@
 					});
 			})
 			
-			$(".editPlatform").click(function(){
+			$(".attrPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");
 				var	status = $("div[id = params"+Param+"]").attr("data-status");
 				$(".idPlatform").val(pID);if(status == 1){$("#statusPlatform").attr('checked','checked');}else{$("#statusPlatform").removeAttr('checked');}

@@ -1324,10 +1324,10 @@ class Clients_interface extends CI_Controller{
 						$param = 'siteid='.$remote_id.'&value='.$status;
 						$res =  $this->API('SetSiteActive',$param);
 					endif;
-					if($status):
-						$this->session->set_userdata('msgs','Площадка активирована.');
+					if(!$status):
+						$this->session->set_userdata('msgs','Площадка включена.');
 					else:
-						$this->session->set_userdata('msgs','Площадка деактивирована.');
+						$this->session->set_userdata('msgs','Площадка выключена.');
 					endif;
 				endif;
 			endif;
