@@ -111,6 +111,16 @@ class Mddelivesworks extends CI_Model{
 		return $this->db->count_all('delivesworks');
 	}
 	
+	function count_all_manager($manager){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('manager',$manager);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function count_records_by_manager_status($manager,$status){
 		
 		$this->db->select('COUNT(*) AS cnt');
@@ -140,6 +150,27 @@ class Mddelivesworks extends CI_Model{
 		$query = $this->db->get('delivesworks',1);
 		$data = $query->result_array();
 		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function sum_records_by_webmaster_status($webmaster,$status){
+		
+		$this->db->select('SUM(wprice) AS sum');
+		$this->db->where('webmaster',$webmaster);
+		$this->db->where('status',$status);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['sum'];
+		return 0;
+	}
+	
+	function sum_records_by_webmaster($webmaster){
+		
+		$this->db->select('SUM(wprice) AS sum');
+		$this->db->where('webmaster',$webmaster);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['sum'];
 		return 0;
 	}
 	

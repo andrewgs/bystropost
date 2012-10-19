@@ -95,3 +95,9 @@ h1.whiteline { border: 0 none; }
 
 .ml05 { margin-left: 0.5em; }
 #footer a.check-certificate { border-bottom: 1px dotted; display: inline-block; font-size: 10px; line-height: 1.25em; position: absolute; right: -12px; top: -21px; }
+
+.user-panel { margin: 1em 0 0; }
+.user-topblock {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em;}
+.user-topblock a{font: 12px/21px arial,sans-serif;text-decoration: none;}
+.user-topblock a:hover{font: 12px/21px arial,sans-serif;text-decoration: none;}
+}

@@ -98,7 +98,7 @@ class Managers_interface extends CI_Controller{
 		endfor;
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
-		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all();
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all_manager($this->user['uid']);
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_manager($this->user['uid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
@@ -513,10 +513,12 @@ class Managers_interface extends CI_Controller{
 						if($this->mdusers->read_field($webmaster,'sendmail')):
 							ob_start();
 							?>
+							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
 							<p>Для Вас новое завершенное задание</p>
 							<p>Что бы просмотреть его ввойдите в <?=anchor('','личный кабинет');?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
-							<p>Желаем Вам удачи!</p> 
+							<p>Желаем Вам удачи!</p>
+							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
 							
@@ -547,9 +549,6 @@ class Managers_interface extends CI_Controller{
 			$arr[$i] = $value;
 			$i++;
 		endforeach;
-		/*for($i=0,$j=22;$i<count($pagevar['typeswork']);$i++,$j+=2):
-			$pagevar['typeswork'][$i]['mprice'] = $arr[$j];
-		endfor;*/
 		$pagevar['typeswork'][0]['mprice'] = $arr[23]; //context
 		$pagevar['typeswork'][1]['mprice'] = $arr[25]; //notice
 		$pagevar['typeswork'][2]['mprice'] = $arr[27]; //rewiew
@@ -696,9 +695,11 @@ class Managers_interface extends CI_Controller{
 				if(isset($_POST['sendmail'])):
 					ob_start();
 					?>
+					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У Вас новое сообщение</p>
 					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+					<p><br/><?=$_POST['text'];?><br/></p>
 					<p>Желаем Вам удачи!</p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
@@ -939,9 +940,11 @@ class Managers_interface extends CI_Controller{
 					if(isset($_POST['sendmail'])):
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
 						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
 						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
@@ -1050,9 +1053,11 @@ class Managers_interface extends CI_Controller{
 					if(isset($_POST['sendmail'])):
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
 						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
 						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?

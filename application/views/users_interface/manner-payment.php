@@ -19,6 +19,7 @@
 			<div><br /></div>
 			<div><a href="http://bystropost.ru/prices" target="_blank">Текущий прейскурант цен</a></div>
 		</div>
+		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

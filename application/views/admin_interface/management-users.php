@@ -63,6 +63,8 @@
 								<center><nobr>
 							<?php if($users[$i]['type'] == 1):?>
 								<?=anchor('admin-panel/management/users/userid/'.$users[$i]['id'].'/finished-jobs',$users[$i]['torders'].' / <b>'.$users[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?><br/><br/>
+								Всего: <?=$users[$i]['prtorders'];?> руб.<br/>
+								Долг: <strong><?=$users[$i]['pruporders'];?> руб.</strong>
 							<?php else:?>
 								&mdash; / &mdash;
 							<?php endif;?>

@@ -61,13 +61,19 @@ class Users_interface extends CI_Controller{
 						$this->session->set_userdata('msgauth','Авторизация запрещена!');
 						redirect($_SERVER['HTTP_REFERER']);
 					endif;
-					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id']));
+					$this->session->set_userdata(array('logon'=>md5($user['login'].$user['password']),'userid'=>$user['id'],'ulogin'=>$user['login']));
 					$this->mdusers->update_field($user['id'],'lastlogin',date("Y-m-d"));
 					$this->access_cabinet($user['id'],$user['type']);
 				endif;
 			endif;
 		endif;
 		show_404();
+	}
+	
+	public function actions_logoff(){
+		
+		$this->session->sess_destroy();
+		redirect('');
 	}
 	
 	public function restore_password(){

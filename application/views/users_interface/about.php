@@ -20,6 +20,7 @@
 <div>Если у вас остались дополнительные вопросы, обратите внимание на раздел <a href="http://bystropost.ru/faq" target="_blank">F.A.Q.</a>, где мы собрали самые распространенные вопросы от А до Я.</div>
 			</div>
 		</div>
+		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

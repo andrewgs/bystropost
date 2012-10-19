@@ -207,11 +207,13 @@ class Clients_interface extends CI_Controller{
 						$this->session->set_userdata('msgs',' Пароль успешно изменен');
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$pagevar['user']['fio'];?></strong></p>
 						<p>Был сменен пароль для доступа к системе Быстропост.</p>
 						<p>Ваш логин: <?=$this->user['ulogin'];?></p>
 						<p>Новый пароль: <?=$_POST['password'];?></p>
 						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						
@@ -429,15 +431,6 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_balance_successfull(){
 		
-		/*if(isset($_SERVER['HTTP_REFERER'])):
-			$pos = stristr($_SERVER['HTTP_REFERER'],'webmoney.ru');
-			if(!$pos):
-				redirect('webmaster-panel/actions/balance');
-			endif;
-		else:
-			redirect('webmaster-panel/actions/balance');
-		endif;*/
-		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -453,29 +446,6 @@ class Clients_interface extends CI_Controller{
 		
 		$this->session->unset_userdata('balance');
 		$this->session->unset_userdata('purse');
-		
-		/*ob_start();
-		?>
-		<p><strong>Здравствуйте, <?=$this->user['uname'];?></strong></p>
-		<p>Ваш баланс успешно пополнен.</p>
-		<p>Сумма пополнения: <?=$new_balance;?>.00 руб.</p>
-		<p>Желаем Вам удачи!</p>
-		<?
-		$mailtext = ob_get_clean();
-		
-		$this->email->clear(TRUE);
-		$config['smtp_host'] = 'localhost';
-		$config['charset'] = 'utf-8';
-		$config['wordwrap'] = TRUE;
-		$config['mailtype'] = 'html';
-		
-		$this->email->initialize($config);
-		$this->email->to($this->user['ulogin']);
-		$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
-		$this->email->bcc('');
-		$this->email->subject('Noreply: Пополнение баланса в системе Bystropost.ru');
-		$this->email->message($mailtext);	
-		$this->email->send();*/
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -987,10 +957,13 @@ class Clients_interface extends CI_Controller{
 				if(isset($_POST['sendmail'])):
 					ob_start();
 					?>
+					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У вас новое сообщение.</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
-					<p>Желаем Вам удачи!</p> 
+					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+					<p><br/><?=$_POST['text'];?><br/></p>
+					<p>Желаем Вам удачи!</p>
+					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
 					
@@ -1655,6 +1628,7 @@ class Clients_interface extends CI_Controller{
 						
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($pagevar['platform']['manager'],'fio');?></strong></p>
 						<p>Вебмастер изменил информацию о площадке: <?=$this->mdplatforms->read_field($platform,'url');?><br/>
 						Что изменилось (Было - Сейчас):</p>
@@ -1674,8 +1648,8 @@ class Clients_interface extends CI_Controller{
 							Позиция изображения:<?=$pagevar['platform']['imgpos'].' - '.$_POST['imgpos'];?>
 						</p>
 						<p>Пожелания :<br/> <br/><?=$pagevar['platform']['requests'].'<br/><br/>'.$_POST['requests'];?></p>
-						
-						<p>Желаем Вам удачи!</p> 
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						
@@ -1774,10 +1748,13 @@ class Clients_interface extends CI_Controller{
 					else:
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
 						<p>У Вас новое сообщение через тикет-систему</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
-						<p>Желаем Вам удачи!</p> 
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						
@@ -1792,7 +1769,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
 						$this->email->subject('Noreply: Bystropost.ru - Новый тикет');
-						$this->email->message($mailtext);	
+						$this->email->message($mailtext);
 						$this->email->send();
 						$this->mdmessages->insert_record($this->user['uid'],$recipient,'Новое сообщение через тикет-систему');
 					endif;
@@ -1920,10 +1897,13 @@ class Clients_interface extends CI_Controller{
 					if(isset($_POST['sendmail'])):
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел тикеты</p>
-						<p>Желаем Вам удачи!</p> 
+						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
+						<p>Желаем Вам удачи!</p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
 						

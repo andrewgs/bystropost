@@ -23,6 +23,7 @@ $route['prices']						= "users_interface/prices";
 $route['forum']							= "users_interface/forum";
 $route['site-map']						= "users_interface/site_map";
 $route['idea']							= "users_interface/idea";
+$route['logoff']						= "users_interface/actions_logoff";
 
 $route['markets-catalog/:any']			= "users_interface/markets_catalog";
 $route['users-ratings/advertisers']		= "users_interface/users_ratings";

@@ -15,7 +15,13 @@
 		</div>
 		<?php if(!$this->session->userdata('logon')):
 			$this->load->view("forms/frmlogin");
-		endif;?>
+		else:?>
+			<div class="span5" style="padding-left:50px;">
+				<div class="user-panel">
+					<?php $this->load->view("topblock/users");?>
+				</div>
+			</div>
+		<?php endif;?>
 	</div>
 	<div class="top-main-nav">
 		<?=anchor("manner-of-payment","Порядок оплаты");?> <br />

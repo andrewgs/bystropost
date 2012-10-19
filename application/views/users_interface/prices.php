@@ -104,6 +104,7 @@
 			<div><br /></div>
 			<div>Система предусматривает работу по авансу. Пополнить аванс можно после регистрации, через личный кабинет пользователя.</div>
 		</div>
+		<?php $this->load->view("users_interface/includes/social");?>
 	</div>
 	<?php $this->load->view("users_interface/includes/footer");?>
 	<?php $this->load->view("users_interface/includes/scripts");?>

@@ -11,6 +11,9 @@
 					<li class="active">
 						<?=anchor("webmaster-panel/actions/platforms","Все площадки");?>
 					</li>
+					<li style="float:right;">
+						<a href="#" style="margin-top: -5px;" class="btn btn-info none" data-hide="1" id="ShowPlatforms" title="Показать или скрыть не активные площадки">Скрыть площадки</a>
+					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
@@ -19,7 +22,7 @@
 					Для импорта новых площадок перейдите в раздел Биржи и нажмите <span class="btn btn-info"><i class="icon-repeat"></i></span> рядом с нужным аккаунтом.
 				</div>
 			<?php endif;?>
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="plList">
 					<thead>
 						<tr>
 							<th><center><nobr>URL площадки</nobr></center></th>
@@ -95,12 +98,21 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var pID = 0;
-			$("td[data-status='noactive']").each(function(e){
-				$(this).addClass('alert alert-message'); $(this).siblings('td').addClass('alert alert-message');
-			});
-			$("td[data-locked='locked']").each(function(e){
-				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
-			});
+			$("td[data-status='noactive']").each(function(e){$(this).addClass('alert alert-message');$(this).siblings('td').addClass('alert alert-message');});
+			$("td[data-locked='locked']").each(function(e){$(this).addClass('alert alert-error');$(this).siblings('td').addClass('alert alert-error');});
+			$("td.alert").parents('tr').addClass("plhide");
+			
+			$("#ShowPlatforms").click(function(){
+				$("tr.plhide").fadeToggle("400",
+					function(){
+						if($("#ShowPlatforms").attr("data-hide") == 1){
+							$("#ShowPlatforms").attr("data-hide","0").html("Показать площадки");
+						}else{
+							$("#ShowPlatforms").attr("data-hide","1").html("Скрыть площадки");
+						}
+					});
+			})
+			
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");
 				var	status = $("div[id = params"+Param+"]").attr("data-status");

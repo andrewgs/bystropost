@@ -267,9 +267,11 @@ class Admin_interface extends CI_Controller{
 					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
 						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
 						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
@@ -364,6 +366,14 @@ class Admin_interface extends CI_Controller{
 				$pagevar['users'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['users'][$i]['id']);
 				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
 				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
+				$pagevar['users'][$i]['pruporders'] = $this->mddelivesworks->sum_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
+				$pagevar['users'][$i]['prtorders'] = $this->mddelivesworks->sum_records_by_webmaster($pagevar['users'][$i]['id']);
+				if(!$pagevar['users'][$i]['pruporders']):
+					$pagevar['users'][$i]['pruporders'] = 0;
+				endif;
+				if(!$pagevar['users'][$i]['prtorders']):
+					$pagevar['users'][$i]['prtorders'] = 0;
+				endif;
 			endif;
 		endfor;
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
@@ -482,9 +492,11 @@ class Admin_interface extends CI_Controller{
 				$this->mdplatforms->close_platform_by_user_delete($uid);
 				ob_start();
 				?>
+				<img src="<?=base_url();?>images/logo.png" alt="" />
 				<p><strong>Здравствуйте, <?=$user['fio'];?></strong></p>
 				<p>Ваша учетная запись удалена Администратором</p>
-				<p>Желаем Вам удачи!</p> 
+				<p>Желаем Вам удачи!</p>
+				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 				<?
 				$mailtext = ob_get_clean();
 				
@@ -594,9 +606,11 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							ob_start();
 							?>
+							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
 							<p>Ваша площадка <?=$platform;?> принята к работе</p>
-							<p>Желаем Вам удачи!</p> 
+							<p>Желаем Вам удачи!</p>
+							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
 							
@@ -617,9 +631,11 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							ob_start();
 							?>
+							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
 							<p>За Вами закреплена площадка  <?=$platform;?></p>
-							<p>Желаем Вам удачи!</p> 
+							<p>Желаем Вам удачи!</p>
+							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
 							
@@ -768,9 +784,11 @@ class Admin_interface extends CI_Controller{
 				if(isset($_POST['sendmail'])):
 					ob_start();
 					?>
+					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У Вас новое сообщение</p>
 					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+					<p><br/><?=$_POST['text'];?><br/></p>
 					<p>Желаем Вам удачи!</p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
@@ -835,9 +853,11 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['uid'],'sendmail')):
 							ob_start();
 							?>
+							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
 							<p>Ваша площадка <?=$platform;?> принята к работе</p>
-							<p>Желаем Вам удачи!</p> 
+							<p>Желаем Вам удачи!</p>
+							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
 							
@@ -858,9 +878,11 @@ class Admin_interface extends CI_Controller{
 						if($this->mdusers->read_field($_POST['manager'],'sendmail')):
 							ob_start();
 							?>
+							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
 							<p>За Вами закреплена площадка  <?=$platform;?></p>
-							<p>Желаем Вам удачи!</p> 
+							<p>Желаем Вам удачи!</p>
+							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
 							
@@ -1018,13 +1040,14 @@ class Admin_interface extends CI_Controller{
 					$this->mdmkplatform->delete_records_by_platform($pid,$info['webmaster']);
 					$this->mddelivesworks->delete_records_by_platform($pid,$info['webmaster']);
 					$this->mdattachedservices->delete_records_by_platform($pid,$info['webmaster']);
-//					$this->mdtickets->delete_records_by_platform($pid);
 					$this->mdmessages->send_noreply_message($this->user['uid'],$info['webmaster'],1,1,$text);
 					ob_start();
 					?>
+					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($info['webmaster'],'fio');?></strong></p>
 					<p>Ваша площадка <?=$info['url'];?> удалена администратором</p>
-					<p>Желаем Вам удачи!</p> 
+					<p>Желаем Вам удачи!</p>
+					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
 					
@@ -1649,6 +1672,7 @@ class Admin_interface extends CI_Controller{
 			<p>Логин: <strong><?=$webmasters[$i]['login'];?></strong></p>
 			<p>Пароль: <strong><?=$this->encrypt->decode($webmasters[$i]['cryptpassword']);?></strong></p>
 			<p>Желаем Вам удачи!</p>
+			<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 			<?
 			$mailtext = ob_get_clean();
 			$this->email->clear(TRUE);
@@ -1799,9 +1823,11 @@ class Admin_interface extends CI_Controller{
 					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
 						ob_start();
 						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
 						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
+						<p><br/><?=$_POST['text'];?><br/></p>
 						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
@@ -1967,9 +1993,11 @@ class Admin_interface extends CI_Controller{
 				if(isset($_POST['sendmail'])):
 					ob_start();
 					?>
+					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
-					<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
+					<p>Получен ответ на Ваше сообщение в тикет-системе.</p>
 					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
+					<p><br/><?=$_POST['text'];?><br/></p>
 					<p>Желаем Вам удачи!</p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
@@ -2400,6 +2428,7 @@ class Admin_interface extends CI_Controller{
 		for($i=0;$i<count($debetors);$i++):
 				ob_start();
 				?>
+				<img src="<?=base_url();?>images/logo.png" alt="" />
 				<p><strong>Здравствуйте, <?=$debetors[$i]['ulogin'];?> </strong></p>
 				<p>У Вас есть неоплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
 				<p>Напоминаем Вам. Если у Вас будут неоплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
@@ -2407,6 +2436,7 @@ class Admin_interface extends CI_Controller{
 				<p>ВНИМАНИЕ! Ваш аккаунт заблокирован по причине задолженности. Оплатите завершенные работы от 5 дней (включительно) для разблокировки.</p>
 				<?php endif;?>
 				<p>Спасибо, что пользуетесь нашим сайтом!</p>
+				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 				<?
 				$mailtext = ob_get_clean();
 				
