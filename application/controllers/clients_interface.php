@@ -802,7 +802,6 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
-				$works = $this->mdtypeswork->read_records();
 				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
@@ -829,6 +828,57 @@ class Clients_interface extends CI_Controller{
 				else:
 					$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
 				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->input->post('smsubmit')):
+			unset($_POST['smsubmit']);
+			$this->form_validation->set_rules('mid',' ','required|trim');
+			$this->form_validation->set_rules('market',' ','trim');
+			$this->form_validation->set_rules('login',' ','trim');
+			$this->form_validation->set_rules('password',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+				redirect($this->uri->uri_string());
+			else:
+				$account = $this->mdwebmarkets->read_record($_POST['mid']);
+				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.$_POST['password'].'&act=1';
+//				$this->API('UpdateAccount',$param);
+				$this->mdwebmarkets->update_record($_POST['mid'],$this->user['remoteid'],$_POST);
+				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password']);
+				$this->mdlog->insert_record($this->user['uid'],'Событие №26: Изменена учетная запись на бирже');
+				
+				ob_start();
+				?>
+				<img src="<?=base_url();?>images/logo.png" alt="" />
+				<p><strong>Здравствуйте, <?=$this->mdusers->read_field(2,'fio');?></strong></p>
+				<p>Вебмастер изменил аккаунт на бирже: <?=$pagevar['markets'][$account['market']-1]['title'];?><br/>
+				Данные:</p>
+				<p>Вебмастер: <?=$this->user['ulogin'];?><br/>
+				Биржа: <?=$pagevar['markets'][$account['market']-1]['title'];?><br/>
+				Логин: <?=$account['login']?><br/>
+				Пароль: <?=$_POST['password'];?><br/></p>
+				<p>Желаем Вам удачи!</p>
+				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+				<?
+				$mailtext = ob_get_clean();
+				
+				$this->email->clear(TRUE);
+				$config['smtp_host'] = 'localhost';
+				$config['charset'] = 'utf-8';
+				$config['wordwrap'] = TRUE;
+				$config['mailtype'] = 'html';
+				
+				$this->email->initialize($config);
+				$this->email->to($this->mdusers->read_field(2,'login'));
+				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+				$this->email->bcc('');
+				$this->email->subject('Noreply: Bystropost.ru - Изменения по аккаунту на бирже.');
+				$this->email->message($mailtext);
+				$this->email->send();
+				
+				$this->session->set_userdata('msgs','Аккаунт успешно сохранен');
 			endif;
 			redirect($this->uri->uri_string());
 		endif;

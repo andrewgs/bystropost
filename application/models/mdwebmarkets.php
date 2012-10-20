@@ -26,13 +26,14 @@ class Mdwebmarkets extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
-	function update_record($data){
+	function update_record($id,$urid,$data){
 		
-		$this->db->set('login',$data['login']);
+//		$this->db->set('login',$data['login']);
 		$this->db->set('password',md5($data['password']));
 		$this->db->set('cryptpassword',$this->encrypt->encode($data['password']));
 		
-		$this->db->where('id',$data['mid']);
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$urid);
 		$this->db->update('webmarkets');
 		return $this->db->affected_rows();
 	}

@@ -19,14 +19,14 @@
 				<div class="control-group">
 					<label class="control-label" for="login">Логин:</label>
 					<div class="controls">
-						<input type="text" id="login" class="input-xlarge inpval" name="login">
+						<input type="text" id="login" class="input-xlarge ainpval" name="login">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="login">Пароль:</label>
 					<div class="controls">
-						<input type="text" id="password" class="input-xlarge inpval" name="password">
+						<input type="text" id="password" class="input-xlarge ainpval" name="password">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>

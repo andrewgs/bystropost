@@ -17,23 +17,26 @@
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w100"><center>Название</center></th>
+							<th class="w85"><center>Название</center></th>
 							<th class="w85"><center>Логин</center></th>
 							<th class="w85"><center>Пароль</center></th>
-							<th class="w85">&nbsp;</th>
+							<th class="w100">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($accounts);$i++):?>
 						<tr>
-							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><?=$accounts[$i]['mtitle'];?></nobr></td>
+							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$accounts[$i]['mtitle'];?></nobr></td>
 							<td class="w85"><?=$accounts[$i]['login'];?></td>
 							<td class="w85"><?=$accounts[$i]['password'];?></td>
-							<td class="w85" style="text-align:center; vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>"></div>
-								<a class="btn btn-info updateMarket none" data-param="<?=$i;?>" href="#" title="Обновить список площадок"><nobr>&nbsp;&nbsp;<i class="icon-repeat icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
-								<span id="timer<?=$i;?>" style="display:none"></span>
+							<td class="w100" style="text-align:center; vertical-align:middle; max-width:0;">
+								<nobr>
+									<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>" data-login="<?=$accounts[$i]['login'];?>" data-market="<?=$accounts[$i]['market'];?>"></div>
+									<a class="btn btn-info updateMarket none" data-param="<?=$i;?>" href="#" title="Обновить список площадок">&nbsp;<i class="icon-repeat icon-white"></i>&nbsp;</a>
+									<a class="btn btn-success editMarket none" data-param="<?=$i;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу">&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;</a>
+									<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить">&nbsp;<i class="icon-trash icon-white"></i>&nbsp;</a>
+									<span id="timer<?=$i;?>" style="display:none"></span>
+								</nobr>
 							</td>
 						</tr>
 					<?php endfor; ?>
@@ -43,6 +46,7 @@
 			</div>
 		<?php $this->load->view("clients_interface/includes/rightbar");?>
 		<?php $this->load->view('clients_interface/modal/clients-add-market');?>
+		<?php $this->load->view('clients_interface/modal/clients-edit-market');?>
 		<?php $this->load->view('clients_interface/modal/clients-delete-market');?>
 		</div>
 	</div>
@@ -61,6 +65,41 @@
 				$(objSpan).siblings('a').hide();
 				$(objSpan).show().html('Запуск. Ожидайте...');
 				parsing_platforms(mID,objSpan,timer);
+			});
+			
+			$(".editMarket").click(function(){
+				var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");
+				var login = $("div[id = params"+Param+"]").attr("data-login");
+				var	market = $("div[id = params"+Param+"]").attr("data-market");
+				
+				$(".idMarket").val(mID);$("#elogin").val(login);$("#eMarketList").val(market);
+			});
+			
+			$("#amsend").click(function(event){
+				var err = false;
+				$(".control-group").removeClass('error');
+				$(".help-inline").hide();
+				$(".ainpval").each(function(i,element){
+					if($(this).val()==''){
+						$(this).parents(".control-group").addClass('error');
+						$(this).siblings(".help-inline").html("Поле не может быть пустым").show();
+						err = true;
+					}
+				});
+				if(err){event.preventDefault();}
+			});
+			$("#smsend").click(function(event){
+				var err = false;
+				$(".control-group").removeClass('error');
+				$(".help-inline").hide();
+				$(".einpval").each(function(i,element){
+					if($(this).val()==''){
+						$(this).parents(".control-group").addClass('error');
+						$(this).siblings(".help-inline").html("Поле не может быть пустым").show();
+						err = true;
+					}
+				});
+				if(err){event.preventDefault();}
 			});
 			
 			$("#MarketList").change(function(){
