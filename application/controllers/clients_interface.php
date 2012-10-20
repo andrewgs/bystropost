@@ -844,7 +844,7 @@ class Clients_interface extends CI_Controller{
 			else:
 				$account = $this->mdwebmarkets->read_record($_POST['mid']);
 				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.$_POST['password'].'&act=1';
-//				$this->API('UpdateAccount',$param);
+				$this->API('UpdateAccount',$param);
 				$this->mdwebmarkets->update_record($_POST['mid'],$this->user['remoteid'],$_POST);
 				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password']);
 				$this->mdlog->insert_record($this->user['uid'],'Событие №26: Изменена учетная запись на бирже');
@@ -1361,9 +1361,8 @@ class Clients_interface extends CI_Controller{
 					endif;
 					$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
 					if($manager):
-						$this->mdmessages->insert_record($this->user['uid'],$manager,$text);
+						$this->mdmessages->send_noreply_message($this->user['uid'],$manager,2,2,$text);
 					endif;
-					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 					$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 					if($manager == 2 && $remote_id):
 						if($status):
@@ -1672,9 +1671,8 @@ class Clients_interface extends CI_Controller{
 							endif;
 						endif;
 						/********************************************************************/
-						
-						$text = "Информация о площадке изменена. Проверьте свой E-mail что бы увидеть изменения";
-						$this->mdmessages->insert_record($this->user['uid'],$pagevar['platform']['manager'],$text);
+						$text = "Информация о площадке ".$new_platform['url']." изменена.<br/>Проверьте свой E-mail что бы увидеть изменения";
+						$this->mdmessages->send_noreply_message($this->user['uid'],$pagevar['platform']['manager'],2,2,$text);
 						
 						ob_start();
 						?>
