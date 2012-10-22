@@ -229,8 +229,10 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$old_manager = $this->mdusers->read_field($_POST['uid'],'manager');
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
+					$this->session->set_userdata('msgs','Информация успешно сохранена.');
 					if($_POST['type'] != 1):
 						$this->mdusers->update_field($_POST['uid'],'manager',0);
 						$_POST['manager'] = 0;
@@ -238,18 +240,22 @@ class Admin_interface extends CI_Controller{
 					if($_POST['manager']):
 						$platforms = $this->mdplatforms->read_managers_platform_online($_POST['uid']);
 						for($i=0;$i<count($platforms);$i++):
-							$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platforms[$i]['url'];
-							$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
-							if($platforms[$i]['manager']):
+							if($platforms[$i]['manager'] && ($platforms[$i]['manager'] != $_POST['manager'])):
 								$text = 'Здравствуйте! С Ваc снята площадка '.$platforms[$i]['url'];
 								$this->mdmessages->send_noreply_message($this->user['uid'],$platforms[$i]['manager'],1,2,$text);
 							endif;
+							if($platforms[$i]['manager'] != $_POST['manager']):
+								$text = 'Здравствуйте! За Вами закреплена новая площадка '.$platforms[$i]['url'];
+								$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['manager'],4,2,$text);
+							endif;
 						endfor;
 						$this->mdplatforms->update_managers($_POST['uid'],$_POST['manager']);
+						$this->session->set_userdata('msgs','Информация успешно сохранена.<br/><b>Внимание!</b> На аккаунт вебмастера назначен менеджер.');
+					else:
+						if($old_manager):
+							$this->session->set_userdata('msgs','Информация успешно сохранена.<br/><b>Внимание!</b> С вебмастера снят менеджер. С площадок менеджер не снят.<br/>Переназначте менеджера для площадок вручную.');
+						endif;
 					endif;
-					$this->session->set_userdata('msgs','Информация успешно сохранена.');
-				else:
-					$this->session->set_userdata('msgr','Информация не изменилась.');
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
@@ -265,14 +271,14 @@ class Admin_interface extends CI_Controller{
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
 					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
+						
 						ob_start();
 						?>
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Почта"</p>
+						<p><br/><?=$this->sub_mailtext($_POST['text'],$_POST['recipient']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -495,7 +501,6 @@ class Admin_interface extends CI_Controller{
 				<img src="<?=base_url();?>images/logo.png" alt="" />
 				<p><strong>Здравствуйте, <?=$user['fio'];?></strong></p>
 				<p>Ваша учетная запись удалена Администратором</p>
-				<p>Желаем Вам удачи!</p>
 				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 				<?
 				$mailtext = ob_get_clean();
@@ -609,7 +614,6 @@ class Admin_interface extends CI_Controller{
 							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
 							<p>Ваша площадка <?=$platform;?> принята к работе</p>
-							<p>Желаем Вам удачи!</p>
 							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
@@ -634,7 +638,6 @@ class Admin_interface extends CI_Controller{
 							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
 							<p>За Вами закреплена площадка  <?=$platform;?></p>
-							<p>Желаем Вам удачи!</p>
 							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
@@ -787,9 +790,8 @@ class Admin_interface extends CI_Controller{
 					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У Вас новое сообщение</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
-					<p><br/><?=$_POST['text'];?><br/></p>
-					<p>Желаем Вам удачи!</p>
+					<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Почта"</p>
+					<p><br/><?=$this->sub_mailtext($_POST['text'],$_POST['recipient']);?><br/></p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
@@ -856,7 +858,6 @@ class Admin_interface extends CI_Controller{
 							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['uid'],'fio');?></strong></p>
 							<p>Ваша площадка <?=$platform;?> принята к работе</p>
-							<p>Желаем Вам удачи!</p>
 							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
@@ -881,7 +882,7 @@ class Admin_interface extends CI_Controller{
 							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['manager'],'fio');?></strong></p>
 							<p>За Вами закреплена площадка  <?=$platform;?></p>
-							<p>Желаем Вам удачи!</p>
+							
 							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
@@ -1046,7 +1047,6 @@ class Admin_interface extends CI_Controller{
 					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($info['webmaster'],'fio');?></strong></p>
 					<p>Ваша площадка <?=$info['url'];?> удалена администратором</p>
-					<p>Желаем Вам удачи!</p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
@@ -1671,7 +1671,6 @@ class Admin_interface extends CI_Controller{
 			<p>Для входа в личный кабинет используйте:</p>
 			<p>Логин: <strong><?=$webmasters[$i]['login'];?></strong></p>
 			<p>Пароль: <strong><?=$this->encrypt->decode($webmasters[$i]['cryptpassword']);?></strong></p>
-			<p>Желаем Вам удачи!</p>
 			<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 			<?
 			$mailtext = ob_get_clean();
@@ -1826,9 +1825,8 @@ class Admin_interface extends CI_Controller{
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Почта"</p>
+						<p><br/><?=$this->sub_mailtext($_POST['text'],$_POST['recipient']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -1996,9 +1994,8 @@ class Admin_interface extends CI_Controller{
 					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>Получен ответ на Ваше сообщение в тикет-системе.</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-					<p><br/><?=$_POST['text'];?><br/></p>
-					<p>Желаем Вам удачи!</p>
+					<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
+					<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
@@ -2270,9 +2267,9 @@ class Admin_interface extends CI_Controller{
 	function actions_api(){
 		$mass_data = array();
 		/*======================== Загрузка вебмастеров ============================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=413');
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=1232');
 		
@@ -2294,8 +2291,8 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-		print_r($mass_data);
-		echo '<br/>'.count($mass_data);
+//		print_r($mass_data);
+		echo '<br/>Количество: '.count($mass_data).'<br/><br/>';
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
@@ -2336,8 +2333,8 @@ class Admin_interface extends CI_Controller{
 		endforeach;
 		print_r('Импортировнно: '.$cnt.' вебмастеров');*/
 		/*=============================== Загрузка вебмастеров конец ============================*/
-		/*======================== Загрузка аккаунтов на биржах начало ======================== */
-		/*$data = array(); $cnt = 0;
+		/*======================== Дозагрузка аккаунтов на биржах начало ======================== */
+		$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
 				$data['id'] = $key;
@@ -2346,13 +2343,18 @@ class Admin_interface extends CI_Controller{
 				$data['password'] = $mass_data[$key]['pass'];
 				$data['webmaster'] = $mass_data[$key]['userid'];
 				if($data['webmaster'] && $data['market']):
-					$this->mdwebmarkets->insert_record($data['id'],$data['webmaster'],$data);
-					$cnt++;
+					if(!$this->mdwebmarkets->exist_market($data['id'])):
+//						$this->mdwebmarkets->insert_record($data['id'],$data['webmaster'],$data);
+						echo 'ДАННЫЕ ЕСТЬ: ID-'.$data['id'].', ВМ-'.$data['webmaster'].', ЛОГИН-'.$data['login'].', ПАРОЛЬ-'.$data['password'].', БИРЖА-'.$data['market'].'<br/>';
+						$cnt++;
+					endif;
+				else:
+					echo 'НЕТ ДАННЫХ: ID-'.$data['id'].', ВМ-'.$data['webmaster'].', ЛОГИН-'.$data['login'].', ПАРОЛЬ-'.$data['password'].', БИРЖА-'.$data['market'].'<br/>';
 				endif;
 			endif;
 		endforeach;
-		print_r('Импортировнно: '.$cnt.' аккаунтов');*/
-		/*======================== Загрузка аккаунтов на биржах конец ========================*/
+		print_r('Импортированно: '.$cnt.' аккаунтов');
+		/*======================== Дозагрузка аккаунтов на биржах конец ========================*/
 	}
 	
 	private function API($action,$param){
@@ -2431,8 +2433,9 @@ class Admin_interface extends CI_Controller{
 				<img src="<?=base_url();?>images/logo.png" alt="" />
 				<p><strong>Здравствуйте, <?=$debetors[$i]['ulogin'];?> </strong></p>
 				<p>У Вас есть неоплаченные заявки <?=($days<=5)? 'за '.$days: 'старше 5' ;?> дня(-ей).</p>
-				<p>Напоминаем Вам. Если у Вас будут неоплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
-				<?php if($days>=5):?>
+				<?php if($days<5):?>
+					<p>Напоминаем Вам. Если у Вас будут неоплаченные заявки старше 5 дней (включительно) то Ваш аккаун будет заблокирован до полного погашения задолженности.</p>
+				<?php elseif($days>=5):?>
 				<p>ВНИМАНИЕ! Ваш аккаунт заблокирован по причине задолженности. Оплатите завершенные работы от 5 дней (включительно) для разблокировки.</p>
 				<?php endif;?>
 				<p>Спасибо, что пользуетесь нашим сайтом!</p>
@@ -2476,7 +2479,7 @@ class Admin_interface extends CI_Controller{
 		if($statusval['debetors']):
 			$debetors = $this->mdunion->debetors_webmarkets();
 			for($i=0;$i<count($debetors);$i++):
-				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.$this->encrypt->decode($debetors[$i]['cryptpassword']).'&act=2';
+				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($debetors[$i]['cryptpassword'])).'&act=2';
 				$this->API('UpdateAccount',$param);
 				$statusval['birzlock']++;
 			endfor;
@@ -2559,6 +2562,55 @@ class Admin_interface extends CI_Controller{
 			$i++;
 		endwhile;
 		return $ret;
+	}
+	
+	public function link_cabinet($uid,$plus=0){
+		
+		$utype = $this->mdusers->read_field($uid,'type');
+		switch ($utype+$plus):
+			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
+			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
+			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
+			case 4 : show_404();break;
+			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			
+			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 14 : show_404();break;
+			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			
+			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
+			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 24 : show_404();break;
+			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: show_404(); break;
+		endswitch;
+	}
+	
+	public function sub_mailtext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
+		endif;
+		return $text;
+	}
+	
+	public function sub_tickettext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
+		endif;
+		return $text;
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/

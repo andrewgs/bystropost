@@ -16,7 +16,7 @@
 				<table class="table table-striped table-bordered">
 					<tbody>
 						<tr>
-							<td class="w400">Задолженность до 3-х дней:<br/>(включительно)</td>
+							<td class="w400">Задолженность 3 дня:</td>
 							<td class="w100"><?=$stat['to3days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to3days']['sum'];?>.00 руб.</td>
 							<td>
@@ -28,7 +28,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="w400">Задолженность до 4-х дней:<br/>(включительно)</td>
+							<td class="w400">Задолженность 4 дня:</td>
 							<td class="w100"><?=$stat['to4days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to4days']['sum'];?>.00 руб.</td>
 							<td>
@@ -40,7 +40,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="w400">Задолженность до 5-х дней:<br/>(включительно)</td>
+							<td class="w400">Задолженность 5 дня:</td>
 							<td class="w100"><?=$stat['to5days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to5days']['sum'];?>.00 руб.</td>
 							<td>
@@ -84,11 +84,13 @@
 			$("button").removeAttr("disabled");
 			
 			$(".AlertByDay").click(function(){
+				if(!confirm("Выслать уведомления")) return false;
 				var days = $(this).attr("data-days");
 				$(this).html('<i class="icon-time icon-white"></i>');
 				send_alert(days,this);
 			});
 			$(".Locked5Day").click(function(){
+				if(!confirm("Заблокировать должников")) return false;
 				var days = $(this).attr("data-days");
 				$(this).html('<i class="icon-time icon-white"></i>');
 				send_locked(days,this);
@@ -111,7 +113,7 @@
 						$(object).html('<i class="icon-ok icon-white"></i>');
 						$(object).addClass("disabled");
 						$(object).attr("disabled","disabled");
-						$("#Result").html('Должников: '+data.debetors+". Pаблокировано бирж: "+data.birzlock);
+						$("#Result").html('Должников: '+data.debetors+". Заблокировано бирж: "+data.birzlock);
 					}
 				},"json");
 			}

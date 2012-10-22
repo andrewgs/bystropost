@@ -73,7 +73,7 @@
 							<td class="w85"><center><nobr><?=$platforms[$i]['date'];?></nobr></center></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['locked']):?>
-								<?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-tags icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
+								<?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['status']):?>
 								<i class="icon-exclamation-sign" title="Не активна" style="margin-top:10px;"></i>
@@ -102,16 +102,11 @@
 			$("td[data-status='noactive']").each(function(e){$(this).addClass('alert alert-message');$(this).siblings('td').addClass('alert alert-message');});
 			$("td[data-locked='locked']").each(function(e){$(this).addClass('alert alert-error');$(this).siblings('td').addClass('alert alert-error');});
 			$("td.alert").parents('tr').addClass("plhide");
+			if($("td.alert").length == 0){$("#ShowPlatforms").hide();}
 			
 			$("#ShowPlatforms").click(function(){
-				$("tr.plhide").fadeToggle("400",
-					function(){
-						if($("#ShowPlatforms").attr("data-hide") == 1){
-							$("#ShowPlatforms").attr("data-hide","0").html("Показать площадки");
-						}else{
-							$("#ShowPlatforms").attr("data-hide","1").html("Скрыть площадки");
-						}
-					});
+				$("tr.plhide").fadeToggle("400",function(){if($("#ShowPlatforms").attr("data-hide") == 1){$("#ShowPlatforms").attr("data-hide","0").html("Показать площадки");
+						}else{$("#ShowPlatforms").attr("data-hide","1").html("Скрыть площадки");}});
 			})
 			
 			$(".attrPlatform").click(function(){

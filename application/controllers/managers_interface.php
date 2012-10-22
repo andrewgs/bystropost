@@ -516,8 +516,7 @@ class Managers_interface extends CI_Controller{
 							<img src="<?=base_url();?>images/logo.png" alt="" />
 							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
 							<p>Для Вас новое завершенное задание</p>
-							<p>Что бы просмотреть его ввойдите в <?=anchor('','личный кабинет');?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
-							<p>Желаем Вам удачи!</p>
+							<p>Что бы просмотреть его ввойдите в <?=$this->link_cabinet($webmaster);?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
 							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 							<?
 							$mailtext = ob_get_clean();
@@ -576,7 +575,8 @@ class Managers_interface extends CI_Controller{
 		if(!$count):
 			show_404();
 		endif;
-		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date("Y")));
+//		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date("Y")));
+		$datefrom = "2012-10-01";
 		$dateto = date("Y-m-d");
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
 		if(!count($platforms)):
@@ -698,9 +698,8 @@ class Managers_interface extends CI_Controller{
 					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У Вас новое сообщение</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Почта"</p>
-					<p><br/><?=$_POST['text'];?><br/></p>
-					<p>Желаем Вам удачи!</p>
+					<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Почта"</p>
+					<p><br/><?=$this->sub_mailtext($_POST['text'],$_POST['recipient']);?><br/></p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
@@ -802,7 +801,7 @@ class Managers_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$_POST['type'] = 2; $_POST['platform'] = 0;
-				$this->mdmessages->insert_record($this->user['uid'],0,'Вам новое сообщение через тикет-систему');
+				$this->mdmessages->send_noreply_message($this->user['uid'],0,2,2,'Новое сообщение через тикет-систему');
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],0,$_POST);
 				if($ticket):
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],0,0,$_POST['text']);
@@ -934,7 +933,7 @@ class Managers_interface extends CI_Controller{
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
-					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
+					$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['recipient'],2,2,'Новое сообщение через тикет-систему');
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
@@ -943,9 +942,8 @@ class Managers_interface extends CI_Controller{
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -1047,7 +1045,7 @@ class Managers_interface extends CI_Controller{
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
-					$this->mdmessages->insert_record($this->user['uid'],0,'Новое сообщение через тикет-систему');
+					$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['recipient'],2,2,'Новое сообщение через тикет-систему');
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
@@ -1056,9 +1054,8 @@ class Managers_interface extends CI_Controller{
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>У Вас новое сообщение</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -1207,6 +1204,55 @@ class Managers_interface extends CI_Controller{
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function link_cabinet($uid,$plus=0){
+		
+		$utype = $this->mdusers->read_field($uid,'type');
+		switch ($utype+$plus):
+			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
+			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
+			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
+			case 4 : show_404();break;
+			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			
+			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 14 : show_404();break;
+			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			
+			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
+			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 24 : show_404();break;
+			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: show_404(); break;
+		endswitch;
+	}
+	
+	public function sub_mailtext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
+		endif;
+		return $text;
+	}
+
+	public function sub_tickettext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
+		endif;
+		return $text;
 	}
 	
 	/******************************************************** Функции API *******************************************************************/

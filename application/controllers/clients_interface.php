@@ -212,7 +212,6 @@ class Clients_interface extends CI_Controller{
 						<p>Был сменен пароль для доступа к системе Быстропост.</p>
 						<p>Ваш логин: <?=$this->user['ulogin'];?></p>
 						<p>Новый пароль: <?=$_POST['password'];?></p>
-						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -802,7 +801,7 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
-				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.$_POST['password'];
+				$param = 'birzid='.$_POST['market'].'&login='.$_POST['login'].'&pass='.base64_encode($_POST['password']);
 				$market_id = $this->API('AddNewAccount',$param);
 				if($market_id['id']):
 					$param = 'userid='.$this->user['remoteid'].'&accid='.$market_id['id'];
@@ -843,7 +842,7 @@ class Clients_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				$account = $this->mdwebmarkets->read_record($_POST['mid']);
-				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.$_POST['password'].'&act=1';
+				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
 				$this->API('UpdateAccount',$param);
 				$this->mdwebmarkets->update_record($_POST['mid'],$this->user['remoteid'],$_POST);
 				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password']);
@@ -859,7 +858,6 @@ class Clients_interface extends CI_Controller{
 				Биржа: <?=$pagevar['markets'][$account['market']-1]['title'];?><br/>
 				Логин: <?=$account['login']?><br/>
 				Пароль: <?=$_POST['password'];?><br/></p>
-				<p>Желаем Вам удачи!</p>
 				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 				<?
 				$mailtext = ob_get_clean();
@@ -922,7 +920,7 @@ class Clients_interface extends CI_Controller{
 			$info = $this->mdwebmarkets->read_record($mid);
 			$result = $this->mdwebmarkets->delete_record($this->user['remoteid'],$mid);
 			if($result):
-				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.$this->encrypt->decode($info['cryptpassword']).'&act=0';
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=0';
 				$this->API('UpdateAccount',$param);
 				$this->mdmkplatform->delete_records_by_webmarket($this->user['uid'],$info['market'],$info['login'],$info['password']);
 				$plmarkets = $this->mdunion->free_platforms($this->user['uid']);
@@ -1010,9 +1008,8 @@ class Clients_interface extends CI_Controller{
 					<img src="<?=base_url();?>images/logo.png" alt="" />
 					<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 					<p>У вас новое сообщение.</p>
-					<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-					<p><br/><?=$_POST['text'];?><br/></p>
-					<p>Желаем Вам удачи!</p>
+					<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
+					<p><br/><?=$this->sub_mailtext($_POST['text'],$_POST['recipient']);?><br/></p>
 					<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 					<?
 					$mailtext = ob_get_clean();
@@ -1185,7 +1182,7 @@ class Clients_interface extends CI_Controller{
 							if($this->user['remoteid']):
 								$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
 								for($i=0;$i<count($markets);$i++):
-									$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
+									$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($markets[$i]['cryptpassword'])).'&act=1';
 									$this->API('UpdateAccount',$param);
 								endfor;
 							endif;
@@ -1297,7 +1294,7 @@ class Clients_interface extends CI_Controller{
 			if($this->user['remoteid']):
 				$markets = $this->mdwebmarkets->read_records($this->user['remoteid']);
 				for($i=0;$i<count($markets);$i++):
-					$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.$this->encrypt->decode($markets[$i]['cryptpassword']).'&act=1';
+					$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($markets[$i]['cryptpassword'])).'&act=1';
 					$this->API('UpdateAccount',$param);
 				endfor;
 			endif;
@@ -1490,11 +1487,14 @@ class Clients_interface extends CI_Controller{
 				$platform = $this->mdplatforms->insert_record($this->user['uid'],$_POST);
 				$attached = $this->mdunion->services_attached_list($this->user['uid']);
 				for($i=0;$i<count($attached);$i++):
+					$wprice = $mprice = 0;
 					$valuesrv = $this->mdvaluesrv->read_zero_price($attached[$i]['service']);
 					if(!$valuesrv):
 						$valuesrv = $this->mdvaluesrv->read_record_service($attached[$i]['service']);
 					endif;
-					$this->mdattachedservices->insert_record($this->user['uid'],$attached[$i]['service'],$valuesrv,$platform);
+					$wprice = $this->mdvaluesrv->read_field($valuesrv,'wprice');
+					$mprice = $this->mdvaluesrv->read_field($valuesrv,'mprice');
+					$this->mdattachedservices->insert_record($this->user['uid'],$attached[$i]['service'],$valuesrv,$platform,$wprice,$mprice);
 				endfor;
 				$manager = $this->mdusers->read_field($this->user['uid'],'manager');
 				if($manager):
@@ -1537,8 +1537,11 @@ class Clients_interface extends CI_Controller{
 						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №15: Состояние площадки - создана');
-					$text = 'Добавлена новая площадка: '.$_POST['url'];
-					$this->mdmessages->insert_record($this->user['uid'],0,$text);
+					if($manager):
+						$this->mdmessages->send_noreply_message($this->user['uid'],$manager,2,2,'Назначена новая площадка: '.$_POST['url']);
+					else:
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,2,'Добавлена новая площадка: '.$_POST['url']);
+					endif;
 					$this->session->set_userdata('msgs','Платформа успешно создана.');
 				else:
 					$this->session->set_userdata('msgr','Платформа не создана.');
@@ -1671,7 +1674,7 @@ class Clients_interface extends CI_Controller{
 							endif;
 						endif;
 						/********************************************************************/
-						$text = "Информация о площадке ".$new_platform['url']." изменена.<br/>Проверьте свой E-mail что бы увидеть изменения";
+						$text = "Информация о площадке ".$pagevar['platform']['url']." изменена.<br/>Проверьте свой E-mail что бы увидеть изменения";
 						$this->mdmessages->send_noreply_message($this->user['uid'],$pagevar['platform']['manager'],2,2,$text);
 						
 						ob_start();
@@ -1696,7 +1699,6 @@ class Clients_interface extends CI_Controller{
 							Позиция изображения:<?=$pagevar['platform']['imgpos'].' - '.$_POST['imgpos'];?>
 						</p>
 						<p>Пожелания :<br/> <br/><?=$pagevar['platform']['requests'].'<br/><br/>'.$_POST['requests'];?></p>
-						<p>Желаем Вам удачи!</p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -1799,9 +1801,8 @@ class Clients_interface extends CI_Controller{
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
 						<p>У Вас новое сообщение через тикет-систему</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($recipient);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($_POST['text'],$recipient);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -1819,7 +1820,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->subject('Noreply: Bystropost.ru - Новый тикет');
 						$this->email->message($mailtext);
 						$this->email->send();
-						$this->mdmessages->insert_record($this->user['uid'],$recipient,'Новое сообщение через тикет-систему');
+						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
 					endif;
 				endif;
 				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
@@ -1827,7 +1828,7 @@ class Clients_interface extends CI_Controller{
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
-					$this->mdmessages->insert_record($this->user['uid'],0,'Новое сообщение через тикет-систему');
+					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,2,'Новое сообщение через тикет-систему');
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
 				endif;
@@ -1940,7 +1941,7 @@ class Clients_interface extends CI_Controller{
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($result):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
-					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],'Новое сообщение через тикет-систему');
+					$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['recipient'],2,2,'Новое сообщение через тикет-систему');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
 						ob_start();
@@ -1948,9 +1949,8 @@ class Clients_interface extends CI_Controller{
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
-						<p>Что бы прочитать его вводите в личный кабинет и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$_POST['text'];?><br/></p>
-						<p>Желаем Вам удачи!</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -2277,6 +2277,55 @@ class Clients_interface extends CI_Controller{
 		else:
 			return 0;
 		endif;
+	}
+	
+	public function link_cabinet($uid,$plus=0){
+		
+		$utype = $this->mdusers->read_field($uid,'type');
+		switch ($utype+$plus):
+			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
+			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
+			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
+			case 4 : show_404();break;
+			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			
+			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 14 : show_404();break;
+			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			
+			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
+			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 24 : show_404();break;
+			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: show_404(); break;
+		endswitch;
+	}
+	
+	public function sub_mailtext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
+		endif;
+		return $text;
+	}
+
+	public function sub_tickettext($text,$uid){
+		
+		$text = strip_tags($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
+		endif;
+		return $text;
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ ******************************************************/

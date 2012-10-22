@@ -20,7 +20,7 @@ class Mdmessages extends CI_Model{
 			
 		$this->sender 		= $uid;
 		$this->recipient	= $recipient;
-		$this->text 		= strip_tags(nl2br($text,'<br/>'));
+		$this->text 		= strip_tags(nl2br($text),'<br/>');
 		$this->date 		= date("Y-m-d");
 		
 		$this->db->insert('messages',$this);
@@ -34,7 +34,7 @@ class Mdmessages extends CI_Model{
 		$this->system 		= 1;
 		$this->type			= $type;
 		$this->group 		= $group;
-		$this->text 		= strip_tags(nl2br($text,'<br/>'));
+		$this->text 		= strip_tags(nl2br($text),'<br/>');
 		$this->date 		= date("Y-m-d");
 		
 		$this->db->insert('messages',$this);
@@ -47,7 +47,7 @@ class Mdmessages extends CI_Model{
 		$this->system 	= 1;
 		$this->type		= $data['type'];
 		$this->group 	= $data['group'];
-		$this->text 	= strip_tags(nl2br($data['text'],'<br/>'));
+		$this->text 	= strip_tags(nl2br($data['text']),'<br/>');
 		$this->date 	= date("Y-m-d");
 		
 		$this->db->insert('messages',$this);
