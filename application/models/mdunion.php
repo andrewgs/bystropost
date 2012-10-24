@@ -33,9 +33,18 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function delivers_works_webmaster_all($uid){
+	function delivers_works_webmaster_all($uid,$bdate,$edate,$paid,$notpaid){
 		
-		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC";
+		$statusin = '';
+		if($paid && $notpaid):
+			$statusin = '0,1';
+		elseif($paid):
+			$statusin = '1';
+		elseif($notpaid):
+			$statusin = '0';
+		endif;
+		
+		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $uid AND delivesworks.date>= '$bdate' AND delivesworks.date<='$edate' AND delivesworks.status IN ($statusin) ORDER BY delivesworks.date DESC,delivesworks.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

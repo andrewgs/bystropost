@@ -1201,6 +1201,86 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
+		if($this->input->post('subexport')):
+			unset($_POST['subexport']);
+			$this->form_validation->set_rules('bbegin',' ','required|trim');
+			$this->form_validation->set_rules('bend',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Повторите ввод.');
+				redirect($this->uri->uri_string());
+			else:
+				$paid = $notpaid = 0;
+				if(isset($_POST['notpaid'])):
+					$notpaid = 1;
+				endif;
+				if(isset($_POST['paid'])):
+					$paid = 1;
+				endif;
+				if(!$paid && !$notpaid):
+					$paid = $notpaid = 1;
+				endif;
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['bbegin'] = preg_replace($pattern,$replacement,$_POST['bbegin']);
+				
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['bend'] = preg_replace($pattern,$replacement,$_POST['bend']);
+				if($_POST['bend'] < $_POST['bbegin']):
+					$begin = $_POST['bbegin'];
+					$_POST['bbegin'] = $_POST['bend'];
+					$_POST['bend'] = $begin;
+				endif;
+				$delivers = $this->mdunion->delivers_works_webmaster_all($this->user['uid'],$_POST['bbegin'],$_POST['bend'],$paid,$notpaid);
+				if(count($delivers)):
+					for($i=0;$i<count($delivers);$i++):
+						$delivers[$i]['date'] = $this->operation_dot_date($delivers[$i]['date']);
+						if($delivers[$i]['status']):
+							$delivers[$i]['datepaid'] = $this->operation_dot_date($delivers[$i]['datepaid']);
+						else:
+							$delivers[$i]['datepaid'] = 'не оплачено';
+						endif;
+					endfor;
+					$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';
+					$fp = fopen($file_name,'w');
+					$this->load->helper('download');
+					$mass[0] = array(
+						'num'=>mb_convert_encoding('№ п/п','Windows-1251','utf-8'),
+						'date'=>mb_convert_encoding('Дата сдачи','Windows-1251','utf-8'),
+						'datepaid'=>mb_convert_encoding('Дата оплаты','Windows-1251','utf-8'),
+						'ptitle'=>mb_convert_encoding('Площадка','Windows-1251','utf-8'),
+						'twtitle'=>mb_convert_encoding('Тип работы','Windows-1251','utf-8'),
+						'mtitle'=>mb_convert_encoding('Биржа','Windows-1251','utf-8'),
+						'countchars'=>mb_convert_encoding('Количество символов','Windows-1251','utf-8'),
+						'ulrlink'=>mb_convert_encoding('URL работы','Windows-1251','utf-8'),
+						'mkprice'=>mb_convert_encoding('Цена на бирже','Windows-1251','utf-8'),
+						'wprice'=>mb_convert_encoding('Цена за работу','Windows-1251','utf-8')
+					);
+					for($i=1;$i<count($delivers);$i++):
+						$mass[$i]['num'] = $i;
+						$mass[$i]['date'] = $delivers[$i]['date'];
+						$mass[$i]['datepaid'] = $delivers[$i]['datepaid'];
+						$mass[$i]['ptitle'] = mb_convert_encoding($delivers[$i]['ptitle'],'Windows-1251','utf-8');
+						$mass[$i]['twtitle'] = mb_convert_encoding($delivers[$i]['twtitle'],'Windows-1251','utf-8');
+						$mass[$i]['mtitle'] = mb_convert_encoding($delivers[$i]['mtitle'],'Windows-1251','utf-8');
+						$mass[$i]['countchars'] = $delivers[$i]['countchars'];
+						$mass[$i]['ulrlink'] = mb_convert_encoding($delivers[$i]['ulrlink'],'Windows-1251','utf-8');
+						$mass[$i]['mkprice'] = $delivers[$i]['mkprice'];
+						$mass[$i]['wprice'] = $delivers[$i]['wprice'];
+					endfor;
+					foreach($mass AS $mas):
+						fputcsv($fp,$mas,';');
+					endforeach;
+					fclose($fp);
+					$fdata = file_get_contents($file_name);
+					unlink($file_name);
+					if($fdata && $file_name):
+						force_download('works'.$this->user['uid'].date("Ymd").'.csv',$fdata);
+					endif;
+				endif;
+			endif;
+		endif;
+		
 		$values = array();
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
@@ -1256,44 +1336,6 @@ class Clients_interface extends CI_Controller{
 		endfor;
 		
 		$this->load->view("clients_interface/control-finished-jobs",$pagevar);
-	}
-	
-	public function control_export_csv(){
-		
-		$delivers = $this->mdunion->delivers_works_webmaster_all($this->user['uid']);
-		if(count($delivers)):
-			for($i=0;$i<count($delivers);$i++):
-				$delivers[$i]['date'] = $this->operation_dot_date($delivers[$i]['date']);
-				if($delivers[$i]['status']):
-					$delivers[$i]['datepaid'] = $this->operation_dot_date($delivers[$i]['datepaid']);
-				endif;
-			endfor;
-			$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';
-			$fp = fopen($file_name,'w');
-			$this->load->helper('download');
-			$mass = array();
-			for($i=0;$i<count($delivers);$i++):
-				$mass[$i]['num'] = $i+1;
-				$mass[$i]['date'] = $delivers[$i]['date'];
-				$mass[$i]['datepaid'] = $delivers[$i]['datepaid'];
-				$mass[$i]['ptitle'] = $delivers[$i]['ptitle'];
-				$mass[$i]['twtitle'] = $delivers[$i]['twtitle'];
-				$mass[$i]['mtitle'] = $delivers[$i]['mtitle'];
-				$mass[$i]['countchars'] = $delivers[$i]['countchars'].' сим.';
-				$mass[$i]['ulrlink'] = $delivers[$i]['ulrlink'];
-				$mass[$i]['mkprice'] = $delivers[$i]['mkprice'].' руб.';
-				$mass[$i]['wprice'] = $delivers[$i]['wprice'].' руб.';
-			endfor;
-			foreach($mass AS $mas):
-				fputcsv($fp,$mas,';');
-			endforeach;
-			fclose($fp);
-			$fdata = file_get_contents($file_name);
-			unlink($file_name);
-			if($fdata && $file_name):
-				force_download('works'.$this->user['uid'].date("Ymd").'.csv',$fdata);
-			endif;
-		endif;
 	}
 	
 	public function control_pay_all(){

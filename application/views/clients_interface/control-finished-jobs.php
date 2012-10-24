@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view("clients_interface/includes/head");?>
+<?php $this->load->view("clients_interface/includes/head-datepiker");?>
 
 <body>
 	<?php $this->load->view("clients_interface/includes/header");?>
@@ -26,7 +26,14 @@
 					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
 				</div>
 				<div style="float:right;margin-bottom:10px;">
-					<button class="btn btn-primary" id="exportCSV"><i class="icon-download-alt icon-white"></i> Экспорт заявок</button>
+					<button class="btn btn-primary" id="exportCSV">Экспорт заданий</button>
+				</div>
+				
+				<div style="display:none;" id="frmExport">
+					<div class="clear"></div>
+					<hr/>
+					<?php $this->load->view('forms/frmexportjobs');?>
+					<hr/>
 				</div>
 			<?php if($cntunit['delivers']['notpaid'] && $userinfo['balance'] >= $minprice):?>
 				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
@@ -113,10 +120,16 @@
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
+	<script type="text/javascript" src="<?=$baseurl;?>javascript/datepicker/jquery.bgiframe-2.1.1.js"></script>
+	<script type="text/javascript" src="<?=$baseurl;?>javascript/datepicker/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="<?=$baseurl;?>javascript/datepicker/jquery.ui.datepicker-ru.js"></script>
+	<script type="text/javascript" src="<?=$baseurl;?>javascript/datepicker/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" src="<?=$baseurl;?>javascript/datepicker/jquery.ui.widget.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("td[data-status='notpaid']").each(function(e){$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');});
 			$("td[data-status='paid']").each(function(e){$(this).addClass('paid'); $(this).siblings('td').addClass('paid');});
+			$("input.calendar").datepicker($.datepicker.regional['ru']);
 		<?php if($userinfo['balance'] >= $minprice):?>
 			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false; $(".alert ").hide();$("#mspayall").show();});
 			var balance = <?=$userinfo['balance'];?>;
@@ -133,6 +146,13 @@
 				}
 			});
 			$("input[type='checkbox']").removeAttr('checked');
+			$(".chExport").attr('checked','checked');
+			if($(".notpaid").length == 0){
+				$(".chExport#notpaid").removeAttr("checked").attr("disabled","disabled").addClass("disabled")
+			}
+			if($(".paid").length == 0){
+				$(".chExport#paid").removeAttr("checked").attr("disabled","disabled").addClass("disabled");
+			}
 			$(".chPrice").click(function(){
 				$("#changeAll").removeAttr('checked');
 				var price = parseInt($("#TotalSumma").html());
@@ -203,8 +223,10 @@
 		<?php endif;?>
 		});
 		$("#exportCSV").click(function(event){
-			window.open("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/export-csv");
-			event.preventDefault();
+			$("#frmExport").fadeToggle("fast");
+		});
+		$(".chExport").click(function(){
+			if($(".chExport:checked:active").length == 0){$(this).attr('checked','checked');}
 		});
 	</script>
 </body>
