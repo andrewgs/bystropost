@@ -7,6 +7,11 @@
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
+				<?php if($this->uri->segment(2)=='management'):?>
+					<li>
+						<?=anchor($this->session->userdata('backpath'),'Список площадок');?><span class="divider">/</span>
+					</li>
+				<?php endif;?>
 					<li class="active">
 						<?=anchor($this->uri->uri_string(),'Профиль');?>
 					</li>

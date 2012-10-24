@@ -58,8 +58,12 @@
 								<nobr>
 								<?=anchor('admin-panel/management/platforms/edit-platform/'.$platforms[$i]['id'],'<b>'.$platforms[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>
 								<br/>CMS: <?=$platforms[$i]['cms'];?><br/>Дата: <?=$platforms[$i]['date'];?><br/>
-								<?=$platforms[$i]['fio'];?><br/><b><?=$platforms[$i]['login'];?></b><br/><br/>
-								<?=$platforms[$i]['manfio'];?><br/><b><?=$platforms[$i]['manemail'];?></b></nobr>
+								<?=$platforms[$i]['fio'];?><br/><b><?=anchor('admin-panel/management/users/profile/id/'.$platforms[$i]['uid'],$platforms[$i]['login']);?></b><br/><br/>
+								<?=$platforms[$i]['manfio'];?>
+							<?php if($platforms[$i]['manager']):?>
+								<br/><b><?=anchor('admin-panel/management/users/profile/id/'.$platforms[$i]['manager'],$platforms[$i]['manemail']);?></b>
+							<?php endif;?>
+								</nobr>
 							</td>
 							<td class="w85" style="text-align:center; vertical-align:middle;">
 							<?php if(count($platforms[$i]['markets'])):?>

@@ -1026,6 +1026,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("admin_interface/management-platforms",$pagevar);
 	}
