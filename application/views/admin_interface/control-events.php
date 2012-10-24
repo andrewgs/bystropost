@@ -20,7 +20,7 @@
 					<thead>
 						<tr>
 							<th class="w100"><center>Пользователь</center></th>
-							<th class="w100"><center>Дата</center></th>
+							<th class="w50"><center>Дата</center></th>
 							<th class="w500"><center>Текст события</center></th>
 						</tr>
 					</thead>
@@ -30,7 +30,7 @@
 							<td class="w100" style="vertical-align:middle;">
 								<nobr><?=$events[$i]['ufio'];?><br/><b><?=$events[$i]['ulogin'];?></b><br/><?=$events[$i]['uposition'];?></nobr>
 							</td>
-							<td class="w100" style="vertical-align:middle; text-align:center;"><nobr><b><?=$events[$i]['date'];?></b></nobr></td>
+							<td style="vertical-align:middle; text-align:center;"><nobr><b><?=$events[$i]['date'];?></b></nobr></td>
 							<td class="w500"><?=$events[$i]['note'];?></td>
 						</tr>
 					<?php endfor; ?>

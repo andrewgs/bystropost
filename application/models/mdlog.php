@@ -15,7 +15,7 @@ class Mdlog extends CI_Model{
 			
 		$this->user 	= $user;
 		$this->note 	= $note;
-		$this->date		= date("Y-m-d");
+		$this->date		= date("Y-m-d H:i:s");
 		
 		$this->db->insert('log',$this);
 		return $this->db->insert_id();

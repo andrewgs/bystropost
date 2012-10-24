@@ -141,6 +141,15 @@ class Mdusers extends CI_Model{
 		return NULL;
 	}
 	
+	function read_record_remote($remoteid){
+		
+		$this->db->where('remoteid',$remoteid);
+		$query = $this->db->get('users',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0];
+		return NULL;
+	}
+	
 	function read_by_wmid($wmid){
 		
 		$this->db->where('wmid',$wmid);

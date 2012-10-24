@@ -230,6 +230,7 @@ class Admin_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
 				$old_manager = $this->mdusers->read_field($_POST['uid'],'manager');
+				$_POST['balance'] = preg_replace('/[-]+/','-',$_POST['balance']);
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
@@ -2269,8 +2270,8 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=413');
+//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=413');
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=1232');
 		
 		$ch = curl_init();
@@ -2291,7 +2292,7 @@ class Admin_interface extends CI_Controller{
 		else:
 			print_r('Нет данных для загрузки!');
 		endif;
-//		print_r($mass_data);
+		print_r($mass_data);
 		echo '<br/>Количество: '.count($mass_data).'<br/><br/>';
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;
@@ -2334,7 +2335,7 @@ class Admin_interface extends CI_Controller{
 		print_r('Импортировнно: '.$cnt.' вебмастеров');*/
 		/*=============================== Загрузка вебмастеров конец ============================*/
 		/*======================== Дозагрузка аккаунтов на биржах начало ======================== */
-		$data = array(); $cnt = 0;
+		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):
 			if($key):
 				$data['id'] = $key;
@@ -2345,7 +2346,8 @@ class Admin_interface extends CI_Controller{
 				if($data['webmaster'] && $data['market']):
 					if(!$this->mdwebmarkets->exist_market($data['id'])):
 //						$this->mdwebmarkets->insert_record($data['id'],$data['webmaster'],$data);
-						echo 'ДАННЫЕ ЕСТЬ: ID-'.$data['id'].', ВМ-'.$data['webmaster'].', ЛОГИН-'.$data['login'].', ПАРОЛЬ-'.$data['password'].', БИРЖА-'.$data['market'].'<br/>';
+						$user = $this->mdusers->read_record_remote($data['webmaster'],'login');
+						echo 'ДАННЫЕ ЕСТЬ: ID-'.$data['id'].', ВМ-'.$data['webmaster'].', ЛОГИН-'.$data['login'].', ПАРОЛЬ-'.$data['password'].', БИРЖА-'.$data['market'].', ВЕБМАСТЕР: '.$user['login'].', ПАРОЛЬ: '.$this->encrypt->decode($user['cryptpassword']).'<br/>';
 						$cnt++;
 					endif;
 				else:
@@ -2353,7 +2355,7 @@ class Admin_interface extends CI_Controller{
 				endif;
 			endif;
 		endforeach;
-		print_r('Импортированно: '.$cnt.' аккаунтов');
+		print_r('Импортированно: '.$cnt.' аккаунтов');*/
 		/*======================== Дозагрузка аккаунтов на биржах конец ========================*/
 	}
 	
