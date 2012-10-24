@@ -25,6 +25,9 @@
 				<div class="alert alert-info" id="mspayall" style="display:none;">
 					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
 				</div>
+				<div style="float:right;margin-bottom:10px;">
+					<button class="btn btn-primary" id="exportCSV"><i class="icon-download-alt icon-white"></i> Экспорт заявок</button>
+				</div>
 			<?php if($cntunit['delivers']['notpaid'] && $userinfo['balance'] >= $minprice):?>
 				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 					<input type="hidden" id="summa" value="" name="summa" />
@@ -198,6 +201,10 @@
 				return price;
 			}
 		<?php endif;?>
+		});
+		$("#exportCSV").click(function(event){
+			window.open("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/export-csv");
+			event.preventDefault();
 		});
 	</script>
 </body>

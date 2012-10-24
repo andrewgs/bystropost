@@ -33,6 +33,15 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
+	function delivers_works_webmaster_all($uid){
+		
+		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_delivers_works_webmaster($uid){
 		
 		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.webmaster = $uid";

@@ -1258,6 +1258,44 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-finished-jobs",$pagevar);
 	}
 	
+	public function control_export_csv(){
+		
+		$delivers = $this->mdunion->delivers_works_webmaster_all($this->user['uid']);
+		if(count($delivers)):
+			for($i=0;$i<count($delivers);$i++):
+				$delivers[$i]['date'] = $this->operation_dot_date($delivers[$i]['date']);
+				if($delivers[$i]['status']):
+					$delivers[$i]['datepaid'] = $this->operation_dot_date($delivers[$i]['datepaid']);
+				endif;
+			endfor;
+			$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';
+			$fp = fopen($file_name,'w');
+			$this->load->helper('download');
+			$mass = array();
+			for($i=0;$i<count($delivers);$i++):
+				$mass[$i]['num'] = $i+1;
+				$mass[$i]['date'] = $delivers[$i]['date'];
+				$mass[$i]['datepaid'] = $delivers[$i]['datepaid'];
+				$mass[$i]['ptitle'] = $delivers[$i]['ptitle'];
+				$mass[$i]['twtitle'] = $delivers[$i]['twtitle'];
+				$mass[$i]['mtitle'] = $delivers[$i]['mtitle'];
+				$mass[$i]['countchars'] = $delivers[$i]['countchars'].' сим.';
+				$mass[$i]['ulrlink'] = $delivers[$i]['ulrlink'];
+				$mass[$i]['mkprice'] = $delivers[$i]['mkprice'].' руб.';
+				$mass[$i]['wprice'] = $delivers[$i]['wprice'].' руб.';
+			endfor;
+			foreach($mass AS $mas):
+				fputcsv($fp,$mas,';');
+			endforeach;
+			fclose($fp);
+			$fdata = file_get_contents($file_name);
+			unlink($file_name);
+			if($fdata && $file_name):
+				force_download('works'.$this->user['uid'].date("Ymd").'.csv',$fdata);
+			endif;
+		endif;
+	}
+	
 	public function control_pay_all(){
 		
 		$balance = $this->mdusers->read_field($this->user['uid'],'balance');
@@ -2194,13 +2232,13 @@ class Clients_interface extends CI_Controller{
 				$new_platform['clinkarh'] = 0;
 				$new_platform['mlinkarh'] = 0;
 				$new_platform['price'] = 0;
-				$new_platform['locked'] = ($pl_data[$i]['off'])? 1 : 0;
-				$new_platform['status'] = 1;
-				if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
+				$new_platform['locked'] = 0;
+				$new_platform['status'] = ($pl_data[$i]['off'])? 0 : 1;
+				/*if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
 					$new_platform['status'] = 0;
 					$param = 'siteid='.$new_platform['id'].'&value=1';
 					$this->API('SetSiteActive',$param);
-				endif;
+				endif;*/
 				if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 					$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 					if($platform):
