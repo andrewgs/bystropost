@@ -147,12 +147,6 @@
 			});
 			$("input[type='checkbox']").removeAttr('checked');
 			$(".chExport").attr('checked','checked');
-			if($(".notpaid").length == 0){
-				$(".chExport#notpaid").removeAttr("checked").attr("disabled","disabled").addClass("disabled")
-			}
-			if($(".paid").length == 0){
-				$(".chExport#paid").removeAttr("checked").attr("disabled","disabled").addClass("disabled");
-			}
 			$(".chPrice").click(function(){
 				$("#changeAll").removeAttr('checked');
 				var price = parseInt($("#TotalSumma").html());
@@ -223,10 +217,11 @@
 		<?php endif;?>
 		});
 		$("#exportCSV").click(function(event){
+			$(".chExport").attr('checked','checked');
 			$("#frmExport").fadeToggle("fast");
 		});
 		$(".chExport").click(function(){
-			if($(".chExport:checked:active").length == 0){$(this).attr('checked','checked');}
+			if($(".chExport:checked").length == 0){$(this).attr('checked','checked');}
 		});
 	</script>
 </body>

@@ -1238,7 +1238,7 @@ class Clients_interface extends CI_Controller{
 						if($delivers[$i]['status']):
 							$delivers[$i]['datepaid'] = $this->operation_dot_date($delivers[$i]['datepaid']);
 						else:
-							$delivers[$i]['datepaid'] = 'не оплачено';
+							$delivers[$i]['datepaid'] = mb_convert_encoding('не оплачено','Windows-1251','utf-8');
 						endif;
 					endfor;
 					$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';

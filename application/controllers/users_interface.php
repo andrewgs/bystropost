@@ -450,7 +450,7 @@ class Users_interface extends CI_Controller{
 			case 2 : redirect('manager-panel/actions/control');break;
 			case 3 : redirect('optimizator-panel/actions/control');break;
 			case 4 : show_404();break;
-			case 5 : redirect('admin-panel/management/users/all');break;
+			case 5 : redirect('admin-panel/management/users/webmasters');break;
 			default: show_404(); break;
 		endswitch;
 	}
