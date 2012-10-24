@@ -7,9 +7,14 @@ php_value upload_max_filesize 10M
 RewriteEngine On
 RewriteBase /
 
-RewriteCond	%{HTTP_HOST}	^(www\.)?bistropost\.ru$	[NC,OR]
-RewriteCond	%{HTTP_HOST}	^(www\.)?bystropost\.com$	[NC]
-RewriteRule	^(.*)$		http://bystropost.ru/$1		[R=301,L]
+#RewriteCond    %{HTTP_HOST}    ^(www\.)?bistropost\.ru$        [NC,OR]
+#RewriteCond    %{HTTP_HOST}    ^(www\.)?bystropost\.com$       [NC]
+#RewriteRule    ^(.*)$          http://bystropost.ru/$1         [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^bystropost.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.bystropost.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.bystropost.ru$ [NC]
+RewriteRule ^(.*)$ http://bystropost.ru/$1 [R=301,NC,L]
 
 RewriteCond $1 !^(index\.php|images|robots\.txt|javascript)
 RewriteCond %{REQUEST_URI} !\.(css|js|jpg|gif)$
