@@ -1000,6 +1000,7 @@ class Clients_interface extends CI_Controller{
 			else:
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
+					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер '.$this->user['ulogin'].' написал письмо менеджеру '.$this->mdusers->read_field($_POST['recipient'],'login'));
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
@@ -1605,15 +1606,16 @@ class Clients_interface extends CI_Controller{
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
 					if($cntmarkets > 0):
-						for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+						for($i=0,$j=0;$i<$cntmarkets;$i+=4):
 							if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
 							$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
 							$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
 							$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+							$marketslist[$j]['mkpub'] 	= $_POST['markets'][$i+3];
 							$j++;
 						endfor;
 					endif;
-					if(count($marketslist)):
+						if(count($marketslist)):
 						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №15: Состояние площадки - создана');
@@ -1800,17 +1802,18 @@ class Clients_interface extends CI_Controller{
 					$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
 					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				endif;
-				if(!$this->user['remote'] && $platform['namager'] != 2):
+//				if(!$this->user['remote'] && $platform['namager'] != 2):
 					$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 					if(isset($_POST['markets'])):
 						$cntmarkets = count($_POST['markets']);
 						$marketslist = array();
 						if($cntmarkets > 0):
-							for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+							for($i=0,$j=0;$i<$cntmarkets;$i+=4):
 								if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
 								$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
 								$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
 								$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+								$marketslist[$j]['mkpub'] 	= $_POST['markets'][$i+3];
 								$j++;
 							endfor;
 						endif;
@@ -1818,7 +1821,7 @@ class Clients_interface extends CI_Controller{
 							$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 						endif;
 					endif;
-				endif;
+//				endif;
 			endif;
 			redirect('webmaster-panel/actions/platforms');
 		endif;

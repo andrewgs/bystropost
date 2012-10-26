@@ -8,29 +8,32 @@ class Mdmkplatform extends CI_Model{
 	var $market 	= 0;
 	var $login 		= '';
 	var $password 	= '';
+	var $publication= '';
 	var $cryptpassword 	= '';
 	
 	function __construct(){
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$platform,$market,$login,$password){
+	function insert_record($uid,$platform,$market,$login,$password,$publication){
 			
 		$this->webmaster 	= $uid;
 		$this->platform 	= $platform;
 		$this->market 		= $market;
 		$this->login 		= $login;
 		$this->password 	= md5($password);
+		$this->publication 	= $publication;
 		$this->cryptpassword= $this->encrypt->encode($password);
 		
 		$this->db->insert('mkplatform',$this);
 		return $this->db->insert_id();
 	}
 	
-	function update_records($uid,$login,$market,$oldpass,$password){
+	function update_records($uid,$login,$market,$oldpass,$password,$publication){
 			
 		$this->db->set('password',md5($password));
 		$this->db->set('cryptpassword',$this->encrypt->encode($password));
+		$this->db->set('publication',$publication);
 		
 		$this->db->where('login',$login);
 		$this->db->where('password',$oldpass);
@@ -43,13 +46,12 @@ class Mdmkplatform extends CI_Model{
 	function group_insert($uid,$platform,$data){
 		$query = '';
 		for($i=0;$i<count($data);$i++):
-			
-			$query .= '('.$uid.','.$platform.','.$data[$i]['mkid'].',"'.$data[$i]['mklogin'].'","'.md5($data[$i]['mkpass']).'","'.$this->encrypt->encode($data[$i]['mkpass']).'") ';
+			$query .= '('.$uid.','.$platform.','.$data[$i]['mkid'].',"'.$data[$i]['mklogin'].'","'.md5($data[$i]['mkpass']).'","'.$this->encrypt->encode($data[$i]['mkpass']).'","'.$data[$i]['mkpub'].'") ';
 			if($i+1<count($data)):
 				$query.=',';
 			endif;
 		endfor;
-		$this->db->query("INSERT INTO mkplatform (webmaster,platform,market,login,password,cryptpassword) VALUES ".$query);
+		$this->db->query("INSERT INTO mkplatform (webmaster,platform,market,login,password,cryptpassword,publication) VALUES ".$query);
 	}
 	
 	function read_records(){

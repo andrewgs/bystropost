@@ -62,7 +62,7 @@
 						<?php endif;?>
 								<center><nobr><?=$platforms[$i]['date'];?></nobr></center>
 							</td>
-							<td class="w100" style="text-align: center; vertical-align: middle;">
+							<td class="w130" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['status']):?>
 								<i class="icon-exclamation-sign" title="Не активна"></i>
 							<?php endif;?>
@@ -71,7 +71,10 @@
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-tags icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
-								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase icon-white"></i>&nbsp',array('class'=>'btn btn-info DeliverWork','title'=>'Сдать задание'));?>
+								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase icon-white"></i>&nbsp',array('class'=>'btn btn-primary DeliverWork','title'=>'Сдать задание'));?>
+							<?php endif;?>
+							<?php if(!$platforms[$i]['locked']):?>
+								<a class="btn btn-info mailUser" data-pid="<?=$platforms[$i]['id'];?>" data-toggle="modal" href="#mailUser" title="Отправить письмо владельцу">&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;</a>
 							<?php endif;?>
 							</td>
 						</tr>
@@ -83,6 +86,7 @@
 				<?php endif;?>
 			</div>
 		<?php $this->load->view("managers_interface/includes/rightbar");?>
+		<?php $this->load->view('managers_interface/modal/mail-users');?>
 		</div>
 	</div>
 	<?php $this->load->view("managers_interface/includes/footer");?>
@@ -95,6 +99,24 @@
 			$("td[data-locked='locked']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
+			
+			$(".mailUser").click(function(){
+			
+				var	nPlatform = $(this).parents("tr:first").find("td:first a").html();
+				$("#nPlatform").val(nPlatform);$(".idPlatform").val($(this).attr("data-pid"));
+			});
+			
+			$("#mtsend").click(function(event){
+				var err = false;
+				$(".control-group").removeClass('error');
+				$(".help-inline").hide();
+				if($("#mailText").val() == ''){
+					$("#mailText").parents(".control-group").addClass('error');
+					$("#mailText").siblings(".help-inline").html("Поле не может быть пустым").show();
+					event.preventDefault();
+				}
+			});
+			
 		<?php if($userinfo['uid'] == 2):?>
 			var stopRequest = false;
 			var stopScript = false;

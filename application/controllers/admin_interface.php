@@ -2090,6 +2090,10 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		for($i=0;$i<count($pagevar['mails']);$i++):
 			$pagevar['mails'][$i]['date'] = $this->operation_dot_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['recipient'] = $this->mdusers->read_field($pagevar['mails'][$i]['recipient'],'login');
+			if(!$pagevar['mails'][$i]['recipient']):
+				$pagevar['mails'][$i]['recipient'] = '<span class="active">Системное сообщение</span>';
+			endif;
 		endfor;
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/read-messages/userid/'.$user.'/from/';

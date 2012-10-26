@@ -41,17 +41,24 @@
 					<div list="MarketLine"></div>
 				<?php for($j=0;$j<count($mymarkets);$j++):?>
 					<div list="MarketLine">
-						<label class="label-input left w205">Название биржи</label>
-						<label class="label-input left w250">Логин</label>
-						<label class="label-input left w85">Пароль</label>
+						<label class="label-input left w160">Название биржи</label>
+						<label class="label-input left w160">Логин</label>
+						<label class="label-input left w165">Пароль</label>
+						<label class="label-input left w160">Раздел для публикации</label>
 						<div class="clear"></div>
-						<select class="reg-form-input w195 h30" name="markets[]" style="vertical-align:top;padding: 5px;" <?=($disabled)?'disabled':'';?>>
+					<?php if($platform['remoteid']):?>
+						<input name="markets[]" type="hidden" maxlength="100" value="<?=$mymarkets[$j]['market'];?>" <?=($disabled)?'readonly="readonly"':'';?>/>
+						<select class="input-medium h30" name="market" style="vertical-align:top;padding: 5px;" <?=($disabled)?'disabled="disabled"':'';?>>
+					<?php else:?>
+						<select class="input-medium h30" name="markets[]" style="vertical-align:top;padding: 5px;" <?=($disabled)?'disabled="disabled"':'';?>>
+					<?php endif;?>
 						<?php for($i=0;$i<count($markets);$i++):?>
 							<option value="<?=$markets[$i]['id'];?>" <?php if($markets[$i]['id'] == $mymarkets[$j]['market']) echo 'selected="selected"';?>><?=$markets[$i]['title'];?></option>
 						<?php endfor; ?>
 						</select>
-						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>" <?=($disabled)?'disabled="disabled"':'';?>/>
-						<input class="reg-form-input w195 jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>" <?=($disabled)?'disabled="disabled"':'';?>/>
+						<input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>" <?=($disabled)?'readonly="readonly"':'';?>/>
+						<input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>" <?=($disabled)?'readonly="readonly"':'';?>/>
+						<input class="input-large jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['publication'];?>" placeholder="Введите раздел публикации"/>
 						<div class="clear"></div>
 					</div>
 				<?php endfor;?>

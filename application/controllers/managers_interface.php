@@ -247,6 +247,51 @@ class Managers_interface extends CI_Controller{
 		$pagevar['cntunit']['tickets']['inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		$pagevar['cntunit']['tickets']['outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
 		
+		if($this->input->post('mtsubmit')):
+			$_POST['mtsubmit'] = NULL;
+			$this->form_validation->set_rules('pid',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$recipient = $this->mdplatforms->read_field($_POST['pid'],'webmaster');
+				if($recipient):
+					$id = $this->mdmessages->insert_record($this->user['uid'],$recipient,$_POST['text']);
+					if($id):
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Менеджер '.$this->user['ulogin'].' написал письмо вебмастеру '.$this->mdusers->read_field($recipient,'login'));
+						$this->session->set_userdata('msgs','Сообщение отправлено');
+					endif;
+					if(isset($_POST['sendmail'])):
+						ob_start();
+						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
+						<p>У Вас новое сообщение</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($recipient);?> и перейдите в раздел "Почта"</p>
+						<p><br/><?=$this->sub_mailtext($_POST['text'],$recipient);?><br/></p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($this->mdusers->read_field($recipient,'login'));
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);
+						$this->email->send();
+					endif;
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
 		if($this->input->post('scsubmit')):
 			$_POST['scsubmit'] = NULL;
 			$this->form_validation->set_rules('srplid',' ','required|numeric|trim');
