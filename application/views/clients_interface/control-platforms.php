@@ -72,7 +72,7 @@
 							<td class="w85"><center><nobr><?=anchor('webmaster-panel/actions/finished-jobs/platform/platformid/'.$platforms[$i]['id'],$platforms[$i]['torders'].' / <b>'.$platforms[$i]['uporders'].'</b>',array('style'=>'text-decoration:none;'));?></nobr></center></td>
 							<td class="w85"><center><nobr><?=$platforms[$i]['date'];?></nobr></center></td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
-							<?php if(!$platforms[$i]['locked']):?>
+							<?php if($platforms[$i]['edit']):?>
 								<?=anchor('webmaster-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['status']):?>

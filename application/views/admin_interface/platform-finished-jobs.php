@@ -22,7 +22,7 @@
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w100"><center>№ п.п</center></th>
+							<th class="w100"><center>ID's</center></th>
 							<th class="w100"><center>Дата</center></th>
 							<th class="w100"><center><nobr>Тип работы</nobr></center></th>
 							<th class="w100"><center>Биржа</center></th>
@@ -36,7 +36,7 @@
 					<?php for($i=0,$num=$this->uri->segment(8)+1;$i<count($delivers);$i++,$num++):?>
 						<tr>
 							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;">
-								<?=$num;?><br/>
+								<?=$delivers[$i]['id'];?><br/><?=($delivers[$i]['remoteid'])? $delivers[$i]['remoteid'] : '-';?><br/>
 								<nobr>
 							<?php if(!$delivers[$i]['status']):?>
 								<div id="params<?=$i;?>" style="display:none" data-wid="<?=$delivers[$i]['id'];?>" data-type="<?=$delivers[$i]['typework'];?>" data-market="<?=$delivers[$i]['market'];?>" data-ulrlink="<?=$delivers[$i]['ulrlink'];?>" data-countchars="<?=$delivers[$i]['countchars'];?>" data-mkprice="<?=$delivers[$i]['mkprice'];?>" data-wprice="<?=$delivers[$i]['wprice'];?>" data-mprice="<?=$delivers[$i]['mprice'];?>"></div>

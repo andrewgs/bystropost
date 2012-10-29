@@ -560,7 +560,7 @@ class Clients_interface extends CI_Controller{
 						endif;
 					endfor;
 					if(!empty($pllist)):
-						$param = "siteid=$pllist&optionid=".$_POST['service']."&value=$valuesrv";
+						$param = "siteid=$pllist&birzid=0&optionid=".$_POST['service']."&value=$valuesrv";
 						$this->API('UpdateAdditionalService',$param);
 					endif;
 					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0,0);
@@ -688,7 +688,7 @@ class Clients_interface extends CI_Controller{
 						$this->mdplatforms->run_query($sqlquery);
 						$plmid = $this->mdplatforms->read_field($attached['platform'],'remoteid');
 						if($plmid):
-							$param = "siteid=".$plmid."&optionid=".$attached['service']."&value=".$params[1];
+							$param = "siteid=".$plmid."&birzid=0&optionid=".$attached['service']."&value=".$params[1];
 							$this->API('UpdateAdditionalService',$param);
 						endif;
 					endif;
@@ -1492,9 +1492,16 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):
+			$pagevar['platforms'][$i]['edit'] = TRUE;
 			$pagevar['platforms'][$i]['date'] = $this->operation_dot_date($pagevar['platforms'][$i]['date']);
 			$pagevar['platforms'][$i]['uporders'] = $this->mddelivesworks->count_records_by_platform_status($pagevar['platforms'][$i]['id'],0);
 			$pagevar['platforms'][$i]['torders'] = $this->mddelivesworks->count_records_by_platform($pagevar['platforms'][$i]['id']);
+			if($pagevar['platforms'][$i]['locked'] || !$pagevar['platforms'][$i]['status']):
+				$pagevar['platforms'][$i]['edit'] = FALSE;
+				if($this->mdplatforms->empty_fields($pagevar['platforms'][$i]['id'])):
+					$pagevar['platforms'][$i]['edit'] = TRUE;
+				endif;
+			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$this->load->view("clients_interface/control-platforms",$pagevar);
@@ -1820,6 +1827,10 @@ class Clients_interface extends CI_Controller{
 						if(count($marketslist)):
 							$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 						endif;
+						for($i=0;$i<count($marketslist);$i++):
+							$param = "siteid=$platform&birzid=".$marketslist[$i]['mkid']."&optionid3&value=".$marketslist[$i]['mkpub'];
+							$this->API('UpdateAdditionalService',$param);
+						endfor;
 					endif;
 //				endif;
 			endif;

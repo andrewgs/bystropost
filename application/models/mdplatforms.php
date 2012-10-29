@@ -360,6 +360,15 @@ class Mdplatforms extends CI_Model{
 		return FALSE;
 	}
 	
+	function empty_fields($id){
+		
+		$query = "SELECT id FROM `platforms` WHERE (`adminpanel` ='' or`aplogin` = '' OR `appassword` = '') AND id = $id";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+	
 	function delete_record($id){
 	
 		$this->db->where('id',$id);
