@@ -33,7 +33,9 @@ class Mdmkplatform extends CI_Model{
 			
 		$this->db->set('password',md5($password));
 		$this->db->set('cryptpassword',$this->encrypt->encode($password));
-		$this->db->set('publication',$publication);
+		if(isset($publication)):
+			$this->db->set('publication',$publication);
+		endif;
 		
 		$this->db->where('login',$login);
 		$this->db->where('password',$oldpass);

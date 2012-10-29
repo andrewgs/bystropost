@@ -845,7 +845,7 @@ class Clients_interface extends CI_Controller{
 				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
 				$this->API('UpdateAccount',$param);
 				$this->mdwebmarkets->update_record($_POST['mid'],$this->user['remoteid'],$_POST);
-				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password']);
+				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password'],NULL);
 				$this->mdlog->insert_record($this->user['uid'],'Событие №26: Изменена учетная запись на бирже');
 				
 				ob_start();
@@ -2018,7 +2018,7 @@ class Clients_interface extends CI_Controller{
 				endswitch;
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
+					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт.</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
@@ -2287,7 +2287,7 @@ class Clients_interface extends CI_Controller{
 				if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 					$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 					if($platform):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password']);
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],'');
 						$addwtic = $addmtic = 0;
 						$pr = $this->getpagerank($new_platform['url']);
 						$this->mdplatforms->update_field($platform,'pr',$pr);
@@ -2352,7 +2352,7 @@ class Clients_interface extends CI_Controller{
 				else:
 					$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
 					if(!$this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password'])):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password']);
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],'');
 					endif;
 				endif;
 			endfor;

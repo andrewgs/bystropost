@@ -1982,7 +1982,7 @@ class Admin_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Тикет закрыт!</strong>';
+					$_POST['text'] .= '<br/><strong>Тикет закрыт.</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$id = $this->mdtkmsgs->insert_record($_POST['recipient'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);

@@ -973,7 +973,7 @@ class Managers_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Тикет закрыт!</strong>';
+					$_POST['text'] .= '<br/><strong>Тикет закрыт.</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
@@ -1085,7 +1085,7 @@ class Managers_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт!</strong>';
+					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт.</strong>';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
