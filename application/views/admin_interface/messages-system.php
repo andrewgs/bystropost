@@ -28,14 +28,16 @@
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
 				$(".idUser").val(mID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);
 			});
-			$("#mtsend").click(function(event){
+			$("#send").click(function(event){
 				var err = false;
 				$(".control-group").removeClass('error');
 				$(".help-inline").hide();
-				if($("#mailText").val() == ''){
-					$("#mailText").parents(".control-group").addClass('error');
-					$("#mailText").siblings(".help-inline").html("Поле не может быть пустым").show();
+				if($("#text").val() == ''){
+					$("#text").parents(".control-group").addClass('error');
+					$("#text").siblings(".help-inline").html("Поле не может быть пустым").show();
 					event.preventDefault();
+				}else{
+					$(this).html("Отправка писем. Ожидайте...");
 				}
 			});
 			$("#mailUser").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide();$("#mailText").val('');$("#sendMail").removeAttr('checked');});

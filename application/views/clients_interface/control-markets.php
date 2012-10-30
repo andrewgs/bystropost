@@ -20,7 +20,7 @@
 							<th class="w85"><center>Название</center></th>
 							<th class="w85"><center>Логин</center></th>
 							<th class="w85"><center>Пароль</center></th>
-							<th class="w100">&nbsp;</th>
+							<th class="w130">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -29,7 +29,7 @@
 							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$accounts[$i]['mtitle'];?></nobr></td>
 							<td class="w85"><?=$accounts[$i]['login'];?></td>
 							<td class="w85"><?=$accounts[$i]['password'];?></td>
-							<td class="w100" style="text-align:center; vertical-align:middle; max-width:0;">
+							<td class="w130" style="text-align:center; vertical-align:middle; max-width:0;">
 								<nobr>
 									<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>" data-login="<?=$accounts[$i]['login'];?>" data-market="<?=$accounts[$i]['market'];?>"></div>
 									<a class="btn btn-info updateMarket none" data-param="<?=$i;?>" href="#" title="Обновить список площадок">&nbsp;<i class="icon-repeat icon-white"></i>&nbsp;</a>

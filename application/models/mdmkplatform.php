@@ -65,6 +65,14 @@ class Mdmkplatform extends CI_Model{
 		return NULL;
 	}
 	
+	function update_field($id,$field,$value){
+			
+		$this->db->set($field,$value);
+		$this->db->where('id',$id);
+		$this->db->update('mkplatform');
+		return $this->db->affected_rows();
+	}
+	
 	function read_records_by_platform($platform,$uid){
 		
 		$this->db->where('platform',$platform);
@@ -122,13 +130,14 @@ class Mdmkplatform extends CI_Model{
 	
 	function exist_market_platform($platform,$market,$login,$password){
 		
+		$this->db->select('id');
 		$this->db->where('market',$market);
 		$this->db->where('platform',$platform);
 		$this->db->where('login',$login);
 		$this->db->where('password',md5($password));
 		$query = $this->db->get('mkplatform');
 		$data = $query->result_array();
-		if(count($data)) return TRUE;
+		if(count($data)) return $data[0]['id'];
 		return FALSE;
 	}
 	

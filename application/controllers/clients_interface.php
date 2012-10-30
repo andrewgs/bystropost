@@ -560,7 +560,8 @@ class Clients_interface extends CI_Controller{
 						endif;
 					endfor;
 					if(!empty($pllist)):
-						$param = "siteid=$pllist&birzid=0&optionid=".$_POST['service']."&value=$valuesrv";
+//						$param = "siteid=$pllist&birzid=0&optionid=".$_POST['service']."&value=$valuesrv";
+						$param = "siteid=$pllist&optionid=".$_POST['service']."&value=$valuesrv";
 						$this->API('UpdateAdditionalService',$param);
 					endif;
 					$this->mdattachedservices->group_insert($this->user['uid'],$_POST['service'],$valuesrv,$platforms,0,0);
@@ -688,7 +689,8 @@ class Clients_interface extends CI_Controller{
 						$this->mdplatforms->run_query($sqlquery);
 						$plmid = $this->mdplatforms->read_field($attached['platform'],'remoteid');
 						if($plmid):
-							$param = "siteid=".$plmid."&birzid=0&optionid=".$attached['service']."&value=".$params[1];
+							$param = "siteid=".$plmid."&optionid=".$attached['service']."&value=".$params[1];
+//							$param = "siteid=".$plmid."&birzid=0&optionid=".$attached['service']."&value=".$params[1];
 							$this->API('UpdateAdditionalService',$param);
 						endif;
 					endif;
@@ -1118,29 +1120,39 @@ class Clients_interface extends CI_Controller{
 					'total'			=> $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0),
 					'delivers'		=> array(),
 					'view'			=> FALSE,
+					'filter'		=> array('fpaid'=>1,'fnotpaid'=>1),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
+		if($this->session->userdata('jobsfilter') != ''):
+			$filter = preg_split("/,/",$this->session->userdata('jobsfilter'));
+			if(count($filter) == 1):
+				$pagevar['filter']['fpaid'] = ($filter[0])?1:0;
+				$pagevar['filter']['fnotpaid'] = (!$filter[0])?1:0;
+			endif;
+		else:
+			$this->session->set_userdata('jobsfilter','0,1');
+		endif;
 		if($this->uri->segment(6)):
 			if(!$this->mdplatforms->ownew_platform($this->user['uid'],$this->uri->segment(6))):
 				redirect($_SERVER['HTTP_REFERER']);
 			endif;
 			$from = intval($this->uri->segment(8));
-			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),50,intval($this->uri->segment(8)));
-			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),15,intval($this->uri->segment(8)),$this->session->userdata('jobsfilter'));
+			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6),$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/platform/platformid/'.$this->uri->segment(6).'/from/';
 			$config['uri_segment'] 	= 8;
 		else:
 			$from = $this->uri->segment(5);
-			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],50,intval($this->uri->segment(5)));
-			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid']);
+			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],15,intval($this->uri->segment(5)),$this->session->userdata('jobsfilter'));
+			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid'],$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
 			$config['uri_segment'] 	= 5;
 		endif;
-		if(!$pagevar['delivers']):
+		if(!$pagevar['delivers'] && !isset($filter)):
 			redirect('webmaster-panel/actions/control');
 		endif;
 		if($this->input->post('submit')):
@@ -1307,7 +1319,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$config['total_rows'] 	= $count;
-		$config['per_page'] 	= 50;
+		$config['per_page'] 	= 15;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';
@@ -1386,6 +1398,34 @@ class Clients_interface extends CI_Controller{
 			$message .= '<br/>Внимание! У вас нулевой баланс. Необходимо пополнить счет.';
 		endif;
 		redirect('webmaster-panel/actions/finished-jobs');
+	}
+	
+	public function finished_jobs_filter(){
+		
+		$statusval = array('status'=>TRUE,'filter'=>'','paid'=>-1,'notpaid'=>-1);
+		$showed = trim($this->input->post('showed'));
+		$this->session->set_userdata('jobsfilter','0,1');
+		if(!$showed):
+			$this->session->set_userdata('jobsfilter','');
+		else:
+			$filter = preg_split("/&/",$showed);
+			for($i=0;$i<count($filter);$i++):
+				$fparam[$i] = preg_split("/=/",$filter[$i]);
+			endfor;
+			if(count($fparam)==1):
+				$this->session->set_userdata('jobsfilter',$fparam[0][1]);
+				if($fparam[0][1]):
+					$statusval['paid'] = 1;$statusval['notpaid'] = 0;
+				else:
+					$statusval['paid'] = 0;$statusval['notpaid'] = 1;
+				endif;
+			else:
+				$this->session->set_userdata('jobsfilter',$fparam[0][1].','.$fparam[1][1]);
+				$statusval['paid'] = 1;$statusval['notpaid'] = 1;
+			endif;
+		endif;
+		$statusval['filter'] = $this->session->userdata('jobsfilter');
+		echo json_encode($statusval);
 	}
 	
 	/******************************************************** platforms ******************************************************/
@@ -1728,41 +1768,56 @@ class Clients_interface extends CI_Controller{
 					$_POST['imgpos'] = 'left';
 				endif;
 				$result = $this->mdplatforms->update_record($platform,$this->user['uid'],$_POST);
-				if($result):
-					if($pagevar['platform']['manager']):
-						/********************************************************************/
-						if($pagevar['platform']['manager'] == 2):
-							$new_platform = $this->mdplatforms->read_record($platform);
-							if($new_platform['remoteid']):
-								$pl_data = array();
-								$pl_data['adminurl'] = $new_platform['adminpanel'];
-								$pl_data['cms'] = $new_platform['cms'];
-								$pl_data['cms_login'] = $new_platform['aplogin'];
-								$pl_data['cms_pass'] = $new_platform['appassword'];
-								$pl_data['tematic'] = $new_platform['subject'];
-								$pl_data['tematcustom'] = $new_platform['tematcustom'];
-								$pl_data['filter'] = $new_platform['illegal'];
-								$pl_data['subjects'] = $new_platform['thematically'];
-								$pl_data['review'] = $new_platform['reviews'];
-								$pl_data['param'] = array();
-								$pl_data['param']['image'] = array();
-								$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
-								$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
-								$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
-								$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
-								$pl_data['info'] = $new_platform['requests'];
-								$pl_data['size'] = 0;
-								$param = 'siteid='.$new_platform['remoteid'].'&conf='.base64_encode(json_encode($pl_data));
-								$res = $this->API('UpdateSiteOptions',$param);
-								/*if(!$pagevar['platform']['status']):
-									$this->mdplatforms->update_field($platform,'status',1);
-									$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
-									$this->API('SetSiteActive',$param);
-								endif;*/
-//								$this->session->set_userdata('msgs',$res);
+				if($pagevar['platform']['manager']):
+					/********************************************************************/
+					if($pagevar['platform']['manager'] == 2):
+						$new_platform = $this->mdplatforms->read_record($platform);
+						if($new_platform['remoteid']):
+							$pl_data = array();
+							$marketslist = array();
+							if(count($_POST['markets']) > 0):
+								for($i=0,$j=0;$i<count($_POST['markets']);$i+=4):
+									if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
+									$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
+									$marketslist[$j]['mkpub'] 	= $_POST['markets'][$i+3];
+									$j++;
+								endfor;
 							endif;
+							$pl_data['adminurl'] = $new_platform['adminpanel'];
+							$pl_data['cms'] = $new_platform['cms'];
+							$pl_data['cms_login'] = $new_platform['aplogin'];
+							$pl_data['cms_pass'] = $new_platform['appassword'];
+							$pl_data['tematic'] = $new_platform['subject'];
+							$pl_data['tematcustom'] = $new_platform['tematcustom'];
+							$pl_data['filter'] = $new_platform['illegal'];
+							$pl_data['subjects'] = $new_platform['thematically'];
+							$pl_data['review'] = $new_platform['reviews'];
+							$pl_data['param'] = array();
+							$pl_data['param']['image'] = array();
+							$pl_data['param']['image']['status'] = $new_platform['imgstatus'];
+							$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
+							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
+							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
+							if(count($marketslist) > 0):
+								for($i=0;$i<count($marketslist);$i++):
+									$pl_data['param']['category'][$marketslist[$i]['mkid']] = $marketslist[$i]['mkpub'];
+								endfor;
+							else:
+								$pl_data['param']['category'] = array();
+							endif;
+							$pl_data['info'] = $new_platform['requests'];
+							$pl_data['size'] = 0;
+							$param = 'siteid='.$new_platform['remoteid'].'&conf='.base64_encode(json_encode($pl_data));
+							$res = $this->API('UpdateSiteOptions',$param);
+							/*if(!$pagevar['platform']['status']):
+								$this->mdplatforms->update_field($platform,'status',1);
+								$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
+								$this->API('SetSiteActive',$param);
+							endif;*/
 						endif;
-						/********************************************************************/
+					endif;
+					/********************************************************************/
+					if($result):
 						$text = "Информация о площадке ".$pagevar['platform']['url']." изменена.<br/>Проверьте свой E-mail что бы увидеть изменения";
 						$this->mdmessages->send_noreply_message($this->user['uid'],$pagevar['platform']['manager'],2,2,$text);
 						
@@ -1805,9 +1860,9 @@ class Clients_interface extends CI_Controller{
 						$this->email->subject('Noreply: Bystropost.ru - Изменения по площадке.');
 						$this->email->message($mailtext);	
 						$this->email->send();
+						$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
+						$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 					endif;
-					$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
-					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 				endif;
 //				if(!$this->user['remote'] && $platform['namager'] != 2):
 					$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
@@ -1827,10 +1882,6 @@ class Clients_interface extends CI_Controller{
 						if(count($marketslist)):
 							$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 						endif;
-						for($i=0;$i<count($marketslist);$i++):
-							$param = "siteid=$platform&birzid=".$marketslist[$i]['mkid']."&optionid3&value=".$marketslist[$i]['mkpub'];
-							$this->API('UpdateAdditionalService',$param);
-						endfor;
 					endif;
 //				endif;
 			endif;
@@ -2290,6 +2341,15 @@ class Clients_interface extends CI_Controller{
 				$new_platform['price'] = 0;
 				$new_platform['locked'] = 0;
 				$new_platform['status'] = ($pl_data[$i]['off'])? 0 : 1;
+				
+				$publication = 'По теме';
+				$mrs = $pl_data[$i]['param']['category'];
+				foreach($mrs AS $key=>$mr):
+					$publication = $mr;
+					if($key == 0):
+						$publication = $mr;
+					endif;
+				endforeach;
 				/*if(!$new_platform['cms'] || empty($new_platform['adminpanel']) || empty($new_platform['aplogin']) || empty($new_platform['appassword'])):
 					$new_platform['status'] = 0;
 					$param = 'siteid='.$new_platform['id'].'&value=1';
@@ -2298,7 +2358,7 @@ class Clients_interface extends CI_Controller{
 				if(!$this->mdplatforms->exist_platform($new_platform['url'])):
 					$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 					if($platform):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],'');
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],$publication);
 						$addwtic = $addmtic = 0;
 						$pr = $this->getpagerank($new_platform['url']);
 						$this->mdplatforms->update_field($platform,'pr',$pr);
@@ -2362,8 +2422,11 @@ class Clients_interface extends CI_Controller{
 					endif;
 				else:
 					$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
-					if(!$this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password'])):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],'');
+					$mkid = $this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password']);
+					if(!$mkid):
+						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],$publication);
+					else:
+						$this->mdmkplatform->update_field($mkid,'publication',$publication);
 					endif;
 				endif;
 			endfor;

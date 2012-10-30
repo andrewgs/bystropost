@@ -1757,7 +1757,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Администрирование | Отправка системного сообщения сообщения',
+					'title'			=> 'Администрирование | Отправка системного сообщения',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
@@ -1779,9 +1779,35 @@ class Admin_interface extends CI_Controller{
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
-				if(isset($_POST['sendmail'])):
-					
-				endif;
+				$users = $this->mdusers->read_users_by_type($_POST['group']);
+				for($i=0;$i<count($users);$i++):
+					if($users[$i]['sendmail']):
+						ob_start();
+						?>
+						<img src="<?=base_url();?>images/logo.png" alt="" />
+						<p><strong>Здравствуйте, <?=$users[$i]['fio'];?></strong></p>
+						<p>Получено новое сообщение.</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($users[$i]['id']);?> и перейдите в раздел "Почта"</p>
+						<p><br/><?=$this->sub_tickettext($_POST['text'],$users[$i]['id']);?><br/></p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
+						<?
+						$mailtext = ob_get_clean();
+						
+						$this->email->clear(TRUE);
+						$config['smtp_host'] = 'localhost';
+						$config['charset'] = 'utf-8';
+						$config['wordwrap'] = TRUE;
+						$config['mailtype'] = 'html';
+						
+						$this->email->initialize($config);
+						$this->email->to($users[$i]['login']);
+						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+						$this->email->bcc('');
+						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->message($mailtext);
+						$this->email->send();
+					endif;
+				endfor;
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
@@ -2276,9 +2302,7 @@ class Admin_interface extends CI_Controller{
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=413');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAdditionalService','param'=>'siteid=1232');
-		
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=50');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);
@@ -2299,6 +2323,14 @@ class Admin_interface extends CI_Controller{
 		endif;
 		print_r($mass_data);
 		echo '<br/>Количество: '.count($mass_data).'<br/><br/>';
+		/*$publication = 'По теме';
+		$mrs = $mass_data[746]['param']['category'];
+		foreach($mrs AS $key=>$mr):
+			$publication = $mr;
+			if($key == 0):
+				$publication = $mr;
+			endif;
+		endforeach;*/
 	/*======================== Загрузка вебмастеров начало ============================ */
 		/*$data = array(); $cnt = 0;
 		foreach($mass_data AS $key => $value):

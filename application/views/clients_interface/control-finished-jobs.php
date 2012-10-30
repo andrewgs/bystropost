@@ -25,6 +25,10 @@
 				<div class="alert alert-info" id="mspayall" style="display:none;">
 					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
 				</div>
+				<div style="float:left;margin-bottom:10px;">
+					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Показывать оплаченные
+					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Показывать не оплаченные
+				</div>
 				<div style="float:right;margin-bottom:10px;">
 					<button class="btn btn-primary" id="exportCSV">Экспорт заданий</button>
 				</div>
@@ -39,6 +43,7 @@
 				<?=form_open($this->uri->uri_string(),array('class'=>'form-horizontal')); ?>
 					<input type="hidden" id="summa" value="" name="summa" />
 			<?php endif;?>
+				<div class="clear"></div>
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
@@ -81,7 +86,7 @@
 						</tr>
 					<?php endfor; ?>
 					<?php if($cntunit['delivers']['notpaid'] && ($userinfo['balance'] >= $minprice)):?>
-						<tr>
+						<tr class="byHide">
 							<td colspan="7" style="text-align:right; vertical-align:middle;">
 								<?=anchor($this->uri->uri_string(),'Инвертировать',array('class'=>'none','id'=>'inverse','style'=>'text-decoration:none;'));?>
 							</td>
@@ -93,7 +98,7 @@
 				<div class="clear"></div>
 		<?php if($cntunit['delivers']['notpaid']):?>
 			<?php if($userinfo['balance'] >= $minprice):?>
-					<fieldset>
+					<fieldset class="byHide">
 						<legend><div id="dTotalSumma" style="float:right;">Сумма к оплате: <span id="TotalSumma">0</span>.00 руб.</div></legend>
 						<div class="control-group">
 							<div class="controls">
@@ -106,7 +111,7 @@
 					</fieldset>
 				<?= form_close(); ?>
 			<?php else:?>
-				<div class="">Мало средств. Вы не можете заплатить за выполненную работу. Пожалуйста пополните свой денежный баланс.</div>
+				<div class="byHide">Мало средств. Вы не можете заплатить за выполненную работу. Пожалуйста пополните свой денежный баланс.</div>
 			<?php endif;?>
 		<?php endif;?>
 				<hr/>
@@ -130,6 +135,26 @@
 			$("td[data-status='notpaid']").each(function(e){$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');});
 			$("td[data-status='paid']").each(function(e){$(this).addClass('paid'); $(this).siblings('td').addClass('paid');});
 			$("input.calendar").datepicker($.datepicker.regional['ru']);
+		<?php if(!$filter['fnotpaid']):?>
+			$(".byHide").hide();
+		<?php endif;?>
+			if($(".notpaid").length == 0){$(".byHide").hide();}
+			$(".filterJobs").click(function(){
+				var ckType = 0;
+				if($(this).attr("id") == 'showPaid'){ckType = 1;}
+				var ShowJobs = $(".filterJobs").serialize();
+				$.post("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/set-filter",
+					{'showed':ShowJobs},function(data){
+						if(ckType == 1){
+							if(data.paid == 1){if($(".paid").length == 0){window.location.reload();}else{$(".paid").show();}}
+							else{$(".paid").hide();}
+						}
+						if(ckType == 0){
+							if(data.notpaid == 1){if($(".notpaid").length == 0){window.location.reload();}else{$(".notpaid").show();$(".byHide").show();}}
+							else{$(".notpaid").hide();$(".byHide").hide();}
+						}
+				},"json");
+			});
 		<?php if($userinfo['balance'] >= $minprice):?>
 			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false; $(".alert ").hide();$("#mspayall").show();});
 			var balance = <?=$userinfo['balance'];?>;
@@ -137,6 +162,7 @@
 			$("#ValidWork").removeAttr('checked').attr('disabled','disabled');
 			$("#send").addClass('disabled');
 			$("#changeAll").click(function(){
+				$(".notpaid").show("400");
 				if($(this).attr("checked") == 'checked'){
 					$(".chPrice").attr('checked','checked');
 					tprice = calculate(1,balance);
@@ -145,7 +171,7 @@
 					tprice = calculate(0,balance);
 				}
 			});
-			$("input[type='checkbox']").removeAttr('checked');
+			$("input[type='checkbox']").not(".filterJobs").removeAttr('checked');
 			$(".chExport").attr('checked','checked');
 			$(".chPrice").click(function(){
 				$("#changeAll").removeAttr('checked');
@@ -171,7 +197,7 @@
 				}
 				tprice = price;
 			});
-			$("#inverse").click(function(){tprice = calculate(2,balance);$("#changeAll").removeAttr('checked');});
+			$("#inverse").click(function(){$(".notpaid").show("400");tprice = calculate(2,balance);$("#changeAll").removeAttr('checked');});
 			$("#ValidWork").removeAttr('checked');
 			$("#ValidWork").click(function(){
 				if($(this).attr("checked") == 'checked'){$("#send").removeClass('disabled');$("#summa").val(tprice);}else{$("#send").addClass('disabled');};
@@ -179,7 +205,6 @@
 			$("#send").click(function(event){
 				if($("#ValidWork").attr("checked") != "checked"){event.preventDefault();return false;}
 			});
-			
 			function calculate(check,balance){
 				var price = 0;
 				if(check != 1){price = parseInt($("#TotalSumma").html());}
