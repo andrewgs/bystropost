@@ -353,7 +353,7 @@ class Users_interface extends CI_Controller{
 		
 		$pagevar = array(
 			'title'			=> 'Быстропост - система автоматической монетизации | Наши возможности',
-			'description'	=> '',
+			'description'	=> 'привет',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')

@@ -1262,7 +1262,7 @@ class Clients_interface extends CI_Controller{
 								$this->mdusers->change_user_balance($manager,$mprice);
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
-							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за работу ID='.$_POST['works'][$i],0,0);
+							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за выполненное задание ID='.$_POST['works'][$i],0,0);
 							$this->mdfillup->insert_record(0,$wprice-$mprice,'Оплата выполненных работ',0,1);
 						endfor;
 						
@@ -1454,7 +1454,7 @@ class Clients_interface extends CI_Controller{
 					$this->mdusers->change_user_balance($works[$i]['manager'],$works[$i]['mprice']);
 				endif;
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
-				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за работу ID='.$works[$i]['id'],0,0);
+				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за выполненное задание ID='.$works[$i]['id'],0,0);
 				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice'],'Оплата за выполненную работу',0,1);
 			endif;
 		endfor;

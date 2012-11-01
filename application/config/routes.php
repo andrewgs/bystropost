@@ -152,6 +152,8 @@ $route['optimizator-panel/actions/logoff']								= "optimizators_interface/acti
 $route[':any/viewimage/:num']	= "general_interface/viewimage";
 $route['balance/result']		= "general_interface/balance_result";
 $route['support']				= "general_interface/support";
+$route['cron-script']			= "general_interface/cron_script";
+
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
 
 $route['admin-panel/actions/control']					= "admin_interface/control_panel";

@@ -28,23 +28,23 @@
 					<tbody>
 						<tr>
 							<td class="w400">За неделю:</td>
-							<td class="w100"><?=$statistic['week'][0]['summa'];?>.00 руб.</td>
-							<td class="w85"><?=$statistic['week'][1]['summa'];?>.00 руб.</td>
+							<td class="w100"><?=(isset($statistic['week'][0]['summa']))?$statistic['week'][0]['summa']:'0';?>.00 руб.</td>
+							<td class="w85"><?=(isset($statistic['week'][1]['summa']))?$statistic['week'][1]['summa']:'0';?>.00 руб.</td>
 						</tr>
 						<tr>
 							<td class="w400">За месяц потрачено (до сегодня):</td>
-							<td class="w100"><?=$statistic['bymonth'][0]['summa'];?>.00 руб.</td>
-							<td class="w85"><?=$statistic['bymonth'][1]['summa'];?>.00 руб.</td>
+							<td class="w100"><?=(isset($statistic['bymonth'][0]['summa']))?$statistic['bymonth'][0]['summa']:'0';?>.00 руб.</td>
+							<td class="w85"><?=(isset($statistic['bymonth'][1]['summa']))?$statistic['bymonth'][1]['summa']:'0';?>.00 руб.</td>
 						</tr>
 						<tr>
 							<td class="w400">За прошлый месяц:</td>
-							<td class="w100"><?=$statistic['month'][0]['summa'];?>.00 руб.</td>
-							<td class="w85"><?=$statistic['month'][1]['summa'];?>.00 руб.</td>
+							<td class="w100"><?=(isset($statistic['month'][0]['summa']))?$statistic['month'][0]['summa']:'0';?>.00 руб.</td>
+							<td class="w85"><?=(isset($statistic['month'][1]['summa']))?$statistic['month'][1]['summa']:'0';?>.00 руб.</td>
 						</tr>
 						<tr>
 							<td class="w400">За все время:</td>
-							<td class="w100"><?=$statistic['total'][0]['summa'];?>.00 руб.</td>
-							<td class="w85"><?=$statistic['total'][1]['summa'];?>.00 руб.</td>
+							<td class="w100"><?=(isset($statistic['total'][0]['summa']))?$statistic['total'][0]['summa']:'0';?>.00 руб.</td>
+							<td class="w85"><?=(isset($statistic['total'][1]['summa']))?$statistic['total'][1]['summa']:'0';?>.00 руб.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -68,7 +68,7 @@
 							<tr class="<?=($history[$i]['status'])?'addmoney':'rmmoney'?>">
 								<td class="w230"><?=$history[$i]['result']?></td>
 								<td class="w50"><center><?=$history[$i]['date']?></center></td>
-								<td class="w50"><?=$history[$i]['summa']?>.00 руб.</td>
+								<td class="w50"><?=$history[$i]['summa'];?>.00 руб.</td>
 							</tr>
 					<?php endfor;?>
 						</tbody>

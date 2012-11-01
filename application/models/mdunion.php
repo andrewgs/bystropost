@@ -321,7 +321,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 
-	function delivers_works_platform($platform,$count,$from,$filter){
+	function delivers_works_platform($platform,$count,$from,$filter = '0,1'){
 		
 		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.platform = $platform AND delivesworks.status IN ($filter) ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
@@ -330,7 +330,7 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_delivers_works_platform($platform,$filter){
+	function count_delivers_works_platform($platform,$filter = '0,1'){
 		
 		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.platform = $platform AND delivesworks.status IN ($filter)";
 		$query = $this->db->query($query);
