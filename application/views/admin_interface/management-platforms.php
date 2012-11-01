@@ -32,7 +32,7 @@
 					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
 						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
 					</div>
-					<button type="submit" class="btn btn-primary disabled" disabled="disabled" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+					<button type="submit" class="btn btn-primary" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
 				<?= form_close(); ?>
 				</div>
 				<table class="table table-bordered">
@@ -165,7 +165,7 @@
 							if(data.status){
 								$("#suggestions").fadeIn();
 								$("#suggestionsList").html(data.retvalue);
-								$(".plorg").live('click',function(){fill($(this).html(),$(this).attr("data-plid"));$("#seacrh").removeClass('disabled');$("#seacrh").removeAttr('disabled');});
+								$(".plorg").live('click',function(){fill($(this).html(),$(this).attr("data-plid"));});
 							}else{
 								$('#suggestions').fadeOut();
 							};
@@ -180,10 +180,10 @@
 				setTimeout("$('#suggestions').fadeOut();", 600);
 			};
 			
-			$("#srplurl").keyup(function(){$("#seacrh").addClass('disabled');$("#seacrh").attr('disabled','disabled');$("#srplid").val('');suggest(this.value)});
+			$("#srplurl").keyup(function(){$("#srplid").val('');suggest(this.value)});
 			$("#srplurl").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
 			
-			$("#seacrh").click(function(event){if($("#srplid").val() == ''){event.preventDefault();}});
+			$("#seacrh").click(function(event){if($("#srplurl").val() == ''){event.preventDefault();}});
 			
 			$("#eusend").click(function(event){
 				var err = false;

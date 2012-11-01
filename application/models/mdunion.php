@@ -312,6 +312,19 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
+	function read_platform($id = FALSE,$url){
+		
+		if($id):
+			$query = "SELECT platforms.*, users.id AS uid,users.fio,users.login,users.position,0 AS torders,0 AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id WHERE platforms.id = $id OR platforms.url = '$url'";
+		else:
+			$query = "SELECT platforms.*, users.id AS uid,users.fio,users.login,users.position,0 AS torders,0 AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id WHERE platforms.url = '$url'";
+		endif;
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_platforms_by_owners(){
 		
 		$query = "SELECT platforms.id,users.id AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id";

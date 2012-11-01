@@ -347,18 +347,11 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		if($this->input->post('scsubmit')):
-			$_POST['scsubmit'] = NULL;
-			$this->form_validation->set_rules('srusrid',' ','required|numeric|trim');
-			if(!$this->form_validation->run()):
-				redirect($this->uri->uri_string());
-			else:
-				$result = $this->mdusers->read_users($_POST['srusrid']);
-				if($result):
-					$pagevar['title'] .= 'Поиск выполнен';
-					$pagevar['users'] = $result;
-					$pagevar['pages'] = NULL;
-				endif;
-			endif;
+			unset($_POST['scsubmit']);
+			$result = $this->mdusers->read_users($_POST['srusrid'],$_POST['srusrlogin']);
+			$pagevar['title'] .= 'Поиск выполнен';
+			$pagevar['users'] = $result;
+			$pagevar['pages'] = NULL;
 		endif;
 		
 		for($i=0;$i<count($pagevar['users']);$i++):
@@ -992,18 +985,11 @@ class Admin_interface extends CI_Controller{
 		$pagevar['pages'] = $this->pagination->create_links();
 		
 		if($this->input->post('scsubmit')):
-			$_POST['scsubmit'] = NULL;
-			$this->form_validation->set_rules('srplid',' ','required|numeric|trim');
-			if(!$this->form_validation->run()):
-				redirect($this->uri->uri_string());
-			else:
-				$result = $this->mdunion->read_platform_by_id($_POST['srplid']);
-				if($result):
-					$pagevar['title'] .= 'Администрирование | Площадки | Поиск выполнен';
-					$pagevar['platforms'] = $result;
-					$pagevar['pages'] = NULL;
-				endif;
-			endif;
+			unset($_POST['scsubmit']);
+			$result = $this->mdunion->read_platform($_POST['srplid'],$_POST['srplurl']);
+			$pagevar['title'] .= 'Администрирование | Площадки | Поиск выполнен';
+			$pagevar['platforms'] = $result;
+			$pagevar['pages'] = NULL;
 		endif;
 		
 		for($i=0;$i<count($pagevar['platforms']);$i++):

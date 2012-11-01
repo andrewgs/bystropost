@@ -269,9 +269,13 @@ class Mdusers extends CI_Model{
 		return NULL;
 	}
 	
-	function read_users($uid){
-		
-		$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE id = $uid";
+	function read_users($uid = FALSE,$login){
+	
+		if($uid):
+			$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE id = $uid OR login = '$login'";
+		else:
+			$query = "SELECT users.*,0 AS torders, 0 AS uporders FROM users WHERE login = '$login'";
+		endif;
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
