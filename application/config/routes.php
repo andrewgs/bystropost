@@ -86,6 +86,9 @@ $route['webmaster-panel/actions/balance']							= "clients_interface/control_bal
 $route['webmaster-panel/actions/balance/paid']						= "clients_interface/control_balance_paid";
 $route['webmaster-panel/actions/balance/successfull']				= "clients_interface/control_balance_successfull";
 $route['webmaster-panel/actions/balance/failed']					= "clients_interface/control_balance_failed";
+$route['webmaster-panel/actions/balance/payment-history']			= "clients_interface/control_payment_history";
+$route['webmaster-panel/actions/balance/payment-history/from']		= "clients_interface/control_payment_history";
+$route['webmaster-panel/actions/balance/payment-history/from/:num']	= "clients_interface/control_payment_history";
 
 $route['webmaster-panel/actions/services']							= "clients_interface/control_services";
 $route['webmaster-panel/actions/services/serviceid/:num/platforms']	= "clients_interface/control_services_platforms";

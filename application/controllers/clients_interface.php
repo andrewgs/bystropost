@@ -273,10 +273,12 @@ class Clients_interface extends CI_Controller{
 						if(!empty($_POST['reason'])):
 							$text .= ' Причина блокировки: '.$_POST['reason'];
 						endif;
-						$this->mdmessages->insert_record($this->user['uid'],0,$text);
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,$text);
+//						$this->mdmessages->insert_record($this->user['uid'],0,$text);
 						for($i=0;$i<count($managers);$i++):
 							$text = 'Площадка '.$managers[$i]['url'].' перешла в состояние - не активна!';
-							$this->mdmessages->insert_record($this->user['uid'],$managers[$i]['manager'],$text);
+							$this->mdmessages->send_noreply_message($this->user['uid'],$managers[$i]['manager'],2,2,$text);
+//							$this->mdmessages->insert_record($this->user['uid'],$managers[$i]['manager'],$text);
 						endfor;
 					endif;
 				elseif($this->user['lock'] && isset($_POST['lockprofile'])):
@@ -286,7 +288,8 @@ class Clients_interface extends CI_Controller{
 					$msgs = 'Профиль разблокирован.'.$this->session->userdata('msgs');
 					$this->session->set_userdata('msgs',$msgs);
 					$text = 'Вебмастер '.$this->user['ulogin'].' разблокировал свой профиль.';
-					$this->mdmessages->insert_record($this->user['uid'],0,$text);
+					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,$text);
+//					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 				endif;
 				
 				redirect($this->uri->uri_string());
@@ -385,6 +388,82 @@ class Clients_interface extends CI_Controller{
 		
 		$this->session->unset_userdata('balance');
 		$this->load->view("clients_interface/control-balance",$pagevar);
+	}
+	
+	public function control_payment_history(){
+		
+		$from = intval($this->uri->segment(6));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Баланс | История платежей',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'history'		=> $this->mdfillup->read_records_by_user($this->user['uid'],50,$from),
+					'count'			=> $this->mdfillup->count_records_by_user($this->user['uid']),
+					'pages'			=> array(),
+					'statistic'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$pagevar['statistic']['week'] = $this->mdfillup->week_statistic($this->user['uid']);
+		$pagevar['statistic']['bymonth'] = $this->mdfillup->bymonth_statistic($this->user['uid']);
+		$pagevar['statistic']['month'] = $this->mdfillup->month_statistic($this->user['uid']);
+		$pagevar['statistic']['total'] = $this->mdfillup->total_statistic($this->user['uid']);
+		
+		for($i=0;$i<count($pagevar['history']);$i++):
+			$pagevar['history'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['history'][$i]['date']);
+		endfor;
+		
+		if($this->loginstatus['status']):
+			if($this->user['utype'] == 1):
+				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
+				$pagevar['userinfo']['balance'] = $userdata['balance'];
+				$pagevar['userinfo']['torders'] = $userdata['torders'];
+				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
+				unset($userdata);
+			endif;
+		endif;
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'webmaster-panel/actions/balance/payment-history/from/';
+		$config['uri_segment'] 		= 6;
+		$config['total_rows'] 		= $pagevar['count']; 
+		$config['per_page'] 		= 50;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<span class="actpage">';
+		$config['cur_tag_close'] 	= '</span>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
+		
+		$this->session->unset_userdata('balance');
+		$this->load->view("clients_interface/control-payment-history",$pagevar);
 	}
 	
 	public function control_balance_paid(){
@@ -1045,7 +1124,7 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['mails'][$i]['date']);
 		endfor;
 		$this->mdmessages->set_read_mails_by_recipient($this->user['uid'],$this->user['utype']);
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/mails/from/';
@@ -1141,13 +1220,13 @@ class Clients_interface extends CI_Controller{
 				redirect($_SERVER['HTTP_REFERER']);
 			endif;
 			$from = intval($this->uri->segment(8));
-			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),15,intval($this->uri->segment(8)),$this->session->userdata('jobsfilter'));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),50,intval($this->uri->segment(8)),$this->session->userdata('jobsfilter'));
 			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6),$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/platform/platformid/'.$this->uri->segment(6).'/from/';
 			$config['uri_segment'] 	= 8;
 		else:
 			$from = $this->uri->segment(5);
-			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],15,intval($this->uri->segment(5)),$this->session->userdata('jobsfilter'));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],50,intval($this->uri->segment(5)),$this->session->userdata('jobsfilter'));
 			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid'],$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
 			$config['uri_segment'] 	= 5;
@@ -1183,7 +1262,8 @@ class Clients_interface extends CI_Controller{
 								$this->mdusers->change_user_balance($manager,$mprice);
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
-							$this->mdfillup->insert_record(0,$wprice-$mprice,'Ошибок не обнаружено'); // Запись о том что перечислены деньги админу с указанием суммы
+							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за работу ID='.$_POST['works'][$i],0,0);
+							$this->mdfillup->insert_record(0,$wprice-$mprice,'Оплата выполненных работ',0,1);
 						endfor;
 						
 						$message = 'Спасибо за оплату.';
@@ -1319,7 +1399,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		$config['total_rows'] 	= $count;
-		$config['per_page'] 	= 15;
+		$config['per_page'] 	= 50;
 		$config['num_links'] 	= 4;
 		$config['first_link']	= 'В начало';
 		$config['last_link'] 	= 'В конец';
@@ -1374,7 +1454,8 @@ class Clients_interface extends CI_Controller{
 					$this->mdusers->change_user_balance($works[$i]['manager'],$works[$i]['mprice']);
 				endif;
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
-				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice'],'Автоматическая оплата'); // Запись о том что перечислены деньги админу с указанием суммы
+				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за работу ID='.$works[$i]['id'],0,0);
+				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice'],'Оплата за выполненную работу',0,1);
 			endif;
 		endfor;
 		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
@@ -1973,7 +2054,11 @@ class Clients_interface extends CI_Controller{
 					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
 					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 					$this->session->set_userdata('msgs','Тикет успешно создан.');
-					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,2,'Новое сообщение через тикет-систему');
+					if($_POST['type'] == 1):
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер создал тикет для менеджера');
+					else:
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Новое сообщение через тикет-систему');
+					endif;
 				else:
 					$this->session->set_userdata('msgr','Тикет не создан.');
 				endif;
@@ -2025,7 +2110,7 @@ class Clients_interface extends CI_Controller{
 		endif;
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
-			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->read_finish_message($this->user['uid'],$pagevar['tickets'][$i]['id']);
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
@@ -2080,7 +2165,7 @@ class Clients_interface extends CI_Controller{
 				endswitch;
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт.</strong>';
+					$_POST['text'] .= ' Cпасибо за информацию. Тикет закрыт.';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
@@ -2119,7 +2204,7 @@ class Clients_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tkmsgs'][$i]['date']);
 			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
 				if($pagevar['tkmsgs'][$i]['sender']):
 					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
@@ -2263,6 +2348,15 @@ class Clients_interface extends CI_Controller{
 		return preg_replace($pattern, $replacement,$field);
 	}
 	
+	public function operation_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$nmonth = $this->months[$list[1]];
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5 $nmonth \$1 г. \$6:\$8"; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
 	public function split_date($field){
 			
 		$list = preg_split("/-/",$field);
@@ -2286,6 +2380,14 @@ class Clients_interface extends CI_Controller{
 		$list = preg_split("/-/",$field);
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5.$3.\$1"; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function operation_dot_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1 \$6:\$8";
 		return preg_replace($pattern, $replacement,$field);
 	}
 	

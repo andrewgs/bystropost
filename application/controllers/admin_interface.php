@@ -231,6 +231,9 @@ class Admin_interface extends CI_Controller{
 			else:
 				$old_manager = $this->mdusers->read_field($_POST['uid'],'manager');
 				$_POST['balance'] = preg_replace('/[-]+/','-',$_POST['balance']);
+				/*if($_POST['balance']):
+					$this->mdfillup->insert_record($_POST['uid'],$_POST['balance'],'Смена состояния баланса через Bystropost.ru',0,1);
+				endif;*/
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
 					$this->session->set_userdata('msgs','Информация успешно сохранена.');
@@ -1882,7 +1885,7 @@ class Admin_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_dot_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['mails'][$i]['date']);
 		endfor;
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/mails/from/';
 		$config['uri_segment'] 	= 5;
@@ -1943,7 +1946,7 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
-			$pagevar['tickets'][$i]['date'] = $this->operation_date($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['user'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'fio');
 				$pagevar['tickets'][$i]['email'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'login');
@@ -2008,12 +2011,13 @@ class Admin_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Тикет закрыт.</strong>';
+					$_POST['text'] .= ' Тикет закрыт.';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$id = $this->mdtkmsgs->insert_record($_POST['recipient'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
 				if($id):
-					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],'Новое сообщение через тикет-систему');
+					$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['recipient'],2,$this->mdusers->read_field($_POST['recipient'],'type'),'Новое сообщение через тикет-систему');
+//					$this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],'Новое сообщение через тикет-систему');
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
@@ -2061,7 +2065,7 @@ class Admin_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tkmsgs'][$i]['date']);
 		endfor;
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
@@ -2563,6 +2567,15 @@ class Admin_interface extends CI_Controller{
 		return preg_replace($pattern, $replacement,$field);
 	}
 	
+	public function operation_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$nmonth = $this->months[$list[1]];
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5 $nmonth \$1 г. \$6:\$8";
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
 	public function split_date($field){
 			
 		$list = preg_split("/-/",$field);
@@ -2586,6 +2599,14 @@ class Admin_interface extends CI_Controller{
 		$list = preg_split("/-/",$field);
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
 		$replacement = "\$5.$3.\$1"; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function operation_dot_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1 \$6:\$8";
 		return preg_replace($pattern, $replacement,$field);
 	}
 	

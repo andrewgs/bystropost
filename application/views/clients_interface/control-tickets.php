@@ -30,7 +30,7 @@
 								(<b><?=$tickets[$i]['url'];?></b>)<br/><br/>
 								Направлено:<br/>
 								<b><?=$tickets[$i]['position'];?></b><br/>
-								от <?=$tickets[$i]['date'];?>
+								<?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">

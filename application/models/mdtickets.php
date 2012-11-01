@@ -21,7 +21,7 @@ class Mdtickets extends CI_Model{
 		$this->recipient	= $recipient;
 		$this->platform		= $data['platform'];
 		$this->title		= $data['title'];
-		$this->date 		= date("Y-m-d");
+		$this->date 		= date("Y-m-d H:i:s");
 		$this->type 		= $data['type'];
 		
 		$this->db->insert('tickets',$this);

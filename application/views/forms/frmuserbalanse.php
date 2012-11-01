@@ -23,6 +23,9 @@
 		</div>
 		<div class="form-actions">
 			<button class="btn btn-primary" type="submit" name="submit" id="send" value="submit">Пополнить баланс</button>
+			<div style="float:right">
+				<?=anchor('webmaster-panel/actions/balance/payment-history','<i class="icon-info-sign icon-white"></i> История платежей',array('class'=>'btn btn-warning'));?>
+			</div>
 		</div>
 	</fieldset>
 <?= form_close(); ?>

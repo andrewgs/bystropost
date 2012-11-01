@@ -49,7 +49,7 @@
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/view-platform/'.$platforms[$i]['id'],$platforms[$i]['url'],array('title'=>'Просмотреть площадку'));?>
 							<?php else:?>
-								<?=$platforms[$i]['url'];?>
+								<?=anchor($this->uri->uri_string(),$platforms[$i]['url'],array('class'=>'none'));?>
 							<?php endif;?>
 							</td>
 							<td class="w85"><center><?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?></center></td>
@@ -101,7 +101,6 @@
 			});
 			
 			$(".mailUser").click(function(){
-			
 				var	nPlatform = $(this).parents("tr:first").find("td:first a").html();
 				$("#nPlatform").val(nPlatform);$(".idPlatform").val($(this).attr("data-pid"));
 			});

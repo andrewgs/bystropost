@@ -30,7 +30,8 @@
 						<tr>
 							<td class="w50" style="text-align:center; vertical-align:middle;"><?=$tkmsgs[$i]['id'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;">
-								<b><u><?=$tkmsgs[$i]['position'];?></u></b><br/><nobr><?=$tkmsgs[$i]['date'];?></nobr>
+								<b><u><?=$tkmsgs[$i]['position'];?></u></b><br/>
+								<nobr><?=$tkmsgs[$i]['date'];?></nobr>
 							</td>
 						<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>
 							<td class="w400" data-incoming="incoming">

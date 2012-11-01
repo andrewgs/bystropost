@@ -32,7 +32,7 @@
 							<td class="w130" style="text-align:center; vertical-align:middle; max-width:0;">
 								<nobr>
 									<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>" data-login="<?=$accounts[$i]['login'];?>" data-market="<?=$accounts[$i]['market'];?>"></div>
-									<a class="btn btn-info updateMarket none" data-param="<?=$i;?>" href="#" title="Обновить список площадок">&nbsp;<i class="icon-repeat icon-white"></i>&nbsp;</a>
+									<a class="btn btn-info updateMarket none" data-param="<?=$i;?>" href="#" title="Обновить список площадок">&nbsp;<i class="icon-refresh icon-white"></i>&nbsp;</a>
 									<a class="btn btn-success editMarket none" data-param="<?=$i;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу">&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;</a>
 									<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить">&nbsp;<i class="icon-trash icon-white"></i>&nbsp;</a>
 									<span id="timer<?=$i;?>" style="display:none"></span>

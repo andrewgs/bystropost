@@ -22,8 +22,8 @@ class Mdtkmsgs extends CI_Model{
 		$this->sender	= $sender;
 		$this->recipient= $recipient;
 		$this->reply	= $reply;
-		$this->date 	= date("Y-m-d");
-		$this->text 	= strip_tags(nl2br($text,'<br/>'));
+		$this->date 	= date("Y-m-d H:i:s");
+		$this->text 	= strip_tags(nl2br($text,'<br>'));
 		
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();

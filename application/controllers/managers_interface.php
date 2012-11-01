@@ -768,7 +768,7 @@ class Managers_interface extends CI_Controller{
 		endif;
 		
 		for($i=0;$i<count($pagevar['mails']);$i++):
-			$pagevar['mails'][$i]['date'] = $this->operation_date($pagevar['mails'][$i]['date']);
+			$pagevar['mails'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['mails'][$i]['date']);
 		endfor;
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/mails/from/';
@@ -884,7 +884,7 @@ class Managers_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->noowner_finish_message($pagevar['tickets'][$i]['id']);
-			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 		endfor;
 		$this->load->view("managers_interface/control-tickets-outbox",$pagevar);
 	}
@@ -933,7 +933,7 @@ class Managers_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->noowner_finish_message($pagevar['tickets'][$i]['id']);
-			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 		endfor;
 		$this->load->view("managers_interface/control-tickets-inbox",$pagevar);
 	}
@@ -973,7 +973,7 @@ class Managers_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Тикет закрыт.</strong>';
+					$_POST['text'] .= ' Тикет закрыт.';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
@@ -1012,7 +1012,7 @@ class Managers_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tkmsgs'][$i]['date']);
 			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
 				if($pagevar['tkmsgs'][$i]['sender']):
 					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
@@ -1085,7 +1085,7 @@ class Managers_interface extends CI_Controller{
 			else:
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= '<br/><strong>Cпасибо за информацию. Тикет закрыт.</strong>';
+					$_POST['text'] .= ' Cпасибо за информацию. Тикет закрыт.';
 					$this->mdtickets->update_field($ticket,'status',1);
 				endif;
 				$result = $this->mdtkmsgs->insert_record($pagevar['ticket']['sender'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
@@ -1124,7 +1124,7 @@ class Managers_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_date($pagevar['tkmsgs'][$i]['date']);
+			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tkmsgs'][$i]['date']);
 			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
 				if($pagevar['tkmsgs'][$i]['sender']):
 					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
@@ -1219,6 +1219,15 @@ class Managers_interface extends CI_Controller{
 		return preg_replace($pattern, $replacement,$field);
 	}
 	
+	public function operation_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$nmonth = $this->months[$list[1]];
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5 $nmonth \$1 г. \$6:\$8"; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
 	public function split_date($field){
 			
 		$list = preg_split("/-/",$field);
@@ -1240,6 +1249,14 @@ class Managers_interface extends CI_Controller{
 		$nmonth = $this->months[$list[1]];
 		$pattern = "/(\d+)(\.)(\w+)(\.)(\d+)/i";
 		$replacement = "\$1 $nmonth \$5"; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function operation_dot_date_on_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1 \$6:\$8";
 		return preg_replace($pattern, $replacement,$field);
 	}
 	

@@ -31,7 +31,7 @@
 							<td class="w195 ttpl">
 								<?=anchor('manager-panel/actions/tickets/inbox/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
 								(<?=anchor('manager-panel/actions/platforms/view-platform/'.$tickets[$i]['plid'],'<b>'.$tickets[$i]['url'].'</b>',array('title'=>'Просмотреть площадку'));?>)<br/><br/>
-								от <?=$tickets[$i]['date'];?>
+								<?=$tickets[$i]['date'];?>
 							</td>
 							<td class="w500"><?=$tickets[$i]['text'];?></td>
 							<td class="w50" style="text-align:center; vertical-align:middle;">

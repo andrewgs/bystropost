@@ -47,7 +47,7 @@
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w100"><center>№ п.п</center></th>
+							<th class="w100"><center>ID</center></th>
 							<th class="w100"><center>Дата</center></th>
 							<th class="w100"><center><nobr>Тип работы</nobr></center></th>
 							<th class="w100"><center>Биржа</center></th>
@@ -58,9 +58,15 @@
 						</tr>
 					</thead>
 					<tbody>
-					<?php for($i=0,$num=$this->uri->segment(5)+1;$i<count($delivers);$i++,$num++):?>
+					<?php for($i=0;$i<count($delivers);$i++):?>
 						<tr>
-							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;"><?=$num;?></td>
+							<td class="w100" data-status="<?=$delivers[$i]['status'];?>" style="text-align:center; vertical-align:middle;">
+							<?php if($delivers[$i]['remoteid']):?>
+								<?=$delivers[$i]['remoteid'];?>
+							<?php else:?>
+								<?=$delivers[$i]['id'];?>
+							<?php endif;?>
+							</td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><nobr><b><?=$delivers[$i]['date'];?></b></nobr></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['twtitle'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$delivers[$i]['mtitle'];?></td>
@@ -145,15 +151,11 @@
 				var ShowJobs = $(".filterJobs").serialize();
 				$.post("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/set-filter",
 					{'showed':ShowJobs},function(data){
-						if(ckType == 1){
-							if(data.paid == 1){if($(".paid").length == 0){window.location.reload();}else{$(".paid").show();}}
-							else{$(".paid").hide();}
-						}
-						if(ckType == 0){
-							if(data.notpaid == 1){if($(".notpaid").length == 0){window.location.reload();}else{$(".notpaid").show();$(".byHide").show();}}
-							else{$(".notpaid").hide();$(".byHide").hide();}
-						}
+						if(ckType == 1){if(data.paid == 1){if($(".paid").length == 0){window.location.reload();}}}
+						if(ckType == 0){if(data.notpaid == 1){if($(".notpaid").length == 0){window.location.reload();}}}
 				},"json");
+				if(ckType == 1){if($(this).attr("checked")){if($(".paid").length > 0){$(".paid").show();}}else{$(".paid").hide();}}
+				if(ckType == 0){if($(this).attr("checked")){if($(".notpaid").length > 0){$(".notpaid").show();$(".byHide").show();}}else{$(".notpaid").hide();$(".byHide").hide();}}
 			});
 		<?php if($userinfo['balance'] >= $minprice):?>
 			$(".payall").click(function(){if(!confirm("Оплатить задания?")) return false; $(".alert ").hide();$("#mspayall").show();});

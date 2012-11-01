@@ -24,7 +24,7 @@ class General_interface extends CI_Controller{
 	
 	public function balance_result(){
 		
-		$result = 'Ошибок не обнаружено';
+		$result = 'Ошибок не обнаружено! ';
 		if(!$this->input->post('LMI_PAYEE_PURSE') && !$this->input->post('LMI_HASH')):
 			exit();
 		endif;
@@ -37,8 +37,8 @@ class General_interface extends CI_Controller{
 		endif;
 		
 		/*$result = '';
-		$_POST["LMI_PAYER_WM"] = '984698000000';
-		$_POST["LMI_PAYMENT_AMOUNT"] = 100;*/
+		$_POST["LMI_PAYER_WM"] = '231231231231';
+		$_POST["LMI_PAYMENT_AMOUNT"] = 10000;*/
 		if(isset($_POST["LMI_PAYER_WM"]) && isset($_POST["LMI_PAYMENT_AMOUNT"])):
 			$user = array();
 			$this->load->model('mdfillup');
@@ -47,7 +47,8 @@ class General_interface extends CI_Controller{
 			$user['uid'] = $this->mdusers->read_by_wmid($_POST["LMI_PAYER_WM"]);
 			if($user['uid']):
 				$user['balance'] = $this->mdusers->read_field($user['uid'],'balance');
-				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],$result);
+				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],$result,1,1);
+				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],"Пополнения балланса через WebManey",0,1);
 				$new_balance = $user['balance']+$_POST["LMI_PAYMENT_AMOUNT"];
 				$this->mdusers->update_field($user['uid'],'balance',$new_balance);
 				$this->mdlog->insert_record($user['uid'],'Событие №6: Баланс пополнен');
