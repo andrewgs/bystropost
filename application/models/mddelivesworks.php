@@ -111,6 +111,15 @@ class Mddelivesworks extends CI_Model{
 		return $this->db->count_all('delivesworks');
 	}
 	
+	function search_webmaster_jobs($webmaster,$url){
+		
+		$query = "SELECT id,ulrlink FROM delivesworks WHERE webmaster = $webmaster AND ulrlink LIKE '%$url%'";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_all_manager($manager){
 		
 		$this->db->select('COUNT(*) AS cnt');

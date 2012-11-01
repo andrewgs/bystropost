@@ -26,11 +26,19 @@
 					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
 				</div>
 				<div style="float:left;margin-bottom:10px;">
-					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Показывать оплаченные
-					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Показывать не оплаченные
+					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Оплаченные
+					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Не оплаченные
 				</div>
-				<div style="float:right;margin-bottom:10px;">
-					<button class="btn btn-primary" id="exportCSV">Экспорт заданий</button>
+				<div style="margin-left:305px;">
+				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
+					<input type="hidden" id="srdjid" name="srdjid" value="">
+					<input type="text" class="span3 search-query" id="srdjurl" name="srdjurl" value="" autocomplete="off" placeholder="Поиск от 5-х символов">
+					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
+						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+					</div>
+					<button type="submit" class="btn btn-primary" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+					<button class="btn btn-primary" id="exportCSV">Экспорт</button>
+					<?= form_close(); ?>
 				</div>
 				
 				<div style="display:none;" id="frmExport">
@@ -242,13 +250,44 @@
 				return price;
 			}
 		<?php endif;?>
-		});
-		$("#exportCSV").click(function(event){
-			$(".chExport").attr('checked','checked');
-			$("#frmExport").fadeToggle("fast");
-		});
-		$(".chExport").click(function(){
-			if($(".chExport:checked").length == 0){$(this).attr('checked','checked');}
+			function suggest(inputString){
+				if(inputString.length < 5){
+					$("#suggestions").fadeOut();
+				}else{
+					$("#srdjurl").addClass('load');
+					$.post("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/search",{squery: ""+inputString+""},
+						function(data){
+							if(data.status){
+								$("#suggestions").fadeIn();
+								$("#suggestionsList").html(data.retvalue);
+								$(".djorg").live('click',function(){fill($(this).html(),$(this).attr("data-djid"));});
+							}else{
+								$('#suggestions').fadeOut();
+							};
+							$("#srdjurl").removeClass('load');
+					},"json");
+				}
+			};
+			
+			function fill(url,plid){
+				$("#srdjurl").val(url);
+				$("#srdjid").val(plid);
+				setTimeout("$('#suggestions').fadeOut();", 600);
+			};
+			
+			$("#srdjurl").keyup(function(){$("#srdjid").val('');suggest(this.value)});
+			$("#srdjurl").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
+			
+			$("#seacrh").click(function(event){if($("#srdjurl").val() == ''){event.preventDefault();}});
+			
+			$("#exportCSV").click(function(event){
+				event.preventDefault();
+				$(".chExport").attr('checked','checked');
+				$("#frmExport").fadeToggle("fast");
+			});
+			$(".chExport").click(function(){
+				if($(".chExport:checked").length == 0){$(this).attr('checked','checked');}
+			});
 		});
 	</script>
 </body>

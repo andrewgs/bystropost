@@ -1374,8 +1374,15 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		$values = array();
+		if($this->input->post('scsubmit')):
+			unset($_POST['scsubmit']);
+			$result = $this->mdunion->read_webmaster_jobs($this->user['uid'],$_POST['srdjid'],$_POST['srdjurl']);
+			$pagevar['title'] .= 'Поиск выполнен';
+			$pagevar['delivers'] = $result;
+			$pagevar['pages'] = NULL;
+		endif;
 		
+		$values = array();
 		for($i=0;$i<count($pagevar['delivers']);$i++):
 			$pagevar['delivers'][$i]['date'] = $this->operation_dot_date($pagevar['delivers'][$i]['date']);
 			if(!$pagevar['delivers'][$i]['status']):
@@ -1506,6 +1513,23 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		$statusval['filter'] = $this->session->userdata('jobsfilter');
+		echo json_encode($statusval);
+	}
+	
+	public function finished_jobs_search(){
+		
+		$statusval = array('status'=>FALSE,'retvalue'=>'');
+		$search = $this->input->post('squery');
+		if(!$search) show_404();
+		$jworks = $this->mddelivesworks->search_webmaster_jobs($this->user['uid'],$search);
+		if($jworks):
+			$statusval['retvalue'] = '<ul>';
+			for($i=0;$i<count($jworks);$i++):
+				$statusval['retvalue'] .= '<li class="djorg" data-djid="'.$jworks[$i]['id'].'">'.$jworks[$i]['ulrlink'].'</li>';
+			endfor;
+			$statusval['retvalue'] .= '</ul>';
+			$statusval['status'] = TRUE;
+		endif;
 		echo json_encode($statusval);
 	}
 	

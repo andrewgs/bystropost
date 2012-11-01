@@ -325,6 +325,19 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
+	function read_webmaster_jobs($webmaster,$id = FALSE,$url){
+		
+		if($id):
+			$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $webmaster AND (delivesworks.id = $id OR delivesworks.ulrlink = '$url')";
+		else:
+			$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.webmaster = $webmaster AND delivesworks.ulrlink = '$url'";
+		endif;
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_platforms_by_owners(){
 		
 		$query = "SELECT platforms.id,users.id AS uporders FROM platforms LEFT JOIN users ON platforms.webmaster=users.id";

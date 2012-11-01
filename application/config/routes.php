@@ -64,6 +64,8 @@ $route['webmaster-panel/actions/finished-jobs']						= "clients_interface/contro
 $route['webmaster-panel/actions/finished-jobs/from']				= "clients_interface/control_finished_jobs";
 $route['webmaster-panel/actions/finished-jobs/from/:num']			= "clients_interface/control_finished_jobs";
 $route['webmaster-panel/actions/finished-jobs/set-filter']			= "clients_interface/finished_jobs_filter";
+$route['webmaster-panel/actions/finished-jobs/search']				= "clients_interface/finished_jobs_search";
+
 
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
