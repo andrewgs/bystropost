@@ -417,9 +417,17 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function search_platforms($platforms){
+	function search_platforms($platforms,$manager = FALSE,$webmaster = FALSE){
 		
-		$query = "SELECT id,url FROM platforms WHERE url LIKE '%$platforms%'";
+		if(!$manager && !$webmaster):
+			$query = "SELECT id,url FROM platforms WHERE url LIKE '%$platforms%' LIMIT 0,15";
+		elseif($manager && !$webmaster):
+			$query = "SELECT id,url FROM platforms WHERE manager = $manager AND url LIKE '%$platforms%' LIMIT 0,15";
+		elseif(!$manager && $webmaster):
+			$query = "SELECT id,url FROM platforms WHERE webmaster = $webmaster AND url LIKE '%$platforms%' LIMIT 0,15";
+		else:
+			return NULL;
+		endif;
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

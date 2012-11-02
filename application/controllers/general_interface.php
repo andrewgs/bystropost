@@ -48,7 +48,7 @@ class General_interface extends CI_Controller{
 			if($user['uid']):
 				$user['balance'] = $this->mdusers->read_field($user['uid'],'balance');
 				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],$result,1,1);
-				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],"Пополнения балланса через WebMoney",0,1);
+				$this->mdfillup->insert_record($user['uid'],$_POST["LMI_PAYMENT_AMOUNT"],"Пополнение баланса через WebMoney",0,1);
 				$new_balance = $user['balance']+$_POST["LMI_PAYMENT_AMOUNT"];
 				$this->mdusers->update_field($user['uid'],'balance',$new_balance);
 				$this->mdlog->insert_record($user['uid'],'Событие №6: Баланс пополнен');

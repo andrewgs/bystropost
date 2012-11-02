@@ -51,17 +51,19 @@
 								<div list="MarketLine"></div>
 							<?php for($j=0;$j<count($mymarkets);$j++):?>
 								<div list="MarketLine">
-									<label class="label-input left w205">Название биржи</label>
-									<label class="label-input left w205">Логин</label>
-									<label class="label-input left w85">Пароль</label>
+									<label class="label-input left w160">Название биржи</label>
+									<label class="label-input left w160">Логин</label>
+									<label class="label-input left w165">Пароль</label>
+									<label class="label-input left w160">Раздел для публикации</label>
 									<div class="clear"></div>
 								<?php for($i=0;$i<count($markets);$i++):?>
 									<?php if($markets[$i]['id'] == $mymarkets[$j]['market']):?>
-										<label class="left w205"><?=$markets[$i]['title'];?></label>
+										<label class="left w160"><?=$markets[$i]['title'];?></label>
 									<?php endif;?>
 								<?php endfor; ?>
-									<label class="left w205"><?=$mymarkets[$j]['login'];?></label>
-									<label class="left w85"><?=$mymarkets[$j]['password'];?></label>
+									<label class="left w160"><?=$mymarkets[$j]['login'];?></label>
+									<label class="left w165"><?=$mymarkets[$j]['password'];?></label>
+									<label class="left w165"><?=$mymarkets[$j]['publication'];?></label>
 									<div class="clear"></div>
 								</div>
 								<hr style="margin:0"/>
@@ -125,7 +127,7 @@
 					<tr>
 						<td>&nbsp;</td>
 						<td>
-							<input class="btn btn-inverse" id="reset" style="height: 40px; cursor:pointer;" type="button" value="Вернутся">
+							<input class="btn btn-inverse" id="reset" style="height: 40px; cursor:pointer;" type="button" value="Вернуться">
 						</td>
 					</tr>
 				</table>

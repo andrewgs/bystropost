@@ -13,6 +13,9 @@
 					<li class="active">
 						<?=anchor($this->uri->uri_string(),'История платежей');?>
 					</li>
+					<li style="float:right;">
+						<strong>Статистика рассчетов работает с 01.10.2012</strong>
+					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>

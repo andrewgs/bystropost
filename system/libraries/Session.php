@@ -364,8 +364,13 @@ class CI_Session {
 		$new_sessid = md5(uniqid($new_sessid, TRUE));
 
 		// Update the session data in the session data array
-		$this->userdata['session_id'] = $new_sessid;
-		$this->userdata['last_activity'] = $this->now;
+		if(($this->now - $this->userdata['last_activity'])>30):
+			$this->userdata['session_id'] = $new_sessid;
+		else:
+			$new_sessid=$this->userdata['session_id'];
+		endif;
+//		$this->userdata['session_id'] = $new_sessid;
+//		$this->userdata['last_activity'] = $this->now;
 
 		// _set_cookie() will handle this for us if we aren't using database sessions
 		// by pushing all userdata to the cookie.

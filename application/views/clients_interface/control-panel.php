@@ -55,11 +55,7 @@
 							</div>
 						</div>
 						<div class="panel_segment">
-						<?php if($cntunit['mails']['new']):?>
 							<big><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'</b>/'.$cntunit['mails']['total'].')',array('title'=>$cntunit['mails']['new'].' новых сообщений'));?></big>
-						<?php else:?>
-							<big><?=anchor('webmaster-panel/actions/mails','Почта ('.$cntunit['mails']['total'].')',array('title'=>'Новых сообщений нет'));?></big>
-						<?php endif;?>
 							<img src="<?=$baseurl;?>images/panel_pic4.jpg">
 							<div class="text">
 								Приём писем от менеджера или администратора. Системные сообщения. Для отправки письма, используйте тикеты.

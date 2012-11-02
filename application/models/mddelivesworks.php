@@ -113,7 +113,25 @@ class Mddelivesworks extends CI_Model{
 	
 	function search_webmaster_jobs($webmaster,$url){
 		
-		$query = "SELECT id,ulrlink FROM delivesworks WHERE webmaster = $webmaster AND ulrlink LIKE '%$url%'";
+		$query = "SELECT id,ulrlink FROM delivesworks WHERE webmaster = $webmaster AND ulrlink LIKE '%$url%' LIMIT 0,15";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function search_manager_jobs($manager,$url){
+		
+		$query = "SELECT id,ulrlink FROM delivesworks WHERE manager = $manager AND ulrlink LIKE '%$url%' LIMIT 0,15";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function search_platform_jobs($platform,$url){
+		
+		$query = "SELECT id,ulrlink FROM delivesworks WHERE platform = $platform AND ulrlink LIKE '%$url%' LIMIT 0,15";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

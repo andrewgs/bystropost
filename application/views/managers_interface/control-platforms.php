@@ -70,7 +70,7 @@
 								<i class="icon-lock" title="Заблокирована"></i>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
-								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-tags icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
+								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
 								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase icon-white"></i>&nbsp',array('class'=>'btn btn-primary DeliverWork','title'=>'Сдать задание'));?>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked']):?>

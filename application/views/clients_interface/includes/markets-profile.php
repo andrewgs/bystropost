@@ -10,6 +10,6 @@
 </select>
 <input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value=""/>
 <input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value=""/>
-<input class="input-large jobs" name="markets[]" type="text" maxlength="100" value="" placeholder="Введите раздел публикации"/>
+<input class="input-large jobs" name="markets[]" type="text" maxlength="100" value="" placeholder="По теме"/>
 
 <div class="clear"></div>

@@ -103,6 +103,8 @@ $route['views/market-profile']										= "clients_interface/views";
 $route['manager-panel/actions/control']							= "managers_interface/control_panel";
 $route['manager-panel/actions/control/from']					= "managers_interface/control_panel";
 $route['manager-panel/actions/control/from/:num']				= "managers_interface/control_panel";
+$route['manager-panel/actions/finished-jobs/search']			= "managers_interface/control_jobs_search";
+
 $route['manager-panel/actions/logoff']							= "managers_interface/actions_logoff";
 
 $route['manager-panel/actions/platforms']						= "managers_interface/control_platforms";
@@ -185,6 +187,9 @@ $route['admin-panel/management/finished-jobs/delete/jobid/:num']			= "admin_inte
 $route['admin-panel/management/finished-jobs/delete/user/:num']				= "admin_interface/delete_user_jobs";
 $route['admin-panel/management/finished-jobs/delete/platform/:num']			= "admin_interface/delete_platform_jobs";
 
+$route['admin-panel/actions/finished-jobs/users-jobs/search']				= "admin_interface/users_search_jobs";
+$route['admin-panel/actions/finished-jobs/platform-jobs/search']			= "admin_interface/platform_search_jobs";
+
 $route['admin-panel/management/users/:any/from/:num']	= "admin_interface/management_users";
 $route['admin-panel/management/users/userid/:num']		= "admin_interface/management_users_deleting";
 
@@ -239,7 +244,6 @@ $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num']		= "admin_inte
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from/:num']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_interface/control_delete_msg_ticket";
-
 
 $route['admin-panel/actions/statistic']									= "admin_interface/actions_statistic";
 $route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet";

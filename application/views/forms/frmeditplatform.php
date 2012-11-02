@@ -58,7 +58,7 @@
 						</select>
 						<input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['login'];?>" <?=($disabled)?'readonly="readonly"':'';?>/>
 						<input class="input-medium jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['password'];?>" <?=($disabled)?'readonly="readonly"':'';?>/>
-						<input class="input-large jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['publication'];?>" placeholder="Введите раздел публикации"/>
+						<input class="input-large jobs" name="markets[]" type="text" maxlength="100" value="<?=$mymarkets[$j]['publication'];?>" placeholder="По теме"/>
 						<div class="clear"></div>
 					</div>
 				<?php endfor;?>

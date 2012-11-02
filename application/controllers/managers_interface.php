@@ -78,15 +78,35 @@ class Managers_interface extends CI_Controller{
 		$config['total_rows'] 	= $this->mdunion->count_delivers_works_manager($this->user['uid']);
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
+		
+		if($this->input->post('scsubmit')):
+			unset($_POST['scsubmit']);
+			$result = $this->mdunion->read_manager_jobs($this->user['uid'],$_POST['srdjid'],$_POST['srdjurl']);
+			$pagevar['title'] .= 'Поиск выполнен';
+			$pagevar['delivers'] = $result;
+			$pagevar['pages'] = NULL;
+		endif;
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
 			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
@@ -181,6 +201,24 @@ class Managers_interface extends CI_Controller{
 		
 		$this->load->view("managers_interface/manager-profile",$pagevar);
 	}
+
+	public function control_jobs_search(){
+		
+		$statusval = array('status'=>FALSE,'retvalue'=>'');
+		$search = $this->input->post('squery');
+		if(!$search) show_404();
+		$jworks = $this->mddelivesworks->search_manager_jobs($this->user['uid'],$search);
+		if($jworks):
+			$statusval['retvalue'] = '<ul>';
+			for($i=0;$i<count($jworks);$i++):
+				$statusval['retvalue'] .= '<li class="djorg" data-djid="'.$jworks[$i]['id'].'">'.$jworks[$i]['ulrlink'].'</li>';
+			endfor;
+			$statusval['retvalue'] .= '</ul>';
+			$statusval['status'] = TRUE;
+		endif;
+		echo json_encode($statusval);
+	}
+	
 	
 	/******************************************************** other ******************************************************/	
 	
@@ -233,8 +271,20 @@ class Managers_interface extends CI_Controller{
 		$config['last_link'] 		= 'В конец';
 		$config['next_link'] 		= 'Далее &raquo;';
 		$config['prev_link'] 		= '&laquo; Назад';
-		$config['cur_tag_open']		= '<span class="actpage">';
-		$config['cur_tag_close'] 	= '</span>';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
@@ -294,7 +344,7 @@ class Managers_interface extends CI_Controller{
 		
 		if($this->input->post('scsubmit')):
 			unset($_POST['scsubmit']);
-			$result = $this->mdunion->read_platform($_POST['srplid'],$_POST['srplurl']);
+			$result = $this->mdunion->read_platform($_POST['srplid'],$_POST['srplurl'],$this->user['uid']);
 			$pagevar['title'] .= 'Кабинет Менеджера | Назначенные площадки | Поиск выполнен';
 			$pagevar['platforms'] = $result;
 			$pagevar['pages'] = NULL;
@@ -348,6 +398,7 @@ class Managers_interface extends CI_Controller{
 			$this->form_validation->set_rules('adminpanel',' ','required|trim');
 			$this->form_validation->set_rules('aplogin',' ','required|trim');
 			$this->form_validation->set_rules('appassword',' ','required|trim');
+			$this->form_validation->set_rules('tematcustom',' ','trim');
 			$this->form_validation->set_rules('reviews',' ','trim');
 			$this->form_validation->set_rules('thematically',' ','trim');
 			$this->form_validation->set_rules('illegal',' ','trim');
@@ -364,23 +415,32 @@ class Managers_interface extends CI_Controller{
 					$_POST['imgstatus'] = 1;
 				else:
 					$_POST['imgstatus'] = 0;
-					$_POST['imgpos'] = 'right';
+					$_POST['imgpos'] = 'left';
 				endif;
 				$result = $this->mdplatforms->update_record($platform,$webmaster,$_POST);
-				if($result):
-					if($pagevar['platform']['manager']):
-						/********************************************************************/
-						if($pagevar['platform']['manager'] == 2):
-							$new_platform = $this->mdplatforms->read_record($platform);
+				if($pagevar['platform']['manager']):
+					/********************************************************************/
+					if($pagevar['platform']['manager'] == 2):
+						$new_platform = $this->mdplatforms->read_record($platform);
+						if($new_platform['remoteid']):
 							$pl_data = array();
+							$marketslist = array();
+							if(count($_POST['markets']) > 0):
+								for($i=0,$j=0;$i<count($_POST['markets']);$i+=4):
+									if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
+									$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
+									$marketslist[$j]['mkpub'] 	= $_POST['markets'][$i+3];
+									$j++;
+								endfor;
+							endif;
 							$pl_data['adminurl'] = $new_platform['adminpanel'];
 							$pl_data['cms'] = $new_platform['cms'];
 							$pl_data['cms_login'] = $new_platform['aplogin'];
 							$pl_data['cms_pass'] = $new_platform['appassword'];
 							$pl_data['tematic'] = $new_platform['subject'];
+							$pl_data['tematcustom'] = $new_platform['tematcustom'];
 							$pl_data['filter'] = $new_platform['illegal'];
 							$pl_data['subjects'] = $new_platform['thematically'];
-							$pl_data['review'] = $new_platform['reviews'];
 							$pl_data['review'] = $new_platform['reviews'];
 							$pl_data['param'] = array();
 							$pl_data['param']['image'] = array();
@@ -388,25 +448,41 @@ class Managers_interface extends CI_Controller{
 							$pl_data['param']['image']['imgwidth'] = $new_platform['imgwidth'];
 							$pl_data['param']['image']['imgheight'] = $new_platform['imgheight'];
 							$pl_data['param']['image']['imgpos'] = $new_platform['imgpos'];
+							if(count($marketslist) > 0):
+								for($i=0;$i<count($marketslist);$i++):
+									$pl_data['param']['category'][$marketslist[$i]['mkid']] = $marketslist[$i]['mkpub'];
+								endfor;
+							else:
+								$pl_data['param']['category'] = array();
+							endif;
 							$pl_data['info'] = $new_platform['requests'];
-							$param = 'siteid='.$new_platform['remoteid'].'&conf='.json_encode($pl_data);
-							$this->API('UpdateSiteOptions',$param);
+							$pl_data['size'] = 0;
+							$param = 'siteid='.$new_platform['remoteid'].'&conf='.base64_encode(json_encode($pl_data));
+							$res = $this->API('UpdateSiteOptions',$param);
+							/*if(!$pagevar['platform']['status']):
+								$this->mdplatforms->update_field($platform,'status',1);
+								$param = 'siteid='.$pagevar['platform']['remoteid'].'&value=0';
+								$this->API('SetSiteActive',$param);
+							endif;*/
 						endif;
-						/********************************************************************/
 					endif;
-					$this->mdlog->insert_record($webmaster,'Событие №16: Состояние площадки - изменена');
-					$this->session->set_userdata('msgs','Платформа успешно сохранена.');
+					/********************************************************************/
+					if($result):
+						$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
+						$this->session->set_userdata('msgs','Платформа успешно сохранена.');
+					endif;
 				endif;
 				$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
 					if($cntmarkets > 0):
-						for($i=0,$j=0;$i<$cntmarkets;$i+=3):
+						for($i=0,$j=0;$i<$cntmarkets;$i+=4):
 							if(empty($_POST['markets'][$i+1]) || empty($_POST['markets'][$i+2])) continue;
 							$marketslist[$j]['mkid'] 	= $_POST['markets'][$i];
 							$marketslist[$j]['mklogin'] = $_POST['markets'][$i+1];
 							$marketslist[$j]['mkpass'] 	= $_POST['markets'][$i+2];
+							$marketslist[$j]['mkpub'] 	= $_POST['markets'][$i+3];
 							$j++;
 						endfor;
 					endif;
@@ -476,7 +552,7 @@ class Managers_interface extends CI_Controller{
 		$statusval = array('status'=>FALSE,'retvalue'=>'');
 		$search = $this->input->post('squery');
 		if(!$search) show_404();
-		$platforms = $this->mdplatforms->search_platforms($search);
+		$platforms = $this->mdplatforms->search_platforms($search,$this->user['uid']);
 		if($platforms):
 			$statusval['retvalue'] = '<ul>';
 			for($i=0;$i<count($platforms);$i++):
@@ -769,12 +845,24 @@ class Managers_interface extends CI_Controller{
 		$config['total_rows'] 	= $this->mdunion->count_mails_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
@@ -857,12 +945,24 @@ class Managers_interface extends CI_Controller{
 		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
@@ -903,15 +1003,27 @@ class Managers_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/inbox/from/';
 		$config['uri_segment'] 	= 6;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_recipient($this->user['uid']);
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
@@ -928,6 +1040,7 @@ class Managers_interface extends CI_Controller{
 			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->noowner_finish_message($pagevar['tickets'][$i]['id']);
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 		endfor;
+		
 		$this->load->view("managers_interface/control-tickets-inbox",$pagevar);
 	}
 	
@@ -1021,12 +1134,24 @@ class Managers_interface extends CI_Controller{
 		$config['total_rows'] 	= $pagevar['count'];
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
@@ -1133,12 +1258,24 @@ class Managers_interface extends CI_Controller{
 		$config['total_rows'] 	= $pagevar['count'];
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
-		$config['first_link']	= 'В начало';
-		$config['last_link'] 	= 'В конец';
-		$config['next_link'] 	= 'Далее &raquo;';
-		$config['prev_link'] 	= '&laquo; Назад';
-		$config['cur_tag_open']	= '<span class="actpage">';
-		$config['cur_tag_close'] = '</span>';
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
 		
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();

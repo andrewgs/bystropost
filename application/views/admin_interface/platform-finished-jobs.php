@@ -19,6 +19,17 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<div class="clear"></div>
+				<div style="float:right;">
+				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
+					<input type="hidden" id="srdjid" name="srdjid" value="">
+					<input type="text" class="span4 search-query" id="srdjurl" name="srdjurl" value="" autocomplete="off" placeholder="Поиск от 5-х символов">
+					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
+						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+					</div>
+					<button type="submit" class="btn btn-primary" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+					<?= form_close(); ?>
+				</div>
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
@@ -100,6 +111,37 @@
 				});
 				if(err){event.preventDefault();}
 			});
+			
+			function suggest(inputString){
+				if(inputString.length < 5){
+					$("#suggestions").fadeOut();
+				}else{
+					$("#srdjurl").addClass('load');
+					$.post("<?=$baseurl;?>admin-panel/actions/finished-jobs/platform-jobs/search",{squery: ""+inputString+"",platform:<?=$this->uri->segment(5);?>},
+						function(data){
+							if(data.status){
+								$("#suggestions").fadeIn();
+								$("#suggestionsList").html(data.retvalue);
+								$(".djorg").live('click',function(){fill($(this).html(),$(this).attr("data-djid"));});
+							}else{
+								$('#suggestions').fadeOut();
+							};
+							$("#srdjurl").removeClass('load');
+					},"json");
+				}
+			};
+			
+			function fill(url,plid){
+				$("#srdjurl").val(url);
+				$("#srdjid").val(plid);
+				setTimeout("$('#suggestions').fadeOut();", 600);
+			};
+			
+			$("#srdjurl").keyup(function(){$("#srdjid").val('');suggest(this.value)});
+			$("#srdjurl").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
+			
+			$("#seacrh").click(function(event){if($("#srdjurl").val() == ''){event.preventDefault();}});
+			
 			$("#editWork").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide();});
 			$(".DeleteWork").click(function(){var Param = $(this).attr('data-param'); wID = $("div[id = params"+Param+"]").attr("data-wid");});
 			$("#DelWork").click(function(){location.href='<?=$baseurl;?>admin-panel/management/finished-jobs/delete/jobid/'+wID;});

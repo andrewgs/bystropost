@@ -40,7 +40,6 @@
 					<button class="btn btn-primary" id="exportCSV">Экспорт</button>
 					<?= form_close(); ?>
 				</div>
-				
 				<div style="display:none;" id="frmExport">
 					<div class="clear"></div>
 					<hr/>

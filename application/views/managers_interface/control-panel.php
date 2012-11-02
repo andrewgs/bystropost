@@ -14,6 +14,17 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<div class="clear"></div>
+				<div style="float:right;">
+				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
+					<input type="hidden" id="srdjid" name="srdjid" value="">
+					<input type="text" class="span4 search-query" id="srdjurl" name="srdjurl" value="" autocomplete="off" placeholder="Поиск от 5-х символов">
+					<div class="suggestionsBox" id="suggestions" style="display: none;"> <img src="<?=$baseurl;?>images/arrow.png" style="position: relative; top: -15px; left: 30px;" alt="upArrow" />
+						<div class="suggestionList" id="suggestionsList"> &nbsp; </div>
+					</div>
+					<button type="submit" class="btn btn-primary" id="seacrh" name="scsubmit" value="seacrh"><i class="icon-search icon-white"></i> Найти</button>
+					<?= form_close(); ?>
+				</div>
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
@@ -53,6 +64,37 @@
 	<?php $this->load->view('managers_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
+		
+			function suggest(inputString){
+				if(inputString.length < 5){
+					$("#suggestions").fadeOut();
+				}else{
+					$("#srdjurl").addClass('load');
+					$.post("<?=$baseurl;?>manager-panel/actions/finished-jobs/search",{squery: ""+inputString+""},
+						function(data){
+							if(data.status){
+								$("#suggestions").fadeIn();
+								$("#suggestionsList").html(data.retvalue);
+								$(".djorg").live('click',function(){fill($(this).html(),$(this).attr("data-djid"));});
+							}else{
+								$('#suggestions').fadeOut();
+							};
+							$("#srdjurl").removeClass('load');
+					},"json");
+				}
+			};
+			
+			function fill(url,plid){
+				$("#srdjurl").val(url);
+				$("#srdjid").val(plid);
+				setTimeout("$('#suggestions').fadeOut();", 600);
+			};
+			
+			$("#srdjurl").keyup(function(){$("#srdjid").val('');suggest(this.value)});
+			$("#srdjurl").focusout(function(){setTimeout("$('#suggestions').fadeOut();",600);});
+			
+			$("#seacrh").click(function(event){if($("#srdjurl").val() == ''){event.preventDefault();}});
+			
 			$("td[data-status='0']").each(function(e){$(this).addClass("notpaid"); $(this).siblings('td').addClass("notpaid");});
 			$("td[data-status='1']").each(function(e){$(this).addClass("paid"); $(this).siblings('td').addClass("paid");});
 		});
