@@ -10,6 +10,7 @@ class Users_interface extends CI_Controller{
 		$this->load->model('mdmarkets');
 		$this->load->model('mdratings');
 		$this->load->model('mdlog');
+		$this->load->model('mdevents');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -377,15 +378,72 @@ class Users_interface extends CI_Controller{
 	
 	public function news(){
 		
+		$from = intval($this->uri->segment(3));
 		$pagevar = array(
 			'title'			=> 'Быстропост - система автоматической монетизации | Новости',
 			'description'	=> '',
 			'author'		=> '',
 			'baseurl' 		=> base_url(),
+			'pages'			=> array(),
+			'events'		=> $this->mdevents->read_records_limit(5,$from),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'news/from/';
+		$config['uri_segment'] 		= 3;
+		$config['total_rows'] 		= $this->mdevents->count_records();
+		$config['per_page'] 		= 5;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		for($i=0;$i<count($pagevar['events']);$i++):
+			$pagevar['events'][$i]['date'] = $this->operation_date($pagevar['events'][$i]['date']);
+		endfor;
+		
 		$this->load->view("users_interface/news",$pagevar);
+	}
+	
+	public function news_view(){
+		
+		$nid = $this->mdevents->read_field_translit($this->uri->segment(3),'id');
+		if(!$nid):
+			redirect($this->session->userdata('backpath'));
+		endif;
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Новости',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'pages'			=> array(),
+			'event'			=> $this->mdevents->read_record($nid),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		
+		$pagevar['event']['date'] = $this->operation_date($pagevar['event']['date']);
+		
+		$this->load->view("users_interface/news-view",$pagevar);
 	}
 	
 	public function contacts(){
@@ -600,4 +658,17 @@ class Users_interface extends CI_Controller{
 			return FALSE;
 		endif;
 	}
+
+	public function operation_date($field){
+		
+		$months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня",
+						"07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
+		
+		$list = preg_split("/-/",$field);
+		$nmonth = $months[$list[1]];
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
+		$replacement = "\$5 $nmonth \$1 г."; 
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
 }

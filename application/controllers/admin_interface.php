@@ -27,6 +27,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdvaluesrv');
 		$this->load->model('mdwebmarkets');
 		$this->load->model('mdattachedservices');
+		$this->load->model('mdevents');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -75,7 +76,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->view("admin_interface/control-panel",$pagevar);
 	}
 	
-	public function actions_events(){
+	public function actions_log(){
 		
 		$from = intval($this->uri->segment(5));
 		$pagevar = array(
@@ -128,10 +129,10 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$this->load->view("admin_interface/control-events",$pagevar);
+		$this->load->view("admin_interface/control-log",$pagevar);
 	}
 	
-	public function actions_events_clear(){
+	public function actions_log_clear(){
 		
 		$this->mdlog->delete_records();
 		redirect($_SERVER['HTTP_REFERER']);
@@ -208,6 +209,188 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		
 		$this->load->view("admin_interface/admin-profile",$pagevar);
+	}
+	
+	/******************************************************** events ******************************************************/
+	
+	public function actions_events(){
+		
+		$from = intval($this->uri->segment(5));
+		$pagevar = array(
+			'title'			=> 'Панель администрирования | Новости',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl'		=> base_url(),
+			'loginstatus'	=> $this->loginstatus,
+			'userinfo'		=> $this->user,
+			'events'		=> $this->mdevents->read_records_limit(5,$from),
+			'pages'			=> array(),
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
+		);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/events/from/';
+		$config['uri_segment'] 		= 5;
+		$config['total_rows'] 		= $this->mdevents->count_records();
+		$config['per_page'] 		= 5;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		for($i=0;$i<count($pagevar['events']);$i++):
+			$pagevar['events'][$i]['date'] = $this->operation_date($pagevar['events'][$i]['date']);
+		endfor;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
+		$this->load->view("admin_interface/control-events",$pagevar);
+	}
+	
+	public function actions_events_add(){
+		
+		$pagevar = array(
+			'title'			=> 'Панель администрирования | Добавление новости',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl'		=> base_url(),
+			'loginstatus'	=> $this->loginstatus,
+			'userinfo'		=> $this->user,
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
+		);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			unset($_POST['submit']);
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			$this->form_validation->set_rules('announcement',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->actions_events_add();
+				return FALSE;
+			else:
+				if($_FILES['image']['error'] != 4):
+					$_POST['image'] = file_get_contents($_FILES['image']['tmp_name']);
+				else:
+					$_POST['image'] = FALSE;
+				endif;
+				$translit = $this->translite($_POST['title']);
+				$result = $this->mdevents->insert_record($_POST,$translit);
+				if($result):
+					$this->session->set_userdata('msgs','Запись создана успешно.');
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		$this->load->view("admin_interface/control-add-events",$pagevar);
+	}
+	
+	public function actions_events_edit(){
+		
+		$nid = $this->uri->segment(5);
+		$pagevar = array(
+			'title'			=> 'Панель администрирования | Редактирование новости',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl'		=> base_url(),
+			'loginstatus'	=> $this->loginstatus,
+			'userinfo'		=> $this->user,
+			'event'			=> $this->mdevents->read_record($nid),
+			'msgs'			=> $this->session->userdata('msgs'),
+			'msgr'			=> $this->session->userdata('msgr'),
+		);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('submit')):
+			unset($_POST['submit']);
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('content',' ','trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->control_edit_events();
+				return FALSE;
+			else:
+				if($_FILES['image']['error'] != 4):
+					$_POST['image'] = file_get_contents($_FILES['image']['tmp_name']);
+				endif;
+				if(isset($_POST['noimage'])):
+					$noimage = 1;
+				else:
+					$noimage = 0;
+				endif;
+				$translit = $this->translite($_POST['title']);
+				$result = $this->mdevents->update_record($nid,$_POST,$translit,$noimage);
+				if($result):
+					$this->session->set_userdata('msgs','Запись сохранена успешно.');
+				endif;
+				redirect($this->session->userdata('backpath'));
+			endif;
+		endif;
+		
+		$pagevar['event'] = preg_replace('/\<br \/\>/','',$pagevar['event']);
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		$this->load->view("admin_interface/control-edit-events",$pagevar);
+	}
+	
+	public function actions_delete_events(){
+		
+		$nid = $this->uri->segment(6);
+		if($nid):
+			$result = $this->mdevents->delete_record($nid);
+			if($result):
+				$this->session->set_userdata('msgs','Запись удалена успешно.');
+			else:
+				$this->session->set_userdata('msgr','Запись не удалена.');
+			endif;
+			redirect($this->session->userdata('backpath'));
+		else:
+			show_404();
+		endif;
 	}
 	
 	/******************************************************** users ******************************************************/
@@ -2884,6 +3067,21 @@ class Admin_interface extends CI_Controller{
 			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
 		endif;
 		return $text;
+	}
+	
+	public function translite($string){
+		
+		$rus = array("1","2","3","4","5","6","7","8","9","0","ё","й","ю","ь","ч","щ","ц","у","к","е","н","г","ш","з","х","ъ","ф","ы","в","а","п","р","о","л","д","ж","э","я","с","м","и","т","б","Ё","Й","Ю","Ч","Ь","Щ","Ц","У","К","Е","Н","Г","Ш","З","Х","Ъ","Ф","Ы","В","А","П","Р","О","Л","Д","Ж","Э","Я","С","М","И","Т","Б"," ");
+		$eng = array("1","2","3","4","5","6","7","8","9","0","yo","iy","yu","","ch","sh","c","u","k","e","n","g","sh","z","h","","f","y","v","a","p","r","o","l","d","j","е","ya","s","m","i","t","b","Yo","Iy","Yu","CH","","SH","C","U","K","E","N","G","SH","Z","H","","F","Y","V","A","P","R","O","L","D","J","E","YA","S","M","I","T","B","-");
+		$string = str_replace($rus,$eng,$string);
+		if(!empty($string)):
+			$string = preg_replace('/[^a-z0-9,-]/','',strtolower($string));
+			$string = preg_replace('/[-]+/','-',$string);
+			$string = preg_replace('/[\.\?\!\)\(\,\:\;]/','',$string);
+			return $string;
+		else:
+			return FALSE;
+		endif;
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/

@@ -6,6 +6,7 @@ class General_interface extends CI_Controller{
 		
 		parent::__construct();
 		$this->load->model('mdmarkets');
+		$this->load->model('mdevents');
 
 }
 	/******************************************************** functions ******************************************************/	
@@ -16,6 +17,7 @@ class General_interface extends CI_Controller{
 		$id = $this->uri->segment(3);
 		switch ($section):
 			case 'markets'	:	$image = $this->mdmarkets->get_image($id); break;
+			case 'news'		:	$image = $this->mdevents->get_image($id); break;
 			default			: 	show_404();break;
 		endswitch;
 		header('Content-type: image/gif');

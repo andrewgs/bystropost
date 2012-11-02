@@ -8,16 +8,13 @@
 		<?php $this->load->view("users_interface/includes/header");?>
 		
 		<div class="row">
-		<?php for($i=0;$i<count($events);$i++):?>
-			<h1><?=$events[$i]['title'];?></h1>
-			<div class="news-date"><?=$events[$i]['date'];?></div>
-			<img class="news-image" src="<?=$baseurl;?>news/viewimage/<?=$events[$i]['id'];?>" alt="" />
-			<p class="news-annotation"><?=$events[$i]['announcement'];?></p>
-			<?=anchor('news/view/'.$events[$i]['translit'],'Читать далее &rarr;')?>
-		<?php endfor;?>
-		<?php if($pages): ?>
-			<?=$pages;?>
-		<?php endif;?>
+			<?=anchor('news','Все новости')?>
+			<hr/>
+			<h1><?=$event['title'];?></h1>
+			<div class="news-date"><?=$event['date'];?></div>
+			<img class="news-image" src="<?=$baseurl;?>news/viewimage/<?=$event['id'];?>" alt="" />
+			<p><?=$event['announcement'];?></p>
+			<p><?=$event['text'];?></p>
 		</div>
 		<?php $this->load->view("users_interface/includes/social");?>
 	</div>

@@ -17,7 +17,13 @@ $route['disclaimer']					= "users_interface/disclaimer";
 $route['about-content']					= "users_interface/about_content";
 $route['capabilities']					= "users_interface/capabilities";
 $route['interface']						= "users_interface/site_interface";
+
 $route['news']							= "users_interface/news";
+$route['news/from']						= "users_interface/news";
+$route['news/from/:num']				= "users_interface/news";
+
+$route['news/view/:any']				= "users_interface/news_view";
+
 $route['contacts']						= "users_interface/contacts";
 $route['prices']						= "users_interface/prices";
 $route['forum']							= "users_interface/forum";
@@ -168,10 +174,18 @@ $route['admin-panel/actions/balance']					= "admin_interface/actions_balance";
 $route['admin-panel/actions/logoff']					= "admin_interface/actions_logoff";
 $route['api']											= "admin_interface/actions_api";
 
+$route['admin-panel/actions/log']						= "admin_interface/actions_log";
+$route['admin-panel/actions/log/from']					= "admin_interface/actions_log";
+$route['admin-panel/actions/log/from/:num']				= "admin_interface/actions_log";
+$route['admin-panel/actions/log/clear']					= "admin_interface/actions_log_clear";
+
 $route['admin-panel/actions/events']					= "admin_interface/actions_events";
 $route['admin-panel/actions/events/from']				= "admin_interface/actions_events";
 $route['admin-panel/actions/events/from/:num']			= "admin_interface/actions_events";
-$route['admin-panel/actions/events/clear']				= "admin_interface/actions_events_clear";
+
+$route['admin-panel/actions/events/add']				= "admin_interface/actions_events_add";
+$route['admin-panel/actions/events/edit/:num']			= "admin_interface/actions_events_edit";
+$route['admin-panel/actions/events/delete/eventsid/:num']= "admin_interface/actions_delete_events";
 
 $route['admin-panel/management/users/read-messages/userid/:num']			= "admin_interface/reading_users_messages";
 $route['admin-panel/management/users/read-messages/userid/:num/from']		= "admin_interface/reading_users_messages";
