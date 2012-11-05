@@ -1446,7 +1446,6 @@ class Admin_interface extends CI_Controller{
 						$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 					endif;
 				endif;
-				$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
@@ -1461,6 +1460,7 @@ class Admin_interface extends CI_Controller{
 						endfor;
 					endif;
 					if(count($marketslist)):
+						$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
 						$this->mdmkplatform->group_insert($webmaster,$platform,$marketslist);
 					endif;
 				endif;
