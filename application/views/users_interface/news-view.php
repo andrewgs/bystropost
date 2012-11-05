@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		
-		<div class="row">
+		<div id="news-social-activity" class="row">
 			<div class="span12">
 				<script src="//pip.qip.ru/js/pip_button.js" type="text/javascript" charset="utf-8" data-type="1"></script>
 				<div id="fb-root"></div>
