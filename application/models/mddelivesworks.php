@@ -266,6 +266,7 @@ class Mddelivesworks extends CI_Model{
 		
 		$curdate = date("Y-m-d");
 		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE id = $id AND webmaster = $uid";
+		print_r($query);echo '<br/>';
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}

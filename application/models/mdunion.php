@@ -486,4 +486,95 @@ class Mdunion extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
+
+	/******************************************************** crontab ******************************************************/
+	
+	function read_managers_platforms($manager){
+		
+		$query = "SELECT platforms.id,platforms.remoteid,platforms.url,platforms.webmaster,users.login,users.remoteid AS rwmid,users.autopaid FROM platforms INNER JOIN users ON platforms.webmaster=users.id WHERE platforms.manager = $manager AND platforms.remoteid > 0 AND users.remoteid > 0 ORDER BY users.remoteid,platforms.remoteid";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function read_webmarkets_records(){
+		
+		$query = "SELECT webmarkets.id,market,webmaster,users.id AS uid FROM webmarkets INNER JOIN users ON webmarkets.webmaster = users.remoteid ORDER BY webmaster,market,id";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+
+	function read_pl_price_rid($rplid){
+		
+		$this->db->where('remoteid',$rplid);
+		$query = $this->db->get('platforms',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0][$field];
+		return FALSE;
+	}
+
+	function valid_exist_works($works){
+	
+		if(!$works):
+			return NULL;
+		endif;
+		$query = 'SELECT remoteid AS id FROM delivesworks WHERE remoteid IN (';
+		for($i=0;$i<count($works);$i++):
+			$query .= $works[$i]['id'];
+			if($i+1<count($works)):
+				$query.=',';
+			else:
+				$query.=') ORDER BY id';
+			endif;
+		endfor;
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function works_group_insert($works){
+	
+		$query = '';
+		for($i=0;$i<count($works);$i++):
+			$query .= '('.$works[$i]['id'].','.$works[$i]['webmaster'].','.$works[$i]['platform'].',2,'.$works[$i]['type'].','.$works[$i]['market'].',"'.$works[$i]['birzprice'].'","'.$works[$i]['link'].'",'.$works[$i]['size'].','.$works[$i]['client_price'].','.$works[$i]['our_price'].',0,"'.date("Y-m-d").'","0000-00-00") ';
+			if($i+1<count($works)):
+				$query.=',';
+			endif;
+		endfor;
+		$this->db->query("INSERT INTO delivesworks (remoteid,webmaster,platform,manager,typework,market,mkprice,ulrlink,countchars,wprice,mprice,status,date,datepaid) VALUES ".$query);
+		return $this->db->affected_rows();
+	}
+	
+	function works_group_paid($works){
+	
+		if(!$works):
+			return NULL;
+		endif;
+		$curdate = date("Y-m-d");
+		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE remoteid IN (";
+		for($i=0;$i<count($works);$i++):
+			$query .= $works[$i]['id'];
+			if($i+1<count($works)):
+				$query.=',';
+			else:
+				$query.=')';
+			endif;
+		endfor;
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
+
+	function works_status_ones($rid){
+		
+		$curdate = date("Y-m-d");
+		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE remoteid = $rid";
+		print_r($query);echo '<br/>';
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
+	
 }

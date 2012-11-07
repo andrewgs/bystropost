@@ -1358,7 +1358,7 @@ class Clients_interface extends CI_Controller{
 							$delivers[$i]['datepaid'] = mb_convert_encoding('не оплачено','Windows-1251','utf-8');
 						endif;
 					endfor;
-					$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';
+					$file_name = getcwd().'/documents/works'.$this->user['uid'].date("Ymd").'.csv';
 					$fp = fopen($file_name,'w');
 					$this->load->helper('download');
 					$mass[0] = array(
