@@ -100,4 +100,10 @@ h1.whiteline { border: 0 none; }
 .user-topblock {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em;}
 .user-topblock a{font: 12px/21px arial,sans-serif;text-decoration: none;}
 .user-topblock a:hover{font: 12px/21px arial,sans-serif;text-decoration: none;}
-}
+
+/* news block */
+.news-title { margin: 0.5em 0 0.2em; font: 28px/1.4em 'trebuchet ms',arial,helvetica,sans-serif;  }
+.news-date { display: block; color: #999; margin: 0 0 1.5em; }
+.news-image { margin-bottom: 1em; display: block; }
+.news-share { margin: 1em 0 2em; } 
+#news-social-activity { margin-top: 2em; }
