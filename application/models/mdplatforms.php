@@ -109,6 +109,17 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function read_managers_platforms($manager){
+		
+		$this->db->where('manager',$manager);
+//		$this->db->where('locked',0);
+//		$this->db->where('status',1);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function update_record($id,$uid,$data){
 		
 		$this->db->set('subject',$data['subject']);

@@ -1358,7 +1358,7 @@ class Clients_interface extends CI_Controller{
 							$delivers[$i]['datepaid'] = mb_convert_encoding('не оплачено','Windows-1251','utf-8');
 						endif;
 					endfor;
-					$file_name = getcwd().'/documents/'.'works'.$this->user['uid'].date("Ymd").'.csv';
+					$file_name = getcwd().'/documents/works'.$this->user['uid'].date("Ymd").'.csv';
 					$fp = fopen($file_name,'w');
 					$this->load->helper('download');
 					$mass[0] = array(
@@ -2005,7 +2005,6 @@ class Clients_interface extends CI_Controller{
 						$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 					endif;
 				endif;
-				$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
@@ -2020,6 +2019,7 @@ class Clients_interface extends CI_Controller{
 						endfor;
 					endif;
 					if(count($marketslist)):
+						$this->mdmkplatform->delete_records_by_platform($platform,$this->user['uid']);
 						$this->mdmkplatform->group_insert($this->user['uid'],$platform,$marketslist);
 					endif;
 				endif;

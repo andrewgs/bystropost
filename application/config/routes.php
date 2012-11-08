@@ -264,3 +264,7 @@ $route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet"
 $route['admin-panel/actions/locked-debet']								= "admin_interface/locked_debet";
 
 $route['admin-panel/actions/control/sendind-registering-info'] = "admin_interface/sendind_registering_info";
+
+/*************************************************** 	CRON INTRERFACE	***********************************************/
+
+$route['import-deliver-work'] = "cron_interface/import_deliver_work";

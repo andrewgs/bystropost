@@ -38,9 +38,10 @@ class Mdwebmarkets extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function read_records($webmaster){
-		
-		$this->db->where('webmaster',$webmaster);
+	function read_records($webmaster = FALSE){
+		if($webmaster):
+			$this->db->where('webmaster',$webmaster);
+		endif;
 		$query = $this->db->get('webmarkets');
 		$data = $query->result_array();
 		if(count($data)) return $data;

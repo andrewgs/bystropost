@@ -472,7 +472,6 @@ class Managers_interface extends CI_Controller{
 						$this->session->set_userdata('msgs','Платформа успешно сохранена.');
 					endif;
 				endif;
-				$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
 				if(isset($_POST['markets'])):
 					$cntmarkets = count($_POST['markets']);
 					$marketslist = array();
@@ -487,6 +486,7 @@ class Managers_interface extends CI_Controller{
 						endfor;
 					endif;
 					if(count($marketslist)):
+						$this->mdmkplatform->delete_records_by_platform($platform,$webmaster);
 						$this->mdmkplatform->group_insert($webmaster,$platform,$marketslist);
 					endif;
 				endif;
@@ -690,7 +690,7 @@ class Managers_interface extends CI_Controller{
 			show_404();
 		endif;
 //		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date("Y")));
-		$datefrom = "2012-10-01";
+		$datefrom = "2012-11-01";
 		$dateto = date("Y-m-d");
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
 		if(!count($platforms)):
