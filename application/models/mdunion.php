@@ -462,12 +462,6 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function update_debetors_status($data,$znak,$status){
-	
-		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks  WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0) AND users.antihold = 0";
-		$this->db->query($query);
-		return $this->db->affected_rows();
-	}
 	
 	function free_platforms($uid){
 	
@@ -478,15 +472,6 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function debetors_webmarkets(){
-	
-		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.remoteid = webmarkets.webmaster WHERE users.debetor = 1 AND users.antihold = 0";
-		$query = $this->db->query($query);
-		$data = $query->result_array();
-		if(count($data)) return $data;
-		return NULL;
-	}
-
 	/******************************************************** crontab ******************************************************/
 	
 	function read_managers_platforms($manager){
@@ -577,4 +562,30 @@ class Mdunion extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function update_debetors_status($data,$znak,$status){
+	
+		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0) AND users.antihold = 0 AND debetor = 0";
+		$this->db->query($query);
+		return $this->db->affected_rows();
+	}
+	
+	function debetors_webmarkets(){
+	
+		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.remoteid = webmarkets.webmaster WHERE users.debetor = 1 AND users.antihold = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function users_delives_works($date,$status){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('date',$date);
+		$this->db->where('status',$status);
+		$query = $this->db->get('delivesworks',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
+	}
 }

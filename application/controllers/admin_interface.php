@@ -562,9 +562,9 @@ class Admin_interface extends CI_Controller{
 		endif;
 		
 		for($i=0;$i<count($pagevar['users']);$i++):
-			$pagevar['users'][$i]['signdate'] = $this->operation_dot_date($pagevar['users'][$i]['signdate']);
+			$pagevar['users'][$i]['signdate'] = $this->operation_dot_date_not_time($pagevar['users'][$i]['signdate']);
 			if($pagevar['users'][$i]['lastlogin'] != '0000-00-00'):
-				$pagevar['users'][$i]['lastlogin'] = $this->operation_dot_date($pagevar['users'][$i]['lastlogin']);
+				$pagevar['users'][$i]['lastlogin'] = $this->operation_dot_date_not_time($pagevar['users'][$i]['lastlogin']);
 			else:
 				$pagevar['users'][$i]['lastlogin'] = '';
 			endif;
@@ -3004,6 +3004,14 @@ class Admin_interface extends CI_Controller{
 		$list = preg_split("/-/",$field);
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
 		$replacement = "\$5.$3.\$1 \$6:\$8";
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function operation_dot_date_not_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1";
 		return preg_replace($pattern, $replacement,$field);
 	}
 	

@@ -268,3 +268,5 @@ $route['admin-panel/actions/control/sendind-registering-info'] = "admin_interfac
 /*************************************************** 	CRON INTRERFACE	***********************************************/
 
 $route['import-deliver-work'] = "cron_interface/import_deliver_work";
+$route['debitors-auto-blocking'] = "cron_interface/debitors_auto_blocking";
+$route['users-sending-mail'] = "cron_interface/users_sending_mail";

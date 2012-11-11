@@ -73,7 +73,7 @@
 							<td style="min-width:85px;">
 								<?=$users[$i]['wmid'];?>
 							<?php if(($this->uri->segment(4) == 'webmasters') && ($users[$i]['type'] == 1)):?>
-								<br/>[<?=anchor('admin-panel/management/users/usersid/'.$users[$i]['id'].'/platforms','площадок: <b>'.$users[$i]['platforms'].'</b>');?>]
+								<br/><nobr>[<?=anchor('admin-panel/management/users/usersid/'.$users[$i]['id'].'/platforms','площадок: <b>'.$users[$i]['platforms'].'</b>');?>]</nobr>
 							<?php endif;?>
 							</td>
 							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><span class="highlight"><?=$users[$i]['lastlogin'];?></span></nobr></td>

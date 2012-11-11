@@ -40,7 +40,7 @@ class Mdusers extends CI_Model{
 		$this->fio 				= $data['fio'];
 		$this->wmid 			= $data['wmid'];
 		$this->knowus 			= strip_tags(nl2br($data['knowus'],'<br/>'));
-		$this->signdate 		= date("Y-m-d");
+		$this->signdate 		= date("Y-m-d H:i:s");
 		$this->sendmail 		= $data['sendmail'];
 		$this->type 			= $utype;
 		

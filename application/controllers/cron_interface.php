@@ -211,6 +211,68 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 	}
 	
+	public function debitors_auto_blocking(){
+		
+		$start_time = microtime(true);
+		
+		$file_name = getcwd().'/documents/bloking_'.date("YmdHi").'.log';
+		$text = "Файл-лог автоматического блокирования пользователей за не оплату.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
+		
+		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
+		$total = $this->mdunion->update_debetors_status($date,'=',1);
+		$birzlock = 0;
+		if($total):
+			$debetors = $this->mdunion->debetors_webmarkets();
+			for($i=0;$i<count($debetors);$i++):
+				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($debetors[$i]['cryptpassword'])).'&act=2';
+				$text = "Запрос: ".$param;
+				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
+//				$this->API('UpdateAccount',$param);
+				$birzlock++;
+			endfor;
+		else:
+			$text = "Должники отсутствуют!";
+			file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n");
+		endif;
+		
+		$exec_time = round((microtime(true) - $start_time),2);
+		
+		$text = "Скрипт выполнен за: $exec_time сек.\n";
+		$text .= "Заблокировано: $total должников.\n";
+		$text .= "Приостановлено: $birzlock биржевых аккаунтов.";
+		echo($text);
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+	}
+	
+	public function users_sending_mail(){
+		
+		$start_time = microtime(true);
+		
+		$file_name = getcwd().'/documents/sending_'.date("YmdHi").'.log';
+		$text = "Файл-лог автоматического уведомления пользователей.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
+		$mailtext = '';
+		$curdate = date("Y-m-d");
+		//Уведомление о наличии новых неоплаченных работ за текущий день.
+		$result = $this->mdunion->users_delives_works($curdate,0);
+		if($result):
+			$mailtext .= "У Вас есть $result неоплаченных работ за текущий день.\n";
+		endif;
+		$result = $this->mdunion->users_delives_works($curdate,1);
+		if($result):
+			$mailtext .= "За текущий день было оплачено $result выполненных работ.\n";
+		endif;
+		
+		$exec_time = round((microtime(true) - $start_time),2);
+		
+		$text = "Скрипт выполнен за: $exec_time сек.\n";
+		$text .= "Заблокировано: $total должников.\n";
+		$text .= "Приостановлено: $birzlock биржевых аккаунтов.";
+		echo($text);
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+	}
+	
 	private function current_date_on_time($field){
 		
 		$months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня",
