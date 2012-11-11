@@ -171,7 +171,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
@@ -294,7 +294,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('text',' ','required|trim');
 			$this->form_validation->set_rules('announcement',' ','required|trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				$this->actions_events_add();
 				return FALSE;
 			else:
@@ -344,7 +344,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('title',' ','required|trim');
 			$this->form_validation->set_rules('content',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				$this->control_edit_events();
 				return FALSE;
 			else:
@@ -641,7 +641,7 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):

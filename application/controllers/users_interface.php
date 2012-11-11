@@ -543,16 +543,16 @@ class Users_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
+			unset($_POST['submit']);
 			$this->form_validation->set_rules('fio',' ','required|trim');
 			$this->form_validation->set_rules('login',' ','required|valid_email|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
 			$this->form_validation->set_rules('confpass',' ','required|trim');
-			$this->form_validation->set_rules('wmid',' ','required|numeric|exact_length[12]|trim');
+			$this->form_validation->set_rules('wmid',' ','required|trim');
 			$this->form_validation->set_rules('knowus',' ','trim');
 			$this->form_validation->set_rules('promo',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if($this->mdusers->user_exist('login ',$_POST['login'])):

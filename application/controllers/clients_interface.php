@@ -346,7 +346,7 @@ class Clients_interface extends CI_Controller{
 		if($this->input->post('submit')):
 			$this->form_validation->set_rules('balance',' ','required|numeric|trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if(!$_POST['balance']):
@@ -632,7 +632,7 @@ class Clients_interface extends CI_Controller{
 			unset($_POST['submit']);
 			$this->form_validation->set_rules('service',' ','required|trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if(!$this->mdattachedservices->service_exist($this->user['uid'],$_POST['service'])):
@@ -734,7 +734,7 @@ class Clients_interface extends CI_Controller{
 			unset($_POST['submit']);
 			$this->form_validation->set_rules('srvvalues[]',' ','required|trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				foreach($_POST['srvvalues'] AS $srvvalues):

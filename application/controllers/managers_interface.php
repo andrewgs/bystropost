@@ -157,7 +157,7 @@ class Managers_interface extends CI_Controller{
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
 			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка. Неверно заполены необходимые поля<br/>');
+				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
 				if(!empty($_POST['oldpas']) && !empty($_POST['password']) && !empty($_POST['confpass'])):
@@ -624,31 +624,6 @@ class Managers_interface extends CI_Controller{
 							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
 						endif;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
-						if($this->mdusers->read_field($webmaster,'sendmail')):
-							ob_start();
-							?>
-							<img src="<?=base_url();?>images/logo.png" alt="" />
-							<p><strong>Здравствуйте, <?=$this->mdusers->read_field($webmaster,'fio');?></strong></p>
-							<p>Для Вас новое завершенное задание</p>
-							<p>Что бы просмотреть его ввойдите в <?=$this->link_cabinet($webmaster);?> и перейдите в раздел <?=anchor('webmaster-panel/actions/finished-jobs','"Готовые задания"');?></p>
-							<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
-							<?
-							$mailtext = ob_get_clean();
-							
-							$this->email->clear(TRUE);
-							$config['smtp_host'] = 'localhost';
-							$config['charset'] = 'utf-8';
-							$config['wordwrap'] = TRUE;
-							$config['mailtype'] = 'html';
-							
-							$this->email->initialize($config);
-							$this->email->to($this->mdusers->read_field($webmaster,'login'));
-							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
-							$this->email->bcc('');
-							$this->email->subject('Noreply: Bystropost.ru - Новое завершенное задание');
-							$this->email->message($mailtext);	
-							$this->email->send();
-						endif;
 						$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
 					endif;
 				else:
@@ -689,8 +664,8 @@ class Managers_interface extends CI_Controller{
 		if(!$count):
 			show_404();
 		endif;
-//		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date("Y")));
-		$datefrom = "2012-11-01";
+		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+//		$datefrom = "2012-11-01";
 		$dateto = date("Y-m-d");
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
 		if(!count($platforms)):
