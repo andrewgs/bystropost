@@ -228,7 +228,7 @@ class Cron_interface extends CI_Controller{
 				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($debetors[$i]['cryptpassword'])).'&act=2';
 				$text = "Запрос: ".$param;
 				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
-//				$this->API('UpdateAccount',$param);
+				$this->API('UpdateAccount',$param);
 				$birzlock++;
 			endfor;
 		else:
@@ -247,7 +247,7 @@ class Cron_interface extends CI_Controller{
 	
 	public function users_sending_mail(){
 		
-		$start_time = microtime(true);
+		/*$start_time = microtime(true);
 		
 		$file_name = getcwd().'/documents/sending_'.date("YmdHi").'.log';
 		$text = "Файл-лог автоматического уведомления пользователей.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
@@ -270,7 +270,7 @@ class Cron_interface extends CI_Controller{
 		$text .= "Заблокировано: $total должников.\n";
 		$text .= "Приостановлено: $birzlock биржевых аккаунтов.";
 		echo($text);
-		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);*/
 	}
 	
 	private function current_date_on_time($field){
