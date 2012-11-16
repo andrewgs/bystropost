@@ -5,6 +5,7 @@
 			<li num="users"><?=anchor('admin-panel/management/users/webmasters','Пользователи ('.$cntunit['users'].')');?></li>
 			<li num="platforms"><?=anchor('admin-panel/management/platforms','Площадки ('.$cntunit['platforms'].')');?></li>
 			<li num="markets"><?=anchor('admin-panel/management/markets','Список бирж ('.$cntunit['markets'].')');?></li>
+			<li num="promocode"><?=anchor('admin-panel/management/promocode','Промокоды');?></li>
 			<li num="services"><?=anchor('admin-panel/management/services','Список доп.услуг ('.$cntunit['services'].')');?></li>
 			<li num="types-of-work"><?=anchor('admin-panel/management/types-of-work','Типы работ ('.$cntunit['twork'].')');?></li>
 			<li num="ratings"><?=anchor('admin-panel/management/ratings/webmasters','Отзывы о системе');?></li>

@@ -28,6 +28,7 @@ class Admin_interface extends CI_Controller{
 		$this->load->model('mdwebmarkets');
 		$this->load->model('mdattachedservices');
 		$this->load->model('mdevents');
+		$this->load->model('mdpromocodes');
 
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -1591,6 +1592,110 @@ class Admin_interface extends CI_Controller{
 				$this->session->set_userdata('msgs','Биржа удалена успешно');
 			else:
 				$this->session->set_userdata('msgr','Биржа не удалена');
+			endif;
+			redirect($_SERVER['HTTP_REFERER']);
+		else:
+			show_404();
+		endif;
+	}
+	
+	/******************************************************** romocode ******************************************************/
+
+	public function management_promocode(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Промокоды',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'codes'			=> $this->mdpromocodes->read_records(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('acsubmit')):
+			$_POST['aсsubmit'] = NULL;
+			$this->form_validation->set_rules('code',' ','required|trim');
+			$this->form_validation->set_rules('datefrom',' ','required|trim');
+			$this->form_validation->set_rules('dateto',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['datefrom'] = preg_replace($pattern,$replacement,$_POST['datefrom']);
+				
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['dateto'] = preg_replace($pattern,$replacement,$_POST['dateto']);
+				if($_POST['dateto'] < $_POST['datefrom']):
+					$begin = $_POST['datefrom'];
+					$_POST['datefrom'] = $_POST['dateto'];
+					$_POST['dateto'] = $begin;
+				endif;
+				$result = $this->mdpromocodes->insert_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Промокод добавлен успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		if($this->input->post('ecsubmit')):
+			$_POST['ecsubmit'] = NULL;
+			$this->form_validation->set_rules('code',' ','required|trim');
+			$this->form_validation->set_rules('datefrom',' ','required|trim');
+			$this->form_validation->set_rules('dateto',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+			else:
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['datefrom'] = preg_replace($pattern,$replacement,$_POST['datefrom']);
+				
+				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
+				$replacement = "\$3-\$2-\$1";
+				$_POST['dateto'] = preg_replace($pattern,$replacement,$_POST['dateto']);
+				if($_POST['dateto'] < $_POST['datefrom']):
+					$begin = $_POST['datefrom'];
+					$_POST['datefrom'] = $_POST['dateto'];
+					$_POST['dateto'] = $begin;
+				endif;
+				$result = $this->mdpromocodes->update_record($_POST);
+				if($result):
+					$this->session->set_userdata('msgs','Промокод изменен успешно');
+				endif;
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		for($i=0;$i<count($pagevar['codes']);$i++):
+			$pagevar['codes'][$i]['datefrom'] = $this->operation_dot_date($pagevar['codes'][$i]['datefrom']);
+			$pagevar['codes'][$i]['dateto'] = $this->operation_dot_date($pagevar['codes'][$i]['dateto']);
+		endfor;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/management-promocode",$pagevar);
+	}
+	
+	public function management_promocode_deleting(){
+		
+		$сid = $this->uri->segment(5);
+		if($сid):
+			$result = $this->mdpromocodes->delete_record($сid);
+			if($result):
+				$this->session->set_userdata('msgs','Промокод удален успешно');
+			else:
+				$this->session->set_userdata('msgr','Промокод не удален');
 			endif;
 			redirect($_SERVER['HTTP_REFERER']);
 		else:

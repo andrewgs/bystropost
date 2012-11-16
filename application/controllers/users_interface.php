@@ -11,6 +11,7 @@ class Users_interface extends CI_Controller{
 		$this->load->model('mdratings');
 		$this->load->model('mdlog');
 		$this->load->model('mdevents');
+		$this->load->model('mdpromocodes');
 		
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
@@ -580,6 +581,15 @@ class Users_interface extends CI_Controller{
 						$param = 'user='.$_POST['fio'].'&email='.$_POST['login'];
 						$remote_user = $this->API('AddNewUser',$param);
 						if($remote_user['id']):
+							if(!empty($_POST['promo'])):
+								$codeid = $this->mdpromocodes->exist_code($_POST['promo']);
+								if($codeid):
+									$promocode = $this->mdpromocodes->read_record($codeid);
+									$param = 'userid='.$remote_user['id'].'&user='.$_POST['fio'].'&email='.$_POST['login'].'&coupon_price=0&coupon_code='.$promocode['code'].'&coupon_count=-1&coupon_birzid=0&coupon_date='.$promocode['dateto'];
+									print_r($param);exit;
+									$remote_user = $this->API('EditUser',$param);
+								endif;
+							endif;
 							$this->mdusers->update_field($uid,'remoteid',$remote_user['id']);
 						endif;
 					endif;

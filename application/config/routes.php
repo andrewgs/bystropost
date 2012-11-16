@@ -230,6 +230,9 @@ $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calcu
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 
+$route['admin-panel/management/promocode']				= "admin_interface/management_promocode";
+$route['admin-panel/management/promocode/codeid/:num']	= "admin_interface/management_promocode_deleting";
+
 $route['admin-panel/management/services']				= "admin_interface/management_services";
 $route['admin-panel/management/services/serviceid/:num']= "admin_interface/management_services_deleting";
 

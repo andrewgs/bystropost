@@ -4219,59 +4219,59 @@
 				<treenode node="CI_Security;Php:Class Name;0;26;1;863;34;;;v;;r;;d18,26;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;8;102;2;123;34;;;v;;r;;d1,103;;b1,0;;m">
 					</treenode>
-					<treenode node="_compact_exploded_words;Php:Function Name;11;582;2;585;34;;;v;;r;;d1,583;;b2,0;;mmatches;;p">
+					<treenode node="_compact_exploded_words;Php:Function Name;11;582;2;585;34;;;vtype;;r Compact Exploded Words;;d1,583;;b2,0;;mmatches;;p">
 					</treenode>
-					<treenode node="_convert_attribute;Php:Function Name;11;721;2;724;34;;;v;;r;;d1,722;;b2,0;;mmatch;;p">
+					<treenode node="_convert_attribute;Php:Function Name;11;721;2;724;34;;;vstring;;r Attribute Conversion;;d1,722;;b2,0;;mmatch;;p">
 					</treenode>
-					<treenode node="_csrf_set_hash;Php:Function Name;11;843;2;861;34;;;v;;r;;d1,844;;b2,0;;m">
+					<treenode node="_csrf_set_hash;Php:Function Name;11;843;2;861;34;;;vstring;;r Set Cross Site Request Forgery Protection Cookie;;d1,844;;b2,0;;m">
 					</treenode>
-					<treenode node="_decode_entity;Php:Function Name;11;761;2;764;34;;;v;;r;;d1,762;;b2,0;;mmatch;;p">
+					<treenode node="_decode_entity;Php:Function Name;11;761;2;764;34;;;vstring;;r HTML Entity Decode Callback;;d1,762;;b2,0;;mmatch;;p">
 					</treenode>
-					<treenode node="_do_never_allowed;Php:Function Name;11;821;2;834;34;;;v;;r;;d1,822;;b2,0;;mstr;;p">
+					<treenode node="_do_never_allowed;Php:Function Name;11;821;2;834;34;;;vstring;;r Do Never Allowed;;d1,822;;b2,0;;mstr;;p">
 					</treenode>
-					<treenode node="_filter_attributes;Php:Function Name;11;736;2;749;34;;;v;;r;;d1,737;;b2,0;;mstr;;p">
+					<treenode node="_filter_attributes;Php:Function Name;11;736;2;749;34;;;vstring;;r Filter Attributes;;d1,737;;b2,0;;mstr;;p">
 					</treenode>
-					<treenode node="_js_img_removal;Php:Function Name;11;704;2;709;34;;;v;;r;;d1,705;;b2,0;;mmatch;;p">
+					<treenode node="_js_img_removal;Php:Function Name;11;704;2;709;34;;;vstring;;r JS Image Removal;;d1,705;;b2,0;;mmatch;;p">
 					</treenode>
-					<treenode node="_js_link_removal;Php:Function Name;11;684;2;689;34;;;v;;r;;d1,685;;b2,0;;mmatch;;p">
+					<treenode node="_js_link_removal;Php:Function Name;11;684;2;689;34;;;vstring;;r JS Link Removal;;d1,685;;b2,0;;mmatch;;p">
 					</treenode>
 					<treenode node="_remove_evil_attributes;Php:Function Name;11;604;2;647;34;;;v;;r;;d1,605;;b2,0;;mstr;;pis_image;;p">
 					</treenode>
-					<treenode node="_sanitize_naughty_html;Php:Function Name;11;659;2;669;34;;;v;;r;;d1,660;;b2,0;;mmatches;;p">
+					<treenode node="_sanitize_naughty_html;Php:Function Name;11;659;2;669;34;;;vstring;;r Sanitize Naughty HTML;;d1,660;;b2,0;;mmatches;;p">
 					</treenode>
-					<treenode node="_validate_entities;Php:Function Name;11;776;2;809;34;;;v;;r;;d1,777;;b2,0;;mstr;;p">
+					<treenode node="_validate_entities;Php:Function Name;11;776;2;809;34;;;vstring;;r Validate URL entities;;d1,777;;b2,0;;mstr;;p">
 					</treenode>
-					<treenode node="csrf_set_cookie;Php:Function Name;8;174;2;194;34;;;v;;r;;d1,175;;b1,0;;m">
+					<treenode node="csrf_set_cookie;Php:Function Name;8;174;2;194;34;;;vobject;;r Set Cross Site Request Forgery Protection Cookie;;d1,175;;b1,0;;m">
 					</treenode>
-					<treenode node="csrf_show_error;Php:Function Name;8;203;2;206;34;;;v;;r;;d1,204;;b1,0;;m">
+					<treenode node="csrf_show_error;Php:Function Name;8;203;2;206;34;;;vvoid;;r Show CSRF Error;;d1,204;;b1,0;;m">
 					</treenode>
-					<treenode node="csrf_verify;Php:Function Name;8;132;2;165;34;;;v;;r;;d1,133;;b1,0;;m">
+					<treenode node="csrf_verify;Php:Function Name;8;132;2;165;34;;;vobject;;r Verify Cross Site Request Forgery Protection;;d1,133;;b1,0;;m">
 					</treenode>
-					<treenode node="entity_decode;Php:Function Name;8;504;2;514;34;;;v;;r;;d1,505;;b1,0;;mstr;;pcharset;;p">
+					<treenode node="entity_decode;Php:Function Name;8;504;2;514;34;;;vstring;;r HTML Entities Decode;;d1,505;;b1,0;;mstr;;pcharset;;p">
 					</treenode>
-					<treenode node="get_csrf_hash;Php:Function Name;8;217;2;220;34;;;v;;r;;d1,218;;b1,0;;m">
+					<treenode node="get_csrf_hash;Php:Function Name;8;217;2;220;34;;;vstring;;r Get CSRF Hash;;d1,218;;b1,0;;m">
 					</treenode>
-					<treenode node="get_csrf_token_name;Php:Function Name;8;231;2;234;34;;;v;;r;;d1,232;;b1,0;;m">
+					<treenode node="get_csrf_token_name;Php:Function Name;8;231;2;234;34;;;vstring;;r Get CSRF Token Name;;d1,232;;b1,0;;m">
 					</treenode>
-					<treenode node="sanitize_filename;Php:Function Name;8;525;2;569;34;;;v;;r;;d1,526;;b1,0;;mstr;;prelative_path;;p">
+					<treenode node="sanitize_filename;Php:Function Name;8;525;2;569;34;;;vstring;;r Filename Security;;d1,526;;b1,0;;mstr;;prelative_path;;p">
 					</treenode>
-					<treenode node="xss_clean;Php:Function Name;8;264;2;467;34;;;v;;r;;d1,265;;b1,0;;mstr;;pis_image;;p">
+					<treenode node="xss_clean;Php:Function Name;8;264;2;467;34;;;vstring;;r XSS Clean;;d1,265;;b1,0;;mstr;;pis_image;;p">
 					</treenode>
-					<treenode node="xss_hash;Php:Function Name;8;476;2;485;34;;;v;;r;;d1,477;;b1,0;;m">
+					<treenode node="xss_hash;Php:Function Name;8;476;2;485;34;;;vstring;;r Random Hash for protecting URLs;;d1,477;;b1,0;;m">
 					</treenode>
-					<treenode node="_csrf_cookie_name;Php:Var Name;11;63;29;63;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_csrf_cookie_name;Php:Var Name;11;63;29;63;34;string;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_csrf_expire;Php:Var Name;11;49;24;49;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_csrf_expire;Php:Var Name;11;49;24;49;34;int;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_csrf_hash;Php:Var Name;11;41;22;41;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_csrf_hash;Php:Var Name;11;41;22;41;34;string;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_csrf_token_name;Php:Var Name;11;56;28;56;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_csrf_token_name;Php:Var Name;11;56;28;56;34;string;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_never_allowed_regex;Php:Var Name;11;92;32;92;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_never_allowed_regex;Php:Var Name;11;92;32;92;34;array;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_never_allowed_str;Php:Var Name;11;70;30;70;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_never_allowed_str;Php:Var Name;11;70;30;70;34;array;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
-					<treenode node="_xss_hash;Php:Var Name;11;34;21;34;34;;;v;;r;;d-1,-1;;b2,0;;m">
+					<treenode node="_xss_hash;Php:Var Name;11;34;21;34;34;string;;v;;r;;d-1,-1;;b2,0;;m">
 					</treenode>
 				</treenode>
 			</phptree>
@@ -9230,7 +9230,7 @@
 					</treenode>
 				</treenode>
 			</phptree>
-		</csfile><csfile name="S:\home\bystropost\www\application\controllers\cron_interface.php" crc="-75564316">
+		</csfile><csfile name="S:\home\bystropost\www\application\controllers\cron_interface.php" crc="-2078439679">
 			<phptree>
 				<treenode node="Cron_interface;Php:Class Name;0;2;1;309;34;;;vCI_Controller;;c;;r;;d42,2;;b0,0;;m">
 					<treenode node="__construct;Php:Function Name;1;5;2;16;34;;;v;;r;;d23,5;;b0,0;;m">
