@@ -9,7 +9,7 @@
 	<textarea name="knowus" placeholder="Откуда Вы узнали о нас?" rows="5" cols="55"></textarea><br/>
 	<div style="margin:5px 0 20px 60px;">
 	<?php if($this->uri->segment(3) == 'webmaster'):?>
-		<input name="promo" id="promo" class="digital" type="text" placeholder="Введите промокод" value="" style="width:150px;margin-left:110px;" maxlength="20"/><br/>
+		<input name="promo" id="promo" type="text" placeholder="Введите промокод" value="" style="width:150px;margin-left:110px;" maxlength="20"/><br/>
 	<?php endif;?>
 		<input name="sendmail" type="checkbox" value="1" class="checkbox" checked="checked" />
 		<span style="margin-left:10px;">Присылать уведомления и важные новости</span><br/>

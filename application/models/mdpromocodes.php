@@ -4,6 +4,9 @@ class Mdpromocodes extends CI_Model{
 
 	var $id			= 0;
 	var $code 		= '';
+	var $price 		= '';
+	var $count 		= '';
+	var $birzid		= '';
 	var $datefrom 	= '';
 	var $dateto 	= '';
 	var $active 	= 1;
@@ -15,6 +18,9 @@ class Mdpromocodes extends CI_Model{
 	function insert_record($data){
 			
 		$this->code 	= $data['code'];
+		$this->price 	= $data['price'];
+		$this->count 	= $data['count'];
+		$this->birzid 	= $data['birzid'];
 		$this->datefrom = $data['datefrom'];
 		$this->dateto	= $data['dateto'];
 		
@@ -25,6 +31,9 @@ class Mdpromocodes extends CI_Model{
 	function update_record($data){
 		
 		$this->db->set('code',$data['code']);
+		$this->db->set('price',$data['price']);
+		$this->db->set('count',$data['count']);
+		$this->db->set('birzid',$data['birzid']);
 		$this->db->set('datefrom',$data['datefrom']);
 		$this->db->set('dateto',$data['dateto']);
 		

@@ -10,7 +10,28 @@
 				<div class="control-group">
 					<label for="code" class="control-label">Код: </label>
 					<div class="controls">
-						<input type="text" id="ecCode" class="input-xlarge eсinput" name="code" value="">
+						<input type="text" id="ecCode" class="span3 eсinput" name="code" value="">
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="price" class="control-label">Цена: </label>
+					<div class="controls">
+						<input type="text" id="ecPrice" class="span3 eacinput" name="price" value="">
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="count" class="control-label">Количество: </label>
+					<div class="controls">
+						<input type="text" id="ecCount" class="span3 ecinput" name="count" value="">
+						<span class="help-inline" style="display:none;">&nbsp;</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="birzid" class="control-label">Биржи: </label>
+					<div class="controls">
+						<input type="text" id="ecBirzid" class="span3 ecinput" name="birzid" value="">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
