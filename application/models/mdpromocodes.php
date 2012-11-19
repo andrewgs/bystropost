@@ -80,6 +80,7 @@ class Mdpromocodes extends CI_Model{
 		
 		$this->db->select('id');
 		$this->db->where('code',$code);
+		$this->db->where('dateto >=',"'".date('Y-m-d')."'",FALSE);
 		$query = $this->db->get('promocodes',1);
 		$data = $query->result_array();
 		if(count($data)) return $data[0]['id'];

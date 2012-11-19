@@ -18,6 +18,9 @@
 						<tr>
 							<th class="w100"><center><nobr>Код</nobr></center></th>
 							<th class="w400"><center><nobr>Сроки действия</nobr></center></th>
+							<th class="w400"><center><nobr>Цена</nobr></center></th>
+							<th class="w400"><center><nobr>Биржи</nobr></center></th>
+							<th class="w400"><center><nobr>Количество</nobr></center></th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
@@ -25,9 +28,12 @@
 					<?php for($i=0;$i<count($codes);$i++):?>
 						<tr>
 							<td class="w100"><?=$codes[$i]['code'];?></td>
-							<td class="w400">c <?=$codes[$i]['datefrom'];?> по <?=$codes[$i]['dateto'];?></td>
+							<td class="w400">c <?=$codes[$i]['datefrom'];?><br/>по <?=$codes[$i]['dateto'];?></td>
+							<td class="w400"><?=$codes[$i]['price'];?></td>
+							<td class="w400"><?=$codes[$i]['birzid'];?></td>
+							<td class="w400"><?=$codes[$i]['count'];?></td>
 							<td style="width:105px;">
-								<div id="params<?=$i;?>" style="display:none" data-cid="<?=$codes[$i]['id'];?>" data-code="<?=$codes[$i]['code'];?>" data-datefrom="<?=$codes[$i]['datefrom'];?>" data-dateto="<?=$codes[$i]['dateto'];?>"></div>
+								<div id="params<?=$i;?>" style="display:none" data-cid="<?=$codes[$i]['id'];?>" data-code="<?=$codes[$i]['code'];?>" data-datefrom="<?=$codes[$i]['datefrom'];?>" data-dateto="<?=$codes[$i]['dateto'];?>" data-price="<?=$codes[$i]['price'];?>" data-count ="<?=$codes[$i]['count'];?>" data-birzid ="<?=$codes[$i]['birzid'];?>"></div>
 								<a class="btn btn-success editCode" data-param="<?=$i;?>" data-toggle="modal" href="#editCode" title="Редактировать"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteCode" data-param="<?=$i;?>" data-toggle="modal" href="#deleteCode" title="Удалить"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
@@ -56,7 +62,21 @@
 				var Param = $(this).attr('data-param'); cID = $("div[id = params"+Param+"]").attr("data-cid");
 				var	cCode = $("div[id = params"+Param+"]").attr("data-code"); var cDFrom = $("div[id = params"+Param+"]").attr("data-datefrom");
 				var cDTo = $("div[id = params"+Param+"]").attr("data-dateto");
+				var cPrice = $("div[id = params"+Param+"]").attr("data-price");
+				var cCount = $("div[id = params"+Param+"]").attr("data-count");
+				var cBirzid = $("div[id = params"+Param+"]").attr("data-birzid");
+				if(cBirzid == 0){
+					$("#SMarkets option").attr("selected","selected");
+				}else{
+					$("#SMarkets option").removeAttr("selected");
+					var markets = cBirzid.split(',');
+					$.each(markets,function(i,e){
+						$("#SMarkets option[value='"+e+"']").attr("selected", "selected");
+					});
+				}
+				
 				$(".idCode").val(cID);$("#ecCode").val(cCode);$("#ecDateFrom").val(cDFrom);$("#ecDateTo").val(cDTo);
+				$("#ecPrice").val(cPrice);$("#ecCount").val(cCount);$("#ecBirzid").val(cBirzid);
 			});
 			
 			$("#ecsend").click(function(event){

@@ -16,6 +16,7 @@
 				<table class="table table-striped table-bordered">
 					<thead>
 						<tr>
+							<th class="w50"><center><nobr>ID</nobr></center></th>
 							<th class="w50"><center><nobr>Название</nobr></center></th>
 							<th class="w400"><center><nobr>URL</nobr></center></th>
 							<th>&nbsp;</th>
@@ -24,6 +25,7 @@
 					<tbody>
 					<?php for($i=0;$i<count($markets);$i++):?>
 						<tr>
+							<td class="w50"><nobr><?=$markets[$i]['id'];?></nobr></td>
 							<td class="w50"><nobr><img src="<?=$baseurl;?>markets/viewimage/<?=$markets[$i]['id'];?>" alt=""/>&nbsp;<b><?=$markets[$i]['title'];?></b></nobr></td>
 							<td class="w400"><b><a href="<?=$markets[$i]['url'];?>"><?=$markets[$i]['url'];?></a></b></td>
 							<td style="width:105px;">

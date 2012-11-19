@@ -1610,6 +1610,7 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
+					'markets'		=> $this->mdmarkets->read_records(),
 					'codes'			=> $this->mdpromocodes->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -1625,10 +1626,14 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if(count($_POST['birzid']) == count($pagevar['markets'])):
+					$_POST['birzid'] = 0;
+				else:
+					$_POST['birzid'] = implode(",", $_POST['birzid']);
+				endif;
 				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
 				$replacement = "\$3-\$2-\$1";
 				$_POST['datefrom'] = preg_replace($pattern,$replacement,$_POST['datefrom']);
-				
 				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
 				$replacement = "\$3-\$2-\$1";
 				$_POST['dateto'] = preg_replace($pattern,$replacement,$_POST['dateto']);
@@ -1653,6 +1658,11 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if(count($_POST['birzid']) == count($pagevar['markets'])):
+					$_POST['birzid'] = 0;
+				else:
+					$_POST['birzid'] = implode(",", $_POST['birzid']);
+				endif;
 				$pattern = "/(\d+)\.(\w+)\.(\d+)/i";
 				$replacement = "\$3-\$2-\$1";
 				$_POST['datefrom'] = preg_replace($pattern,$replacement,$_POST['datefrom']);
