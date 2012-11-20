@@ -468,6 +468,7 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$_POST['text'] = $this->replace_a_tag($_POST['text']);
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
 					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
@@ -996,6 +997,7 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$_POST['text'] = $this->replace_a_tag($_POST['text']);
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
@@ -2266,6 +2268,7 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$_POST['text'] = $this->replace_a_tag($_POST['text']);
 				$id = $this->mdmessages->send_system_message($this->user['uid'],$_POST);
 				if($id):
 					$this->session->set_userdata('msgs','Сообщение отправлено');
@@ -2336,6 +2339,7 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$_POST['text'] = $this->replace_a_tag($_POST['text']);
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
 					if($this->mdusers->read_field($_POST['recipient'],'sendmail')):
@@ -2521,6 +2525,7 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$_POST['text'] = $this->replace_a_tag($_POST['text']);
 				if(isset($_POST['closeticket'])):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
 					$_POST['text'] .= ' Тикет закрыт.';
@@ -3196,9 +3201,8 @@ class Admin_interface extends CI_Controller{
 	
 	public function sub_mailtext($text,$uid){
 		
-		$text = strip_tags($text);
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
+		if(mb_strlen($text,'UTF-8') > 250):
+			$text = mb_substr($text,0,250,'UTF-8');
 			$pos = mb_strrpos($text,' ',0,'UTF-8');
 			$text = mb_substr($text,0,$pos,'UTF-8');
 			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
@@ -3208,7 +3212,6 @@ class Admin_interface extends CI_Controller{
 	
 	public function sub_tickettext($text,$uid){
 		
-		$text = strip_tags($text);
 		if(mb_strlen($text,'UTF-8') > 150):
 			$text = mb_substr($text,0,150,'UTF-8');
 			$pos = mb_strrpos($text,' ',0,'UTF-8');
@@ -3231,6 +3234,14 @@ class Admin_interface extends CI_Controller{
 		else:
 			return FALSE;
 		endif;
+	}
+
+	function replace_a_tag($string){
+		
+		$pattern = "/{(.+?)\|(http:\/\/.+?)}/i";
+		$replacement = "<a href=\"\$2\">\$1</a>";
+		return preg_replace($pattern, $replacement,$string);
+				
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/

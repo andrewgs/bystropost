@@ -20,7 +20,7 @@ class Mdmessages extends CI_Model{
 			
 		$this->sender 		= $uid;
 		$this->recipient	= $recipient;
-		$this->text 		= strip_tags(nl2br($text),'<br>');
+		$this->text 		= strip_tags(nl2br($text),'<br><a>');
 		$this->date 		= date("Y-m-d H:i:s");
 		
 		$this->db->insert('messages',$this);
