@@ -63,16 +63,16 @@
 			<td width="200">Размещать задания которые противоречат законам РФ <nobr>(порно, казино и т.п)</nobr>: </td>
 			<td>
 				<select name="illegal" class="reg-form-input w195 h35">
-					<option value="0">Нет, не размещать</option>
-					<option value="1">Да, размещать</option>
+					<option value="1">Нет, не размещать</option>
+					<option value="0">Да, размещать</option>
 				</select>
 			</td>
 		</tr>
 		<tr>
 				<td width="200">Критерии к публикации фотографий к контенту <strong>(если все поля не заполнены – фотографии будут отсутствовать)</strong></td>
 				<td>
-					<span style="margin-left:10px;"><strong>Ширина изображения:</strong></span><input name="imgwidth" class="reg-form-input w50 digital" type="text" value="" style="margin-left:10px; color:#00ca00"><br/>
-					<span style="margin-left:15px;"><strong>Высота изображения:</strong></span><input name="imgheight" type="text" class="reg-form-input w50 digital" value="" style="margin-left:10px; color:#00ca00"><br/>
+					<span style="margin-left:10px;"><strong>Ширина изображения:</strong></span><input name="imgwidth" class="reg-form-input w50 digital imgsize" type="text" value="" style="margin-left:10px; color:#00ca00"><br/>
+					<span style="margin-left:15px;"><strong>Высота изображения:</strong></span><input name="imgheight" type="text" class="reg-form-input w50 digital imgsize" value="" style="margin-left:10px; color:#00ca00"><br/>
 					<span style="margin-left:15px;">Позиция изображения:</span>
 					<span class="help-block">[Например: 250х200]</span>
 					<span style="margin-left:15px;">Позиция изображения:</span>

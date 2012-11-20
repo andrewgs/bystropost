@@ -30,6 +30,10 @@
 						<td><?php $this->load->view("clients_interface/includes/thematically");?></td>
 					</tr>
 					<tr>
+						<td>Уточнение тематики:</td>
+						<td style="text-align:left;"><?=$platform['tematcustom'];?></td>
+					</tr>
+					<tr>
 						<td>CMS:</td>
 						<td><?php $this->load->view("clients_interface/includes/cms");?></td>
 					</tr>

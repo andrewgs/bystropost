@@ -415,6 +415,7 @@ class Managers_interface extends CI_Controller{
 					$_POST['imgstatus'] = 1;
 				else:
 					$_POST['imgstatus'] = 0;
+					$_POST['imgwidth'] = $_POST['imgheight'] = '';
 					$_POST['imgpos'] = 'left';
 				endif;
 				$result = $this->mdplatforms->update_record($platform,$webmaster,$_POST);

@@ -42,7 +42,8 @@
 		<?php endif;?>
 			
 			$("#addMarket").click(function(event){
-				var err = false;
+				var err = false; var top = 0;
+				$(".reg-form-input").css("border-color","#D0D0D0");
 				$(".ErrImg").remove();
 				$(".inpval").each(function(i,element){
 					if($(this).val()==''){
@@ -51,9 +52,17 @@
 						err = true;
 					}
 				});
+				$(".imgsize").each(function(i,element){
+					if($(this).val() === '0'){
+						$(this).css('border-color','#ff8080');
+						$(this).after('<img class="ErrImg" src="<?=$baseurl;?>images/icons/exclamation.png" title="Укажите точные размеры">');
+						err = true;
+						top = 600;
+					}
+				});
 				if(err){
 					event.preventDefault();
-					$.scrollTo(0,500);
+					$.scrollTo(top,500);
 				}
 			});
 		<?php if(!$userinfo['remote'] || $platform['manager'] != 2):?>
