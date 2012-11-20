@@ -116,7 +116,10 @@
 					<input type="checkbox" id="AntiHold" name="antihold" value="1" <?= ($user['antihold'] == 1)? 'checked="checked"': '';?>>
 					Не блокировать вебмастера
 				</label>
-				<span class="help-block">Клиент сможет работать в системе, если даже есть не оплаченные заявки более 5 дней.</span>
+				<span class="help-block">
+					Клиент сможет работать в системе, если даже есть не оплаченные заявки более 5 дней.<br/>
+					Так же клиент будет разблокирован в случае его блокироваки.
+				</span>
 			</div>
 		</div>
 	<?php endif;?>

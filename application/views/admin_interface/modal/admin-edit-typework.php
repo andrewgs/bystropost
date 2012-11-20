@@ -28,6 +28,15 @@
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label class="control-label" for="ticpr"></label>
+					<div class="controls">
+						<label class="checkbox">
+						<input id="emTicPr" name="ticpr" type="checkbox" value="1" checked="checked">
+							Прибавлять тИЦ и PR
+						</label>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

@@ -167,6 +167,15 @@ class Mdplatforms extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function update_nickname_ticpr($nickname,$wprice,$mprice){
+		
+		$this->db->set('c'.$nickname,'c'.$nickname.$wprice,FALSE);
+		$this->db->set('m'.$nickname,'m'.$nickname.$mprice,FALSE);
+		
+		$this->db->update('platforms');
+		return $this->db->affected_rows();
+	}
+	
 	function update_lock($id,$uid,$locked){
 		
 		$this->db->set('locked',$locked);

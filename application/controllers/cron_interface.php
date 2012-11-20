@@ -111,6 +111,10 @@ class Cron_interface extends CI_Controller{
 										$deliver_works[$i]['our_price'] = $this->mdunion->read_pl_price_rid($deliver_works[$i]['siteid'],'m'.$typeswork[$deliver_works[$i]['type']-1]['nickname']);
 									endif;
 									$deliver_works[$i]['delete'] = 0;
+									//игнорирование работ у которых одна из сумм равна нулю
+									if(($deliver_works[$i]['our_price'] == 0) || ($deliver_works[$i]['client_price'] == 0)):
+										$deliver_works[$i]['delete'] = 1;
+									endif;
 								endif;
 							endfor;
 						endfor;

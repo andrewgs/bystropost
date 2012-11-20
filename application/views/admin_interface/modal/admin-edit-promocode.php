@@ -31,7 +31,7 @@
 				<div class="control-group">
 					<label for="birzid" class="control-label">Биржи: </label>
 					<div class="controls">
-						<select multiple="multiple" id="SMarkets" name="birzid[]" class="span3 acinput" size="5">
+						<select multiple="multiple" id="SMarkets" name="birzid[]" class="span3 acinput" size="6">
 						<?php for($i=0;$i<count($markets);$i++):?>
 							<option value="<?=$markets[$i]['id'];?>"><?=$markets[$i]['title'];?></option>
 						<?php endfor;?>

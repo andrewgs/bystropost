@@ -7,6 +7,7 @@ class Mdtypeswork extends CI_Model{
 	var $wprice 	= 0;
 	var $mprice 	= 0;
 	var $nickname	= '';
+	var $ticpr		= 1;
 	
 	function __construct(){
 		parent::__construct();
@@ -17,6 +18,7 @@ class Mdtypeswork extends CI_Model{
 		$this->title 	= htmlspecialchars($data['title']);
 		$this->wprice 	= $data['wprice'];
 		$this->mprice 	= $data['mprice'];
+		$this->ticpr 	= 1;
 		
 		$this->db->insert('typeswork',$this);
 		return $this->db->insert_id();
@@ -27,6 +29,7 @@ class Mdtypeswork extends CI_Model{
 		$this->db->set('title',htmlspecialchars($data['title']));
 		$this->db->set('wprice',$data['wprice']);
 		$this->db->set('mprice',$data['mprice']);
+		$this->db->set('ticpr',$data['ticpr']);
 		$this->db->where('id',$data['tpid']);
 		$this->db->update('typeswork');
 		return $this->db->affected_rows();

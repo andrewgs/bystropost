@@ -671,6 +671,17 @@ class Admin_interface extends CI_Controller{
 				endif;
 				$result = $this->mdusers->update_record($_POST);
 				if($result):
+					if($_POST['antihold'] && $pagevar['user']['debetor']):
+						$this->mdusers->update_field($user,'debetor',0);
+						$remoteid = $this->mdusers->read_field($user,'remoteid');
+						if($remoteid):
+							$markets = $this->mdwebmarkets->read_records($remoteid);
+							for($i=0;$i<count($markets);$i++):
+								$param = 'accid='.$markets[$i]['id'].'&birzid='.$markets[$i]['market'].'&login='.$markets[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($markets[$i]['cryptpassword'])).'&act=1';
+								$this->API('UpdateAccount',$param);
+							endfor;
+						endif;
+					endif;
 					$msgs = 'Личные данные успешно сохранены.<br/>'.$this->session->userdata('msgs');
 					$this->session->set_userdata('msgs',$msgs);
 				endif;
@@ -683,7 +694,7 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
-		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['user']['signdate'] = $this->operation_dot_date_not_time($pagevar['user']['signdate']);
 		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		
@@ -1998,9 +2009,13 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('title',' ','required|trim');
 			$this->form_validation->set_rules('wprice',' ','required|trim');
 			$this->form_validation->set_rules('mprice',' ','required|trim');
+			$this->form_validation->set_rules('ticpr',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if(!isset($_POST['ticpr'])):
+					$_POST['ticpr'] = 0;
+				endif;
 				$result = $this->mdtypeswork->insert_record($_POST);
 				if($result):
 					$this->session->set_userdata('msgs','Тип работ добавлен успешно');
@@ -2014,11 +2029,21 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('title',' ','required|trim');
 			$this->form_validation->set_rules('wprice',' ','required|trim');
 			$this->form_validation->set_rules('mprice',' ','required|trim');
+			$this->form_validation->set_rules('ticpr',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				if(!isset($_POST['ticpr'])):
+					$_POST['ticpr'] = 0;
+				endif;
+//				$worktype = $this->mdtypeswork->read_record($_POST['tpid']);
 				$result = $this->mdtypeswork->update_record($_POST);
 				if($result):
+					/*if($worktype['ticpr'] && !$_POST['ticpr']):
+						$this->mdplatforms->update_nickname_ticpr($worktype['nickname'],'-5','-2');
+					elseif(!$worktype['ticpr'] && $_POST['ticpr']):
+						$this->mdplatforms->update_nickname_ticpr($worktype['nickname'],'+5','+2');
+					endif;*/
 					$this->session->set_userdata('msgs','Тип работ изменен успешно');
 				endif;
 			endif;

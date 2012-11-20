@@ -32,7 +32,7 @@
 							<td class="w85"><nobr><b><?=$tpswork[$i]['title'];?></b></nobr></td>
 							<td class="w85"><b><?=$tpswork[$i]['wprice'];?> руб.<br/><?=$tpswork[$i]['mprice'];?> руб.</b></td>
 							<td class="w85">
-								<div id="params<?=$i;?>" style="display:none" data-wid="<?=$tpswork[$i]['id'];?>" data-title="<?=$tpswork[$i]['title'];?>" data-wprice="<?=$tpswork[$i]['wprice'];?>" data-mprice="<?=$tpswork[$i]['mprice'];?>"></div>
+								<div id="params<?=$i;?>" style="display:none" data-wid="<?=$tpswork[$i]['id'];?>" data-title="<?=$tpswork[$i]['title'];?>" data-wprice="<?=$tpswork[$i]['wprice'];?>" data-mprice="<?=$tpswork[$i]['mprice'];?>" data-ticpr="<?=$tpswork[$i]['ticpr'];?>"></div>
 								<a class="btn btn-success editTypeWork" data-param="<?=$i;?>" data-toggle="modal" href="#editTypeWork" title="Редактировать тип"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteTypeWork" data-param="<?=$i;?>" data-toggle="modal" href="#deleteTypeWork" title="Удалить тип"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
@@ -46,7 +46,7 @@
 							</td>
 							<td class="w85"><b><?=$tpswork[$i+1]['wprice'];?> руб.<br/><?=$tpswork[$i+1]['mprice'];?> руб.</b></td>
 							<td class="w85">
-								<div id="params<?=$i+1;?>" style="display:none" data-wid="<?=$tpswork[$i+1]['id'];?>" data-title="<?=$tpswork[$i+1]['title'];?>" data-wprice="<?=$tpswork[$i+1]['wprice'];?>" data-mprice="<?=$tpswork[$i+1]['mprice'];?>"></div>
+								<div id="params<?=$i+1;?>" style="display:none" data-wid="<?=$tpswork[$i+1]['id'];?>" data-title="<?=$tpswork[$i+1]['title'];?>" data-wprice="<?=$tpswork[$i+1]['wprice'];?>" data-mprice="<?=$tpswork[$i+1]['mprice'];?>" data-ticpr="<?=$tpswork[$i+1]['ticpr'];?>"></div>
 								<a class="btn btn-success editTypeWork" data-param="<?=$i+1;?>" data-toggle="modal" href="#editTypeWork" title="Редактировать тип"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 								<a class="btn btn-danger deleteTypeWork" data-param="<?=$i+1;?>" data-toggle="modal" href="#deleteTypeWork" title="Удалить тип"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							</td>
@@ -76,7 +76,10 @@
 				var Param = $(this).attr('data-param'); wID = $("div[id = params"+Param+"]").attr("data-wid");
 				var	mTitle = $("div[id = params"+Param+"]").attr("data-title"); var	wPrice = $("div[id = params"+Param+"]").attr("data-wprice");
 				var	mPrice = $("div[id = params"+Param+"]").attr("data-mprice");
+				var	TicPr = $("div[id = params"+Param+"]").attr("data-ticpr");
+				
 				$(".idTypeWork").val(wID);$("#emTitle").val(mTitle);$("#ewPrice").val(wPrice);$("#emPrice").val(mPrice);
+				if(TicPr == 1){$("#emTicPr").attr('checked','checked');}else{$("#emTicPr").removeAttr('checked');}
 			});
 			
 			$("#emsend").click(function(event){
