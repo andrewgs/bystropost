@@ -44,6 +44,17 @@ class Mdtypeswork extends CI_Model{
 		return NULL;
 	}
 	
+	function read_ticpr_records(){
+		
+		$this->db->select('id');
+		$this->db->where('ticpr',1);
+		$this->db->order_by('id');
+		$query = $this->db->get('typeswork');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_records_id(){
 		
 		$this->db->order_by('id');

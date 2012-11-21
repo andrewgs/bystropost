@@ -1776,19 +1776,7 @@ class Clients_interface extends CI_Controller{
 					$this->mdplatforms->update_field($platform,'pr',$pr);
 					$tic = $this->getTIC('http://'.$_POST['url']);
 					$this->mdplatforms->update_field($platform,'tic',$tic);
-					if($tic >= 30):
-						$addwtic = 5;
-						$addmtic = 2;
-					endif;
-					$sqlquery = "UPDATE platforms SET ";
-					$works = $this->mdtypeswork->read_records();
-					for($i=0;$i<count($works);$i++):
-						$sqlquery .= 'c'.$works[$i]['nickname'].' = '.($works[$i]['wprice']+$addwtic).', m'.$works[$i]['nickname'].' = '.($works[$i]['mprice']+$addmtic);
-						if(isset($works[$i+1])):
-							$sqlquery .= ', ';
-						endif;
-					endfor;
-					$sqlquery .= ' WHERE platforms.id = '.$platform;
+					$sqlquery = $this->SQL_TIC_PR($tic,$platform);
 					$this->mdplatforms->run_query($sqlquery);
 				endif;
 				if($platform && isset($_POST['markets'])):
@@ -2550,25 +2538,7 @@ class Clients_interface extends CI_Controller{
 						$this->mdplatforms->update_field($platform,'pr',$pr);
 						$tic = $this->getTIC('http://'.$new_platform['url']);
 						$this->mdplatforms->update_field($platform,'tic',$tic);
-						if($tic >= 30):
-							$addwtic = 5;
-							$addmtic = 2;
-						endif;
-						$sqlquery = "UPDATE platforms SET ";
-						$works = $this->mdtypeswork->read_records();
-						$arr_works = array(1,2,4,5,6);
-						for($j=0;$j<count($works);$j++):
-							$wadd = $madd = 0;
-							if(in_array($works[$j]['id'],$arr_works)):
-								$wadd = $addwtic;
-								$madd = $addmtic;
-							endif;
-							$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
-							if(isset($works[$j+1])):
-								$sqlquery .= ', ';
-							endif;
-						endfor;
-						$sqlquery .= ' WHERE platforms.id = '.$platform;
+						$sqlquery = $this->SQL_TIC_PR($tic,$platform);
 						$this->mdplatforms->run_query($sqlquery);
 						$cntpl++;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
@@ -2772,6 +2742,32 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		return $cy;
+	}
+	
+	public function SQL_TIC_PR($tic,$platform){
+		
+		if($tic >= 30):
+			$addwtic = 5;$addmtic = 2;
+		endif;
+		$sqlquery = "UPDATE platforms SET ";
+		$works = $this->mdtypeswork->read_records();
+		$arr_works = $this->mdtypeswork->read_ticpr_records();
+		foreach($arr_works AS $key=>$value):
+			$tic_array[] = $value['id'];
+		endforeach;
+		for($j=0;$j<count($works);$j++):
+			$wadd = $madd = 0;
+			if(in_array($works[$j]['id'],$tic_array)):
+				$wadd = $addwtic;
+				$madd = $addmtic;
+			endif;
+			$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
+			if(isset($works[$j+1])):
+				$sqlquery .= ', ';
+			endif;
+		endfor;
+		$sqlquery .= ' WHERE platforms.id = '.$platform;
+		return $sqlquery;
 	}
 	
 	/******************************************************** Функции API *******************************************************************/

@@ -13,7 +13,7 @@
 					</li>
 				<?php if($userinfo['balance'] >= $minprice):?>
 					<li style="float:right;">
-						<?=anchor('webmaster-panel/actions/finished-jobs/pay-all','Оплатить все',array('class'=>'btn btn-info payall','style'=>'margin-top: -5px;'));?>
+						<?=anchor('webmaster-panel/actions/finished-jobs/pay-all','Оплатить все задания',array('class'=>'btn btn-info payall','style'=>'margin-top: -5px;'));?>
 					</li>
 				<?php endif;?>
 					<li style="float:right;">
@@ -100,10 +100,10 @@
 					<?php endfor; ?>
 					<?php if($cntunit['delivers']['notpaid'] && ($userinfo['balance'] >= $minprice)):?>
 						<tr class="byHide">
-							<td colspan="7" style="text-align:right; vertical-align:middle;">
+							<td colspan="6" style="text-align:right; vertical-align:middle;">
 								<?=anchor($this->uri->uri_string(),'Инвертировать',array('class'=>'none','id'=>'inverse','style'=>'text-decoration:none;'));?>
 							</td>
-							<td style="text-align:center; vertical-align:middle;"><input type="checkbox" id="changeAll" title="Снять / Установить" /></td>
+							<td colspan="2" style="text-align:center; vertical-align:middle;"><label for="changeAll" style="display: inline;">Выделить всё &nbsp;</label> <input type="checkbox" id="changeAll" title="Снять / Установить" /></td>
 						</tr>
 					<?php endif;?>
 					</tbody>
