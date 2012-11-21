@@ -8,7 +8,7 @@
 		<?php $this->load->view("users_interface/includes/header");?>
 		<div class="clear"></div>
 		<div class="row">
-			<div class="span12">
+			<div class="span12" style="height:600px;">
 				<iframe style="width: 100%; height: 100%; border: 0;" frameborder="0" src="http://reformal.ru/widget/74589"></iframe>
 			</div>
 		</div>

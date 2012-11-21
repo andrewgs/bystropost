@@ -73,9 +73,15 @@ class General_interface extends CI_Controller{
 		$this->load->view("users_interface/support",$pagevar);
 	}
 
-	public function cron_script(){
-		
-		/**********************************************************************/
-		
+	function load_views(){
+	
+		$type = $this->uri->segment(2);
+		switch ($type):
+			case 'market-profile'	:	$pagevar = array('markets'=>$this->mdmarkets->read_records(),'baseurl'=>base_url());
+										$this->load->view('clients_interface/includes/markets-profile',$pagevar);
+										break;
+					default 		:	show_404();
+		endswitch;
 	}
+	
 }

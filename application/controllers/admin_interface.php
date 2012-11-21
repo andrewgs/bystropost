@@ -1330,7 +1330,7 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		$pagevar['userinfo']['remote'] = TRUE;
+		$pagevar['userinfo']['remote'] = FALSE;
 		
 		$attached = $this->mdunion->services_attached_list($webmaster);
 		for($i=0;$i<count($attached);$i++):
@@ -1417,9 +1417,7 @@ class Admin_interface extends CI_Controller{
 					if($result):
 						$text = "Информация о площадке ".$pagevar['platform']['url']." изменена.<br/>Проверьте свой E-mail что бы увидеть изменения";
 						$this->mdmessages->send_noreply_message($this->user['uid'],$pagevar['platform']['manager'],2,2,$text);
-						
-						ob_start();
-						?>
+						ob_start();?>
 						<img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($pagevar['platform']['manager'],'fio');?></strong></p>
 						<p>Вебмастер изменил информацию о площадке: <?=$this->mdplatforms->read_field($platform,'url');?><br/>
@@ -2283,7 +2281,7 @@ class Admin_interface extends CI_Controller{
 						<p><strong>Здравствуйте, <?=$users[$i]['fio'];?></strong></p>
 						<p>Получено новое сообщение.</p>
 						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($users[$i]['id']);?> и перейдите в раздел "Почта"</p>
-						<p><br/><?=$this->sub_tickettext($_POST['text'],$users[$i]['id']);?><br/></p>
+						<p><br/><?=$this->sub_mailtext($_POST['text'],$users[$i]['id']);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 						<?
 						$mailtext = ob_get_clean();
@@ -3202,8 +3200,8 @@ class Admin_interface extends CI_Controller{
 	
 	public function sub_mailtext($text,$uid){
 		
-		if(mb_strlen($text,'UTF-8') > 250):
-			$text = mb_substr($text,0,250,'UTF-8');
+		if(mb_strlen($text,'UTF-8') > 500):
+			$text = mb_substr($text,0,500,'UTF-8');
 			$pos = mb_strrpos($text,' ',0,'UTF-8');
 			$text = mb_substr($text,0,$pos,'UTF-8');
 			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
@@ -3213,8 +3211,8 @@ class Admin_interface extends CI_Controller{
 	
 	public function sub_tickettext($text,$uid){
 		
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
+		if(mb_strlen($text,'UTF-8') > 500):
+			$text = mb_substr($text,0,500,'UTF-8');
 			$pos = mb_strrpos($text,' ',0,'UTF-8');
 			$text = mb_substr($text,0,$pos,'UTF-8');
 			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
@@ -3237,12 +3235,20 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 
-	function replace_a_tag($string){
+	function replace_text_a_tag($string){
 		
 		$pattern = "/{(.+?)\|(http:\/\/.+?)}/i";
 		$replacement = "<a href=\"\$2\">\$1</a>";
 		return preg_replace($pattern, $replacement,$string);
-				
+		
+	}
+	
+	function replace_a_tag($string){
+		
+		$pattern = "/(http:\/\/)(.+?)(\s+?)/i";
+		$replacement = "<a href=\"\$1\$2\">\$2</a>\$3";
+		return preg_replace($pattern, $replacement,$string);
+		
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/

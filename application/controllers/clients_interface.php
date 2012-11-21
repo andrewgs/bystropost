@@ -179,7 +179,7 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
+		$pagevar['user']['signdate'] = $this->operation_dot_date_on_time($pagevar['user']['signdate']);
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
@@ -274,11 +274,9 @@ class Clients_interface extends CI_Controller{
 							$text .= ' Причина блокировки: '.$_POST['reason'];
 						endif;
 						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,$text);
-//						$this->mdmessages->insert_record($this->user['uid'],0,$text);
 						for($i=0;$i<count($managers);$i++):
 							$text = 'Площадка '.$managers[$i]['url'].' перешла в состояние - не активна!';
 							$this->mdmessages->send_noreply_message($this->user['uid'],$managers[$i]['manager'],2,2,$text);
-//							$this->mdmessages->insert_record($this->user['uid'],$managers[$i]['manager'],$text);
 						endfor;
 					endif;
 				elseif($this->user['lock'] && isset($_POST['lockprofile'])):
@@ -289,7 +287,6 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgs',$msgs);
 					$text = 'Вебмастер '.$this->user['ulogin'].' разблокировал свой профиль.';
 					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,$text);
-//					$this->mdmessages->insert_record($this->user['uid'],0,$text);
 				endif;
 				
 				redirect($this->uri->uri_string());

@@ -102,8 +102,6 @@ $route['webmaster-panel/actions/services']							= "clients_interface/control_se
 $route['webmaster-panel/actions/services/serviceid/:num/platforms']	= "clients_interface/control_services_platforms";
 $route['admin-panel/management/services/delete/serviceid/:num']		= "clients_interface/control_services_delete";
 
-$route['views/market-profile']										= "clients_interface/views";
-
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
 $route['manager-panel/actions/control']							= "managers_interface/control_panel";
@@ -162,7 +160,7 @@ $route['optimizator-panel/actions/logoff']								= "optimizators_interface/acti
 $route[':any/viewimage/:num']	= "general_interface/viewimage";
 $route['balance/result']		= "general_interface/balance_result";
 $route['support']				= "general_interface/support";
-$route['cron-script']			= "general_interface/cron_script";
+$route['views/market-profile']	= "general_interface/load_views";
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
 

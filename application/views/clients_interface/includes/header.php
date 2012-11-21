@@ -1,7 +1,7 @@
 <header class="admin">
 	<div class="container">
 		<div class="row header-subnav">
-			<div class="span8 offset4">
+			<div class="span10 offset2">
 				<?=anchor("news","Новости");?>
 				<?=anchor("faq","FAQ");?>
 				<?=anchor("manner-of-payment","Порядок оплаты");?>
@@ -9,7 +9,9 @@
 				<?=anchor("about-content","О контенте");?>
 				<?=anchor("capabilities","Наши возможности");?>
 				<?=anchor("interface","Интерфейс");?>
-				<?=anchor("contacts","Контакты");?>  
+				<?=anchor("contacts","Контакты");?>
+				<?=anchor("http://idea.bystropost.ru/","Ваши идеи");?>
+				<?=anchor("users-ratings/webmasters","Отзывы");?>
 			</div>
 		</div>
 		<div class="row">
