@@ -2063,7 +2063,12 @@ class Clients_interface extends CI_Controller{
 			else:
 				$recipient = 0;
 				if($_POST['type'] == 1):
-					$recipient = $this->mdplatforms->read_field($_POST['platform'],'manager');
+					$man = 0;
+					$man = $this->mdplatforms->read_field($_POST['platform'],'manager');
+					if(!$man):
+						$man = $this->mdusers->read_field($this->user['uid'],'manager');
+					endif;
+					$recipient = $man;
 					if(!$recipient):
 						$recipient = 0;
 					else:

@@ -304,6 +304,7 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->order_by('url','ASC');
 		$this->db->where('webmaster',$uid);
+		$this->db->or_where('id',0);
 		$this->db->where('locked',0);
 		$this->db->where('status',1);
 		$query = $this->db->get('platforms');

@@ -510,7 +510,7 @@ class Managers_interface extends CI_Controller{
 		
 		$platform = $this->uri->segment(5);
 		if(!$this->mdplatforms->ownew_manager_platform($this->user['uid'],$platform)):
-			show_404();
+			redirect('manager-panel/actions/platforms');
 		endif;
 		$pagevar = array(
 					'description'	=> '',
