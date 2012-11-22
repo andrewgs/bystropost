@@ -578,12 +578,21 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function users_delives_works($date,$status){
+	function read_users_sendmail($type){
 		
-		$this->db->select('COUNT(*) AS cnt');
-		$this->db->where('date',$date);
-		$this->db->where('status',$status);
-		$query = $this->db->get('delivesworks',1);
+		$this->db->where('type',$type);
+		$this->db->where('locked',0);
+		$this->db->where('sendmail',1);
+		$query = $this->db->get('users');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function users_debitors_works($webmaster,$date,$znak){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM delivesworks WHERE delivesworks.webmaster = $webmaster AND delivesworks.date $znak '$date' AND status = 0";
+		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0]['cnt'];
 		return 0;

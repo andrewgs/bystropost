@@ -3235,7 +3235,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 
-	function replace_text_a_tag($string){
+	public function replace_text_a_tag($string){
 		
 		$pattern = "/{(.+?)\|(http:\/\/.+?)}/i";
 		$replacement = "<a href=\"\$2\">\$1</a>";
@@ -3243,7 +3243,7 @@ class Admin_interface extends CI_Controller{
 		
 	}
 	
-	function replace_a_tag($string){
+	public function replace_a_tag($string){
 		
 		$pattern = "/(http:\/\/)(.+?)(\s+?)/i";
 		$replacement = "<a href=\"\$1\$2\">\$2</a>\$3";

@@ -100,8 +100,6 @@ class Mdplatforms extends CI_Model{
 		
 		$this->db->where('remoteid >',0);
 		$this->db->where('manager',$manager);
-//		$this->db->where('locked',0);
-//		$this->db->where('status',1);
 		$this->db->limit($count,$from);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();

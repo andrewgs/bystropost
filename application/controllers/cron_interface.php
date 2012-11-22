@@ -251,30 +251,74 @@ class Cron_interface extends CI_Controller{
 	
 	public function users_sending_mail(){
 		
-		/*$start_time = microtime(true);
+		$start_time = microtime(true);
 		
 		$file_name = getcwd().'/documents/sending_'.date("YmdHi").'.log';
 		$text = "Файл-лог автоматического уведомления пользователей.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		$mailtext = '';
-		$curdate = date("Y-m-d");
-		//Уведомление о наличии новых неоплаченных работ за текущий день.
-		$result = $this->mdunion->users_delives_works($curdate,0);
-		if($result):
-			$mailtext .= "У Вас есть $result неоплаченных работ за текущий день.\n";
-		endif;
-		$result = $this->mdunion->users_delives_works($curdate,1);
-		if($result):
-			$mailtext .= "За текущий день было оплачено $result выполненных работ.\n";
-		endif;
+		$settlement_date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+		$webmasters = $this->mdunion->read_users_sendmail(1);
+		for($uid=0;$uid<count($webmasters);$uid++):
+			ob_start();?>
+			<img src="<?=base_url();?>images/logo.png" alt="" />
+			<p><strong>Здравствуйте, <?=$webmasters[$uid]['fio'];?></strong></p>
+			<p>Представляем вам свежий дайджест событий за <?=$this->operation_dot_date($settlement_date)?> для вашего аккаунта <?=$webmasters[$uid]['login'];?> в системе Быстропост.</p>
+			<p>Ваш баланс - <?=$webmasters[$uid]['balance'];?> рублей<br/>
+			<?php $debet = $this->mddelivesworks->calc_webmaster_summ($webmasters[$uid]['id'],'2012-01-01',0);?>
+			<?php if($debet['sum']):?>
+			Общий долг в системе - <?=$debet['sum']?> рублей</p>
+			<?php endif;?>
+			<p>Оплаченных заявок: <?=$this->mddelivesworks->count_records_by_webmaster_status($webmasters[$uid]['id'],1);?><br/>
+			Заявок ожидающих оплату: <?=$this->mddelivesworks->count_records_by_webmaster_status($webmasters[$uid]['id'],0);?></p>
+			<?php $work3day = $this->mdunion->users_debitors_works($webmasters[$uid]['id'],date("Y-m-d",mktime(0,0,0,date("m"),date("d")-3,date("Y"))),'=');?>
+		<?php if($work3day):?>
+			<p>По некоторым вашим заявкам образовалась задолженность:</p>
+			<p>
+				<ul>
+					<li><?=$work3day;?> заявок более 3-х суток</li>
+					<li><?=$this->mdunion->users_debitors_works($webmasters[$uid]['id'],date("Y-m-d",mktime(0,0,0,date("m"),date("d")-4,date("Y"))),'=');?> заявок более 4-х суток</li>
+					<li><?=$this->mdunion->users_debitors_works($webmasters[$uid]['id'],date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y"))),'<=');?> заявок более 5-х суток</li>
+				</ul>
+			</p>
+		<?php endif;?>
+			<p>Напоминаем, что при наличие неоплаченных заявок более 5 суток, аккаунт блокируется, до пополнения счета.<br/>
+			Рекомендуем вам бесплатно подключить в своём <?=anchor('webmaster-panel/actions/profile','профиле');?> режим беззаботный, 
+			для автоматического списания средств.<br/>
+			WMID указанный в профиле, должен соответствовать WMID с которого будет происходить оплата.</p>
+			<p>Данная рассылка носит информационный характер и высылается вам, если у вас есть неоплаченные заявки от трёх суток 
+			с момента сдачи в систему.Отключить рассылки вы можете в своём профиле.</p>
+			Новости проекта - <?=anchor('news','http://bystropost.ru/news');?><br/>
+			Страничка FaceBook - <?=anchor(' http://www.facebook.com/Bystropost','http://www.facebook.com/Bystropost');?><br/>
+			Наш Твиттер - <?=anchor('https://twitter.com/bystropost','https://twitter.com/bystropost');?>
+			<br/><br/><p>С Уважением, Команда Bystropost.ru</p><br/>
+			<p>Это автоматическое письмо. Если у вас есть идеи, как улучшить проект, <?=anchor('idea','напишите нам');?>.</p>
+			<?
+			$mailtext = ob_get_clean();
+			$this->email->clear(TRUE);
+			$config['smtp_host'] = 'localhost';
+			$config['charset'] = 'utf-8';
+			$config['wordwrap'] = TRUE;
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->to($webmasters[$uid]['login']);
+			$this->email->from('novosti@bystro.net','Bystropost.ru - Система мониторинга и управления');
+			$this->email->bcc('');
+			$this->email->subject("Дайджест событий. Обработка заявок от ".$this->operation_dot_date($settlement_date));
+			$this->email->message($mailtext);
+			if($this->email->send()):
+				$text = "\n\nВебмастер: ".$webmasters[$uid]['login']."\nДолг в системе: ".$debet['sum']." рубей. Сообщение отправлено.";
+				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+			else:
+				$text = "\n\nВебмастер: ".$webmasters[$uid]['login']."\nСообщение не отправлено.";
+				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+			endif;
+		endfor;
 		
 		$exec_time = round((microtime(true) - $start_time),2);
-		
-		$text = "Скрипт выполнен за: $exec_time сек.\n";
-		$text .= "Заблокировано: $total должников.\n";
-		$text .= "Приостановлено: $birzlock биржевых аккаунтов.";
+		$text = "\n\nСкрипт выполнен за: $exec_time сек.\n";
 		echo($text);
-		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);*/
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 	}
 	
 	private function current_date_on_time($field){
@@ -286,6 +330,14 @@ class Cron_interface extends CI_Controller{
 		$nmonth = $months[$list[1]];
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
 		$replacement = "\$5 $nmonth \$1 г. \$6:\$8";
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	private function operation_dot_date($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
+		$replacement = "\$5.$3.\$1"; 
 		return preg_replace($pattern, $replacement,$field);
 	}
 	
