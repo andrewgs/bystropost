@@ -1111,7 +1111,9 @@ class Clients_interface extends CI_Controller{
 			else:
 				$id = $this->mdmessages->insert_record($this->user['uid'],$_POST['recipient'],$_POST['text']);
 				if($id):
-					$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер '.$this->user['ulogin'].' написал письмо менеджеру '.$this->mdusers->read_field($_POST['recipient'],'login'));
+					if($this->mdusers->read_field($_POST['recipient'],'type') == 2):
+						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер '.$this->user['ulogin'].' написал письмо менеджеру '.$this->mdusers->read_field($_POST['recipient'],'login').'<br/><br/>'.$_POST['text']);
+					endif;
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 				endif;
 				if(isset($_POST['sendmail'])):
