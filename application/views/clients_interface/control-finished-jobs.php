@@ -29,6 +29,12 @@
 				<div style="float:left;margin-bottom:10px;">
 					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Оплаченные
 					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Не оплаченные
+					<select name="countwork" id="SetCountWork" title="Количество работ на странице" class="span1" style="margin:2px 0 0 10px">
+						<option value="10">10</option>
+						<option value="25" selected="selected">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
 				</div>
 				<div style="margin-left:305px;">
 				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
@@ -149,6 +155,17 @@
 			$("td[data-status='notpaid']").each(function(e){$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');});
 			$("td[data-status='paid']").each(function(e){$(this).addClass('paid'); $(this).siblings('td').addClass('paid');});
 			$("input.calendar").datepicker($.datepicker.regional['ru']);
+			
+			$("#SetCountWork").val(<?=$cntwork;?>);
+			
+			$("#SetCountWork").change(function(){
+				var CountWork = $(this).val();
+				$.post("<?=$baseurl;?>webmaster-panel/actions/finished-jobs/set-count-work",
+					{'countwork':CountWork},function(data){
+						window.location="<?=$baseurl;?>webmaster-panel/actions/finished-jobs"
+				},"json");
+			});
+			
 		<?php if(!$filter['fnotpaid']):?>
 			$(".byHide").hide();
 		<?php endif;?>

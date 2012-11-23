@@ -494,7 +494,7 @@ class Admin_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
@@ -732,7 +732,7 @@ class Admin_interface extends CI_Controller{
 				$this->email->to($user['login']);
 				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 				$this->email->bcc('');
-				$this->email->subject('Noreply: Bystropost.ru - Учетная запись удалена');
+				$this->email->subject('Bystropost.ru - Учетная запись удалена');
 				$this->email->message($mailtext);	
 				$this->email->send();
 				$this->session->set_userdata('msgs','Пользователь удален успешно.');
@@ -845,7 +845,7 @@ class Admin_interface extends CI_Controller{
 							$this->email->to($this->mdusers->read_field($_POST['uid'],'login'));
 							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 							$this->email->bcc('');
-							$this->email->subject('Noreply: Bystropost.ru - Площадка в работе');
+							$this->email->subject('Bystropost.ru - Площадка в работе');
 							$this->email->message($mailtext);	
 							$this->email->send();
 						endif;
@@ -869,7 +869,7 @@ class Admin_interface extends CI_Controller{
 							$this->email->to($this->mdusers->read_field($_POST['manager'],'login'));
 							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 							$this->email->bcc('');
-							$this->email->subject('Noreply: Bystropost.ru - Новая площадка');
+							$this->email->subject('Bystropost.ru - Новая площадка');
 							$this->email->message($mailtext);	
 							$this->email->send();
 						endif;
@@ -1024,7 +1024,7 @@ class Admin_interface extends CI_Controller{
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
-					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 					$this->email->message($mailtext);
 					$this->email->send();
 				endif;
@@ -1090,7 +1090,7 @@ class Admin_interface extends CI_Controller{
 							$this->email->to($this->mdusers->read_field($_POST['uid'],'login'));
 							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 							$this->email->bcc('');
-							$this->email->subject('Noreply: Bystropost.ru - Площадка в работе');
+							$this->email->subject('Bystropost.ru - Площадка в работе');
 							$this->email->message($mailtext);	
 							$this->email->send();
 						endif;
@@ -1115,7 +1115,7 @@ class Admin_interface extends CI_Controller{
 							$this->email->to($this->mdusers->read_field($_POST['manager'],'login'));
 							$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 							$this->email->bcc('');
-							$this->email->subject('Noreply: Bystropost.ru - Новая площадка');
+							$this->email->subject('Bystropost.ru - Новая площадка');
 							$this->email->message($mailtext);	
 							$this->email->send();
 						endif;
@@ -1285,7 +1285,7 @@ class Admin_interface extends CI_Controller{
 					$this->email->to($this->mdusers->read_field($info['webmaster'],'login'));
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
-					$this->email->subject('Noreply: Bystropost.ru - Площадка удалена');
+					$this->email->subject('Bystropost.ru - Площадка удалена');
 					$this->email->message($mailtext);	
 					$this->email->send();
 				endif;
@@ -1455,7 +1455,7 @@ class Admin_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($pagevar['platform']['manager'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Изменения по площадке.');
+						$this->email->subject('Bystropost.ru - Изменения по площадке.');
 						$this->email->message($mailtext);	
 						$this->email->send();
 						$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
@@ -2355,7 +2355,7 @@ class Admin_interface extends CI_Controller{
 						$this->email->to($users[$i]['login']);
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
@@ -2422,7 +2422,7 @@ class Admin_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
@@ -2617,7 +2617,7 @@ class Admin_interface extends CI_Controller{
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
-					$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
+					$this->email->subject('Bystropost.ru - Тикеты. Новое сообщение');
 					$this->email->message($mailtext);
 					$this->email->send();
 				endif;
@@ -3096,7 +3096,7 @@ class Admin_interface extends CI_Controller{
 				$this->email->to($debetors[$i]['ulogin']);
 				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 				$this->email->bcc('');
-				$this->email->subject('Noreply: Bystropost.ru - Уведомление о задолженности');
+				$this->email->subject('Bystropost.ru - Уведомление о задолженности');
 				$this->email->message($mailtext);
 				$this->email->send();
 				$statusval['count']++;

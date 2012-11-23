@@ -226,7 +226,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->to($this->user['ulogin']);
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Смена пароля в системе Bystropost.ru');
+						$this->email->subject('Смена пароля в системе Bystropost.ru');
 						$this->email->message($mailtext);	
 						$this->email->send();
 						$this->session->set_userdata('logon',md5($this->user['ulogin'].md5($_POST['password'])));
@@ -962,7 +962,7 @@ class Clients_interface extends CI_Controller{
 				$this->email->to($this->mdusers->read_field(2,'login'));
 				$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 				$this->email->bcc('');
-				$this->email->subject('Noreply: Bystropost.ru - Изменения по аккаунту на бирже.');
+				$this->email->subject('Bystropost.ru - Изменения по аккаунту на бирже.');
 				$this->email->message($mailtext);
 				$this->email->send();
 				
@@ -1116,7 +1116,7 @@ class Clients_interface extends CI_Controller{
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
-					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 					$this->email->message($mailtext);	
 					$this->email->send();
 				endif;
@@ -1222,6 +1222,7 @@ class Clients_interface extends CI_Controller{
 					'delivers'		=> array(),
 					'view'			=> FALSE,
 					'filter'		=> array('fpaid'=>1,'fnotpaid'=>1),
+					'cntwork'		=> 25,
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -1237,18 +1238,23 @@ class Clients_interface extends CI_Controller{
 		else:
 			$this->session->set_userdata('jobsfilter','0,1');
 		endif;
+		if($this->session->userdata('jobscount') != ''):
+			$pagevar['cntwork'] = $this->session->userdata('jobscount');
+		else:
+			$this->session->set_userdata('jobscount',25);
+		endif;
 		if($this->uri->segment(6)):
 			if(!$this->mdplatforms->ownew_platform($this->user['uid'],$this->uri->segment(6))):
 				redirect($_SERVER['HTTP_REFERER']);
 			endif;
 			$from = intval($this->uri->segment(8));
-			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),50,intval($this->uri->segment(8)),$this->session->userdata('jobsfilter'));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_platform($this->uri->segment(6),$this->session->userdata('jobscount'),intval($this->uri->segment(8)),$this->session->userdata('jobsfilter'));
 			$count = $this->mdunion->count_delivers_works_platform($this->uri->segment(6),$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/platform/platformid/'.$this->uri->segment(6).'/from/';
 			$config['uri_segment'] 	= 8;
 		else:
 			$from = $this->uri->segment(5);
-			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],50,intval($this->uri->segment(5)),$this->session->userdata('jobsfilter'));
+			$pagevar['delivers'] = $this->mdunion->delivers_works_webmaster($this->user['uid'],$this->session->userdata('jobscount'),intval($this->uri->segment(5)),$this->session->userdata('jobsfilter'));
 			$count = $this->mdunion->count_delivers_works_webmaster($this->user['uid'],$this->session->userdata('jobsfilter'));
 			$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/finished-jobs/from/';
 			$config['uri_segment'] 	= 5;
@@ -1427,9 +1433,9 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		$config['total_rows'] 	= $count;
-		$config['per_page'] 	= 50;
-		$config['num_links'] 	= 4;
+		$config['total_rows'] 		= $count;
+		$config['per_page'] 		= $this->session->userdata('jobscount');
+		$config['num_links'] 		= 4;
 		$config['first_link']		= 'В начало';
 		$config['last_link'] 		= 'В конец';
 		$config['next_link'] 		= 'Далее &raquo;';
@@ -1547,6 +1553,20 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		$statusval['filter'] = $this->session->userdata('jobsfilter');
+		echo json_encode($statusval);
+	}
+	
+	public function finished_jobs_count_page(){
+		
+		$statusval = array('status'=>TRUE,'countwork'=>25);
+		$countwork = trim($this->input->post('countwork'));
+		$this->session->set_userdata('jobscount',$statusval['countwork']);
+		if(!$countwork):
+			$this->session->set_userdata('jobscount','');
+		else:
+			$this->session->set_userdata('jobscount',$countwork);
+			$statusval['countwork'] = $countwork;
+		endif;
 		echo json_encode($statusval);
 	}
 	
@@ -1985,7 +2005,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($pagevar['platform']['manager'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Изменения по площадке.');
+						$this->email->subject('Bystropost.ru - Изменения по площадке.');
 						$this->email->message($mailtext);	
 						$this->email->send();
 						$this->mdlog->insert_record($this->user['uid'],'Событие №16: Состояние площадки - изменена');
@@ -2093,7 +2113,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($recipient,'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Новый тикет');
+						$this->email->subject('Bystropost.ru - Новый тикет');
 						$this->email->message($mailtext);
 						$this->email->send();
 						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
@@ -2257,7 +2277,7 @@ class Clients_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Тикеты. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Тикеты. Новое сообщение');
 						$this->email->message($mailtext);	
 						$this->email->send();
 					endif;

@@ -15,6 +15,16 @@
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
 				<div class="clear"></div>
+				<div style="float:left;margin-bottom:10px;">
+					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Оплаченные
+					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Не оплаченные
+					<select name="countwork" id="SetCountWork" title="Количество работ на странице" class="span1" style="margin:2px 0 0 10px">
+						<option value="10">10</option>
+						<option value="25" selected="selected">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+				</div>
 				<div style="float:right;">
 				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
 					<input type="hidden" id="srdjid" name="srdjid" value="">
@@ -64,7 +74,30 @@
 	<?php $this->load->view('managers_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-		
+			
+			$("#SetCountWork").val(<?=$cntwork;?>);
+			
+			$("#SetCountWork").change(function(){
+				var CountWork = $(this).val();
+				$.post("<?=$baseurl;?>manager-panel/actions/control/set-count-work",
+					{'countwork':CountWork},function(data){
+						window.location="<?=$baseurl;?>manager-panel/actions/control"
+				},"json");
+			});
+			
+		<?php if($filter['fpaid']):?>
+			$("#showPaid").attr('checked','checked');
+		<?php endif;?>
+		<?php if($filter['fnotpaid']):?>
+			$("#showNoPaid").attr('checked','checked');
+		<?php endif;?>	
+			$(".filterJobs").click(function(){
+				var ShowJobs = $(".filterJobs").serialize();
+				$.post("<?=$baseurl;?>manager-panel/actions/control/set-filter",{'showed':ShowJobs},
+					function(data){window.location="<?=$baseurl;?>admin-panel/management/users/userid/<?=$this->uri->segment(5);?>/finished-jobs";}
+				,"json");
+			});
+			
 			function suggest(inputString){
 				if(inputString.length < 5){
 					$("#suggestions").fadeOut();

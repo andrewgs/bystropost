@@ -70,8 +70,8 @@ $route['webmaster-panel/actions/finished-jobs']						= "clients_interface/contro
 $route['webmaster-panel/actions/finished-jobs/from']				= "clients_interface/control_finished_jobs";
 $route['webmaster-panel/actions/finished-jobs/from/:num']			= "clients_interface/control_finished_jobs";
 $route['webmaster-panel/actions/finished-jobs/set-filter']			= "clients_interface/finished_jobs_filter";
+$route['webmaster-panel/actions/finished-jobs/set-count-work']		= "clients_interface/finished_jobs_count_page";
 $route['webmaster-panel/actions/finished-jobs/search']				= "clients_interface/finished_jobs_search";
-
 
 $route['webmaster-panel/actions/platforms/add-platform']			= "clients_interface/control_add_platform";
 $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_interface/control_edit_platform";
@@ -107,6 +107,9 @@ $route['admin-panel/management/services/delete/serviceid/:num']		= "clients_inte
 $route['manager-panel/actions/control']							= "managers_interface/control_panel";
 $route['manager-panel/actions/control/from']					= "managers_interface/control_panel";
 $route['manager-panel/actions/control/from/:num']				= "managers_interface/control_panel";
+$route['manager-panel/actions/control/set-filter']				= "managers_interface/finished_jobs_filter";
+$route['manager-panel/actions/control/set-count-work']			= "managers_interface/finished_jobs_count_page";
+
 $route['manager-panel/actions/finished-jobs/search']			= "managers_interface/control_jobs_search";
 
 $route['manager-panel/actions/logoff']							= "managers_interface/actions_logoff";

@@ -53,6 +53,25 @@ class Managers_interface extends CI_Controller{
 	public function control_panel(){
 		
 		$from = intval($this->uri->segment(5));
+		
+		$from = intval($this->uri->segment(8));
+		$fpaid = $fnotpaid = 1;
+		if($this->session->userdata('jobsfilter') != ''):
+			$filter = preg_split("/,/",$this->session->userdata('jobsfilter'));
+			if(count($filter) == 1):
+				$fpaid = ($filter[0])?1:0;
+				$fnotpaid = (!$filter[0])?1:0;
+			endif;
+		else:
+			$this->session->set_userdata('jobsfilter','0,1');
+		endif;
+		$cntunit = 25;
+		if($this->session->userdata('jobscount') != ''):
+			$cntunit = $this->session->userdata('jobscount');
+		else:
+			$this->session->set_userdata('jobscount',25);
+		endif;
+		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -60,7 +79,9 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'delivers'		=> $this->mdunion->delivers_works_manager($this->user['uid'],10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_manager($this->user['uid'],$this->session->userdata('jobscount'),$from,$this->session->userdata('jobsfilter')),
+					'filter'		=> array('fpaid'=>$fpaid,'fnotpaid'=>$fnotpaid),
+					'cntwork'		=> $cntunit,
 					'cntunit'		=> array(),
 					'pages'			=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -73,11 +94,11 @@ class Managers_interface extends CI_Controller{
 			$pagevar['delivers'][$i]['date'] = $this->operation_dot_date($pagevar['delivers'][$i]['date']);
 		endfor;
 		
-		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/control/from/';
-		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_delivers_works_manager($this->user['uid']);
-		$config['per_page'] 	= 10;
-		$config['num_links'] 	= 4;
+		$config['base_url'] 		= $pagevar['baseurl'].'manager-panel/actions/control/from/';
+		$config['uri_segment'] 		= 5;
+		$config['total_rows'] 		= $this->mdunion->count_delivers_works_manager($this->user['uid'],$this->session->userdata('jobsfilter'));
+		$config['per_page'] 		= $cntunit;
+		$config['num_links'] 		= 4;
 		$config['first_link']		= 'В начало';
 		$config['last_link'] 		= 'В конец';
 		$config['next_link'] 		= 'Далее &raquo;';
@@ -219,6 +240,47 @@ class Managers_interface extends CI_Controller{
 		echo json_encode($statusval);
 	}
 	
+	public function finished_jobs_filter(){
+		
+		$statusval = array('status'=>TRUE,'filter'=>'','paid'=>-1,'notpaid'=>-1);
+		$showed = trim($this->input->post('showed'));
+		$this->session->set_userdata('jobsfilter','0,1');
+		if(!$showed):
+			$this->session->set_userdata('jobsfilter','');
+		else:
+			$filter = preg_split("/&/",$showed);
+			for($i=0;$i<count($filter);$i++):
+				$fparam[$i] = preg_split("/=/",$filter[$i]);
+			endfor;
+			if(count($fparam)==1):
+				$this->session->set_userdata('jobsfilter',$fparam[0][1]);
+				if($fparam[0][1]):
+					$statusval['paid'] = 1;$statusval['notpaid'] = 0;
+				else:
+					$statusval['paid'] = 0;$statusval['notpaid'] = 1;
+				endif;
+			else:
+				$this->session->set_userdata('jobsfilter',$fparam[0][1].','.$fparam[1][1]);
+				$statusval['paid'] = 1;$statusval['notpaid'] = 1;
+			endif;
+		endif;
+		$statusval['filter'] = $this->session->userdata('jobsfilter');
+		echo json_encode($statusval);
+	}
+	
+	public function finished_jobs_count_page(){
+		
+		$statusval = array('status'=>TRUE,'countwork'=>25);
+		$countwork = trim($this->input->post('countwork'));
+		$this->session->set_userdata('jobscount',$statusval['countwork']);
+		if(!$countwork):
+			$this->session->set_userdata('jobscount','');
+		else:
+			$this->session->set_userdata('jobscount',$countwork);
+			$statusval['countwork'] = $countwork;
+		endif;
+		echo json_encode($statusval);
+	}
 	
 	/******************************************************** other ******************************************************/	
 	
@@ -333,7 +395,7 @@ class Managers_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($recipient,'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
@@ -804,7 +866,7 @@ class Managers_interface extends CI_Controller{
 					$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 					$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 					$this->email->bcc('');
-					$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+					$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 					$this->email->message($mailtext);	
 					$this->email->send();
 				endif;
@@ -1085,7 +1147,7 @@ class Managers_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;
@@ -1209,7 +1271,7 @@ class Managers_interface extends CI_Controller{
 						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
 						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
 						$this->email->bcc('');
-						$this->email->subject('Noreply: Bystropost.ru - Почта. Новое сообщение');
+						$this->email->subject('Bystropost.ru - Почта. Новое сообщение');
 						$this->email->message($mailtext);
 						$this->email->send();
 					endif;

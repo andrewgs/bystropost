@@ -6,18 +6,18 @@ class Mdunion extends CI_Model{
 		parent::__construct();
 	}
 	
-	function delivers_works_manager($uid,$count,$from){
+	function delivers_works_manager($uid,$count,$from,$filter){
 		
-		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.manager = $uid ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
+		$query = "SELECT delivesworks.*, platforms.url AS ptitle,typeswork.title AS twtitle,markets.title AS mtitle FROM delivesworks INNER JOIN platforms ON delivesworks.platform=platforms.id INNER JOIN typeswork ON delivesworks.typework=typeswork.id INNER JOIN markets ON delivesworks.market=markets.id WHERE delivesworks.manager = $uid AND delivesworks.status IN ($filter) ORDER BY delivesworks.date DESC,delivesworks.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function count_delivers_works_manager($uid){
+	function count_delivers_works_manager($uid,$filter){
 		
-		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.manager = $uid";
+		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.manager = $uid AND delivesworks.status IN ($filter)";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
