@@ -1309,6 +1309,9 @@ class Admin_interface extends CI_Controller{
 	public function control_edit_platform(){
 		
 		$platform = $this->uri->segment(5);
+		if(!$platform):
+			redirect('admin-panel/management/platforms');
+		endif;
 		$webmaster = $this->mdplatforms->read_field($platform,'webmaster');
 		
 		$pagevar = array(
@@ -1495,6 +1498,9 @@ class Admin_interface extends CI_Controller{
 	public function management_view_platform(){
 		
 		$platform = $this->uri->segment(5);
+		if(!$platform):
+			redirect('admin-panel/management/platforms');
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1730,6 +1736,17 @@ class Admin_interface extends CI_Controller{
 	public function user_finished_jobs(){
 		
 		$from = intval($this->uri->segment(8));
+		$fpaid = $fnotpaid = 1;
+		if($this->session->userdata('jobsfilter') != ''):
+			$filter = preg_split("/,/",$this->session->userdata('jobsfilter'));
+			if(count($filter) == 1):
+				$fpaid = ($filter[0])?1:0;
+				$fnotpaid = (!$filter[0])?1:0;
+			endif;
+		else:
+			$this->session->set_userdata('jobsfilter','0,1');
+		endif;
+		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1737,7 +1754,8 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'delivers'		=> $this->mdunion->delivers_works_webmaster($this->uri->segment(5),10,$from,'0,1'),
+					'delivers'		=> $this->mdunion->delivers_works_webmaster($this->uri->segment(5),10,$from,$this->session->userdata('jobsfilter')),
+					'filter'		=> array('fpaid'=>$fpaid,'fnotpaid'=>$fnotpaid),
 					'typeswork'		=> $this->mdtypeswork->read_records(),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -1767,7 +1785,7 @@ class Admin_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/users/userid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
-		$config['total_rows'] 	= $this->mdunion->count_delivers_works_webmaster($this->uri->segment(5),'1,0');
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_webmaster($this->uri->segment(5),$this->session->userdata('jobsfilter'));
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -1821,6 +1839,18 @@ class Admin_interface extends CI_Controller{
 	public function platform_finished_jobs(){
 		
 		$from = intval($this->uri->segment(8));
+		
+		$fpaid = $fnotpaid = 1;
+		if($this->session->userdata('jobsfilter') != ''):
+			$filter = preg_split("/,/",$this->session->userdata('jobsfilter'));
+			if(count($filter) == 1):
+				$fpaid = ($filter[0])?1:0;
+				$fnotpaid = (!$filter[0])?1:0;
+			endif;
+		else:
+			$this->session->set_userdata('jobsfilter','0,1');
+		endif;
+		
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1828,7 +1858,8 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'delivers'		=> $this->mdunion->delivers_works_platform($this->uri->segment(5),10,$from),
+					'delivers'		=> $this->mdunion->delivers_works_platform($this->uri->segment(5),10,$from,$this->session->userdata('jobsfilter')),
+					'filter'		=> array('fpaid'=>$fpaid,'fnotpaid'=>$fnotpaid),
 					'typeswork'		=> $this->mdtypeswork->read_records(),
 					'markets'		=> $this->mdmarkets->read_records(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -1858,7 +1889,7 @@ class Admin_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'admin-panel/management/platforms/platformid/'.$this->uri->segment(5).'/finished-jobs/from/';
 		$config['uri_segment'] 	= 8;
-		$config['total_rows'] 	= $this->mdunion->count_delivers_works_platform($this->uri->segment(5));
+		$config['total_rows'] 	= $this->mdunion->count_delivers_works_platform($this->uri->segment(5),$this->session->userdata('jobsfilter'));
 		$config['per_page'] 	= 10;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -1984,6 +2015,34 @@ class Admin_interface extends CI_Controller{
 			$statusval['retvalue'] .= '</ul>';
 			$statusval['status'] = TRUE;
 		endif;
+		echo json_encode($statusval);
+	}
+	
+	public function finished_jobs_filter(){
+		
+		$statusval = array('status'=>TRUE,'filter'=>'','paid'=>-1,'notpaid'=>-1);
+		$showed = trim($this->input->post('showed'));
+		$this->session->set_userdata('jobsfilter','0,1');
+		if(!$showed):
+			$this->session->set_userdata('jobsfilter','');
+		else:
+			$filter = preg_split("/&/",$showed);
+			for($i=0;$i<count($filter);$i++):
+				$fparam[$i] = preg_split("/=/",$filter[$i]);
+			endfor;
+			if(count($fparam)==1):
+				$this->session->set_userdata('jobsfilter',$fparam[0][1]);
+				if($fparam[0][1]):
+					$statusval['paid'] = 1;$statusval['notpaid'] = 0;
+				else:
+					$statusval['paid'] = 0;$statusval['notpaid'] = 1;
+				endif;
+			else:
+				$this->session->set_userdata('jobsfilter',$fparam[0][1].','.$fparam[1][1]);
+				$statusval['paid'] = 1;$statusval['notpaid'] = 1;
+			endif;
+		endif;
+		$statusval['filter'] = $this->session->userdata('jobsfilter');
 		echo json_encode($statusval);
 	}
 	

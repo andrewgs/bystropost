@@ -20,6 +20,10 @@
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
 				<div class="clear"></div>
+				<div style="float:left;margin-bottom:10px;">
+					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Оплаченные
+					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Не оплаченные
+				</div>
 				<div style="float:right;">
 				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
 					<input type="hidden" id="srdjid" name="srdjid" value="">
@@ -85,6 +89,20 @@
 			var wID = 0;
 			$("td[data-status='0']").each(function(e){$(this).addClass('notpaid'); $(this).siblings('td').addClass('notpaid');});
 			$("td[data-status='1']").each(function(e){$(this).addClass('paid'); $(this).siblings('td').addClass('paid');});
+			
+			<?php if($filter['fpaid']):?>
+			$("#showPaid").attr('checked','checked');
+		<?php endif;?>
+		<?php if($filter['fnotpaid']):?>
+			$("#showNoPaid").attr('checked','checked');
+		<?php endif;?>	
+			$(".filterJobs").click(function(){
+				var ShowJobs = $(".filterJobs").serialize();
+				$.post("<?=$baseurl;?>admin-panel/actions/finished-jobs/set-filter",{'showed':ShowJobs},
+					function(data){window.location="<?=$baseurl;?>admin-panel/management/platforms/platformid/<?=$this->uri->segment(5);?>/finished-jobs";}
+				,"json");
+			});
+			
 			$(".EditWork").click(function(){
 				var Param = $(this).attr('data-param'); wID = $("div[id = params"+Param+"]").attr("data-wid");
 				var	wtype = $("div[id = params"+Param+"]").attr("data-type"); var wmarket = $("div[id = params"+Param+"]").attr("data-market");

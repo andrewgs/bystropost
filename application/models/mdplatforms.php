@@ -367,7 +367,7 @@ class Mdplatforms extends CI_Model{
 	
 	function count_all(){
 		
-		return $this->db->count_all('platforms');
+		return $this->db->count_all('platforms')-1;
 	}
 	
 	function read_field($id,$field){

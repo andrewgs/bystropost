@@ -195,6 +195,8 @@ $route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_inte
 $route['admin-panel/management/users/userid/:num/finished-jobs/from']		= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";
 
+$route['admin-panel/actions/finished-jobs/set-filter']						= "admin_interface/finished_jobs_filter";
+
 $route['admin-panel/management/finished-jobs/delete/jobid/:num']			= "admin_interface/delete_finished_jobs";
 $route['admin-panel/management/finished-jobs/delete/user/:num']				= "admin_interface/delete_user_jobs";
 $route['admin-panel/management/finished-jobs/delete/platform/:num']			= "admin_interface/delete_platform_jobs";

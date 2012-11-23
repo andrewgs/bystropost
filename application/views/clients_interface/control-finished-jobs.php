@@ -25,6 +25,7 @@
 				<div class="alert alert-info" id="mspayall" style="display:none;">
 					<h3>Ожидайте!</h3>Производится оплата. Это может занять некоторое время...
 				</div>
+				<div class="clear"></div>
 				<div style="float:left;margin-bottom:10px;">
 					<input type="checkbox" id="showPaid" class="filterJobs" name="showpaid" value="1" title="Показывать оплаченные работы" <?=($filter['fpaid'])?'checked="checked"':'';?>/> Оплаченные
 					<input type="checkbox" id="showNoPaid" class="filterJobs" name="shownotpaid" value="0" title="Показывать не оплаченные работы" <?=($filter['fnotpaid'])?'checked="checked"':'';?>/> Не оплаченные
