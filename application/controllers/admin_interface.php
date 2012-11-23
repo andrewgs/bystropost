@@ -2491,14 +2491,19 @@ class Admin_interface extends CI_Controller{
 	public function messages_tickets(){
 		
 		$from = intval($this->uri->segment(5));
+		$hideticket = FALSE;
+		if($this->session->userdata('hideticket')):
+			$hideticket = TRUE;
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
 					'title'			=> 'Администрирование | Тикеты',
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_all_tickets(10,$from),
-					'count'			=> $this->mdunion->count_all_tickets(),
+					'tickets'		=> $this->mdunion->read_all_tickets(10,$from,$hideticket),
+					'count'			=> $this->mdunion->count_all_tickets($hideticket),
+					'hidetikets'	=> $hideticket,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -2662,7 +2667,21 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
 		$this->load->view("admin_interface/messages-view-tickets",$pagevar);
 	}
-
+	
+	public function hide_closed_tickets(){
+		
+		$statusval = array('status'=>TRUE,'hideticket'=>FALSE);
+		$hide = trim($this->input->post('hide'));
+		$this->session->set_userdata('hideticket',$statusval['hideticket']);
+		if(!$hide):
+			$this->session->set_userdata('hideticket',FALSE);
+		else:
+			$this->session->set_userdata('hideticket',TRUE);
+			$statusval['hideticket'] = TRUE;
+		endif;
+		echo json_encode($statusval);
+	}
+	
 	public function control_delete_msg_ticket(){
 		
 		$message = $this->uri->segment(6);

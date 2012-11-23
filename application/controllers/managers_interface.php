@@ -941,6 +941,10 @@ class Managers_interface extends CI_Controller{
 	public function control_tickets_outbox(){
 		
 		$from = intval($this->uri->segment(6));
+		$hideticket = FALSE;
+		if($this->session->userdata('hideticket')):
+			$hideticket = TRUE;
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -948,7 +952,8 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from),
+					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from,$hideticket),
+					'hidetikets'	=> $hideticket,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -980,7 +985,7 @@ class Managers_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/outbox/from/';
 		$config['uri_segment'] 	= 6;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid'],$hideticket);
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -1023,6 +1028,10 @@ class Managers_interface extends CI_Controller{
 	public function control_tickets_inbox(){
 		
 		$from = intval($this->uri->segment(6));
+		$hideticket = FALSE;
+		if($this->session->userdata('hideticket')):
+			$hideticket = TRUE;
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1030,7 +1039,8 @@ class Managers_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_recipient($this->user['uid'],5,$from),
+					'tickets'		=> $this->mdunion->read_tickets_by_recipient($this->user['uid'],5,$from,$hideticket),
+					'hidetikets'	=> $hideticket,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -1041,7 +1051,7 @@ class Managers_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'manager-panel/actions/tickets/inbox/from/';
 		$config['uri_segment'] 	= 6;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_recipient($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_recipient($this->user['uid'],$hideticket);
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -1348,6 +1358,20 @@ class Managers_interface extends CI_Controller{
 		else:
 			show_404();
 		endif;
+	}
+
+	public function hide_closed_tickets(){
+		
+		$statusval = array('status'=>TRUE,'hideticket'=>FALSE);
+		$hide = trim($this->input->post('hide'));
+		$this->session->set_userdata('hideticket',$statusval['hideticket']);
+		if(!$hide):
+			$this->session->set_userdata('hideticket',FALSE);
+		else:
+			$this->session->set_userdata('hideticket',TRUE);
+			$statusval['hideticket'] = TRUE;
+		endif;
+		echo json_encode($statusval);
 	}
 	
 	/**************************************************** functions ******************************************************/	

@@ -13,6 +13,10 @@
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
+				<div class="clear"></div>
+				<div style="float: right;margin-bottom:10px;">
+					<input type="checkbox" id="hideClosed" name="hideticket" value="1" title="Скрыть закрытые тикеты" <?=($hidetikets)?'checked="checked"':'';?>/> Скрыть закрытые
+				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
@@ -56,5 +60,17 @@
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#hideClosed").click(function(){
+				var hideTicket = 0;
+				if($(this).attr('checked') == 'checked'){hideTicket = 1;}
+				$.post("<?=$baseurl;?>admin-panel/messages/tickets/hide-closed-tickets",
+					{'hide':hideTicket},function(data){
+						window.location="<?=$baseurl;?>admin-panel/messages/tickets"
+				},"json");
+			});
+		});
+	</script>
 </body>
 </html>

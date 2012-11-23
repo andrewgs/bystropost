@@ -289,7 +289,7 @@ h1.admin-h1 { border-bottom: 4px solid #ccc; color: #4D4D4D; display: block; fon
 h1.admin-h1 span { color: #999; font-size: 16px; }
 #panel_segments { margin-left: 0; }
 .panel_segment { margin: 0 1em 1em 0; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #ccc; width: 295px; padding-bottom: 2em; background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; -webkit-box-shadow: 0 0 5px #C0C0C0; -moz-box-shadow: 0 0 5px #C0C0C0; box-shadow: 0 0 5px #C0C0C0; }
-.user-panel { margin: 1em 0 0; }
+.user-panel { margin: 0.5em 0 0; }
 .panel_segment big { border-bottom: 1px solid #5eb4df; color: #4D4D4D; font: 15px trebuchet ms,arial,sans-serif; padding: 7px 5px; width: 265px;  
 	background: #43a4d4;
 	box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1) inset, -1px 0 0 rgba(0,0,0,0.1) inset;

@@ -186,18 +186,27 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_tickets_by_recipient($recipient,$count,$from){
+	function read_tickets_by_recipient($recipient,$count,$from,$filter = FALSE){
 		
-		$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function read_tickets_by_sender($sender,$count,$from){
+	function read_tickets_by_sender($sender,$count,$from,$filter = FALSE){
 		
-		$query = "SELECT tickets.*,	tkmsgs.text,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		
+		$query = "SELECT tickets.*,	tkmsgs.text,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -213,18 +222,26 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_tickets_by_sender($sender){
+	function count_tickets_by_sender($sender,$filter = FALSE){
 		
-		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
 		return NULL;
 	}
 	
-	function count_tickets_by_recipient($recipient){
+	function count_tickets_by_recipient($recipient,$filter = FALSE){
 		
-		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.recipient = $recipient GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
@@ -267,19 +284,28 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_all_tickets($count,$from){
+	function read_all_tickets($count,$from,$filter = FALSE){
 		
-		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.type AS utype,users.position,platforms.id AS plid, platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON tickets.platform=platforms.id GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
-//		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.type AS utype,users.position,platforms.id AS plid, platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON (tickets.platform=platforms.id || tickets.platform=0) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		
+		$query = "SELECT tickets.*, users.id AS uid,users.fio,users.login,users.type AS utype,users.position,platforms.id AS plid, platforms.url FROM tickets INNER JOIN users ON tickets.sender=users.id INNER JOIN platforms ON tickets.platform=platforms.id WHERE tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function count_all_tickets(){
+	function count_all_tickets($filter = FALSE){
 		
-		$query = "SELECT tickets.* FROM tickets";
+		$status = '0,1';
+		if($filter):
+			$status = '0';
+		endif;
+		
+		$query = "SELECT tickets.* FROM tickets WHERE tickets.status IN ($status)";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);

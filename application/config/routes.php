@@ -80,6 +80,8 @@ $route['webmaster-panel/actions/tickets']							= "clients_interface/control_tic
 $route['webmaster-panel/actions/tickets/from']						= "clients_interface/control_tickets";
 $route['webmaster-panel/actions/tickets/from/:num']					= "clients_interface/control_tickets";
 
+$route['webmaster-panel/actions/tickets/hide-closed-tickets']		= "clients_interface/hide_closed_tickets";
+
 $route['webmaster-panel/actions/tickets/view-ticket/:num']			= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from']		= "clients_interface/control_view_ticket";
 $route['webmaster-panel/actions/tickets/view-ticket/:num/from/:num']= "clients_interface/control_view_ticket";
@@ -100,7 +102,7 @@ $route['webmaster-panel/actions/balance/payment-history/from/:num']	= "clients_i
 
 $route['webmaster-panel/actions/services']							= "clients_interface/control_services";
 $route['webmaster-panel/actions/services/serviceid/:num/platforms']	= "clients_interface/control_services_platforms";
-$route['admin-panel/management/services/delete/serviceid/:num']		= "clients_interface/control_services_delete";
+$route['webmaster-panel/management/services/delete/serviceid/:num']	= "clients_interface/control_services_delete";
 
 /***************************************************   MANAGERS INTRERFACE	***********************************************/
 
@@ -141,6 +143,9 @@ $route['manager-panel/actions/tickets/outbox/view-ticket/:num/from']		= "manager
 $route['manager-panel/actions/tickets/outbox/view-ticket/:num/from/:num']	= "managers_interface/control_view_outbox_ticket";
 
 $route['manager-panel/actions/tickets/delete/ticket-id/:num']				= "managers_interface/control_delete_tickets";
+
+$route['manager-panel/actions/tickets/inbox/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
+$route['manager-panel/actions/tickets/outbox/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
 
 $route['manager-panel/actions/mails']								= "managers_interface/control_mails";
 $route['manager-panel/actions/mails/from']							= "managers_interface/control_mails";
@@ -264,6 +269,8 @@ $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num']		= "admin_inte
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from/:num']	= "admin_interface/messages_view_ticket";
 $route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_interface/control_delete_msg_ticket";
+
+$route['admin-panel/messages/tickets/hide-closed-tickets']				= "admin_interface/hide_closed_tickets";
 
 $route['admin-panel/actions/statistic']									= "admin_interface/actions_statistic";
 $route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet";

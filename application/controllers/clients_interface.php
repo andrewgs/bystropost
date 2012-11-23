@@ -2084,6 +2084,10 @@ class Clients_interface extends CI_Controller{
 	public function control_tickets(){
 		
 		$from = intval($this->uri->segment(5));
+		$hideticket = FALSE;
+		if($this->session->userdata('hideticket')):
+			$hideticket = TRUE;
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -2091,8 +2095,9 @@ class Clients_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from),
+					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from,$hideticket),
 					'platforms'		=> $this->mdplatforms->read_records_by_webmaster_nolock($this->user['uid']),
+					'hidetikets'	=> $hideticket,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -2168,7 +2173,7 @@ class Clients_interface extends CI_Controller{
 		
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/from/';
 		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid']);
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid'],$this->session->userdata('hideticket'));
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -2406,6 +2411,20 @@ class Clients_interface extends CI_Controller{
 		else:
 			show_404();
 		endif;
+	}
+
+	public function hide_closed_tickets(){
+		
+		$statusval = array('status'=>TRUE,'hideticket'=>FALSE);
+		$hide = trim($this->input->post('hide'));
+		$this->session->set_userdata('hideticket',$statusval['hideticket']);
+		if(!$hide):
+			$this->session->set_userdata('hideticket',FALSE);
+		else:
+			$this->session->set_userdata('hideticket',TRUE);
+			$statusval['hideticket'] = TRUE;
+		endif;
+		echo json_encode($statusval);
 	}
 	
 	/******************************************************** other ******************************************************/	
