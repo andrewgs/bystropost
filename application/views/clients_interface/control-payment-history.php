@@ -14,7 +14,7 @@
 						<?=anchor($this->uri->uri_string(),'История платежей');?>
 					</li>
 					<li style="float:right;">
-						<strong>Статистика расчетов работает с 01.10.2012</strong>
+						<strong>Статистика расчетов работает с 01.11.2012</strong>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
@@ -30,7 +30,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="w400">За неделю:</td>
+							<td class="w400">За семь дней:</td>
 							<td class="w100"><?=(isset($statistic['week'][0]['summa']))?$statistic['week'][0]['summa']:'0';?>.00 руб.</td>
 							<td class="w85"><?=(isset($statistic['week'][1]['summa']))?$statistic['week'][1]['summa']:'0';?>.00 руб.</td>
 						</tr>

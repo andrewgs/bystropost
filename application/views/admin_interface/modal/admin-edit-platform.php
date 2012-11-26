@@ -6,7 +6,7 @@
 			<a class="close" data-dismiss="modal">×</a>
 			<h3>Редактирование информации о площадке</h3>
 		</div>
-		<div class="modal-body" style="min-height: 450px;">
+		<div class="modal-body" style="min-height: 470px;">
 			<fieldset>
 				<div class="control-group" style="margin-bottom: 5px;">
 					<label for="fio" class="control-label">Имя владельца: </label>
@@ -128,6 +128,9 @@
 						<label class="checkbox">
 						<input id="lockPlatform" name="locked" type="checkbox" value="1">
 							Заблокировать площадку
+						</label>
+						<input id="StatusPlatform" name="status" type="checkbox" value="1" disabled="disabled">
+							Активировать площадку
 						</label>
 					</div>
 				</div>

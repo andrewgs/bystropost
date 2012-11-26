@@ -122,7 +122,7 @@
 							$(objSpan).show().html('Обработка данных:<br/>'+timer+' cек.');
 							if(timer == 0){
 								clearInterval(intervalID);
-								$(objSpan).html('Pагрузка данных! Ожидайте ...');
+								$(objSpan).html('Загрузка данных! Ожидайте ...');
 								load_platforms(market,objSpan);
 							}
 						}, 1000);

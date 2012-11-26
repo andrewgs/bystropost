@@ -1058,6 +1058,9 @@ class Admin_interface extends CI_Controller{
 				if(!isset($_POST['locked'])):
 					$_POST['locked'] = 0;
 				endif;
+				if(isset($_POST['status']) && !is_null($_POST['status'])):
+					$this->mdplatforms->update_field($_POST['pid'],'status',1);
+				endif;
 				$prevman = $this->mdplatforms->read_field($_POST['pid'],'manager');
 				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
 				$result1 = $this->mdplatforms->update_lock($_POST['pid'],$_POST['uid'],$_POST['locked']);

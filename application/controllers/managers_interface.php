@@ -683,7 +683,7 @@ class Managers_interface extends CI_Controller{
 								$this->mdusers->change_user_balance($user['manager'],$mprice);
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
-							$this->mdfillup->insert_record(0,$wprice-$mprice,'Ошибок не обнаружено');
+							$this->mdfillup->insert_record(0,$wprice-$mprice,'Начисление средств администратору при автоматической плате (Ручной ввод)');
 							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
 						endif;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
@@ -789,7 +789,7 @@ class Managers_interface extends CI_Controller{
 															$this->mdusers->change_user_balance($user['manager'],$new_work['mprice']);
 														endif;
 														$this->mdusers->change_admins_balance($new_work['wprice']-$new_work['mprice']);
-														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Ошибок не обнаружено');
+														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Начисление средств администратору при автоматической плате (Автоматический ввод)');
 													endif;
 												endif;
 												$statusval['wkol']++;

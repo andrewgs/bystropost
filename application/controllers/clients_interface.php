@@ -1315,7 +1315,6 @@ class Clients_interface extends CI_Controller{
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
 							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за выполненное задание ID='.$_POST['works'][$i],0,0);
-//							$this->mdfillup->insert_record(0,$wprice-$mprice,'Оплата выполненных работ',0,1);
 						endfor;
 						
 						$message = 'Спасибо за оплату.';
@@ -1528,7 +1527,6 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
 				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за выполненное задание ID='.$works[$i]['id'],0,0);
-//				$this->mdfillup->insert_record(0,$works[$i]['wprice']-$works[$i]['mprice'],'Оплата за выполненную работу',0,1);
 			endif;
 		endfor;
 		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
@@ -2550,6 +2548,7 @@ class Clients_interface extends CI_Controller{
 				$pl_data[$j]['id'] = $key;
 				$j++;
 			endforeach;
+			$works = $this->mdtypeswork->read_records();
 			for($i=0;$i<count($pl_data);$i++):
 				if(!isset($pl_data[$i]['url']) || empty($pl_data[$i]['url']) || !$pl_data[$i]['id']):
 					continue;
@@ -2610,7 +2609,6 @@ class Clients_interface extends CI_Controller{
 					$platform = $this->mdplatforms->insert_record($this->user['uid'],$new_platform);
 					if($platform):
 						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],$publication);
-						$addwtic = $addmtic = 0;
 						$pr = $this->getpagerank($new_platform['url']);
 						$this->mdplatforms->update_field($platform,'pr',$pr);
 						$tic = $this->getTIC('http://'.$new_platform['url']);
@@ -2635,6 +2633,7 @@ class Clients_interface extends CI_Controller{
 							$wprice = $this->mdvaluesrv->read_field($srv_data[$srv]['srvval'],'wprice');
 							$mprice = $this->mdvaluesrv->read_field($srv_data[$srv]['srvval'],'mprice');
 							$this->mdattachedservices->insert_record($this->user['uid'],$srv_data[$srv]['service'],$srv_data[$srv]['srvval'],$platform,$wprice,$mprice);
+							
 							$arr_works = $this->mdservices->read_field($srv_data[$srv]['service'],'types_works');
 							$arr_works = preg_split('/,/',$arr_works);
 							$sqlquery = "UPDATE platforms SET ";
@@ -2822,7 +2821,8 @@ class Clients_interface extends CI_Controller{
 	}
 	
 	public function SQL_TIC_PR($tic,$platform){
-		
+	
+		$addwtic = $addmtic = 0;
 		if($tic >= 30):
 			$addwtic = 5;$addmtic = 2;
 		endif;

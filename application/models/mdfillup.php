@@ -104,9 +104,9 @@ class Mdfillup extends CI_Model{
 	}
 	
 	function month_statistic($user){
-		
-		$edate = date("Y-m-d H:i:s",mktime(0,0,0,date("m"),'01',date("Y"))-1);
+	
 		$bdate = date("Y-m-d H:i:s",mktime(0,0,0,date("m")-1,'01',date("Y")));
+		$edate = date("Y-m-d H:i:s",mktime(0,0,0,date("m"),'01',date("Y"))-1);
 		$query = "SELECT SUM(summa) AS summa,status FROM fillup WHERE user = $user AND system = 0 AND date >= '$bdate' AND date <= '$edate' GROUP BY status ORDER BY status DESC";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
