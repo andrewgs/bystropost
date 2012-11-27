@@ -235,6 +235,8 @@ $route['admin-panel/management/platforms/search']		= "admin_interface/search_pla
 $route['admin-panel/management/platforms/calculate/tic']= "admin_interface/calculate_tic";
 $route['admin-panel/management/platforms/calculate/pr']	= "admin_interface/calculate_pr";
 
+$route['admin-panel/management/platforms/calculate']	= "admin_interface/calculate";
+
 $route['admin-panel/management/markets']				= "admin_interface/management_markets";
 $route['admin-panel/management/markets/marketid/:num']	= "admin_interface/management_markets_deleting";
 

@@ -122,7 +122,7 @@
 			$(".DLWorks").click(function(){
 				if(!confirm("Начать импорт?")) return false;
 				var objSpan = $("#SpLoadWorks");
-				 var intervalID; var plcount = <?=$workplatform;?>;
+				var intervalID; var plcount = <?=$workplatform;?>;
 				var from=0;var count = <?=($workplatform<10)?$workplatform:10;?>;
 				$(objSpan).siblings('a').remove();
 				ajaxRequest(count,from);

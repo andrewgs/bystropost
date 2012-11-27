@@ -241,6 +241,15 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function read_limit_records($count,$from){
+		
+		$this->db->limit($count,$from);
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_urls(){
 		
 		$this->db->select('id,url');
@@ -401,6 +410,16 @@ class Mdplatforms extends CI_Model{
 		$this->db->where('webmaster',$webmaster);
 		$this->db->where('locked',0);
 		$this->db->where('status',1);
+		$query = $this->db->get('platforms',1);
+		$data = $query->result_array();
+		if(count($data)) return TRUE;
+		return FALSE;
+	}
+	
+	function ownew_all_platform($webmaster,$id){
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$webmaster);
 		$query = $this->db->get('platforms',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;

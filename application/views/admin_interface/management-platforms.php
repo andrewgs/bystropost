@@ -11,20 +11,13 @@
 						<?=anchor('admin-panel/management/platforms','Площадки');?>
 					</li>
 					<li style="float:right;">
-						<?=anchor('admin-panel/management/platforms/calculate/tic','Яндекс тИЦ',array('class'=>'btn btn-info calc','style'=>'margin-top: -5px;'));?>
-					</li>
-					<li style="float:right;">
-						<?=anchor('admin-panel/management/platforms/calculate/pr','PageRank',array('class'=>'btn btn-info calc','style'=>'margin-top: -5px;'));?><span class="divider">/</span>
-					</li>
-					<li style="float:right;">
-						Пересчитать: &nbsp;&nbsp;
+						<a class="btn btn-info calc none" data-calc="pr" style="margin-top: -5px;" href="#" title="Пересчет PageRank"><i class="icon-retweet icon-white"></i> PageRank</a>
+						<a class="btn btn-info calc none" data-calc="tic" style="margin-top: -5px;" href="#" title="Пересчет Яндекс тИЦ"><i class="icon-retweet icon-white"></i> Яндекс тИЦ</a>
+						<span id="SpCalculate" class="btn btn-warning" style="display:none;margin-top: -5px;"></span>
 					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
-				<div class="alert alert-info" id="mscalculation" style="display:none;">
-					<h3>Ожидайте!</h3>Производится расчет. Это может занять некоторое время...
-				</div>
 				<div style="float:right;">
 				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
 					<input type="hidden" id="srplid" name="srplid" value="">
@@ -128,7 +121,6 @@
 			$("td[data-noowner='noowner']").each(function(e){
 				$(this).addClass('alert alert-error'); $(this).siblings('td').addClass('alert alert-error');
 			});
-			$(".calc").click(function(){$(".alert ").hide();$("#mscalculation").show();});
 			$(".editPlatform").click(function(){
 				var Param = $(this).attr('data-param'); pID = $("div[id = params"+Param+"]").attr("data-pid");uID = $("div[id = params"+Param+"]").attr("data-uid");
 				var	uFIO = $("div[id = params"+Param+"]").attr("data-fio"); var	uLogin = $("div[id = params"+Param+"]").attr("data-login");
@@ -156,6 +148,56 @@
 				if(locked == 1){$("#lockPlatform").attr('checked','checked');}else{$("#lockPlatform").removeAttr('checked');}
 				if(plstatus == 0){$("#StatusPlatform").removeAttr('checked').removeAttr('disabled');}else{$("#StatusPlatform").attr('checked','checked').attr('disabled','disabled');}
 			});
+			
+			var stopRequest = false;
+			var stopScript = false;
+			var countPL = 0;
+			$(".calc").click(function(){
+				if(!confirm("Начать пересчет?")) return false;
+				var objSpan = $("#SpCalculate");
+				var calc = $(this).attr('data-calc');
+				var intervalID; var plcount = <?=$allplatforms;?>;
+				var from=0;var count = <?=($allplatforms<25)?$allplatforms:25;?>;
+				$(objSpan).siblings('a').remove();
+				ajaxRequest(calc,count,from);
+				$(objSpan).show().html('Обработка площадок: '+parseInt(from+count)+' из '+plcount);
+				intervalID = setInterval(
+					function(){
+						if(stopRequest){
+							if(stopScript || (from+1) >=plcount){
+								$(objSpan).show().html('Обработка завершена!');
+								console.log(countPL);
+								clearInterval(intervalID);
+							}else{
+								from = from + count;
+								ajaxRequest(calc,count,from);
+								if((from+count) <=plcount){
+									$(objSpan).show().html('Обработка площадок: '+parseInt(from+count)+' из '+plcount);
+								}else{
+									$(objSpan).show().html('Обработка площадок: '+plcount+' из '+plcount);
+								}
+								
+							}
+						}
+					}
+				,1000);
+			});
+			function ajaxRequest(calc,count,from){
+			
+				stopRequest = false;
+				stopScript = false;
+				$.ajax({
+					url: "<?=$baseurl;?>admin-panel/management/platforms/calculate",
+					data: ({'count':count,'calc':calc,'from':from}),
+					type: "POST",
+					dataType: "JSON",
+					success: function(data){
+						stopRequest = true;
+						if(!data.nextstep){stopScript = true;}
+						countPL = countPL+data.plcount;
+					}
+				});
+			}
 			
 			function suggest(inputString){
 				if(inputString.length < 2){

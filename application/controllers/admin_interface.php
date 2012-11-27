@@ -984,6 +984,7 @@ class Admin_interface extends CI_Controller{
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'managers'		=> $this->mdusers->read_users_by_type(2),
+					'allplatforms'	=> $this->mdplatforms->count_all(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
@@ -1539,7 +1540,55 @@ class Admin_interface extends CI_Controller{
 		
 		$this->load->view("admin_interface/management-view-platform",$pagevar);
 	}
-
+	
+	public function calculate(){
+		
+		$statusval = array('nextstep'=>TRUE,'plcount'=>0,'count'=>'','from'=>'','calc'=>'');
+		$calc = trim($this->input->post('calc'));
+		$count = trim($this->input->post('count'));
+		$from = trim($this->input->post('from'));
+		if(!$count || !$calc):
+			show_404();
+		endif;
+		$platforms = $this->mdplatforms->read_limit_records($count,$from);
+		if(!count($platforms)):
+			$statusval['nextstep'] = FALSE;
+		else:
+			if($calc == 'pr'):
+				for($i=0;$i<count($platforms);$i++):
+					$result = $this->mdplatforms->update_field($platforms[$i]['id'],'pr',$this->getpagerank($platforms[$i]['url']));
+					if($result):
+						$statusval['plcount']++;
+					endif;
+				endfor;
+			elseif($calc == 'tic'):
+				for($i=0;$i<count($platforms);$i++):
+					$oldtic = $this->mdplatforms->read_field($platforms[$i]['id'],'tic');
+					$tic = $this->getTIC('http://'.$platforms[$i]['url']);
+					$result = $this->mdplatforms->update_field($platforms[$i]['id'],'tic',$tic);
+					if($result):
+						$statusval['plcount']++;
+					endif;
+					if($oldtic != $tic):
+						$addwtic = 5; $addmtic = 2;
+						if($oldtic < 30 AND $tic >= 30):
+							$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+							$this->mdplatforms->run_query($sqlquery);
+						elseif($oldtic >= 30 AND $tic < 30):
+							$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+							$this->mdplatforms->run_query($sqlquery);
+						endif;
+					endif;
+				endfor;
+			endif;
+		endif;
+		$statusval['plcount'] = count($platforms);
+		$statusval['count'] = $count;
+		$statusval['from'] = $from;
+		$statusval['calc'] = $calc;
+		echo json_encode($statusval);
+	}
+	
 	/******************************************************** markets ******************************************************/
 
 	public function management_markets(){

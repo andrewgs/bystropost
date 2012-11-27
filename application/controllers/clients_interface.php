@@ -1268,7 +1268,7 @@ class Clients_interface extends CI_Controller{
 			$this->session->set_userdata('jobscount',25);
 		endif;
 		if($this->uri->segment(6)):
-			if(!$this->mdplatforms->ownew_platform($this->user['uid'],$this->uri->segment(6))):
+			if(!$this->mdplatforms->ownew_all_platform($this->user['uid'],$this->uri->segment(6))):
 				redirect($_SERVER['HTTP_REFERER']);
 			endif;
 			$from = intval($this->uri->segment(8));
@@ -2654,11 +2654,13 @@ class Clients_interface extends CI_Controller{
 					endif;
 				else:
 					$platform = $this->mdplatforms->read_field_url($new_platform['url'],'id');
-					$mkid = $this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password']);
-					if(!$mkid):
-						$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],$publication);
-					else:
-						$this->mdmkplatform->update_field($mkid,'publication',$publication);
+					if($this->mdplatforms->ownew_all_platform($this->user['uid'],$platform)):
+						$mkid = $this->mdmkplatform->exist_market_platform($platform,$market['market'],$market['login'],$market['password']);
+						if(!$mkid):
+							$this->mdmkplatform->insert_record($this->user['uid'],$platform,$market['market'],$market['login'],$market['password'],$publication);
+						else:
+							$this->mdmkplatform->update_field($mkid,'publication',$publication);
+						endif;
 					endif;
 				endif;
 			endfor;
