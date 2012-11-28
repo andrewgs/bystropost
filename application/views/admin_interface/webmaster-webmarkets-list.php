@@ -21,7 +21,7 @@
 						<tr>
 							<th class="w85"><center>Название</center></th>
 							<th class="w85"><center>Логин</center></th>
-							<th class="w190"><center>Пароль</center></th>
+							<th class="w100"><center>Пароль</center></th>
 							<th class="w100">&nbsp;</th>
 						</tr>
 					</thead>
@@ -30,12 +30,17 @@
 						<tr>
 							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$accounts[$i]['mtitle'];?></nobr></td>
 							<td class="w85"><?=$accounts[$i]['login'];?></td>
-							<td class="w190"><?=$accounts[$i]['password'];?></td>
+							<td class="w100"><?=$accounts[$i]['password'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle; max-width:0;">
 								<nobr>
 									<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>" data-login="<?=$accounts[$i]['login'];?>" data-market="<?=$accounts[$i]['market'];?>"></div>
+								<?php if($accounts[$i]['status']):?>
 									<a class="btn btn-success editMarket none" data-param="<?=$i;?>" data-toggle="modal" href="#editMarket" title="Редактировать биржу">&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;</a>
-									<a class="btn btn-danger deleteMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить">&nbsp;<i class="icon-trash icon-white"></i>&nbsp;</a>
+									<a class="btn btn-warning makeMarket" data-param="<?=$i;?>" data-toggle="modal" href="#disabledMarket" title="Отключить">&nbsp;<i class="icon-off icon-white"></i>&nbsp;</a>
+								<?php else:?>
+									<a class="btn makeMarket" data-param="<?=$i;?>" data-toggle="modal" href="#enabledMarket" title="Включить">&nbsp;<i class="icon-off"></i>&nbsp;</a>
+								<?php endif;?>
+									<a class="btn btn-danger makeMarket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteMarket" title="Удалить">&nbsp;<i class="icon-trash icon-white"></i>&nbsp;</a>
 									<span id="timer<?=$i;?>" style="display:none"></span>
 								</nobr>
 							</td>
@@ -47,6 +52,8 @@
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		<?php $this->load->view('admin_interface/modal/admin-edit-market');?>
 		<?php $this->load->view('clients_interface/modal/clients-delete-market');?>
+		<?php $this->load->view('clients_interface/modal/clients-disabled-market');?>
+		<?php $this->load->view('clients_interface/modal/clients-enabled-market');?>
 		</div>
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
@@ -85,8 +92,10 @@
 			});
 			$("#MarketList").change(function(){if($(this).val() == 3){$("#prsape").slideDown(400);}else{$("#prsape").slideUp(400);}});
 			$(".mkmodal").on("hidden",function(){$("#msgalert").remove();$(".control-group").removeClass('error');$(".help-inline").hide(); $("#MarketList").val(1);$(".inpval").val('');$("#loading").val('');$("#prsape").hide();});
-			$(".deleteMarket").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
+			$(".makeMarket").click(function(){var Param = $(this).attr('data-param'); mID = $("div[id = params"+Param+"]").attr("data-mid");});
 			$("#DelMarket").click(function(){location.href='<?=$baseurl;?>admin-panel/management/users/remoteid/<?=$this->uri->segment(5);?>/delete/marketid/'+mID;});
+			$("#DisMarket").click(function(){location.href='<?=$baseurl;?>admin-panel/management/users/remoteid/<?=$this->uri->segment(5);?>/disabled/marketid/'+mID;});
+			$("#EnbMarket").click(function(){location.href='<?=$baseurl;?>admin-panel/management/users/remoteid/<?=$this->uri->segment(5);?>/enabled/marketid/'+mID;});
 		});
 	</script>
 </body>

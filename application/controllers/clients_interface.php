@@ -1060,6 +1060,66 @@ class Clients_interface extends CI_Controller{
 		endif;
 	}
 	
+	public function control_disabled_markets(){
+		
+		if(!$this->user['remote']):
+			show_404();
+		endif;
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
+		$mid = $this->uri->segment(6);
+		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
+			$result = $this->mdwebmarkets->update_status($this->user['remoteid'],$mid,0);
+			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=0';
+				$this->API('UpdateAccount',$param);
+				$this->mdmkplatform->delete_records_by_webmarket($this->user['uid'],$info['market'],$info['login'],$info['password']);
+				$plmarkets = $this->mdunion->free_platforms($this->user['uid']);
+				for($i=0;$i<count($plmarkets);$i++):
+					if(is_null($plmarkets[$i]['mkid'])):
+						$param = 'siteid='.$plmarkets[$i]['remoteid'].'&value=1';
+						$this->API('SetSiteActive',$param);
+					endif;
+				endfor;
+				$this->mdlog->insert_record($this->user['uid'],'Событие №10: Отключена учетная запись на бирже');
+				$this->session->set_userdata('msgs','Запись отключена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не отключена');
+			endif;
+			redirect('webmaster-panel/actions/markets');
+		else:
+			show_404();
+		endif;
+	}
+	
+	public function control_enabled_markets(){
+		
+		if(!$this->user['remote']):
+			show_404();
+		endif;
+		if($this->user['debetor']):
+			redirect('webmaster-panel/actions/control');
+		endif;
+		$mid = $this->uri->segment(6);
+		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
+			$result = $this->mdwebmarkets->update_status($this->user['remoteid'],$mid,1);
+			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=1';
+				$this->API('UpdateAccount',$param);
+				$this->mdlog->insert_record($this->user['uid'],'Событие №27: Включена учетная запись на бирже');
+				$this->session->set_userdata('msgs','Запись включена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не включена');
+			endif;
+			redirect('webmaster-panel/actions/markets');
+		else:
+			show_404();
+		endif;
+	}
+	
 	public function control_market_parsing(){
 		
 		$statusval = array('status'=>TRUE,'import'=>0);

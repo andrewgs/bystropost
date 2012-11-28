@@ -51,7 +51,11 @@ $route['webmaster-panel/actions/profile']							= "clients_interface/control_pro
 $route['webmaster-panel/actions/logoff']							= "clients_interface/actions_logoff";
 
 $route['webmaster-panel/actions/markets']							= "clients_interface/control_markets";
-$route['webmaster-panel/actions/markets/delete/marketid/:num']		= "clients_interface/control_delete_markets";
+
+$route['webmaster-panel/actions/markets/disabled/marketid/:num']	= "clients_interface/control_disabled_markets";
+$route['webmaster-panel/actions/markets/enabled/marketid/:num']		= "clients_interface/control_enabled_markets";
+
+//$route['webmaster-panel/actions/markets/delete/marketid/:num']		= "clients_interface/control_delete_markets";
 
 $route['webmaster-panel/actions/markets/parsing']					= "clients_interface/control_market_parsing";
 $route['webmaster-panel/actions/markets/loading']					= "clients_interface/control_market_loading";
@@ -200,6 +204,8 @@ $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "ad
 $route['admin-panel/management/users/usersid/:num/platforms']				= "admin_interface/user_platforms_list";
 
 $route['admin-panel/management/users/remoteid/:num/webmarkets']				= "admin_interface/user_webmarkets_list";
+$route['admin-panel/management/users/remoteid/:num/disabled/marketid/:num']	= "admin_interface/user_disabled_markets";
+$route['admin-panel/management/users/remoteid/:num/enabled/marketid/:num']	= "admin_interface/user_enabled_markets";
 $route['admin-panel/management/users/remoteid/:num/delete/marketid/:num']	= "admin_interface/user_delete_markets";
 
 $route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_interface/user_finished_jobs";

@@ -40,6 +40,16 @@ class Mdwebmarkets extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
+	function update_status($webmaster,$id,$status){
+		
+		$this->db->set('status',$status);
+		
+		$this->db->where('id',$id);
+		$this->db->where('webmaster',$webmaster);
+		$this->db->update('webmarkets');
+		return $this->db->affected_rows();
+	}
+	
 	function read_records($webmaster = FALSE){
 		if($webmaster):
 			$this->db->where('webmaster',$webmaster);

@@ -825,6 +825,51 @@ class Admin_interface extends CI_Controller{
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 	
+	public function user_disabled_markets(){
+		
+		$remoteid = $this->uri->segment(5);
+		$mid = $this->uri->segment(8);
+		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
+			$result = $this->mdwebmarkets->update_status($remoteid,$mid,0);
+			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=0';
+				$this->API('UpdateAccount',$param);
+				$user = $this->mdusers->read_record_remote($remoteid);
+				$this->mdmkplatform->delete_records_by_webmarket($user['id'],$info['market'],$info['login'],$info['password']);
+				$plmarkets = $this->mdunion->free_platforms($user['id']);
+				for($i=0;$i<count($plmarkets);$i++):
+					if(is_null($plmarkets[$i]['mkid'])):
+						$param = 'siteid='.$plmarkets[$i]['remoteid'].'&value=1';
+						$this->API('SetSiteActive',$param);
+					endif;
+				endfor;
+				$this->session->set_userdata('msgs','Запись отключена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не отключена');
+			endif;
+		endif;
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function user_enabled_markets(){
+		
+		$remoteid = $this->uri->segment(5);
+		$mid = $this->uri->segment(8);
+		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
+			$result = $this->mdwebmarkets->update_status($remoteid,$mid,1);
+			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=1';
+				$this->API('UpdateAccount',$param);
+				$this->session->set_userdata('msgs','Запись включена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не включена');
+			endif;
+		endif;
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+	
 	/******************************************************** platforms ******************************************************/
 	
 	public function search_platforms(){
