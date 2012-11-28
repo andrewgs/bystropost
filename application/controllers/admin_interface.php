@@ -514,7 +514,7 @@ class Admin_interface extends CI_Controller{
 									$pagevar['users'] = $this->mdunion->read_users_group_optimizators(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_optimizators();
 									break;
-			case 'manegers' 	:	$pagevar['title'] .= 'Группа "Менеджеры"';
+			case 'managers' 	:	$pagevar['title'] .= 'Группа "Менеджеры"';
 									$pagevar['users'] = $this->mdunion->read_users_group_manegers(10,$from);
 									$pagevar['count'] = $this->mdunion->count_users_group_manegers();
 									break;
@@ -576,6 +576,7 @@ class Admin_interface extends CI_Controller{
 					$pagevar['users'][$i]['manemail'] = $this->mdusers->read_field($pagevar['users'][$i]['manager'],'login');
 				endif;
 				$pagevar['users'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['users'][$i]['id']);
+				$pagevar['users'][$i]['webmarkets'] = $this->mdwebmarkets->count_records($pagevar['users'][$i]['remoteid']);
 				$pagevar['users'][$i]['uporders'] = $this->mddelivesworks->count_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
 				$pagevar['users'][$i]['torders'] = $this->mddelivesworks->count_records_by_webmaster($pagevar['users'][$i]['id']);
 				$pagevar['users'][$i]['pruporders'] = $this->mddelivesworks->sum_records_by_webmaster_status($pagevar['users'][$i]['id'],0);
@@ -743,6 +744,85 @@ class Admin_interface extends CI_Controller{
 		else:
 			show_404();
 		endif;
+	}
+	
+	public function user_webmarkets_list(){
+		
+		$remoteid = $this->uri->segment(5);
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Список биржевых аккаунтов',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'accounts'		=> $this->mdunion->read_markets_by_webmaster($remoteid),
+					'markets'		=> $this->mdmarkets->read_records(),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		if($this->input->post('smsubmit')):
+			unset($_POST['smsubmit']);
+			$this->form_validation->set_rules('mid',' ','required|trim');
+			$this->form_validation->set_rules('market',' ','trim');
+			$this->form_validation->set_rules('login',' ','trim');
+			$this->form_validation->set_rules('password',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
+				redirect($this->uri->uri_string());
+			else:
+				$account = $this->mdwebmarkets->read_record($_POST['mid']);
+				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
+				$this->API('UpdateAccount',$param);
+				$this->mdwebmarkets->update_record($_POST['mid'],$remoteid,$_POST);
+				$user = $this->mdusers->read_record_remote($remoteid);
+				$this->mdmkplatform->update_records($user['id'],$account['login'],$account['market'],$account['password'],$_POST['password'],NULL);
+				$this->session->set_userdata('msgs','Аккаунт успешно сохранен');
+			endif;
+			redirect($this->uri->uri_string());
+		endif;
+		
+		for($i=0;$i<count($pagevar['accounts']);$i++):
+			$pagevar['accounts'][$i]['password'] = $this->encrypt->decode($pagevar['accounts'][$i]['cryptpassword']);
+		endfor;
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		$this->load->view("admin_interface/webmaster-webmarkets-list",$pagevar);
+	}
+	
+	public function user_delete_markets(){
+		
+		$remoteid = $this->uri->segment(5);
+		$mid = $this->uri->segment(8);
+		if($mid):
+			$info = $this->mdwebmarkets->read_record($mid);
+			$result = $this->mdwebmarkets->delete_record($remoteid,$mid);
+			if($result):
+				$param = 'accid='.$info['id'].'&birzid='.$info['market'].'&login='.$info['login'].'&password='.base64_encode($this->encrypt->decode($info['cryptpassword'])).'&act=0';
+				$this->API('UpdateAccount',$param);
+				$user = $this->mdusers->read_record_remote($remoteid);
+				$this->mdmkplatform->delete_records_by_webmarket($user['id'],$info['market'],$info['login'],$info['password']);
+				$plmarkets = $this->mdunion->free_platforms($user['id']);
+				for($i=0;$i<count($plmarkets);$i++):
+					if(is_null($plmarkets[$i]['mkid'])):
+						$param = 'siteid='.$plmarkets[$i]['remoteid'].'&value=1';
+						$this->API('SetSiteActive',$param);
+					endif;
+				endfor;
+				$this->session->set_userdata('msgs','Запись удалена успешно');
+			else:
+				$this->session->set_userdata('msgr','Запись не удалено');
+			endif;
+		endif;
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	/******************************************************** platforms ******************************************************/

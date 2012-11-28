@@ -199,6 +199,9 @@ $route['admin-panel/management/users/read-messages/userid/:num/from/:num']	= "ad
 
 $route['admin-panel/management/users/usersid/:num/platforms']				= "admin_interface/user_platforms_list";
 
+$route['admin-panel/management/users/remoteid/:num/webmarkets']				= "admin_interface/user_webmarkets_list";
+$route['admin-panel/management/users/remoteid/:num/delete/marketid/:num']	= "admin_interface/user_delete_markets";
+
 $route['admin-panel/management/users/userid/:num/finished-jobs']			= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from']		= "admin_interface/user_finished_jobs";
 $route['admin-panel/management/users/userid/:num/finished-jobs/from/:num']	= "admin_interface/user_finished_jobs";

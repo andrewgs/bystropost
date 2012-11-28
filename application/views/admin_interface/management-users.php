@@ -13,8 +13,8 @@
 					<li tnum="optimizators">
 						<?=anchor('admin-panel/management/users/optimizators','Оптимизаторы');?> <span class="divider">/</span>
 					</li>
-					<li tnum="manegers">
-						<?=anchor('admin-panel/management/users/manegers','Менеджеры');?> <span class="divider">/</span>
+					<li tnum="managers">
+						<?=anchor('admin-panel/management/users/managers','Менеджеры');?> <span class="divider">/</span>
 					</li>
 					<li tnum="admin">
 						<?=anchor('admin-panel/management/users/admin','Администраторы');?> <span class="divider">/</span>
@@ -74,6 +74,9 @@
 								<?=$users[$i]['wmid'];?>
 							<?php if(($this->uri->segment(4) == 'webmasters') && ($users[$i]['type'] == 1)):?>
 								<br/><nobr>[<?=anchor('admin-panel/management/users/usersid/'.$users[$i]['id'].'/platforms','площадок: <b>'.$users[$i]['platforms'].'</b>');?>]</nobr>
+								<?php if($users[$i]['remoteid']):?>
+								<br/><nobr>[<?=anchor('admin-panel/management/users/remoteid/'.$users[$i]['remoteid'].'/webmarkets','бирж. акк: <b>'.$users[$i]['webmarkets'].'</b>');?>]</nobr>
+								<?php endif;?>
 							<?php endif;?>
 							</td>
 							<td style="min-width:65px;"><nobr><?=$users[$i]['signdate'];?><br/><span class="highlight"><?=$users[$i]['lastlogin'];?></span></nobr></td>
