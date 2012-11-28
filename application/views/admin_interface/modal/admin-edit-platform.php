@@ -109,8 +109,15 @@
 						</div>
 					</div>
 				</div>
+				<div class="control-group">
+					<div class="controls">
+						<label class="checkbox">
+						<input id="NoTicPr" name="noticpr" type="checkbox" value="1">
+							Не менять стоимость работ (Не добавлять тИЦ)
+						</label>
+					</div>
+				</div>
 				<div class="clear"></div>
-				<hr/>
 				<div class="control-group">
 					<label for="manager" class="control-label">Менеджеры</label>
 					<div class="controls">
@@ -123,12 +130,12 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label" for="locked"></label>
 					<div class="controls">
 						<label class="checkbox">
 						<input id="lockPlatform" name="locked" type="checkbox" value="1">
 							Заблокировать площадку
 						</label>
+						<label class="checkbox">
 						<input id="StatusPlatform" name="status" type="checkbox" value="1" disabled="disabled">
 							Активировать площадку
 						</label>

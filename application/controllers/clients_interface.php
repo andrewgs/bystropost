@@ -927,10 +927,18 @@ class Clients_interface extends CI_Controller{
 					$cntpl = 0;
 					$cntpl = $this->load_platforms($platforms,$_POST);
 					$msgs = $this->session->userdata('msgs');
-					if($cntpl):
-						$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы. Количество: '.$cntpl);
+					if($cntpl['import']):
+						$this->session->set_userdata('msgs',$msgs.'<br/>Площадки импортированы. Количество: '.$cntpl['import']);
+						if(count($cntpl['alien'])):
+							$msgs = $this->session->userdata('msgs');
+							$msgs .= '<br/>На созданном биржевом аккаунте были обнаружены сайты, которые нам не удалось импортировать в систему. Пожалуйста, '.anchor('webmaster-panel/actions/tickets','создайте тикет').' с данным вопросом.<br/>Cписок не импортированных сайтов: <br/>';
+							for($site = 0;$site<count($cntpl['alien']);$site++):
+								$msgs .= $cntpl['alien'][$site].'<br/>';
+							endfor;
+							$this->session->set_userdata('msgs',$msgs);
+						endif;
 					else:
-						$this->session->set_userdata('msgs',$msgs.'<br/><span class="red">Внимание! Площадки отсутствуют!<br/>Воспользуйтесь кнопкой [Обновить список площадок] для импорта Ваших площадок.</span>');
+						$this->session->set_userdata('msgs',$msgs.'<br/><span class="red">Внимание! Площадки отсутствуют!<br/>Воспользуйтесь кнопкой <span class="btn btn-info"><i class="icon-refresh icon-white"></i></span> для импорта Ваших площадок.</span>');
 					endif;
 				else:
 					$this->session->set_userdata('msgr','Ошибка. Невозможно импортировать аккаунт биржи');
@@ -1067,7 +1075,7 @@ class Clients_interface extends CI_Controller{
 	
 	public function control_market_loading(){
 		
-		$statusval = array('status'=>TRUE,'plcnt'=>0,'plload'=>0);
+		$statusval = array('status'=>TRUE,'plcnt'=>0,'plload'=>0,'alien'=>0);
 		$webmarket = trim($this->input->post('market'));
 		if(!$webmarket):
 			show_404();
@@ -1077,7 +1085,9 @@ class Clients_interface extends CI_Controller{
 		$param = 'birzid='.$market['market'].'&accid='.$webmarket;
 		$platforms = $this->API('GetSitesFromAccount',$param);
 		$statusval['plload'] = count($platforms);
-		$statusval['plcnt'] = $this->load_platforms($platforms,$market);
+		$imported = $this->load_platforms($platforms,$market);
+		$statusval['plcnt'] = $imported['import'];
+		$statusval['alien'] = $imported['alien'];
 		echo json_encode($statusval);
 	}
 	
@@ -2255,8 +2265,8 @@ class Clients_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
-					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_owner_pages($this->user['uid'],$ticket,5,$from),
-					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_owner_pages($this->user['uid'],$ticket),
+					'tkmsgs'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
+					'count'			=> $this->mdunion->count_messages_by_ticket($ticket),
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -2541,7 +2551,10 @@ class Clients_interface extends CI_Controller{
 	private function load_platforms($platforms,$market){
 		
 		if($platforms):
-			$j = $cntpl = 0;
+			$j = 0;
+			$cntpl['import'] = 0;
+			$cntpl['alien']	= array();
+			
 			$pl_data = array();
 			foreach($platforms as $key => $value):
 				$pl_data[$j] = $value;
@@ -2615,7 +2628,7 @@ class Clients_interface extends CI_Controller{
 						$this->mdplatforms->update_field($platform,'tic',$tic);
 						$sqlquery = $this->SQL_TIC_PR($tic,$platform);
 						$this->mdplatforms->run_query($sqlquery);
-						$cntpl++;
+						$cntpl['import']++;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №22: Импортирована новая площадка');
 						$param = 'siteid='.$new_platform['id'];
 						$services = $this->API('GetAdditionalService',$param);
@@ -2661,6 +2674,8 @@ class Clients_interface extends CI_Controller{
 						else:
 							$this->mdmkplatform->update_field($mkid,'publication',$publication);
 						endif;
+					else:
+						$cntpl['alien'][] = $new_platform['url'];
 					endif;
 				endif;
 			endfor;

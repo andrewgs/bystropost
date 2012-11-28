@@ -1062,6 +1062,11 @@ class Admin_interface extends CI_Controller{
 				if(isset($_POST['status']) && !is_null($_POST['status'])):
 					$this->mdplatforms->update_field($_POST['pid'],'status',1);
 				endif;
+				if(isset($_POST['noticpr']) && !is_null($_POST['noticpr'])):
+					$this->mdplatforms->update_field($_POST['pid'],'noticpr',1);
+				else:
+					$this->mdplatforms->update_field($_POST['pid'],'noticpr',0);
+				endif;
 				$prevman = $this->mdplatforms->read_field($_POST['pid'],'manager');
 				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
 				$result1 = $this->mdplatforms->update_lock($_POST['pid'],$_POST['uid'],$_POST['locked']);
@@ -1572,10 +1577,10 @@ class Admin_interface extends CI_Controller{
 					if($oldtic != $tic):
 						$addwtic = 5; $addmtic = 2;
 						if($oldtic < 30 AND $tic >= 30):
-							$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+							$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id']." AND platforms.noticpr = 0";
 							$this->mdplatforms->run_query($sqlquery);
 						elseif($oldtic >= 30 AND $tic < 30):
-							$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+							$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id']." AND platforms.noticpr = 0";
 							$this->mdplatforms->run_query($sqlquery);
 						endif;
 					endif;
@@ -1669,7 +1674,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	/******************************************************** romocode ******************************************************/
+	/******************************************************** promocode ******************************************************/
 
 	public function management_promocode(){
 		
@@ -2832,10 +2837,10 @@ class Admin_interface extends CI_Controller{
 			if($oldtic != $tic):
 				$addwtic = 5; $addmtic = 2;
 				if($oldtic < 30 AND $tic >= 30):
-					$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext+$addwtic, mcontext=mcontext+$addmtic,cnotice=cnotice+$addwtic,mnotice=mnotice+$addmtic,clinkpic=clinkpic+$addwtic,mlinkpic=mlinkpic+$addmtic,cpressrel=cpressrel+$addwtic,mpressrel=mpressrel+$addmtic,clinkarh=clinkarh+$addwtic,mlinkarh=mlinkarh+$addmtic WHERE platforms.id = ".$platforms[$i]['id']." AND platforms.noticpr = 0";
 					$this->mdplatforms->run_query($sqlquery);
 				elseif($oldtic >= 30 AND $tic < 30):
-					$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id'];
+					$sqlquery = "UPDATE platforms SET ccontext=ccontext-$addwtic, mcontext=mcontext-$addmtic,cnotice=cnotice-$addwtic,mnotice=mnotice-$addmtic,clinkpic=clinkpic-$addwtic,mlinkpic=mlinkpic-$addmtic,cpressrel=cpressrel-$addwtic,mpressrel=mpressrel-$addmtic,clinkarh=clinkarh-$addwtic,mlinkarh=mlinkarh-$addmtic WHERE platforms.id = ".$platforms[$i]['id']." AND platforms.noticpr = 0";
 					$this->mdplatforms->run_query($sqlquery);
 				endif;
 			endif;
@@ -2975,9 +2980,7 @@ class Admin_interface extends CI_Controller{
 		/*======================== Загрузка вебмастеров ============================*/
 //		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
 	/*======================== Загрузка аккаунтов на биржах ========================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAccount','param'=>'');
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=1&accid=490');
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetFinishedOrder','param'=>'birzid=2&accid=39&datefrom=2012-11-01&dateto=2012-11-05');
+		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=76');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
 		curl_setopt($ch,CURLOPT_POST,1);

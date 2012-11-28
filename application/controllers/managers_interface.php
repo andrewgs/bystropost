@@ -679,11 +679,9 @@ class Managers_interface extends CI_Controller{
 						if($user['autopaid'] && ($user['balance'] >= $wprice)):
 							$this->mdusers->change_user_balance($webmaster,-$wprice);
 							$this->mddelivesworks->update_status_ones($webmaster,$work);
-							if($user['manager']):
-								$this->mdusers->change_user_balance($user['manager'],$mprice);
-							endif;
+							$this->mdusers->change_user_balance($this->user['uid'],$mprice);
 							$this->mdusers->change_admins_balance($wprice-$mprice);
-							$this->mdfillup->insert_record(0,$wprice-$mprice,'Начисление средств администратору при автоматической плате (Ручной ввод)');
+							$this->mdfillup->insert_record(0,$wprice-$mprice,'Начисление средств администратору при автоматической оплате (Ручной ввод)');
 							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
 						endif;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
@@ -727,7 +725,7 @@ class Managers_interface extends CI_Controller{
 		if(!$count):
 			show_404();
 		endif;
-		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+		$datefrom = date("Y-m-d",mktime(0,0,0,date("m")-1,date("d"),date("Y")));
 //		$datefrom = "2012-11-01";
 		$dateto = date("Y-m-d");
 		$platforms = $this->mdplatforms->read_managers_platform_remote($this->user['uid'],$count,$from);
@@ -785,9 +783,7 @@ class Managers_interface extends CI_Controller{
 													if($user['autopaid'] && ($user['balance'] >= $new_work['wprice'])):
 														$this->mdusers->change_user_balance($new_work['webmaster'],-$new_work['wprice']);
 														$this->mddelivesworks->update_status_ones($new_work['webmaster'],$work);
-														if($user['manager']):
-															$this->mdusers->change_user_balance($user['manager'],$new_work['mprice']);
-														endif;
+														$this->mdusers->change_user_balance(2,$new_work['mprice']);
 														$this->mdusers->change_admins_balance($new_work['wprice']-$new_work['mprice']);
 														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Начисление средств администратору при автоматической плате (Автоматический ввод)');
 													endif;
@@ -1107,8 +1103,8 @@ class Managers_interface extends CI_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
-					'tkmsgs'		=> $this->mdtkmsgs->read_tkmsgs_by_manager_pages($this->user['uid'],$ticket,5,$from),
-					'count'			=> $this->mdtkmsgs->count_tkmsgs_by_manager_pages($this->user['uid'],$ticket),
+					'tkmsgs'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
+					'count'			=> $this->mdunion->count_messages_by_ticket($ticket),
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
