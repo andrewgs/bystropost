@@ -28,7 +28,9 @@ class Mdwebmarkets extends CI_Model{
 	
 	function update_record($id,$urid,$data){
 		
-//		$this->db->set('login',$data['login']);
+		if(isset($data['login']) and !empty($data['login'])):
+			$this->db->set('login',$data['login']);
+		endif;
 		$this->db->set('password',md5($data['password']));
 		$this->db->set('cryptpassword',$this->encrypt->encode($data['password']));
 		

@@ -20,7 +20,7 @@
 				<div class="control-group">
 					<label class="control-label" for="login">Логин:</label>
 					<div class="controls">
-						<input type="text" id="elogin" class="input-xlarge einpval disabled" name="login" disabled="disabled">
+						<input type="text" id="elogin" class="input-xlarge einpval" name="login">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>

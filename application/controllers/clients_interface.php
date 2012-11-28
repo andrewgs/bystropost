@@ -958,10 +958,10 @@ class Clients_interface extends CI_Controller{
 				redirect($this->uri->uri_string());
 			else:
 				$account = $this->mdwebmarkets->read_record($_POST['mid']);
-				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
+				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$_POST['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
 				$this->API('UpdateAccount',$param);
 				$this->mdwebmarkets->update_record($_POST['mid'],$this->user['remoteid'],$_POST);
-				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password'],NULL);
+				$this->mdmkplatform->update_records($this->user['uid'],$account['login'],$account['market'],$account['password'],$_POST['password'],$_POST['login'],NULL);
 				$this->mdlog->insert_record($this->user['uid'],'Событие №26: Изменена учетная запись на бирже');
 				
 				ob_start();
@@ -972,7 +972,7 @@ class Clients_interface extends CI_Controller{
 				Данные:</p>
 				<p>Вебмастер: <?=$this->user['ulogin'];?><br/>
 				Биржа: <?=$pagevar['markets'][$account['market']-1]['title'];?><br/>
-				Логин: <?=$account['login']?><br/>
+				Логин: <?=$_POST['login'];?><br/>
 				Пароль: <?=$_POST['password'];?><br/></p>
 				<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
 				<?

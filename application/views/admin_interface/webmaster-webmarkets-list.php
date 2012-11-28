@@ -21,7 +21,7 @@
 						<tr>
 							<th class="w85"><center>Название</center></th>
 							<th class="w85"><center>Логин</center></th>
-							<th class="w100"><center>Пароль</center></th>
+							<th class="w190"><center>Пароль</center></th>
 							<th class="w100">&nbsp;</th>
 						</tr>
 					</thead>
@@ -30,7 +30,7 @@
 						<tr>
 							<td class="w85" style="text-align:center; vertical-align:middle;"><nobr><?=$accounts[$i]['mtitle'];?></nobr></td>
 							<td class="w85"><?=$accounts[$i]['login'];?></td>
-							<td class="w100"><?=$accounts[$i]['password'];?></td>
+							<td class="w190"><?=$accounts[$i]['password'];?></td>
 							<td class="w100" style="text-align:center; vertical-align:middle; max-width:0;">
 								<nobr>
 									<div id="params<?=$i;?>" style="display:none" data-mid="<?=$accounts[$i]['id'];?>" data-login="<?=$accounts[$i]['login'];?>" data-market="<?=$accounts[$i]['market'];?>"></div>
@@ -45,7 +45,7 @@
 				</table>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
-		<?php $this->load->view('clients_interface/modal/clients-edit-market');?>
+		<?php $this->load->view('admin_interface/modal/admin-edit-market');?>
 		<?php $this->load->view('clients_interface/modal/clients-delete-market');?>
 		</div>
 	</div>

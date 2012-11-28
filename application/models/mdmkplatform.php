@@ -29,15 +29,18 @@ class Mdmkplatform extends CI_Model{
 		return $this->db->insert_id();
 	}
 	
-	function update_records($uid,$login,$market,$oldpass,$password,$publication){
+	function update_records($uid,$oldlogin,$market,$oldpass,$password,$login,$publication){
 			
 		$this->db->set('password',md5($password));
 		$this->db->set('cryptpassword',$this->encrypt->encode($password));
 		if(isset($publication)):
 			$this->db->set('publication',$publication);
 		endif;
+		if(isset($login)):
+			$this->db->set('login',$login);
+		endif;
 		
-		$this->db->where('login',$login);
+		$this->db->where('login',$oldlogin);
 		$this->db->where('password',$oldpass);
 		$this->db->where('webmaster',$uid);
 		$this->db->where('market',$market);

@@ -768,18 +768,18 @@ class Admin_interface extends CI_Controller{
 			unset($_POST['smsubmit']);
 			$this->form_validation->set_rules('mid',' ','required|trim');
 			$this->form_validation->set_rules('market',' ','trim');
-			$this->form_validation->set_rules('login',' ','trim');
+			$this->form_validation->set_rules('login',' ','required|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
 			else:
 				$account = $this->mdwebmarkets->read_record($_POST['mid']);
-				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$account['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
+				$param = 'accid='.$_POST['mid'].'&birzid='.$account['market'].'&login='.$_POST['login'].'&pass='.base64_encode($_POST['password']).'&act=1';
 				$this->API('UpdateAccount',$param);
 				$this->mdwebmarkets->update_record($_POST['mid'],$remoteid,$_POST);
 				$user = $this->mdusers->read_record_remote($remoteid);
-				$this->mdmkplatform->update_records($user['id'],$account['login'],$account['market'],$account['password'],$_POST['password'],NULL);
+				$this->mdmkplatform->update_records($user['id'],$account['login'],$account['market'],$account['password'],$_POST['password'],$_POST['login'],NULL);
 				$this->session->set_userdata('msgs','Аккаунт успешно сохранен');
 			endif;
 			redirect($this->uri->uri_string());
