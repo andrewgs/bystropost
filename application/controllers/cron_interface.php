@@ -14,6 +14,7 @@ class Cron_interface extends CI_Controller{
 		$this->load->model('mdfillup');
 		$this->load->model('mdtypeswork');
 		$this->load->model('mddelivesworks');
+		$this->load->model('mdwebmarkets');
 	}
 	
 	public function import_deliver_work(){
@@ -222,9 +223,63 @@ class Cron_interface extends CI_Controller{
 		$file_name = getcwd().'/documents/bloking_'.date("YmdHi").'.log';
 		$text = "Файл-лог автоматического блокирования пользователей за не оплату.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
-		
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
-		$total = $this->mdunion->update_debetors_status($date,'=',1);
+		$debetors = $this->mdunion->read_debetors($date,'<=',0);
+		//Автоматическая оплата
+		$summa = array('managers' => array(),'admin' => 0);
+		echo '<br/>Автоматическая оплата<br/>';
+		if($debetors):
+			for($i=0;$i<count($debetors);$i++):
+				if(!isset($summa['managers'][$debetors[$i]['manager']])):
+					$summa['managers'][$debetors[$i]['manager']] = 0;
+				endif;
+				echo "<hr/>Current webmaster = ".$debetors[$i]['webmaster']."<br/>";
+				echo "<hr/>Current manager = ".$debetors[$i]['manager']."<br/>";
+				$balance = $this->mdusers->read_field($debetors[$i]['webmaster'],'balance');
+				echo "Start Balance = $balance. ";
+				$minprice = $this->mdunion->min_price_debitors_works($debetors[$i]['webmaster'],$date,'<=');
+				if($balance >= $minprice):
+					echo "Balance > $minprice (minimun price) <br/>";
+					$works = $this->mdunion->read_debitors_works($debetors[$i]['webmaster'],$date,'<=');
+					for($j=0;$j<count($works);$j++):
+						echo "Delivers Work ID: ".$works[$j]['id']."<br/>";
+						echo "Price Work: ".$works[$j]['wprice'].". ";
+						$balance = $this->mdusers->read_field($debetors[$i]['webmaster'],'balance');
+						echo "Current Balance = $balance. <br/>";
+						if($balance < $minprice):
+							echo "Balance is small. Break webmaster.<br/>";
+							break;
+						endif;
+						if($balance >= $works[$j]['wprice']):
+							echo "balance >= ".$works[$j]['wprice']."<br/>";
+							$this->mdusers->change_user_balance($debetors[$i]['webmaster'],-$works[$j]['wprice']);
+							echo "change webmaster balance= -".$works[$j]['wprice']."<br/>";
+							$this->mdunion->works_status_ones($works[$j]['id']);
+							echo "change status for works ID=".$works[$j]['id']."<br/>";
+							$this->mdusers->change_user_balance($debetors[$i]['manager'],$works[$j]['mprice']);
+							$summa['managers'][$debetors[$i]['manager']]+=$works[$j]['mprice'];
+							echo "change manager balance= ".$works[$j]['mprice']."<br/>";
+							$this->mdusers->change_admins_balance($works[$j]['wprice']-$works[$j]['mprice']);
+							$summa['admin']+=($works[$j]['wprice']-$works[$j]['mprice']);
+							echo "change admin balance= ".($works[$j]['wprice']-$works[$j]['mprice'])."<br/>";
+							$this->mdfillup->insert_record($debetors[$i]['webmaster'],$works[$j]['wprice'],'Оплата за выполненное задание ID='.$works[$j]['id'],0,0);
+							$text = 'Оплата за выполненное задание ID='.$works[$j]['id'];
+							file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
+						endif;
+					endfor;
+				else:
+					echo "Balance is small. Next webmaster.<br/>";
+				endif;
+			endfor;
+		endif;
+		echo '<hr/><hr/>';
+		echo 'Summa managers= '; print_r($summa['managers']);echo '<br/>Summa admins = '.$summa['admin'].'<br/>';
+		unset($debetors);
+		echo '<hr/><hr/>';
+		//блокировка должников и их аккаунтов
+		echo '<br/>Блокировка должников и их аккаунтов<br/>';
+		$total = $this->mdunion->update_debetors_status($date,'<=',1);
+		echo "Total debetor: $total<br/>";
 		$birzlock = 0;
 		if($total):
 			$debetors = $this->mdunion->debetors_webmarkets();
@@ -233,6 +288,8 @@ class Cron_interface extends CI_Controller{
 				$text = "Запрос: ".$param;
 				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
 				$this->API('UpdateAccount',$param);
+				$this->mdwebmarkets->update_record($debetors[$i]['id'],'status',0);
+				echo "Blocked webmarkets: ".$debetors[$i]['id'].". Webmaster: ".$debetors[$i]['webmaster']."<br/>";
 				$birzlock++;
 			endfor;
 		else:

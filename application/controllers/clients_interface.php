@@ -1,7 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Clients_interface extends CI_Controller{
-	
 	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
@@ -98,15 +97,6 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
@@ -151,15 +141,7 @@ class Clients_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		$this->session->unset_userdata('regsuc');
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
+		$pagevar['cntunit']['delivers']['totalsum'] = 0;
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$this->load->view("clients_interface/successfull",$pagevar);
@@ -295,16 +277,6 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
@@ -356,16 +328,6 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$this->session->set_userdata('balance',$_POST['balance']);
 				redirect('webmaster-panel/actions/balance/paid');
-			endif;
-		endif;
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
 			endif;
 		endif;
 		
@@ -421,16 +383,6 @@ class Clients_interface extends CI_Controller{
 		for($i=0;$i<count($pagevar['history']);$i++):
 			$pagevar['history'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['history'][$i]['date']);
 		endfor;
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		
 		$config['base_url'] 		= $pagevar['baseurl'].'webmaster-panel/actions/balance/payment-history/from/';
 		$config['uri_segment'] 		= 6;
@@ -673,15 +625,6 @@ class Clients_interface extends CI_Controller{
 			endif;
 		endif;
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		$cnt = 0;
 		for($j=0;$j<count($pagevar['services']);$j++):
 			$pagevar['services'][$j]['attached'] = 0;
@@ -801,16 +744,6 @@ class Clients_interface extends CI_Controller{
 				endforeach;
 				$this->session->set_userdata('msgs','Свойства сохранены');
 				redirect('webmaster-panel/actions/services');
-			endif;
-		endif;
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
 			endif;
 		endif;
 		
@@ -995,16 +928,6 @@ class Clients_interface extends CI_Controller{
 				$this->session->set_userdata('msgs','Аккаунт успешно сохранен');
 			endif;
 			redirect($this->uri->uri_string());
-		endif;
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
 		endif;
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
@@ -1216,15 +1139,6 @@ class Clients_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		for($i=0;$i<count($pagevar['mails']);$i++):
 			$pagevar['mails'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['mails'][$i]['date']);
 		endfor;
@@ -1516,16 +1430,7 @@ class Clients_interface extends CI_Controller{
 			$pagevar['minprice'] = 0;
 		endif;
 		unset($values);
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
+
 		$config['total_rows'] 		= $count;
 		$config['per_page'] 		= $this->session->userdata('jobscount');
 		$config['num_links'] 		= 4;
@@ -1754,16 +1659,6 @@ class Clients_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
@@ -1776,9 +1671,7 @@ class Clients_interface extends CI_Controller{
 		
 		if($pagevar['userinfo']['remote']):
 			if(!$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
-//				if(intval($pagevar['userinfo']['balance'])<500):
-					redirect('webmaster-panel/actions/control');
-//				endif;
+				redirect('webmaster-panel/actions/control');
 			endif;
 		else:
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
@@ -1826,16 +1719,6 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
 		
 		if($this->input->post('submit')):
 			$_POST['submit'] = NULL;
@@ -1972,15 +1855,7 @@ class Clients_interface extends CI_Controller{
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
+		
 		$attached = $this->mdunion->services_attached_list($this->user['uid']);
 		for($i=0;$i<count($attached);$i++):
 			$pagevar['services'][$i] = $this->mdunion->read_srvvalue_service_platform($attached[$i]['service'],$platform,$this->user['uid']);
@@ -2268,16 +2143,6 @@ class Clients_interface extends CI_Controller{
 		$this->pagination->initialize($config);
 		$pagevar['pages'] = $this->pagination->create_links();
 		
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
-		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
 		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
@@ -2402,15 +2267,7 @@ class Clients_interface extends CI_Controller{
 				endif;
 			endif;
 		endfor;
-		if($this->loginstatus['status']):
-			if($this->user['utype'] == 1):
-				$userdata = $this->mdunion->read_user_webmaster($this->user['uid']);
-				$pagevar['userinfo']['balance'] = $userdata['balance'];
-				$pagevar['userinfo']['torders'] = $userdata['torders'];
-				$pagevar['userinfo']['uporders'] = $userdata['uporders'];
-				unset($userdata);
-			endif;
-		endif;
+		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
 		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/view-ticket/'.$this->uri->segment(5).'/from/';
 		$config['uri_segment'] 	= 7;

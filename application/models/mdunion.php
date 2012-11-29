@@ -584,7 +584,6 @@ class Mdunion extends CI_Model{
 		
 		$curdate = date("Y-m-d");
 		$query = "UPDATE delivesworks SET status = 1,datepaid = '$curdate' WHERE remoteid = $rid";
-		print_r($query);echo '<br/>';
 		$this->db->query($query);
 		return $this->db->affected_rows();
 	}
@@ -598,7 +597,7 @@ class Mdunion extends CI_Model{
 	
 	function debetors_webmarkets(){
 	
-		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.remoteid = webmarkets.webmaster WHERE users.debetor = 1 AND users.antihold = 0";
+		$query = "SELECT webmarkets.* FROM users INNER JOIN webmarkets ON users.remoteid = webmarkets.webmaster WHERE users.debetor = 1 AND webmarkets.status = 1 AND users.antihold = 0";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -623,5 +622,32 @@ class Mdunion extends CI_Model{
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0]['cnt'];
 		return 0;
+	}
+	
+	function read_debitors_works($webmaster,$date,$znak){
+		
+		$query = "SELECT * FROM delivesworks WHERE delivesworks.webmaster = $webmaster AND delivesworks.date $znak '$date' AND status = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function min_price_debitors_works($webmaster,$date,$znak){
+		
+		$query = "SELECT MIN(wprice) AS minprice FROM delivesworks WHERE delivesworks.webmaster = $webmaster AND delivesworks.date $znak '$date' AND status = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['minprice'];
+		return 0;
+	}
+	
+	function read_debetors($data,$znak,$status){
+	
+		$query = "SELECT delivesworks.webmaster,delivesworks.manager FROM delivesworks WHERE date $znak '$data' and status = $status GROUP BY webmaster ORDER BY webmaster";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
 	}
 }
