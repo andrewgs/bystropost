@@ -489,10 +489,18 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	
 	function free_platforms($uid){
 	
 		$query = "SELECT platforms.id,platforms.remoteid,mkplatform.id AS mkid FROM `platforms` LEFT JOIN mkplatform ON platforms.`id` = mkplatform.platform WHERE platforms.webmaster = $uid AND platforms.remoteid !=0 AND platforms.manager = 2 GROUP BY platforms.id;";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function webmaster_locked_platforms(){
+	
+		$query = "SELECT users.id AS uid,users.fio,users.login,users.cryptpassword,platforms.url FROM `users` INNER JOIN platforms ON users.id = platforms.webmaster WHERE platforms.status = 0 AND platforms.locked = 0 ORDER BY users.id,platforms.url";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

@@ -7,8 +7,10 @@ class General_interface extends CI_Controller{
 		parent::__construct();
 		$this->load->model('mdmarkets');
 		$this->load->model('mdevents');
+		$this->load->model('mdunion');
 
 }
+
 	/******************************************************** functions ******************************************************/	
 	
 	function viewimage(){
@@ -84,4 +86,69 @@ class General_interface extends CI_Controller{
 		endswitch;
 	}
 	
+	function distribution_of_notifications(){
+		
+		$start_time = microtime(true);
+		
+		$platforms = $this->mdunion->webmaster_locked_platforms();
+		$webmasters = array();
+		for($i=0,$j=0;$i<count($platforms);$i++,$j++):
+			$webmasters[$j]['uid'] = $platforms[$i]['uid'];
+			$webmasters[$j]['fio'] = $platforms[$i]['fio'];
+			$webmasters[$j]['login'] = $platforms[$i]['login'];
+			$webmasters[$j]['password'] = $this->encrypt->decode($platforms[$i]['cryptpassword']);
+			$webmasters[$j]['platform'][] = $platforms[$i]['url'];
+			for($n=$i+1;$n<count($platforms);$n++):
+				if(isset($platforms[$n])):
+					if($webmasters[$j]['uid'] == $platforms[$n]['uid']):
+						$webmasters[$j]['platform'][] = $platforms[$n]['url'];
+					else:
+						$i = $n-1;
+						break;
+					endif;
+				endif;
+			endfor;
+		endfor;
+		for($i=0;$i<count($webmasters);$i++):
+			ob_start();?>
+			<img src="<?=base_url();?>images/logo.png" alt="" />
+			<p><strong>Здравствуйте, <?=$webmasters[$i]['fio'];?></strong></p>
+			<p>В системе быстропост на данный момент, есть сайт(ы):
+			<?php $platforms = ''; ?>
+			<?php for($j=0;$j<count($webmasters[$i]['platform']);$j++):?>
+				<?php $platforms .= $webmasters[$i]['platform'][$j];?>
+				<?php if($j+1<count($webmasters[$i]['platform'])):?>
+					<?php $platforms .= ', ';?>
+				<?php endif; ?>
+			<?php endfor; ?>
+			<?=$platforms?> которые НЕ монетизируются.<br/>На данный момент у них статус в системе НЕ активен.<br/>
+			Имеются ли проблемы с настройкой сайта или подключения дополнительных бирж? Планируется ли включение площадки?</p>
+			<p>
+				Ваши данные от системы <?=anchor('','http://bystropost.ru');?>
+				<br/>L: <?=$webmasters[$i]['login'];?>
+				<br/>P: <?=$webmasters[$i]['password'];?>
+			</p>
+			<p>Ждём вашего ответа. <?=mailto('sacred3@gmail.com','sacred3@gmail.com');?></p>
+			<br/><br/><p>С уважением, Анатолий<br/>bystropost.ru</p>
+			<?
+			$mailtext = ob_get_clean();
+			$this->email->clear(TRUE);
+			$config['smtp_host'] = 'localhost';
+			$config['charset'] = 'utf-8';
+			$config['wordwrap'] = TRUE;
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->to($webmasters[$i]['login']);
+			$this->email->from('sacred3@gmail.com','Монетизация Быстропост');
+			$this->email->bcc('');
+			$this->email->subject("Монетизация Быстропост");
+			$this->email->message($mailtext);
+			$this->email->send();
+			echo $mailtext.'<br/><br/><br/><br/>';
+		endfor;
+		
+		$exec_time = round((microtime(true) - $start_time),2);
+		$text = "<br/>Скрипт выполнен за: $exec_time сек.";
+		echo($text);
+	}
 }

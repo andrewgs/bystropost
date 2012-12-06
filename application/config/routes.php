@@ -169,10 +169,11 @@ $route['optimizator-panel/actions/logoff']								= "optimizators_interface/acti
 
 /*************************************************** GENERAL INTRERFACE	*******************************************/
 
-$route[':any/viewimage/:num']	= "general_interface/viewimage";
-$route['balance/result']		= "general_interface/balance_result";
-$route['support']				= "general_interface/support";
-$route['views/market-profile']	= "general_interface/load_views";
+$route[':any/viewimage/:num']			= "general_interface/viewimage";
+$route['balance/result']				= "general_interface/balance_result";
+$route['support']						= "general_interface/support";
+$route['views/market-profile']			= "general_interface/load_views";
+$route['distribution-of-notifications']	= "general_interface/distribution_of_notifications";
 
 /*************************************************** 	ADMINS INTRERFACE	***********************************************/
 
