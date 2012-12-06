@@ -478,12 +478,12 @@ class Cron_interface extends CI_Controller{
 	
 	private function checkout($invoice,$wmid,$summa){
 		
-		return TRUE;
+		return FALSE;
 	} // функция выставления счета
 	
 	private function checkout_now(){
 		
-		return TRUE;
+		return FALSE;
 	} // функция проверки оплаты
 	
 	private function current_date_on_time($field){
