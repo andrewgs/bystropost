@@ -500,7 +500,7 @@ class Mdunion extends CI_Model{
 	
 	function webmaster_locked_platforms(){
 	
-		$query = "SELECT users.id AS uid,users.fio,users.login,users.cryptpassword,platforms.url FROM `users` INNER JOIN platforms ON users.id = platforms.webmaster WHERE platforms.status = 0 AND platforms.locked = 0 ORDER BY users.id,platforms.url";
+		$query = "SELECT users.id AS uid,users.fio,users.login,users.cryptpassword,platforms.url FROM `users` INNER JOIN platforms ON users.id = platforms.webmaster WHERE users.locked = 0 AND platforms.tic >= 10 AND platforms.status = 0 AND platforms.locked = 0 ORDER BY users.id,platforms.url";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -662,6 +662,15 @@ class Mdunion extends CI_Model{
 	function read_debetors($data,$znak,$status){
 	
 		$query = "SELECT delivesworks.webmaster,delivesworks.manager FROM delivesworks WHERE date $znak '$data' and status = $status GROUP BY webmaster ORDER BY webmaster";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+
+	function debetors_for_checkout($date){
+	
+		$query = "SELECT users.id AS uid,users.wmid,SUM(delivesworks.wprice) AS summa,COUNT(delivesworks.id) AS cnt FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.debetor = 0 AND delivesworks.date <= '$date' AND status = 0 GROUP BY delivesworks.webmaster ORDER BY delivesworks.webmaster";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

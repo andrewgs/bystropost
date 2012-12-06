@@ -15,6 +15,8 @@ class Cron_interface extends CI_Controller{
 		$this->load->model('mdtypeswork');
 		$this->load->model('mddelivesworks');
 		$this->load->model('mdwebmarkets');
+		$this->load->model('mdcheckout');
+		$this->load->model('mdlog');
 	}
 	
 	public function import_deliver_work(){
@@ -406,6 +408,83 @@ class Cron_interface extends CI_Controller{
 		echo($text);
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 	}
+	
+	public function users_checkout(){
+		
+		$start_time = microtime(true);
+		
+		$file_name = getcwd().'/documents/checkout_'.date("YmdHi").'.log';
+		$text = "Файл-лог автоматического выставления считов на оплату.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
+		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
+		$debetors = $this->mdunion->debetors_for_checkout($date);
+		$count_invoice = 0;
+		$exec_time = round((microtime(true) - $start_time),2);
+		for($i=0;$i<count($debetors);$i++):
+			$max_invoice = $this->mdcheckout->max_invoce()+1;
+			$result = $this->checkout($max_invoice,$debetors[$i]['wmid'],$debetors[$i]['summa']);
+			if($result):
+				$this->mdcheckout->insert_record($debetors[$i]['uid'],$max_invoice,$debetors[$i]['summa'],$debetors[$i]['wmid']);
+				$text = "Cчет выставлен успешно! Webmaster: ".$debetors[$i]['uid']."\n";
+				echo $text.'<br/>';
+				$count_invoice++;
+			else:
+				$text = "Ошибка при выставлении счета! Webmaster: ".$debetors[$i]['uid']."\n";
+				echo $text.'<br/>';
+			endif;
+			file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+		endfor;
+		
+		$text = "Скрипт выполнен за: $exec_time сек.\n";
+		$text .= "Выставлено: $count_invoice счетов.";
+		echo($text);
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+	}
+	
+	public function users_checkout_now(){
+		
+		$start_time = microtime(true);
+		
+		$file_name = getcwd().'/documents/checkout_'.date("YmdHi").'.log';
+		$text = "Файл-лог автоматической проверки оплаты считов.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
+		$paid_invoice = $notpaid_invoice = 0;
+		$checkout = $this->mdcheckout->read_records();
+		$exec_time = round((microtime(true) - $start_time),2);
+		for($i=0;$i<count($checkout);$i++):
+			$result = $this->checkout_now($checkout[$i]['wmid'],$checkout[$i]['wmid']);
+			if($result):
+				$this->mdcheckout->update_field($checkout[$i]['id'],'paid',1);
+				$balance = $this->mdusers->read_field($checkout[$i]['webmaster'],'balance');
+				$this->mdfillup->insert_record($checkout[$i]['webmaster'],$checkout[$i]['summa'],"Оплата счета через WebMoney",0,1);
+				$new_balance = $balance+$checkout[$i]['summa'];
+				$this->mdusers->update_field($checkout[$i]['webmaster'],'balance',$new_balance);
+				$this->mdlog->insert_record($checkout[$i]['webmaster'],'Событие №6: Баланс пополнен');
+				$text = "Баланс пополнен! Webmaster: ".$checkout[$i]['webmaster']."\n";
+				echo $text.'<br/>';
+				$paid_invoice++;
+			else:
+				$notpaid_invoice++;
+			endif;
+			file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+		endfor;
+		
+		$text = "Скрипт выполнен за: $exec_time сек.\n";
+		$text .= "Оплачено: $paid_invoice счетов.\n";
+		$text .= "Не оплачено: $notpaid_invoice счетов.\n";
+		echo($text);
+		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+	}
+	
+	private function checkout($invoice,$wmid,$summa){
+		
+		return TRUE;
+	} // функция выставления счета
+	
+	private function checkout_now(){
+		
+		return TRUE;
+	} // функция проверки оплаты
 	
 	private function current_date_on_time($field){
 		

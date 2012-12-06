@@ -111,8 +111,8 @@ class General_interface extends CI_Controller{
 		endfor;
 		for($i=0;$i<count($webmasters);$i++):
 			ob_start();?>
-			<img src="<?=base_url();?>images/logo.png" alt="" />
-			<p><strong>Здравствуйте, <?=$webmasters[$i]['fio'];?></strong></p>
+			<?=anchor('','<img src="'.base_url().'images/logo.png" alt="" />');?>
+			<p><strong>Здравствуйте<?=($webmasters[$i]['fio'] == 'Имя не указанно')?'!':', '.$webmasters[$i]['fio'].'!';?></strong></p>
 			<p>В системе быстропост на данный момент, есть сайт(ы):
 			<?php $platforms = ''; ?>
 			<?php for($j=0;$j<count($webmasters[$i]['platform']);$j++):?>
@@ -121,7 +121,7 @@ class General_interface extends CI_Controller{
 					<?php $platforms .= ', ';?>
 				<?php endif; ?>
 			<?php endfor; ?>
-			<?=$platforms?> которые НЕ монетизируются.<br/>На данный момент у них статус в системе НЕ активен.<br/>
+			<?=$platforms?> которые НЕ монетизируются.<br/>На данный момент у них статус в системе НЕактивен.<br/>
 			Имеются ли проблемы с настройкой сайта или подключения дополнительных бирж? Планируется ли включение площадки?</p>
 			<p>
 				Ваши данные от системы <?=anchor('','http://bystropost.ru');?>
@@ -129,7 +129,7 @@ class General_interface extends CI_Controller{
 				<br/>P: <?=$webmasters[$i]['password'];?>
 			</p>
 			<p>Ждём вашего ответа. <?=mailto('sacred3@gmail.com','sacred3@gmail.com');?></p>
-			<br/><br/><p>С уважением, Анатолий<br/>bystropost.ru</p>
+			<p>С уважением, Анатолий<br/><?=anchor('','http://bystropost.ru');?></p>
 			<?
 			$mailtext = ob_get_clean();
 			$this->email->clear(TRUE);
@@ -143,7 +143,7 @@ class General_interface extends CI_Controller{
 			$this->email->bcc('');
 			$this->email->subject("Монетизация Быстропост");
 			$this->email->message($mailtext);
-			$this->email->send();
+//			$this->email->send();
 			echo $mailtext.'<br/><br/><br/><br/>';
 		endfor;
 		
