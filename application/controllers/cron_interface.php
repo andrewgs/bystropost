@@ -26,7 +26,6 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		
 		$datefrom = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date("Y")));
-//		$datefrom = "2012-10-15";
 		$dateto = date("Y-m-d");
 		$platforms = $this->mdunion->read_managers_platforms(2);
 		if(count($platforms)):
@@ -239,7 +238,7 @@ class Cron_interface extends CI_Controller{
 				echo "Start Balance = $balance. ";
 				$minprice = $this->mdunion->min_price_debitors_works($debetors[$i]['webmaster'],$date,'<=');
 				if($balance >= $minprice):
-					echo "Balance > $minprice (minimun price) <br/>";
+					echo "Balance >= $minprice (minimun price) <br/>";
 					$works = $this->mdunion->read_debitors_works($debetors[$i]['webmaster'],$date,'<=');
 					for($j=0;$j<count($works);$j++):
 						echo "Delivers Work ID: ".$works[$j]['id']."<br/>";
@@ -274,7 +273,37 @@ class Cron_interface extends CI_Controller{
 		endif;
 		echo '<hr/><hr/>';
 		echo 'Summa managers= '; print_r($summa['managers']);echo '<br/>Summa admins = '.$summa['admin'].'<br/>';
-		unset($debetors);
+		echo '<hr/><hr/>';
+		//отправка уведомлений должникам
+		$debetors = $this->mdunion->select_debetors($date,'<=');
+		for($i=0;$i<count($debetors);$i++):
+			ob_start();?>
+			<img src="<?=base_url();?>images/logo.png" alt="" />
+			<p><strong>Здравствуйте, <?=$debetors[$i]['fio'];?></strong></p>
+			<p>У Вас есть неоплаченные заявки сроком в 5 дней.<br/>Ваш аккаунт заблокирован по причине задолженности. Оплатите завершенные работы от 5 дней (включительно) для разблокировки.</p>
+			<?php $debet = $this->mddelivesworks->calc_webmaster_summ($debetors[$i]['id'],'2012-01-01',0);?>
+			<p>Общий долг в системе - <?=$debet['sum']?> рублей</p>
+			<br/><br/><p>С Уважением, Команда Bystropost.ru</p><br/>
+			<p>Это автоматическое письмо. Если у вас есть идеи, как улучшить проект, <?=anchor('idea','напишите нам');?>.</p>
+			<?php
+			$mailtext = ob_get_clean();
+			$this->email->clear(TRUE);
+			$config['smtp_host'] = 'localhost';
+			$config['charset'] = 'utf-8';
+			$config['wordwrap'] = TRUE;
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->to($debetors[$i]['login']);
+			$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
+			$this->email->bcc('');
+			$this->email->subject("Остановка обработки заявок в биржах");
+			$this->email->message($mailtext);
+			if($this->email->send()):
+				$text = "\n\nВебмастер: ".$debetors[$i]['login']."\nДолг в системе: ".$debet['sum']." рублей. Сообщение отправлено.";
+				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
+			endif;
+		endfor;
+		echo "Send Mail: ".count($debetors)."<br/>";
 		echo '<hr/><hr/>';
 		//блокировка должников и их аккаунтов
 		echo '<br/>Блокировка должников и их аккаунтов<br/>';
@@ -320,7 +349,7 @@ class Cron_interface extends CI_Controller{
 			ob_start();?>
 			<img src="<?=base_url();?>images/logo.png" alt="" />
 			<p><strong>Здравствуйте, <?=$webmasters[$uid]['fio'];?></strong></p>
-			<p>Представляем вам свежий дайджест событий за <?=$this->operation_dot_date($settlement_date)?> для вашего аккаунта <?=$webmasters[$uid]['login'];?> в системе Быстропост.</p>
+			<p>Представляем вам свежий дайджест событий за <?=$this->current_date_on_time(date("Y-m-d H:i:s"));?> для вашего аккаунта <?=$webmasters[$uid]['login'];?> в системе Быстропост.</p>
 			<p>Ваш баланс - <?=$webmasters[$uid]['balance'];?> рублей<br/>
 			<?php $debet = $this->mddelivesworks->calc_webmaster_summ($webmasters[$uid]['id'],'2012-01-01',0);?>
 			<?php if($debet['sum']):?>
@@ -361,10 +390,10 @@ class Cron_interface extends CI_Controller{
 			$this->email->to($webmasters[$uid]['login']);
 			$this->email->from('novosti@bystro.net','Bystropost.ru - Система мониторинга и управления');
 			$this->email->bcc('');
-			$this->email->subject("Дайджест событий. Обработка заявок от ".$this->operation_dot_date($settlement_date));
+			$this->email->subject("Дайджест событий. Обработка заявок от ".$this->current_date_on_time(date("Y-m-d H:i:s")));
 			$this->email->message($mailtext);
 			if($this->email->send()):
-				$text = "\n\nВебмастер: ".$webmasters[$uid]['login']."\nДолг в системе: ".$debet['sum']." рубей. Сообщение отправлено.";
+				$text = "\n\nВебмастер: ".$webmasters[$uid]['login']."\nДолг в системе: ".$debet['sum']." рублей. Сообщение отправлено.";
 				file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 			else:
 				$text = "\n\nВебмастер: ".$webmasters[$uid]['login']."\nСообщение не отправлено.";

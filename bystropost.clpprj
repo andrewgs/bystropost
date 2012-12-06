@@ -9134,185 +9134,191 @@
 				<treenode node="user;PHP:Var Name;S:\home\bystropost\www\application\controllers\clients_interface.php;f5;3;10;3;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</treenode>
-			<treenode node="Cron_interface;PHP:Class Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f0;2;1;422;;;;vpos;;vCI_Controller;;c;;r;;d42,2;;b0,0;;m">
+			<treenode node="Cron_interface;PHP:Class Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f0;2;1;451;;;;vpos;;vCI_Controller;;c;;r;;d42,2;;b0,0;;m">
 				<treenode node="__construct;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f1;5;2;17;;;;vpos;;v;;r;;d23,5;;b0,0;;m">
 					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;8;7;8;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="API;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;400;2;421;;;;vpos;;v;;r;;d37,400;;b3,0;;maction;;pparam;;p">
-					<treenode node="action;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f22;400;29;400;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="API;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;429;2;450;;;;vpos;;v;;r;;d37,429;;b3,0;;maction;;pparam;;p">
+					<treenode node="action;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f22;429;29;429;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="ch;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;403;5;403;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="ch;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;432;5;432;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;409;7;409;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;438;7;438;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f30;400;36;400;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f30;429;36;429;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="post;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;402;7;402;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="post;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;431;7;431;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="res;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;412;7;412;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-				</treenode>
-				<treenode node="current_date_on_time;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;380;2;390;;;;vpos;;v;;r;;d46,380;;b3,0;;mfield;;p">
-					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f39;380;45;380;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="list;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;385;7;385;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="months;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;382;9;382;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="nmonth;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;386;9;386;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="pattern;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;387;10;387;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="replacement;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;388;14;388;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="res;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;441;7;441;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="debitors_auto_blocking;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;218;2;306;;;;vpos;;v;;r;;d41,218;;b1,0;;m">
-					<treenode node="balance;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;237;12;237;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="current_date_on_time;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;409;2;419;;;;vpos;;v;;r;;d46,409;;b3,0;;mfield;;p">
+					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f39;409;45;409;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="birzlock;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;282;11;282;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="list;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;414;7;414;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;225;7;225;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="months;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;411;9;411;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="debetors;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;226;11;226;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="nmonth;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;415;9;415;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;299;12;299;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="pattern;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;416;10;416;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="file_name;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;222;12;222;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;231;9;231;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="j;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;243;11;243;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="minprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;239;13;239;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;286;10;286;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="start_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;220;13;220;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="summa;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;228;8;228;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="text;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;223;7;223;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f88;223;93;223;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="total;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;280;8;280;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f5;242;11;242;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="replacement;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;417;14;417;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="import_deliver_work;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;19;2;216;;;;vpos;;v;;r;;d38,19;;b1,0;;m">
-					<treenode node="aprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f28;149;35;149;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="debitors_auto_blocking;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;217;2;335;;;;vpos;;v;;r;;d41,217;;b1,0;;m">
+					<treenode node="balance;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;236;12;236;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="balance;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;156;16;156;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="birzlock;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;311;11;311;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="config;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;290;10;290;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;224;7;224;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="debet;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;283;15;283;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="debetors;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;225;11;225;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;328;12;328;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="file_name;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;221;12;221;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;230;9;230;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="j;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;242;11;242;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="mailtext;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;288;12;288;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="minprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;238;13;238;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;315;10;315;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="start_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;219;13;219;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="summa;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;227;8;227;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="text;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;222;7;222;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f88;222;93;222;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="total;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;309;8;309;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f5;241;11;241;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+				</treenode>
+				<treenode node="import_deliver_work;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;19;2;215;;;;vpos;;v;;r;;d38,19;;b1,0;;m">
+					<treenode node="aprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f28;148;35;148;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="balance;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;155;16;155;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="datefrom;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;27;11;27;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="dateto;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;29;9;29;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="dateto;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;28;9;28;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="deliver_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f5;69;19;69;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="deliver_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f5;68;19;68;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="dl_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;74;15;74;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="dl_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;73;15;73;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="dw_data;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f16;87;24;87;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="dw_data;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f16;86;24;86;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="dwd;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;87;11;87;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="dwd;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;86;11;86;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;210;12;210;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;209;12;209;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="file_name;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;23;12;23;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f11;93;13;93;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f11;92;13;92;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="import_error;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;75;19;75;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="import_error;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;74;19;74;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="index;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f33;34;39;34;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="index;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f33;33;39;33;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="j;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f11;101;13;101;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="j;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f11;100;13;100;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="key;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f25;35;29;35;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="key;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f25;34;29;34;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="mprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f18;149;25;149;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="mprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f18;148;25;148;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;71;12;71;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="param;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;70;12;70;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="pl_mass;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f36;64;44;64;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="pl_mass;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f36;63;44;63;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="platforms;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;30;12;30;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="platforms;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;29;12;29;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="plwbid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f25;64;32;64;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="plwbid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f25;63;32;63;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="result;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f10;162;17;162;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="result;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f10;161;17;161;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="start_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;21;13;21;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="temp_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;131;17;131;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="temp_works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;130;17;130;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="text;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;24;7;24;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f58;24;63;24;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="total;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;63;9;63;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="total;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;62;9;62;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="typeswork;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;32;13;32;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="typeswork;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;31;13;31;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="value;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f33;35;39;35;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="value;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f33;34;39;34;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmarkets;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;33;14;33;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="webmarkets;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;32;14;32;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;65;14;65;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f4;64;14;64;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wm;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;34;6;34;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wm;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;33;6;33;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wm_mass;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f46;70;54;70;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wm_mass;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f46;69;54;69;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wmarkets;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f51;50;60;50;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wmarkets;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f51;49;60;49;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wmid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f37;70;42;70;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wmid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f37;69;42;69;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="work_exist;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;121;17;121;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="work_exist;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;120;17;120;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;145;13;145;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f7;144;13;144;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wplatforms;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f46;34;57;34;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wplatforms;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f46;33;57;33;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="wprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;149;15;149;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-				</treenode>
-				<treenode node="operation_dot_date;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;392;2;398;;;;vpos;;v;;r;;d44,392;;b3,0;;mfield;;p">
-					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f37;392;43;392;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="list;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;394;7;394;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="pattern;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;395;10;395;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
-					</treenode>
-					<treenode node="replacement;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;396;14;396;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="wprice;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;148;15;148;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="users_sending_mail;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;308;2;378;;;;vpos;;v;;r;;d37,308;;b1,0;;m">
-					<treenode node="config;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;355;10;355;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="operation_dot_date;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;421;2;427;;;;vpos;;v;;r;;d44,421;;b3,0;;mfield;;p">
+					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f37;421;43;421;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="debet;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;324;15;324;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="list;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;423;7;423;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;374;12;374;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="pattern;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;424;10;424;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="file_name;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;312;12;312;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="replacement;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;425;14;425;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="mailtext;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;315;11;315;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				</treenode>
+				<treenode node="users_sending_mail;PHP:Function Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f8;337;2;407;;;;vpos;;v;;r;;d37,337;;b1,0;;m">
+					<treenode node="config;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f3;384;10;384;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="settlement_date;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;316;18;316;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="debet;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;353;15;353;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="start_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;310;13;310;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="exec_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;403;12;403;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="text;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;313;7;313;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="file_name;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;341;12;341;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f74;313;79;313;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="mailtext;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;344;11;344;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;318;10;318;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="settlement_date;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;345;18;345;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmasters;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;317;13;317;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="start_time;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;339;13;339;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="work3day;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;330;18;330;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="text;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;342;7;342;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f74;342;79;342;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f6;347;10;347;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="webmasters;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f2;346;13;346;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="work3day;PHP:Var Name;S:\home\bystropost\www\application\controllers\cron_interface.php;f9;359;18;359;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 			</treenode>
@@ -10030,23 +10036,39 @@
 				<treenode node="__construct;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;20;2;22;;;;vpos;;v;;r;;d23,20;;b0,0;;m">
 				</treenode>
 				<treenode node="calc_debet;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;335;2;345;;;;vpos;;v;;r;;d40,335;;b0,0;;mfield;;pdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;339;7;339;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f28;335;33;335;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f21;335;27;335;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;337;8;337;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;338;16;338;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f34;335;39;335;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="calc_summ;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;311;2;321;;;;vpos;;v;;r;;d41,311;;b0,0;;mfield;;pdata;;pstatus;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f27;311;32;311;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f27;311;32;311;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f20;311;26;311;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;313;8;313;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f33;311;40;311;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;314;16;314;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="calc_user_debet;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;347;2;354;;;;vpos;;v;;r;;d43,347;;b0,0;;muid;;pdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;351;7;351;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f31;347;36;347;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;349;8;349;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;350;16;350;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f26;347;30;347;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -10054,9 +10076,13 @@
 					</treenode>
 				</treenode>
 				<treenode node="calc_webmaster_summ;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;323;2;333;;;;vpos;;v;;r;;d49,323;;b0,0;;muid;;pdata;;pstatus;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f35;323;40;323;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f35;323;40;323;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;325;8;325;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f41;323;48;323;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;326;16;326;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f30;323;34;323;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -10068,35 +10094,75 @@
 					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f52;293;61;293;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;295;7;295;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="count_all;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;108;2;111;;;;vpos;;v;;r;;d21,108;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f9;110;14;110;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="count_all_manager;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;140;2;148;;;;vpos;;v;;r;;d37,140;;b0,0;;mmanager;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;145;7;145;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="manager;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f28;140;36;140;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;144;8;144;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;142;7;142;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="count_records_by_manager_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;150;2;159;;;;vpos;;v;;r;;d59,150;;b0,0;;mmanager;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;156;7;156;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="manager;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f42;150;50;150;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;155;8;155;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f51;150;58;150;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;152;7;152;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="count_records_by_platform;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;283;2;291;;;;vpos;;v;;r;;d46,283;;b0,0;;mplatform;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;288;7;288;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f36;283;45;283;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;287;8;287;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;285;7;285;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="count_records_by_platform_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;272;2;281;;;;vpos;;v;;r;;d61,272;;b0,0;;mplatform;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;278;7;278;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f43;272;52;272;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;277;8;277;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f53;272;60;272;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;274;7;274;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="count_records_by_webmaster;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;172;2;180;;;;vpos;;v;;r;;d48,172;;b0,0;;mwebmaster;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;177;7;177;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;176;8;176;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;174;7;174;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f37;172;47;172;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="count_records_by_webmaster_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;161;2;170;;;;vpos;;v;;r;;d63,161;;b0,0;;mwebmaster;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;167;7;167;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;166;8;166;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f55;161;62;161;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;163;7;163;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f44;161;54;161;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -10104,9 +10170,13 @@
 				<treenode node="delete_record;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;212;2;217;;;;vpos;;v;;r;;d28,212;;b0,0;;mid;;p">
 					<treenode node="id;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f24;212;27;212;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;214;7;214;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="delete_records_by_platform;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;356;2;362;;;;vpos;;v;;r;;d58,356;;b0,0;;mplatform;;pwebmaster;;p">
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f37;356;46;356;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;358;7;358;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f47;356;57;356;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -10114,13 +10184,23 @@
 				<treenode node="delete_records_platform;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;226;2;231;;;;vpos;;v;;r;;d44,226;;b0,0;;mplatform;;p">
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f34;226;43;226;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;228;7;228;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="delete_records_user;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;219;2;224;;;;vpos;;v;;r;;d35,219;;b0,0;;muid;;p">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;221;7;221;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f30;219;34;219;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="exist_work;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;302;2;309;;;;vpos;;v;;r;;d31,302;;b0,0;;mremoteid;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;306;7;306;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;305;8;305;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="remoteid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f21;302;30;302;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;304;7;304;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="insert_record;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;24;2;44;;;;vpos;;v;;r;;d76,24;;b0,0;;mwebmaster;;pplatform;;pmanager;;pwprice;;pmprice;;pdata;;p">
@@ -10132,71 +10212,149 @@
 					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f35;24;44;24;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f3;27;8;27;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f24;24;34;24;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="wprice;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f54;24;61;24;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_field;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;203;2;210;;;;vpos;;v;;r;;d32,203;;b0,0;;mid;;pfield;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;207;7;207;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="field;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f25;203;31;203;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="id;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f21;203;24;203;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;206;8;206;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;205;7;205;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="read_record;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;99;2;106;;;;vpos;;v;;r;;d26,99;;b0,0;;mid;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;103;7;103;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="id;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f22;99;25;99;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;102;8;102;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;101;7;101;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_records_manager;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;90;2;97;;;;vpos;;v;;r;;d40,90;;b0,0;;mmanager;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;94;7;94;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="manager;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f31;90;39;90;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;93;8;93;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;92;7;92;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_records_platform;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;80;2;88;;;;vpos;;v;;r;;d53,80;;b0,0;;mwebmaster;;pplatform;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;85;7;85;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f43;80;52;80;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;84;8;84;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;82;7;82;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f32;80;42;80;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_records_webmaster;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;61;2;68;;;;vpos;;v;;r;;d44,61;;b0,0;;mwebmaster;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;65;7;65;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;64;8;64;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;63;7;63;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f33;61;43;61;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_records_webmaster_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;70;2;78;;;;vpos;;v;;r;;d59,70;;b0,0;;mwebmaster;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;75;7;75;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;74;8;74;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f51;70;58;70;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;72;7;72;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f40;70;50;70;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_summ_by_webmaster;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;233;2;247;;;;vpos;;v;;r;;d45,233;;b0,0;;muid;;pworks;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;244;7;244;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f6;236;8;236;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="in;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;235;5;235;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;242;8;242;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;243;16;243;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f33;233;37;233;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f38;233;44;233;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="search_manager_jobs;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;122;2;129;;;;vpos;;v;;r;;d44,122;;b0,0;;mmanager;;purl;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;126;7;126;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="manager;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f30;122;38;122;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;124;8;124;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;125;16;125;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="url;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f39;122;43;122;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="search_platform_jobs;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;131;2;138;;;;vpos;;v;;r;;d46,131;;b0,0;;mplatform;;purl;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;135;7;135;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="platform;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f31;131;40;131;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;133;8;133;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;134;16;134;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="url;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f41;131;45;131;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="search_webmaster_jobs;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;113;2;120;;;;vpos;;v;;r;;d48,113;;b0,0;;mwebmaster;;purl;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;117;7;117;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;115;8;115;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f11;116;16;116;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="url;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f43;113;47;113;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f32;113;42;113;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="sum_records_by_webmaster;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;193;2;201;;;;vpos;;v;;r;;d46,193;;b0,0;;mwebmaster;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;198;7;198;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;197;8;197;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;195;7;195;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f35;193;45;193;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="sum_records_by_webmaster_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;182;2;191;;;;vpos;;v;;r;;d61,182;;b0,0;;mwebmaster;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;188;7;188;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;187;8;187;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f53;182;60;182;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;184;7;184;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f42;182;52;182;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -10206,15 +10364,33 @@
 					</treenode>
 					<treenode node="id;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f24;46;27;46;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;48;7;48;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 				</treenode>
 				<treenode node="update_status;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;249;2;262;;;;vpos;;v;;r;;d36,249;;b0,0;;muid;;pworks;;p">
+					<treenode node="curdate;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;258;10;258;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="i;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f6;252;8;252;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="in;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;251;5;251;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;259;8;259;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;260;7;260;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f24;249;28;249;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="works;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f29;249;35;249;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="update_status_ones;PHP:Function Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f1;264;2;270;;;;vpos;;v;;r;;d38,264;;b0,0;;muid;;pid;;p">
+					<treenode node="curdate;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;266;10;266;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
 					<treenode node="id;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f34;264;37;264;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;267;8;267;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f2;268;7;268;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mddelivesworks.php;f29;264;33;264;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -12076,7 +12252,7 @@
 				<treenode node="wprice;PHP:Var Name;S:\home\bystropost\www\application\models\mdtypeswork.php;f5;6;12;6;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 				</treenode>
 			</treenode>
-			<treenode node="Mdunion;PHP:Class Name;S:\home\bystropost\www\application\models\mdunion.php;f0;2;1;652;;;;vpos;;vCI_Model;;c;;r;;d30,2;;b0,0;;m">
+			<treenode node="Mdunion;PHP:Class Name;S:\home\bystropost\www\application\models\mdunion.php;f0;2;1;661;;;;vpos;;vCI_Model;;c;;r;;d30,2;;b0,0;;m">
 				<treenode node="__construct;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;4;2;6;;;;vpos;;v;;r;;d23,4;;b0,0;;m">
 				</treenode>
 				<treenode node="count_all_tickets;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;300;2;312;;;;vpos;;v;;r;;d44,300;;b0,0;;mfilter;;p">
@@ -12247,12 +12423,12 @@
 					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;83;16;83;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="debetors_webmarkets;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;597;2;604;;;;vpos;;v;;r;;d31,597;;b0,0;;m">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;601;7;601;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="debetors_webmarkets;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;606;2;613;;;;vpos;;v;;r;;d31,606;;b0,0;;m">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;610;7;610;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;599;8;599;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;608;8;608;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;600;16;600;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;609;16;609;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="delivers_works_manager;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;8;2;15;;;;vpos;;v;;r;;d59,8;;b0,0;;muid;;pcount;;pfrom;;pfilter;;p">
@@ -12333,18 +12509,18 @@
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f25;492;29;492;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="min_price_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;635;2;642;;;;vpos;;v;;r;;d58,635;;b0,0;;mwebmaster;;pdate;;pznak;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;639;7;639;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="min_price_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;644;2;651;;;;vpos;;v;;r;;d58,644;;b0,0;;mwebmaster;;pdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;648;7;648;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f46;635;51;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f46;644;51;644;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;637;8;637;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;646;8;646;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;638;16;638;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;647;16;647;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f35;635;45;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f35;644;45;644;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f52;635;57;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f52;644;57;644;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_all_tickets;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;286;2;298;;;;vpos;;v;;r;;d56,286;;b0,0;;mcount;;pfrom;;pfilter;;p">
@@ -12363,16 +12539,16 @@
 					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;294;16;294;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="read_debetors;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;644;2;651;;;;vpos;;v;;r;;d44,644;;b0,0;;mdata;;pznak;;pstatus;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f24;644;29;644;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="read_debetors;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;653;2;660;;;;vpos;;v;;r;;d44,653;;b0,0;;mdata;;pznak;;pstatus;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f24;653;29;653;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;646;8;646;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;655;8;655;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f36;644;43;644;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="status;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f36;653;43;653;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;647;16;647;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;656;16;656;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;644;35;644;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;653;35;653;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_debetors_list;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;482;2;489;;;;vpos;;v;;r;;d41,482;;b0,0;;mdata;;pznak;;p">
@@ -12385,18 +12561,18 @@
 					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f35;482;40;482;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="read_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;626;2;633;;;;vpos;;v;;r;;d53,626;;b0,0;;mwebmaster;;pdate;;pznak;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;630;7;630;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="read_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;635;2;642;;;;vpos;;v;;r;;d53,635;;b0,0;;mwebmaster;;pdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;639;7;639;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f41;626;46;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f41;635;46;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;628;8;628;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;637;8;637;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;629;16;629;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;638;16;638;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;626;40;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;635;40;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f47;626;52;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f47;635;52;635;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_events;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;464;2;471;;;;vpos;;v;;r;;d35,464;;b0,0;;mcount;;pfrom;;p">
@@ -12699,14 +12875,14 @@
 					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;74;16;74;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="read_users_sendmail;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;606;2;615;;;;vpos;;v;;r;;d36,606;;b0,0;;mtype;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;612;7;612;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="read_users_sendmail;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;615;2;624;;;;vpos;;v;;r;;d36,615;;b0,0;;mtype;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;621;7;621;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;611;8;611;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;620;8;620;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;608;7;608;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;617;7;617;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="type;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;606;35;606;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="type;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;615;35;615;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="read_webmarkets_records;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;512;2;519;;;;vpos;;v;;r;;d35,512;;b0,0;;m">
@@ -12731,6 +12907,18 @@
 					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f30;371;40;371;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
+				<treenode node="select_debetors;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;597;2;604;;;;vpos;;v;;r;;d38,597;;b0,0;;mdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;601;7;601;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f26;597;31;597;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;599;8;599;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;600;16;600;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f32;597;37;597;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					</treenode>
+				</treenode>
 				<treenode node="services_attached;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;446;2;453;;;;vpos;;v;;r;;d42,446;;b0,0;;mservice;;puid;;p">
 					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;450;7;450;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -12753,8 +12941,8 @@
 					<treenode node="uid;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f33;437;37;437;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="update_debetors_status;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;590;2;595;;;;vpos;;v;;r;;d53,590;;b0,0;;mdata;;pznak;;pstatus;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f33;590;38;590;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="update_debetors_status;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;590;2;595;;;;vpos;;v;;r;;d53,590;;b0,0;;mdate;;pznak;;pstatus;;p">
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f33;590;38;590;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;592;8;592;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
@@ -12765,18 +12953,18 @@
 					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f39;590;44;590;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
-				<treenode node="users_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;617;2;624;;;;vpos;;v;;r;;d54,617;;b0,0;;mwebmaster;;pdate;;pznak;;p">
-					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;621;7;621;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+				<treenode node="users_debitors_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;626;2;633;;;;vpos;;v;;r;;d54,626;;b0,0;;mwebmaster;;pdate;;pznak;;p">
+					<treenode node="data;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;630;7;630;;;;vposarray;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f42;617;47;617;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="date;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f42;626;47;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;619;8;619;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="query;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f2;628;8;628;;;;vposCI_DB_result;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;620;16;620;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="this;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f11;629;16;629;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f31;617;41;617;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="webmaster;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f31;626;41;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
-					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f48;617;53;617;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
+					<treenode node="znak;PHP:Var Name;S:\home\bystropost\www\application\models\mdunion.php;f48;626;53;626;;;;vpos;;v;;r;;d-1,-1;;b0,0;;m">
 					</treenode>
 				</treenode>
 				<treenode node="valid_exist_works;PHP:Function Name;S:\home\bystropost\www\application\models\mdunion.php;f1;530;2;548;;;;vpos;;v;;r;;d35,530;;b0,0;;mworks;;p">
@@ -20409,7 +20597,7 @@
 		<file name="S:\home\bystropost\www\application\models\mdwebmarkets.php" crc="-40472334"/>
 		<file name="S:\home\bystropost\www\application\models\mdvaluesrv.php" crc="212400834"/>
 		<file name="S:\home\bystropost\www\application\models\mdusers.php" crc="-1872699944"/>
-		<file name="S:\home\bystropost\www\application\models\mdunion.php" crc="-197448552"/>
+		<file name="S:\home\bystropost\www\application\models\mdunion.php" crc="-1791349439"/>
 		<file name="S:\home\bystropost\www\application\models\mdtypeswork.php" crc="-2034954474"/>
 		<file name="S:\home\bystropost\www\application\models\mdtkmsgs.php" crc="-1788426361"/>
 		<file name="S:\home\bystropost\www\application\models\mdtickets.php" crc="1398642641"/>
@@ -20457,7 +20645,7 @@
 		<file name="S:\home\bystropost\www\application\controllers\managers_interface.php" crc="526853307"/>
 		<file name="S:\home\bystropost\www\application\controllers\index.html" crc="-387993932"/>
 		<file name="S:\home\bystropost\www\application\controllers\general_interface.php" crc="1192670772"/>
-		<file name="S:\home\bystropost\www\application\controllers\cron_interface.php" crc="1014580684"/>
+		<file name="S:\home\bystropost\www\application\controllers\cron_interface.php" crc="1641070637"/>
 		<file name="S:\home\bystropost\www\application\controllers\clients_interface.php" crc="2094459588"/>
 		<file name="S:\home\bystropost\www\application\controllers\admin_interface.php" crc="-1815494630"/>
 		<file name="S:\home\bystropost\www\application\config\user_agents.php" crc="-484381080"/>
@@ -20484,4 +20672,6 @@
 		<file name="S:\home\bystropost\www\index.php" crc="-550488241"/>
 		<file name="S:\home\bystropost\www\google3c4a1d75ea0fcad3.html" crc="-1421597604"/>
 		<file name="S:\home\bystropost\www\.htaccess" crc="-914404002"/>
-	</codestructure></project>
+	</codestructure><dbgurls>
+	</dbgurls>
+</project>

@@ -588,11 +588,20 @@ class Mdunion extends CI_Model{
 		return $this->db->affected_rows();
 	}
 	
-	function update_debetors_status($data,$znak,$status){
+	function update_debetors_status($date,$znak,$status){
 	
-		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0) AND users.antihold = 0 AND debetor = 0";
+		$query = "UPDATE users SET debetor = $status WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks WHERE delivesworks.date $znak '$date' AND delivesworks.status = 0) AND users.antihold = 0 AND debetor = 0";
 		$this->db->query($query);
 		return $this->db->affected_rows();
+	}
+	
+	function select_debetors($date,$znak){
+	
+		$query = "SELECT id,login,manager,fio FROM users WHERE users.id IN (SELECT delivesworks.webmaster FROM delivesworks WHERE delivesworks.date $znak '$date' AND delivesworks.status = 0) AND users.antihold = 0 AND debetor = 0";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
 	}
 	
 	function debetors_webmarkets(){
