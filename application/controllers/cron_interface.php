@@ -452,7 +452,7 @@ class Cron_interface extends CI_Controller{
 		$checkout = $this->mdcheckout->read_records();
 		$exec_time = round((microtime(true) - $start_time),2);
 		for($i=0;$i<count($checkout);$i++):
-			$result = $this->checkout_now($checkout[$i]['wmid'],$checkout[$i]['wmid']);
+			$result = $this->checkout_now($checkout[$i]['invoice'],$checkout[$i]['wmid']);
 			if($result):
 				$this->mdcheckout->update_field($checkout[$i]['id'],'paid',1);
 				$balance = $this->mdusers->read_field($checkout[$i]['webmaster'],'balance');
@@ -478,11 +478,17 @@ class Cron_interface extends CI_Controller{
 	
 	private function checkout($invoice,$wmid,$summa){
 		
+		/*include(getcwd()."/invoice/main/_header.php");
+		$res = $wmxi->X1($invoice,$wmid,PRIMARY_PURSE,$summa,'Payment for completed applications','Address is not',0,1);
+		print_r($res->toObject());*/
 		return FALSE;
 	} // функция выставления счета
 	
-	private function checkout_now(){
-		
+	private function checkout_now($invoice,$wmid){
+	
+		/*include(getcwd()."/invoice/main/_header.php");
+		$res = $wmxi->X4($wmid,0,$invoice,date("Ymd H:i:s",mktime(date("H"),date("i"),date("s"),date("m"),date("d")-1,date("Y"))),date("Ymd H:i:s"));
+		print_r($res->toObject());*/
 		return FALSE;
 	} // функция проверки оплаты
 	
