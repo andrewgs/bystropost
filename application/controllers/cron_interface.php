@@ -414,22 +414,23 @@ class Cron_interface extends CI_Controller{
 		$start_time = microtime(true);
 		
 		$file_name = getcwd().'/documents/checkout_'.date("YmdHi").'.log';
-		$text = "Файл-лог автоматического выставления считов на оплату.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		$text = "Файл-лог автоматического выставления счетов на оплату.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$debetors = $this->mdunion->debetors_for_checkout($date);
 		$count_invoice = 0;
 		$exec_time = round((microtime(true) - $start_time),2);
+		
 		for($i=0;$i<count($debetors);$i++):
 			$max_invoice = $this->mdcheckout->max_invoce()+1;
 			$result = $this->checkout($max_invoice,$debetors[$i]['wmid'],$debetors[$i]['summa']);
-			if($result):
+			if ( $result ):
 				$this->mdcheckout->insert_record($debetors[$i]['uid'],$max_invoice,$debetors[$i]['summa'],$debetors[$i]['wmid']);
-				$text = "Cчет выставлен успешно! Webmaster: ".$debetors[$i]['uid']."\n";
+				$text = "Cчет выставлен успешно! Вебмастер: ".$debetors[$i]['uid']."\n";
 				echo $text.'<br/>';
 				$count_invoice++;
 			else:
-				$text = "Ошибка при выставлении счета! Webmaster: ".$debetors[$i]['uid']."\n";
+				$text = "Ошибка при выставлении счета! Вебмастер: ".$debetors[$i]['uid']."\n";
 				echo $text.'<br/>';
 			endif;
 			file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
@@ -441,7 +442,7 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 	}
 	
-	public function users_checkout_now(){
+	public function users_checkout_now() {
 		
 		$start_time = microtime(true);
 		
@@ -451,6 +452,7 @@ class Cron_interface extends CI_Controller{
 		$paid_invoice = $notpaid_invoice = 0;
 		$checkout = $this->mdcheckout->read_records();
 		$exec_time = round((microtime(true) - $start_time),2);
+		
 		for($i=0;$i<count($checkout);$i++):
 			$result = $this->checkout_now($checkout[$i]['invoice'],$checkout[$i]['wmid']);
 			if($result):
@@ -460,7 +462,7 @@ class Cron_interface extends CI_Controller{
 				$new_balance = $balance+$checkout[$i]['summa'];
 				$this->mdusers->update_field($checkout[$i]['webmaster'],'balance',$new_balance);
 				$this->mdlog->insert_record($checkout[$i]['webmaster'],'Событие №6: Баланс пополнен');
-				$text = "Баланс пополнен! Webmaster: ".$checkout[$i]['webmaster']."\n";
+				$text = "Баланс пополнен! Вебмастер: ".$checkout[$i]['webmaster']."\n";
 				echo $text.'<br/>';
 				$paid_invoice++;
 			else:
@@ -477,19 +479,32 @@ class Cron_interface extends CI_Controller{
 	}
 	
 	private function checkout($invoice,$wmid,$summa){
-		
-		/*include(getcwd()."/invoice/main/_header.php");
-		$res = $wmxi->X1($invoice,$wmid,PRIMARY_PURSE,$summa,'Payment for completed applications','Address is not',0,1);
-		print_r($res->toObject());*/
-		return FALSE;
+		include(getcwd()."/invoice/main/_header.php");
+		$res = $wmxi->X1($invoice,$wmid,PRIMARY_PURSE,$summa,'Обработка заявок в системе Bystropost.ru','Система монетизации Bystropost.ru',0,1);
+		$res_status = (string) $res->toObject()->retval;
+		if ( $res_status == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	} // функция выставления счета
 	
 	private function checkout_now($invoice,$wmid){
 	
-		/*include(getcwd()."/invoice/main/_header.php");
-		$res = $wmxi->X4($wmid,0,$invoice,date("Ymd H:i:s",mktime(date("H"),date("i"),date("s"),date("m"),date("d")-1,date("Y"))),date("Ymd H:i:s"));
-		print_r($res->toObject());*/
-		return FALSE;
+		include(getcwd()."/invoice/main/_header.php");
+		$res = $wmxi->X4(PRIMARY_PURSE,0,$invoice,date("Ymd H:i:s",mktime(date("H"),date("i"),date("s"),date("m"),date("d")-1,date("Y"))),date("Ymd H:i:s"));
+		//print_r($res->toObject());
+		$res_status = (string) $res->toObject()->retval;
+		if ( $res_status == 0) { // получен ответ от webmoney
+			$invoice_status = (string) $res->toObject()->outinvoices->outinvoice->state;
+			if ( $invoice_status == 0) { // проверяем оплачен ли счет
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
 	} // функция проверки оплаты
 	
 	private function current_date_on_time($field){
