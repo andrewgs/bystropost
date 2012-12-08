@@ -156,6 +156,7 @@ class Cron_interface extends CI_Controller{
 								$aprice = $wprice-$mprice;
 								echo "aprice = $aprice; wprice = $wprice; mprice = $mprice<br/>";
 								$balance = $this->mdusers->read_field($webmaster,'balance');
+								$partner = $this->mdusers->read_field($webmaster,'partner_id');
 								echo "balance = $balance;<br/>";
 								if($balance > 0):
 									echo "balance > 0<br/>";
@@ -165,12 +166,18 @@ class Cron_interface extends CI_Controller{
 										echo "result = $result<br/>";
 										if($result):
 											$this->mdusers->change_user_balance($webmaster,-$wprice);
-											echo "change webmaster balance= -$wprice<br/>";
+											echo "change webmaster balance = -$wprice<br/>";
 											$this->mdusers->change_user_balance(2,$mprice);
-											echo "change manager balance= $mprice<br/>";
+											echo "change manager balance = $mprice<br/>";
 											$this->mdusers->change_admins_balance($aprice);
-											echo "change admin balance= $aprice<br/>";
+											echo "change admin balance = $aprice<br/>";
 											$this->mdfillup->insert_record($webmaster,$wprice,'Автоматическое списание за выполненные задания',0,0);
+											if($partner):
+												$pprice = floor($wprice*0.05);
+												$this->mdusers->change_user_balance($partner,$pprice);
+												echo "change partner balance = $pprice<br/>";
+												$this->mdfillup->insert_record($partner,$pprice,'Средства по партнерской программе',0,1);
+											endif;
 											$text = "Автоматическое списание за выполненные задания на сумму: $wprice руб.";
 											file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
 										endif;
@@ -190,6 +197,12 @@ class Cron_interface extends CI_Controller{
 												$this->mdusers->change_admins_balance($deliver_works[$i]['our_price']-$deliver_works[$i]['our_price']);
 												echo "change admin balance= ".($deliver_works[$i]['client_price']-$deliver_works[$i]['our_price'])."<br/>";
 												$this->mdfillup->insert_record($webmaster,$deliver_works[$i]['client_price'],'Оплата за выполненное задание ID='.$deliver_works[$i]['id'],0,0);
+												if($partner):
+													$pprice = floor($deliver_works[$i]['client_price']*0.05);
+													$this->mdusers->change_user_balance($partner,$pprice);
+													echo "change partner balance = $pprice<br/>";
+													$this->mdfillup->insert_record($partner,$pprice,'Средства по партнерской программе',0,1);
+												endif;
 												$text = 'Оплата за выполненное задание ID='.$deliver_works[$i]['id'];
 												file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n",FILE_APPEND);
 											endif;

@@ -1,7 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Clients_interface extends CI_Controller{
-	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE);
+	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE,'partner'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
@@ -42,6 +42,7 @@ class Clients_interface extends CI_Controller{
 					$this->user['balance'] 			= $userinfo['balance'];
 					$this->user['autopaid'] 		= $userinfo['autopaid'];
 					$this->user['antihold'] 		= $userinfo['antihold'];
+					$this->user['partner'] 			= $userinfo['partner_id'];
 					if($userinfo['manager'] == 2):
 						$this->user['remote'] = TRUE;
 						$this->user['remoteid'] = $userinfo['remoteid'];
@@ -1299,6 +1300,11 @@ class Clients_interface extends CI_Controller{
 							endif;
 							$this->mdusers->change_admins_balance($wprice-$mprice);
 							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за выполненное задание ID='.$_POST['works'][$i],0,0);
+							if($this->user['partner'] > 0):
+								$pprice = floor($wprice*0.05);
+								$this->mdusers->change_user_balance($this->user['partner'],$pprice);
+								$this->mdfillup->insert_record($this->user['partner'],$pprice,'Средства по партнерской программе',0,1);
+							endif;
 						endfor;
 						
 						$message = 'Спасибо за оплату.';
@@ -1502,6 +1508,11 @@ class Clients_interface extends CI_Controller{
 				endif;
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
 				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за выполненное задание ID='.$works[$i]['id'],0,0);
+				if($this->user['partner'] > 0):
+					$pprice = floor($works[$i]['wprice']*0.05);
+					$this->mdusers->change_user_balance($this->user['partner'],$pprice);
+					$this->mdfillup->insert_record($this->user['partner'],$pprice,'Средства по партнерской программе',0,1);
+				endif;
 			endif;
 		endfor;
 		$this->mdlog->insert_record($this->user['uid'],'Событие №11: Произведена оплата за выполненные работы');
@@ -2377,7 +2388,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cnt']['platforms'] = $this->mdunion->count_platforms_partners($this->user['uid']);
 		$works = $this->mdunion->count_summa_works_partners($this->user['uid']);
 		if($works):
-			$pagevar['cnt']['summa'] = $works['summa'];
+			$pagevar['cnt']['summa'] = floor($works['summa']*0.05); // 5% от общей суммы всех закрытых работ
 			$pagevar['cnt']['works'] = $works['works'];
 		endif;
 		

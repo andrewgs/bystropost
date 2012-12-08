@@ -683,6 +683,11 @@ class Managers_interface extends CI_Controller{
 							$this->mdusers->change_admins_balance($wprice-$mprice);
 							$this->mdfillup->insert_record(0,$wprice-$mprice,'Начисление средств администратору при автоматической оплате (Ручной ввод)');
 							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
+							if($user['partner_id']):
+								$pprice = floor($wprice*0.05);
+								$this->mdusers->change_user_balance($user['partner_id'],$pprice);
+								$this->mdfillup->insert_record($user['partner_id'],$pprice,'Средства по партнерской программе',0,1);
+							endif;
 						endif;
 						$this->mdlog->insert_record($this->user['uid'],'Событие №21: Состояние задания - сдано');
 						$this->session->set_userdata('msgs','Отчет о выполенной работе создан');
@@ -705,6 +710,8 @@ class Managers_interface extends CI_Controller{
 		$pagevar['typeswork'][4]['mprice'] = $arr[33]; //press
 		$pagevar['typeswork'][5]['mprice'] = $arr[35]; //linkarh
 		$pagevar['typeswork'][6]['mprice'] = $arr[29]; //news
+		
+		$pagevar['platform']['date'] = $this->operation_dot_date($pagevar['platform']['date']);
 		
 		$pagevar['cntunit']['delivers']['paid'] = $this->mddelivesworks->count_records_by_manager_status($this->user['uid'],1);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_all_manager($this->user['uid']);
@@ -786,6 +793,11 @@ class Managers_interface extends CI_Controller{
 														$this->mdusers->change_user_balance(2,$new_work['mprice']);
 														$this->mdusers->change_admins_balance($new_work['wprice']-$new_work['mprice']);
 														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Начисление средств администратору при автоматической плате (Автоматический ввод)');
+														if($user['partner_id']):
+															$pprice = floor($new_work['wprice']*0.05);
+															$this->mdusers->change_user_balance($user['partner_id'],$pprice);
+															$this->mdfillup->insert_record($user['partner_id'],$pprice,'Средства по партнерской программе',0,1);
+														endif;
 													endif;
 												endif;
 												$statusval['wkol']++;
