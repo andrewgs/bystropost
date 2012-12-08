@@ -24,7 +24,7 @@ class WMXILogger {
 				$args .= "$arg, ";
 			}
 			$args = substr($args, 0, -2);
-			$path  = basename($info['file']) . ' : '. $info['line'] . "\t[ " .
+			$path  = @basename($info['file']) . ' : '. @$info['line'] . "\t[ " .
 					@$info['class'] .
 					@$info['type'] .
 					$info['function'] . "($args); ]" . "\n" . $path;
