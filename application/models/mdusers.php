@@ -27,6 +27,7 @@ class Mdusers extends CI_Model{
 	var $locked	  		= 0;
 	var $debetor  		= 0;
 	var $antihold  		= 0;
+	var $partner_id		= 0;
 
 	function __construct(){
 		parent::__construct();
@@ -267,6 +268,15 @@ class Mdusers extends CI_Model{
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
+	}
+	
+	function count_partners($partner){
+		
+		$query = "SELECT COUNT(id) AS cnt FROM users WHERE partner_id = $partner";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
 	}
 	
 	function read_users($uid = FALSE,$login){

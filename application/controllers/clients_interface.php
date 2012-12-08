@@ -2354,6 +2354,60 @@ class Clients_interface extends CI_Controller{
 		echo json_encode($statusval);
 	}
 	
+	/*************************************************** partner program **************************************************/	
+	
+	public function partner_program(){
+		
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Партнерская программа',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'partners'		=> $this->mdunion->list_works_partners($this->user['uid']),
+					'cnt'			=> array('webmasters'=>0,'platforms'=>0,'summa'=>0,'works'=>0),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+	
+		$pagevar['cnt']['webmasters'] = $this->mdusers->count_partners($this->user['uid']);
+		$pagevar['cnt']['platforms'] = $this->mdunion->count_platforms_partners($this->user['uid']);
+		$works = $this->mdunion->count_summa_works_partners($this->user['uid']);
+		if($works):
+			$pagevar['cnt']['summa'] = $works['summa'];
+			$pagevar['cnt']['works'] = $works['works'];
+		endif;
+		
+		for($i=0;$i<count($pagevar['partners']);$i++):
+			$pagevar['partners'][$i]['signdate'] = $this->operation_dot_date_no_time($pagevar['partners'][$i]['signdate']);
+		endfor;
+		
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
+		$pagevar['cntunit']['delivers']['totalsum'] = $totalsum['sum'];
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
+		
+		$this->load->view("clients_interface/partner-program",$pagevar);
+	}
+	
 	/******************************************************** other ******************************************************/	
 	
 	function views(){
@@ -2462,6 +2516,14 @@ class Clients_interface extends CI_Controller{
 		$list = preg_split("/-/",$field);
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
 		$replacement = "\$5.$3.\$1 \$6:\$8";
+		return preg_replace($pattern, $replacement,$field);
+	}
+	
+	public function operation_dot_date_no_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1";
 		return preg_replace($pattern, $replacement,$field);
 	}
 	

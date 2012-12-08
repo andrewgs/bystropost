@@ -676,4 +676,30 @@ class Mdunion extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
+	
+	function count_platforms_partners($partner){
+	
+		$query = "SELECT COUNT(platforms.id) AS cnt FROM users INNER JOIN platforms ON users.id = platforms.webmaster WHERE users.partner_id = $partner";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function count_summa_works_partners($partner){
+	
+		$query = "SELECT COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if($data[0]['works'] > 0) return $data[0];
+		return NULL;
+	}
+	function list_works_partners($partner){
+	
+		$query = "SELECT users.login, users.signdate, COUNT(delivesworks.id) AS works FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY delivesworks.webmaster ORDER BY users.login";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }

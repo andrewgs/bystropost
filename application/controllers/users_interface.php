@@ -524,7 +524,7 @@ class Users_interface extends CI_Controller{
 		
 		$usertype = $this->uri->segment(3);
 		switch ($usertype):
-			case 'webmaster': $tutype = 'вебмастера';$utype = 1; break;
+			case 'webmaster': 	$tutype = 'вебмастера';$utype = 1; break;
 			case 'optimizer': 	redirect($redirect);break;
 //								$tutype = 'оптимизатора';$utype = 3; break;
 			default			: redirect($redirect);break;
@@ -591,6 +591,9 @@ class Users_interface extends CI_Controller{
 							endif;
 							$this->mdusers->update_field($uid,'remoteid',$remote_user['id']);
 						endif;
+					endif;
+					if($this->uri->total_segments() == 5):
+						$this->mdusers->update_field($uid,'partner_id',$this->uri->segment(5));
 					endif;
 				elseif($utype == 3):
 					$this->mdlog->insert_record($uid,'Событие №2: Процедура регистрации оптимизатора');

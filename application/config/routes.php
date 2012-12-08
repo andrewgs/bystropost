@@ -38,8 +38,9 @@ $route['users-ratings/webmasters']		= "users_interface/users_ratings";
 $route['users-ratings/advertisers/reading-rating/:num']= "users_interface/reading_rating";
 //$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
 
-$route['users/registering/webmaster']	= "users_interface/registering";
-$route['users/registering/optimizer']	= "users_interface/registering";
+$route['users/registering/webmaster']				= "users_interface/registering";
+$route['users/registering/webmaster/partner/:num']	= "users_interface/registering";
+$route['users/registering/optimizer']				= "users_interface/registering";
 
 $route['users/restore-password']		= "users_interface/restore_password";
 
@@ -49,6 +50,8 @@ $route['ratings/viewimage/:num']		= "users_interface/viewimage";
 $route['webmaster-panel/actions/control']							= "clients_interface/control_panel";
 $route['webmaster-panel/actions/profile']							= "clients_interface/control_profile";
 $route['webmaster-panel/actions/logoff']							= "clients_interface/actions_logoff";
+
+$route['webmaster-panel/actions/partner-program']					= "clients_interface/partner_program";
 
 $route['webmaster-panel/actions/markets']							= "clients_interface/control_markets";
 
