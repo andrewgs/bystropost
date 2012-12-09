@@ -95,9 +95,9 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgr');
 		
 		for($i=0;$i<count($pagevar['events']);$i++):
-			$pagevar['events'][$i]['date'] = $this->operation_dot_date($pagevar['events'][$i]['date']);
+			$pagevar['events'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['events'][$i]['date']);
 		endfor;
-		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/events/from/';
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/log/from/';
 		$config['uri_segment'] 		= 5;
 		$config['total_rows'] 		= $this->mdlog->count_records();
 		$config['per_page'] 		= 25;
@@ -935,8 +935,21 @@ class Admin_interface extends CI_Controller{
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
+				$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 				if(!isset($_POST['locked'])):
 					$_POST['locked'] = 0;
+				endif;
+				if(isset($_POST['status']) && !is_null($_POST['status'])):
+					$this->mdplatforms->update_field($_POST['pid'],'status',1);
+					$param = 'siteid='.$remote_id.'&value=0';
+					$res =  $this->API('SetSiteActive',$param);
+					$this->session->set_userdata('msgs','Площадка активирована!');
+				endif;
+				if(isset($_POST['noticpr']) && !is_null($_POST['noticpr'])):
+					$this->mdplatforms->update_field($_POST['pid'],'noticpr',1);
+				else:
+					$this->mdplatforms->update_field($_POST['pid'],'noticpr',0);
 				endif;
 				$prevman = $this->mdplatforms->read_field($_POST['pid'],'manager');
 				$prevlock = $this->mdplatforms->read_field($_POST['pid'],'locked');
@@ -1025,8 +1038,6 @@ class Admin_interface extends CI_Controller{
 							//Высылать письмо-уведомление
 						endif;
 					endif;
-					$manager = $this->mdplatforms->read_field($platform,'manager');
-					$remote_id = $this->mdplatforms->read_field($platform,'remoteid');
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);
@@ -1177,15 +1188,19 @@ class Admin_interface extends CI_Controller{
 			$this->form_validation->set_rules('mpressrel',' ','required|trim');
 			$this->form_validation->set_rules('clinkarh',' ','required|trim');
 			$this->form_validation->set_rules('mlinkarh',' ','required|trim');
-			
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 			else:
+				$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
+				$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 				if(!isset($_POST['locked'])):
 					$_POST['locked'] = 0;
 				endif;
 				if(isset($_POST['status']) && !is_null($_POST['status'])):
 					$this->mdplatforms->update_field($_POST['pid'],'status',1);
+					$param = 'siteid='.$remote_id.'&value=0';
+					$res =  $this->API('SetSiteActive',$param);
+					$this->session->set_userdata('msgs','Площадка активирована!');
 				endif;
 				if(isset($_POST['noticpr']) && !is_null($_POST['noticpr'])):
 					$this->mdplatforms->update_field($_POST['pid'],'noticpr',1);
@@ -1280,8 +1295,6 @@ class Admin_interface extends CI_Controller{
 							//Высылать письмо-уведомление
 						endif;
 					endif;
-					$manager = $this->mdplatforms->read_field($_POST['pid'],'manager');
-					$remote_id = $this->mdplatforms->read_field($_POST['pid'],'remoteid');
 					if(!$prevlock && $_POST['locked']):
 						$text = 'Здравствуйте! Ваша площадка '.$platform.' заблокирована администратором';
 						$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['uid'],1,1,$text);

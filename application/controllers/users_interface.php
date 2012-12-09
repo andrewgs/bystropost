@@ -516,20 +516,24 @@ class Users_interface extends CI_Controller{
 	
 	public function registering(){
 		
-		$redirect = $this->uri->segment(3).'s';
+		if($this->uri->segment(1) == 'partner'):
+			if($this->mdusers->read_field($this->uri->segment(2),'type') == 1):
+				$this->session->set_userdata('partner',$this->uri->segment(2));
+			endif;
+			redirect('users/registering/webmaster');
+		endif;
 		
+		$redirect = $this->uri->segment(3).'s';
 		if(isset($_SERVER['HTTP_REFERER'])):
 			$redirect = $_SERVER['HTTP_REFERER'];
 		endif;
-		
 		$usertype = $this->uri->segment(3);
 		switch ($usertype):
 			case 'webmaster': 	$tutype = 'вебмастера';$utype = 1; break;
 			case 'optimizer': 	redirect($redirect);break;
-//								$tutype = 'оптимизатора';$utype = 3; break;
-			default			: redirect($redirect);break;
+//									$tutype = 'оптимизатора';$utype = 3; break;
+			default			: 	redirect($redirect);break;
 		endswitch;
-		
 		$pagevar = array(
 				'title'			=> 'Быстропост - система автоматической монетизации | Регистрация пользователей',
 				'description'	=> '',
@@ -556,7 +560,7 @@ class Users_interface extends CI_Controller{
 				$this->session->set_userdata('msgr','Ошибка. Неверно заполнены необходимые поля<br/>');
 				redirect($this->uri->uri_string());
 			else:
-				if($this->mdusers->user_exist('login ',$_POST['login'])):
+				if($this->mdusers->user_exist('login',$_POST['login'])):
 					$this->session->set_userdata('msgr','Ошибка. Ваш E-mail уже зарегистрирован!');
 					redirect($this->uri->uri_string());
 				endif;
@@ -592,8 +596,9 @@ class Users_interface extends CI_Controller{
 							$this->mdusers->update_field($uid,'remoteid',$remote_user['id']);
 						endif;
 					endif;
-					if($this->uri->total_segments() == 5):
-						$this->mdusers->update_field($uid,'partner_id',$this->uri->segment(5));
+					$partner = $this->session->userdata('partner');
+					if($partner):
+						$this->mdusers->update_field($uid,'partner_id',$partner);
 					endif;
 				elseif($utype == 3):
 					$this->mdlog->insert_record($uid,'Событие №2: Процедура регистрации оптимизатора');

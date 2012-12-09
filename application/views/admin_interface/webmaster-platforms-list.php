@@ -71,7 +71,7 @@
 								</center>
 							</td>
 							<td class="w50" style="text-align: center; vertical-align: middle;">
-								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-uid="<?=$platforms[$i]['uid'];?>" data-fio="<?=$platforms[$i]['fio'];?>" data-login="<?=$platforms[$i]['login'];?>" data-ccontext="<?=$platforms[$i]['ccontext'];?>" data-mcontext="<?=$platforms[$i]['mcontext'];?>" data-cnotice="<?=$platforms[$i]['cnotice'];?>" data-mnotice="<?=$platforms[$i]['mnotice'];?>" data-creview="<?=$platforms[$i]['creview'];?>" data-mreview="<?=$platforms[$i]['mreview'];?>" data-cnews="<?=$platforms[$i]['cnews'];?>" data-mnews="<?=$platforms[$i]['mnews'];?>" data-clinkpic="<?=$platforms[$i]['clinkpic'];?>" data-mlinkpic="<?=$platforms[$i]['mlinkpic'];?>" data-cpressrel="<?=$platforms[$i]['cpressrel'];?>" data-mpressrel="<?=$platforms[$i]['mpressrel'];?>" data-clinkarh="<?=$platforms[$i]['clinkarh'];?>" data-mlinkarh="<?=$platforms[$i]['mlinkarh'];?>" data-locked="<?=$platforms[$i]['locked'];?>" data-manager="<?=$platforms[$i]['manager'];?>"></div>
+								<div id="params<?=$i;?>" style="display:none" data-pid="<?=$platforms[$i]['id'];?>" data-uid="<?=$platforms[$i]['uid'];?>" data-fio="<?=$platforms[$i]['fio'];?>" data-login="<?=$platforms[$i]['login'];?>" data-ccontext="<?=$platforms[$i]['ccontext'];?>" data-mcontext="<?=$platforms[$i]['mcontext'];?>" data-cnotice="<?=$platforms[$i]['cnotice'];?>" data-mnotice="<?=$platforms[$i]['mnotice'];?>" data-creview="<?=$platforms[$i]['creview'];?>" data-mreview="<?=$platforms[$i]['mreview'];?>" data-cnews="<?=$platforms[$i]['cnews'];?>" data-mnews="<?=$platforms[$i]['mnews'];?>" data-clinkpic="<?=$platforms[$i]['clinkpic'];?>" data-mlinkpic="<?=$platforms[$i]['mlinkpic'];?>" data-cpressrel="<?=$platforms[$i]['cpressrel'];?>" data-mpressrel="<?=$platforms[$i]['mpressrel'];?>" data-clinkarh="<?=$platforms[$i]['clinkarh'];?>" data-mlinkarh="<?=$platforms[$i]['mlinkarh'];?>" data-locked="<?=$platforms[$i]['locked'];?>" data-status="<?=$platforms[$i]['status'];?>" data-noticpr="<?=$platforms[$i]['noticpr'];?>" data-manager="<?=$platforms[$i]['manager'];?>"></div>
 							<?php if(!empty($platforms[$i]['fio'])):?>
 								<a class="btn btn-success editPlatform" data-param="<?=$i;?>" data-toggle="modal" href="#editPlatform" title="Редактировать данные"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
 							<?php endif;?>	
@@ -115,6 +115,8 @@
 				var	cla = $("div[id = params"+Param+"]").attr("data-clinkarh");var mla = $("div[id = params"+Param+"]").attr("data-mlinkarh");
 				
 				var	locked = $("div[id = params"+Param+"]").attr("data-locked"); var manager = $("div[id = params"+Param+"]").attr("data-manager");
+				var plstatus = $("div[id = params"+Param+"]").attr("data-status");
+				var noticpr = $("div[id = params"+Param+"]").attr("data-noticpr");
 				
 				$(".idPlatform").val(pID);$(".idUser").val(uID);$(".eFio").val(uFIO);$(".eLogin").val(uLogin);
 				$("#ecContext").val(cc); $("#emContext").val(mc);$("#ecNotice").val(cn);$("#emNotice").val(mn);
@@ -125,6 +127,8 @@
 				
 				$("#uManager").val(manager);
 				if(locked == 1){$("#lockPlatform").attr('checked','checked');}else{$("#lockPlatform").removeAttr('checked');}
+				if(plstatus == 0){$("#StatusPlatform").removeAttr('checked').removeAttr('disabled');}else{$("#StatusPlatform").attr('checked','checked').attr('disabled','disabled');}
+				if(noticpr == 0){$("#NoTicPr").removeAttr('disabled');}else{$("#NoTicPr").attr('checked','checked');}
 			});
 			
 			

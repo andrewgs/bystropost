@@ -455,7 +455,7 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8'),FILE_APPEND);
 	}
 	
-	public function users_checkout_now() {
+	public function users_checkout_now(){
 		
 		$start_time = microtime(true);
 		
@@ -477,6 +477,19 @@ class Cron_interface extends CI_Controller{
 				$this->mdlog->insert_record($checkout[$i]['webmaster'],'Событие №6: Баланс пополнен');
 				$text = "Баланс пополнен! Вебмастер: ".$checkout[$i]['webmaster']."\n";
 				echo $text.'<br/>';
+				$remote_id = $this->mdusers->read_field($checkout[$i]['webmaster'],'remoteid');
+				$this->mdusers->update_field($checkout[$i]['webmaster'],'debetor',0);
+				$mkcount = 0;
+				if($remote_id):
+					$markets = $this->mdwebmarkets->read_records($remote_id);
+					for($j=0;$j<count($markets);$j++):
+						$param = 'accid='.$markets[$j]['id'].'&birzid='.$markets[$j]['market'].'&login='.$markets[$j]['login'].'&pass='.base64_encode($this->encrypt->decode($markets[$j]['cryptpassword'])).'&act=1';
+						$this->API('UpdateAccount',$param);
+						$mkcount++;
+					endfor;
+					$text .= "Разблокировано $mkcount биржевых аккаунтов. Пользователь разблокирован.\n";
+					echo $text.'<br/>';
+				endif;
 				$paid_invoice++;
 			else:
 				$notpaid_invoice++;
@@ -495,11 +508,11 @@ class Cron_interface extends CI_Controller{
 		include(getcwd()."/invoice/main/_header.php");
 		$res = $wmxi->X1($invoice,$wmid,PRIMARY_PURSE,$summa,'Обработка заявок в системе Bystropost.ru','Система монетизации Bystropost.ru',0,1);
 		$res_status = (string) $res->toObject()->retval;
-		if ( $res_status == 0) {
+		if($res_status == 0):
 			return true;
-		} else {
+		else:
 			return false;
-		}
+		endif;
 	} // функция выставления счета
 	
 	private function checkout_now($invoice,$wmid){
@@ -508,16 +521,16 @@ class Cron_interface extends CI_Controller{
 		$res = $wmxi->X4(PRIMARY_PURSE,0,$invoice,date("Ymd H:i:s",mktime(date("H"),date("i"),date("s"),date("m"),date("d")-1,date("Y"))),date("Ymd H:i:s"));
 		//print_r($res->toObject());
 		$res_status = (string) $res->toObject()->retval;
-		if ( $res_status == 0) { // получен ответ от webmoney
+		if($res_status == 0):// получен ответ от webmoney
 			$invoice_status = (string) $res->toObject()->outinvoices->outinvoice->state;
-			if ( $invoice_status == 0) { // проверяем оплачен ли счет
+			if($invoice_status == 0): // проверяем оплачен ли счет
 				return false;
-			} else {
+			else:
 				return true;
-			}
-		} else {
+			endif;
+		else:
 			return false;
-		}
+		endif;
 	} // функция проверки оплаты
 	
 	private function current_date_on_time($field){

@@ -91,7 +91,7 @@
 								<i class="icon-lock" title="Профиль заблокирован" style="float:left; margin-top:10px;"></i>
 							<?php endif;?>
 							<?php if($users[$i]['debetor']):?>
-								<i class="icon-warning-sign" title="Профиль заблокирован по задолженоости" style="float:left; margin-top:10px;"></i>
+								<i class="icon-warning-sign" title="Профиль заблокирован по задолженности" style="float:left; margin-top:10px;"></i>
 							<?php endif;?>
 							<?php if($users[$i]['autopaid']):?>
 								<i class="icon-star" title="Режим &quot;Беззаботный&quot;" style="float:left; margin-top:10px;"></i>

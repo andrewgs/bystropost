@@ -16,7 +16,7 @@
 				<?php $this->load->view("alert_messages/alert-success");?>
 				<div class="alert alert-info" id="msginfoalert">
 					<strong>Зарабатывай 5% с заявки, привлекай новых пользователей!</strong><br/><br/>
-					Ваша индивидуальная ссылка для привлечение пользователей:<br/><strong>http://bystropost.ru/users/registering/webmaster/partner/<?=$userinfo['uid'];?></strong>
+					Ваша индивидуальная ссылка для привлечение пользователей:<br/><strong><a href="http://bystropost.ru/partner/<?=$userinfo['uid'];?>">http://bystropost.ru/partner/<?=$userinfo['uid'];?></a></strong>
 				</div>
 				<table class="table table-bordered">
 					<tbody>

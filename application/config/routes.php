@@ -38,8 +38,8 @@ $route['users-ratings/webmasters']		= "users_interface/users_ratings";
 $route['users-ratings/advertisers/reading-rating/:num']= "users_interface/reading_rating";
 //$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
 
+$route['partner/:num']								= "users_interface/registering";
 $route['users/registering/webmaster']				= "users_interface/registering";
-$route['users/registering/webmaster/partner/:num']	= "users_interface/registering";
 $route['users/registering/optimizer']				= "users_interface/registering";
 
 $route['users/restore-password']		= "users_interface/restore_password";
