@@ -15,13 +15,13 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_delivers_works_manager($uid,$filter){
+	function count_delivers_works_manager($uid,$filter = '0,1'){
 		
-		$query = "SELECT delivesworks.* FROM delivesworks WHERE delivesworks.manager = $uid AND delivesworks.status IN ($filter)";
+		$query = "SELECT COUNT(*) AS cnt FROM delivesworks WHERE delivesworks.manager = $uid AND delivesworks.status IN ($filter)";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
-		if(count($data)) return count($data);
-		return NULL;
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
 	}
 	
 	function delivers_works_webmaster($uid,$count,$from,$filter){
