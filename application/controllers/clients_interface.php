@@ -380,7 +380,11 @@ class Clients_interface extends CI_Controller{
 		$pagevar['statistic']['bymonth'] = $this->mdfillup->bymonth_statistic($this->user['uid']);
 		$pagevar['statistic']['month'] = $this->mdfillup->month_statistic($this->user['uid']);
 		$pagevar['statistic']['total'] = $this->mdfillup->total_statistic($this->user['uid']);
-		
+		$pagevar['statistic']['partners'] = 0;
+		$works = $this->mdunion->count_summa_works_partners($this->user['uid']);
+		if($works):
+			$pagevar['statistic']['partners'] = floor($works['summa']*0.05);
+		endif;
 		for($i=0;$i<count($pagevar['history']);$i++):
 			$pagevar['history'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['history'][$i]['date']);
 		endfor;

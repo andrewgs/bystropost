@@ -51,6 +51,16 @@
 						</tr>
 					</tbody>
 				</table>
+			<?php if($statistic['partners'] > 0):?>
+				<table class="table table-striped table-bordered">
+					<tbody>
+						<tr>
+							<td class="w500">Заработано по партнерской программе:</td>
+							<td class="w85" style="text-align:center; vertical-align:middle;"><?=$statistic['partners'];?> руб.</td>
+						</tr>
+					</tbody>
+				</table>
+			<?php endif;?>
 				<button id="ShowHistoryList">Полная история платежей</button>
 			<?php endif;?>
 			<?php if($this->uri->total_segments() < 6):?>
