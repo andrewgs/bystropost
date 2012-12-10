@@ -696,7 +696,7 @@ class Mdunion extends CI_Model{
 	}
 	function list_works_partners($partner){
 	
-		$query = "SELECT users.login, users.signdate, COUNT(delivesworks.id) AS works FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY delivesworks.webmaster ORDER BY users.login";
+		$query = "SELECT users.id, users.login, users.signdate, COUNT(delivesworks.id) AS works FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY delivesworks.webmaster ORDER BY users.login";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

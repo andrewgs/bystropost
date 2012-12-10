@@ -29,7 +29,7 @@
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$cnt['platforms'];?></td>
 						</tr>
 						<tr>
-							<td class="w500">оплатили заявок:</td>
+							<td class="w500">Оплатили заявок:</td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$cnt['works'];?></td>
 						</tr>
 						<tr>
@@ -42,7 +42,7 @@
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w400"><center>Логин</center></th>
+							<th class="w400">ID вебмастера в системе</th>
 							<th class="w100"><center>Дата регистрации</center></th>
 							<th class="w50"><center>Заявок</center></th>
 						</tr>
@@ -50,7 +50,7 @@
 					<tbody>
 					<?php for($i=0;$i<count($partners);$i++):?>
 						<tr>
-							<td><?=$partners[$i]['login'];?></td>
+							<td><?=$partners[$i]['id'];?></td>
 							<td><?=$partners[$i]['signdate'];?></td>
 							<td><?=$partners[$i]['works'];?></td>
 						</tr>
