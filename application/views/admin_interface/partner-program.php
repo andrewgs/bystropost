@@ -25,7 +25,7 @@
 					<?php for($i=0;$i<count($webmasters);$i++):?>
 						<tr>
 							<td><?=$webmasters[$i]['id'];?></td>
-							<td><?=$webmasters[$i]['login'];?></td>
+							<td><?=anchor('admin-panel/management/users/profile/id/'.$webmasters[$i]['id'],$webmasters[$i]['login']);?></td>
 							<td><?=$webmasters[$i]['platforms'];?></td>
 							<td><?=$webmasters[$i]['works'];?></td>
 							<td><?=$webmasters[$i]['summa'];?> руб.</td>

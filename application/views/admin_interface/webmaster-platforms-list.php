@@ -8,7 +8,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li>
-						<?=anchor($this->session->userdata('backpath'),'Список вебмастеров');?><span class="divider">/</span>
+						<?=anchor($this->session->userdata('backpath'),'Назад к списку');?><span class="divider">/</span>
 					</li>
 					<li class="active">
 						<?=anchor($this->uri->uri_string(),'Список площадок');?>

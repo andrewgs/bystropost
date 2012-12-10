@@ -1,7 +1,7 @@
 <header class="admin">
 	<div class="container">
 		<div class="row header-subnav">
-			<div class="span10 offset2">
+			<div class="span11 offset2">
 				<?=anchor("news","Новости");?>
 				<?=anchor("faq","FAQ");?>
 				<?=anchor("manner-of-payment","Порядок оплаты");?>

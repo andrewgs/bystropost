@@ -9,7 +9,7 @@
 				<ul class="breadcrumb">
 				<?php if($this->uri->segment(2)=='management'):?>
 					<li>
-						<?=anchor($this->session->userdata('backpath'),'Список площадок');?><span class="divider">/</span>
+						<?=anchor($this->session->userdata('backpath'),'Назад к списку');?><span class="divider">/</span>
 					</li>
 				<?php endif;?>
 					<li class="active">
