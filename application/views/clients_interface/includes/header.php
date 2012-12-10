@@ -1,10 +1,11 @@
 <header class="admin">
 	<div class="container">
 		<div class="row header-subnav">
-			<div class="span10 offset2">
+			<div class="span12">
 				<?=anchor("news","Новости");?>
 				<?=anchor("faq","FAQ");?>
 				<?=anchor("manner-of-payment","Порядок оплаты");?>
+				<?=anchor("partners-program","Партнерская программа",array('class'=>'strong'));?>
 				<?=anchor('prices','Цены');?>
 				<?=anchor("about-content","О контенте");?>
 				<?=anchor("capabilities","Наши возможности");?>

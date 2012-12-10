@@ -13,12 +13,12 @@ html, body { height: 100%; }
 #main-nav-wrapper { border-bottom: 1px dotted #C2E2E7; border-top: 1px dotted #C2E2E7;  margin: 1.5em 0; padding: 2em 0 0.4em; width: 100%; }
 #main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; position: relative; }
 #main-nav li { display: inline-block; }
-#main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 25px; margin: 0 2em 0 0; text-decoration: underline; color: #3995BF; }
+#main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 24px; margin: 0 1.4em 0 0; text-decoration: underline; color: #3995BF; }
 .banner-gogetlinks { position: absolute; right: 19px; top: -22px; }
 
 h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; margin: 0 0 1em; }
-h1 span { font-size: 48px; /*color: #00b6dc;*/}
-h2 { color: #107CB1; font: italic 25px georgia,serif; margin-bottom: 0.5em; }
+h1 span { font-size: 48px; /*color: #00b6dc;*/ }
+h2 { color: #107CB1; font: italic 25px georgia,serif; margin-bottom: 0.5em; font-style: normal; }
 
 #white_line { background: none; border: 1px solid #C2E2E7; border-style: dotted none none; float: left; height: 63px; margin: 3em 0 0 1.5em; padding: 1.25em 1em 1em 0.5em; width: 890px; }
 #white_line span { color: #4D4D4D; display: block; float: left; font-family: trebuchet ms,arial,sans-serif; font-size: 24px; font-weight: normal; margin-top: 15px; }
@@ -28,6 +28,7 @@ h2 { color: #107CB1; font: italic 25px georgia,serif; margin-bottom: 0.5em; }
 #white_line table tr td { width: 130px; padding: 7px 5px; }
 #register_tree { margin-top: 3em; }
 p { margin: 0 0 1.25em; }
+p.small { font-size: 0.8em; color: #999; width: 800px; }
 
 #registration { background: url("../images/tree.png") no-repeat scroll 500px 50px transparent; margin: 0; width: 100%; font: 13px trebuchet ms, sans-serif; }
 #registration h2 { font: 24px trebuchet ms,arial,sans-serif; margin: 0.25em 0 1em; }
@@ -107,3 +108,9 @@ h1.whiteline { border: 0 none; }
 .news-image { margin-bottom: 1em; display: block; }
 .news-share { margin: 1em 0 2em; } 
 #news-social-activity { margin-top: 2em; }
+
+.interface h2 { text-transform: none; font: 21px/24px 'trebuchet ms', helvetica, arial, sans-serif; color: #00b5dc; margin-top: 22px; display: inline-block; border-bottom: 1px solid; }
+.interface h2:first-child { margin-top: 10px; }
+.interface h2 a { color: #00b5dc; text-decoration: none; }
+.interface h2::first-letter { color: #1c0e0e; }
+.span3.offset1 img { display: block; background: #fff; padding: 5px; border: 1px solid #ccc; margin: 0.9em 0; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }

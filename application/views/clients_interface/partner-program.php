@@ -9,7 +9,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor("webmaster-panel/actions/partner-program","Партнёрская программа");?>
+						<?=anchor("webmaster-panel/actions/partner-program","Партнерская программа");?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
