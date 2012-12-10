@@ -4,6 +4,6 @@
 	<input type="password" id="password" class="input inpval" name="password" placeholder="Введите пароль" />
 	<input type=image src="<?=$baseurl;?>images/login.jpg" name="submit" class="go" />
 	<br/>
-	<?=anchor('users/registering/webmaster','Регистрация', array('class' => 'register-link'));?>
+	<?=anchor('users/registering/webmaster','<strong>Регистрация</strong>', array('class' => 'register-link'));?>
 	<?=anchor('users/restore-password','Забыли пароль?', array('class' => 'restore-link'));?>
 <?= form_close(); ?>
