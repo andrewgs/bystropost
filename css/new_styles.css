@@ -5,8 +5,10 @@ html, body { height: 100%; }
 .top-links { display: inline-block; margin: 1em 0 0.5em; text-align: right; width: 97%; }
 .top-links a { font-family: arial,sans-serif;  font-size: 12px; text-decoration: underline; }
 #login-form { margin: 0 0 0 20px; }
-#login { margin: 0.5em 0 0; }
-#login a { font-size: 0.8em; margin-left: 14.25em; }
+#login { margin: 0.5em 0 0; position: relative; }
+#login a { font-size: 0.8em; }
+#login a.register-link { position: absolute; left: 0; top: 40px; }
+#login a.restore-link { position: absolute; left: 75px; top: 40px; }
 #login .input { padding: 0.1em 0.5em; border-radius: 2px; width: 9.5em; }
 #login .go { margin-top: 7px; }
 
