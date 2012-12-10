@@ -7,6 +7,7 @@ $route['404_override'] = '';
 $route['']								= "users_interface/index";
 $route['users/login']					= "users_interface/loginin";
 $route['about']							= "users_interface/about";
+$route['partners-program']				= "users_interface/partners_program";
 $route['webmasters']					= "users_interface/webmasters";
 $route['optimizers']					= "users_interface/optimizers";
 $route['faq']							= "users_interface/faq";
@@ -38,9 +39,9 @@ $route['users-ratings/webmasters']		= "users_interface/users_ratings";
 $route['users-ratings/advertisers/reading-rating/:num']= "users_interface/reading_rating";
 //$route['users-ratings/webmasters/reading-rating/:num'] = "users_interface/reading_rating";
 
-$route['partner/:num']								= "users_interface/registering";
-$route['users/registering/webmaster']				= "users_interface/registering";
-$route['users/registering/optimizer']				= "users_interface/registering";
+$route['partner/:num']					= "users_interface/registering";
+$route['users/registering/webmaster']	= "users_interface/registering";
+$route['users/registering/optimizer']	= "users_interface/registering";
 
 $route['users/restore-password']		= "users_interface/restore_password";
 

@@ -7,7 +7,8 @@
 		<?php endif;?>
 			<li><?=anchor('','Главная',array('class'=>($none)?'none':'mnav'));?></li>
 			<li><?=anchor('webmasters','Вебмастерам',array('class'=>($none)?'none':'mnav'));?></li>
-			<li><?=anchor('optimizers','Оптимизаторам',array('class'=>($none)?'none':'mnav'));?></li>
+			<!--<li><?=anchor('optimizers','Оптимизаторам',array('class'=>($none)?'none':'mnav'));?></li>-->
+			<li><?=anchor('partners-program','Партнерская программа',array('class'=>($none)?'none':'mnav'));?></li>
 		
 			<li><?=anchor('prices','Цены');?></li>
 			<div class="banner-gogetlinks">

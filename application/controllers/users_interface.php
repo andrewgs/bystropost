@@ -247,6 +247,19 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/about",$pagevar);
 	}
 	
+	public function partners_program(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост - система автоматической монетизации | Партнерская программа',
+			'description'	=> '',
+			'author'		=> '',
+			'baseurl' 		=> base_url(),
+			'msgauth'		=> $this->session->userdata('msgauth')
+		);
+		$this->session->unset_userdata('msgauth');
+		$this->load->view("users_interface/partners-program",$pagevar);
+	}
+	
 	public function webmasters(){
 		
 		$pagevar = array(

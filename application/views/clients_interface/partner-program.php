@@ -9,7 +9,7 @@
 			<div class="span9">
 				<ul class="breadcrumb">
 					<li class="active">
-						<?=anchor("webmaster-panel/actions/partner-program","Партнёрская программа");?>
+						<?=anchor("webmaster-panel/actions/partner-program","Партнерская программа");?>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
@@ -42,7 +42,7 @@
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w400"><center>Логин</center></th>
+							<th class="w400">ID вебмастера в системе</th>
 							<th class="w100"><center>Дата регистрации</center></th>
 							<th class="w50"><center>Заявок</center></th>
 						</tr>
@@ -50,7 +50,7 @@
 					<tbody>
 					<?php for($i=0;$i<count($partners);$i++):?>
 						<tr>
-							<td><?=$partners[$i]['login'];?></td>
+							<td><?=$partners[$i]['id'];?></td>
 							<td><?=$partners[$i]['signdate'];?></td>
 							<td><?=$partners[$i]['works'];?></td>
 						</tr>

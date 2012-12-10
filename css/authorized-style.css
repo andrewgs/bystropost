@@ -6,7 +6,8 @@ header { margin: 10px 0 0; }
 header.admin { background: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/subtle_dots.png") repeat scroll 0 0 transparent; border-bottom: 1px dotted #CCCCCC; height: 175px; margin: 0 0 1.25em; }
 
 .header-subnav { height: 2em; margin: 1em 0 0; }
-.header-subnav a { font: 0.9em Arial, sans-serif; color: #777; display: inline-block; margin: 0.5em 0 0 0.95em; }
+.header-subnav a { font: 0.9em Arial, sans-serif; color: #777; display: inline-block; margin: 0.5em 0 0 1.15em; }
+.header-subnav a.strong { font-weight: bold; color: #a01919; }
 
 #logo { font-family: 'PT Sans', "Times New Roman", Times, serif; background: url("../images/logo.png") no-repeat scroll 0 5px transparent; display: block; color: #00699f; font-size: 30px; line-height: 36px; font-weight: bold; text-transform: uppercase; padding: 0 0 0 115px; position: relative; outline: 0 none; text-decoration: none; height:100px; margin: 0.1em 0 0.6em; }
 #logo span { font-size: 22px; font-weight: normal; left: 230px; position: absolute; text-transform: none;}
