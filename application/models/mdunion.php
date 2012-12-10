@@ -694,6 +694,7 @@ class Mdunion extends CI_Model{
 		if($data[0]['works'] > 0) return $data[0];
 		return NULL;
 	}
+	
 	function list_works_partners($partner){
 	
 		$query = "SELECT users.id, users.login, users.signdate, COUNT(delivesworks.id) AS works FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY delivesworks.webmaster ORDER BY users.login";
@@ -705,7 +706,7 @@ class Mdunion extends CI_Model{
 
 	function parent_partners_list($count,$from){
 	
-		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.id IN (SELECT users.partner_id FROM users WHERE users.partner_id > 0 GROUP BY users.id ORDER BY users.id) AND delivesworks.status = 1 ORDER BY users.id LIMIT $from,$count";
+		$query = "SELECT users.id,users.login,0 AS platforms,0 AS works,0 AS summa FROM users WHERE users.id IN (SELECT users.partner_id FROM users WHERE users.partner_id > 0 GROUP BY users.id ORDER BY users.id) ORDER BY users.id LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
@@ -723,7 +724,7 @@ class Mdunion extends CI_Model{
 	
 	function partners_list($partner){
 	
-		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.id = $partner AND delivesworks.status = 1";
+		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY users.id ORDER BY users.login";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

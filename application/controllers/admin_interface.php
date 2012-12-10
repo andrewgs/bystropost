@@ -1946,10 +1946,14 @@ class Admin_interface extends CI_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		/*for($i=0;$i<count($pagevar['webmasters']);$i++):
-			$pagevar['webmasters'][$i]['plaforms'] = count
-		endfor;*/
-		
+		for($i=0;$i<count($pagevar['webmasters']);$i++):
+			$pagevar['webmasters'][$i]['platforms'] = $this->mdunion->count_platforms_partners($pagevar['webmasters'][$i]['id']);
+			$works = $this->mdunion->count_summa_works_partners($pagevar['webmasters'][$i]['id']);
+			if($works):
+				$pagevar['webmasters'][$i]['summa'] = round($works['summa']*0.05,2);
+				$pagevar['webmasters'][$i]['works'] = $works['works'];
+			endif;
+		endfor;
 		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/partner-program/from/';
 		$config['uri_segment'] 		= 5;
 		$config['total_rows'] 		= $this->mdunion->count_parent_partners();
@@ -1983,14 +1987,11 @@ class Admin_interface extends CI_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		
-		
 		$this->load->view("admin_interface/partner-program",$pagevar);
 	}
 	
 	public function partners_list(){
 		
-		$partner = intval($this->uri->segment(5));
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -1998,26 +1999,25 @@ class Admin_interface extends CI_Controller{
 					'baseurl' 		=> base_url(),
 					'userinfo'		=> $this->user,
 					'cntunit'		=> array(),
-					'webmasters'	=> $this->mdunion->partners_list($partner),
+					'webmasters'	=> $this->mdunion->partners_list($this->uri->segment(5)),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		
+		for($i=0;$i<count($pagevar['webmasters']);$i++):
+			$pagevar['webmasters'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['webmasters'][$i]['id']);
+			$pagevar['webmasters'][$i]['summa'] = round($pagevar['webmasters'][$i]['summa']*0.05,2);
+		endfor;
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
 		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
 		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		
-		
 		$this->load->view("admin_interface/partners-list",$pagevar);
 	}
-	
-	
 	
 	/******************************************************** jobs ******************************************************/
 	

@@ -28,8 +28,8 @@
 							<td><?=$webmasters[$i]['login'];?></td>
 							<td><?=$webmasters[$i]['platforms'];?></td>
 							<td><?=$webmasters[$i]['works'];?></td>
-							<td><?=round($webmasters[$i]['summa']*0.05,2);?> руб.</td>
-							<td><?=anchor('admin-panel/actions/partner-program/partner/'.$webmasters[$i]['id'],'<i class="icon-list-alt"></i>');?></td>
+							<td><?=$webmasters[$i]['summa'];?> руб.</td>
+							<td><?=anchor('admin-panel/actions/partner-program/partner/'.$webmasters[$i]['id'],'<i class="icon-list-alt icon-white"></i>',array('class'=>'btn btn-success'));?></td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>
@@ -43,10 +43,5 @@
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-		
-		});
-	</script>
 </body>
 </html>

@@ -7,7 +7,8 @@
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
-					<li class="active"><?=anchor($this->uri->uri_string(),'Партнерская программа');?></li>
+					<li><?=anchor('admin-panel/actions/partner-program','Партнерская программа');?></li><span class="divider">/</span>
+					<li class="active"><?=anchor($this->uri->uri_string(),'Cписок приглашенных');?></li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<table class="table table-striped table-bordered">
@@ -18,7 +19,6 @@
 							<th><center>Площадки</center></th>
 							<th><center>Заявки</center></th>
 							<th><center>Заработано</center></th>
-							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -28,25 +28,16 @@
 							<td><?=$webmasters[$i]['login'];?></td>
 							<td><?=$webmasters[$i]['platforms'];?></td>
 							<td><?=$webmasters[$i]['works'];?></td>
-							<td><?=$webmasters[$i]['summa'];?></td>
-							<td><?=anchor('admin-panel/actions/partner-program/partner/'.$webmasters[$i]['id'].,'<i class="icon-list-alt"></i>');?></td>
+							<td><?=$webmasters[$i]['summa'];?> руб.</td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>
 				</table>
-				<?php if($pages): ?>
-					<?=$pages;?>
-				<?php endif;?>
 			</div>
 		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		</div>
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-		
-		});
-	</script>
 </body>
 </html>
