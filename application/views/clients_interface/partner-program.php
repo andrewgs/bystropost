@@ -29,7 +29,7 @@
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$cnt['platforms'];?></td>
 						</tr>
 						<tr>
-							<td class="w500">оплатили заявок:</td>
+							<td class="w500">Оплатили заявок:</td>
 							<td class="w100" style="text-align:center; vertical-align:middle;"><?=$cnt['works'];?></td>
 						</tr>
 						<tr>

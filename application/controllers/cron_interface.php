@@ -173,7 +173,7 @@ class Cron_interface extends CI_Controller{
 											echo "change admin balance = $aprice<br/>";
 											$this->mdfillup->insert_record($webmaster,$wprice,'Автоматическое списание за выполненные задания',0,0);
 											if($partner):
-												$pprice = floor($wprice*0.05);
+												$pprice = round($wprice*0.05,2);
 												$this->mdusers->change_user_balance($partner,$pprice);
 												echo "change partner balance = $pprice<br/>";
 												$this->mdfillup->insert_record($partner,$pprice,'Средства по партнерской программе',0,1);
@@ -198,7 +198,7 @@ class Cron_interface extends CI_Controller{
 												echo "change admin balance= ".($deliver_works[$i]['client_price']-$deliver_works[$i]['our_price'])."<br/>";
 												$this->mdfillup->insert_record($webmaster,$deliver_works[$i]['client_price'],'Оплата за выполненное задание ID='.$deliver_works[$i]['id'],0,0);
 												if($partner):
-													$pprice = floor($deliver_works[$i]['client_price']*0.05);
+													$pprice = round($deliver_works[$i]['client_price']*0.05,2);
 													$this->mdusers->change_user_balance($partner,$pprice);
 													echo "change partner balance = $pprice<br/>";
 													$this->mdfillup->insert_record($partner,$pprice,'Средства по партнерской программе',0,1);

@@ -702,4 +702,31 @@ class Mdunion extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
+
+	function parent_partners_list($count,$from){
+	
+		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.id IN (SELECT users.partner_id FROM users WHERE users.partner_id > 0 GROUP BY users.id ORDER BY users.id) AND delivesworks.status = 1 ORDER BY users.id LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_parent_partners(){
+	
+		$query = "SELECT COUNT(users.id) AS cnt FROM users WHERE users.id IN (SELECT users.partner_id FROM users WHERE users.partner_id > 0 GROUP BY users.id ORDER BY users.id)";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['cnt'];
+		return 0;
+	}
+	
+	function partners_list($partner){
+	
+		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.id = $partner AND delivesworks.status = 1";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
 }

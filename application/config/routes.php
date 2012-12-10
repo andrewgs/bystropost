@@ -291,9 +291,14 @@ $route['admin-panel/actions/statistic']									= "admin_interface/actions_stati
 $route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet";
 $route['admin-panel/actions/locked-debet']								= "admin_interface/locked_debet";
 
-$route['admin-panel/actions/control/sendind-registering-info'] = "admin_interface/sendind_registering_info";
+$route['admin-panel/actions/control/sendind-registering-info']			= "admin_interface/sendind_registering_info";
+$route['admin-panel/actions/partner-program']							= "admin_interface/partner_program";
+$route['admin-panel/actions/partner-program/from']						= "admin_interface/partner_program";
+$route['admin-panel/actions/partner-program/from/:num']					= "admin_interface/partner_program";
 
-/*************************************************** 	CRON INTRERFACE	***********************************************/
+$route['admin-panel/actions/partner-program/partner/:num']				= "admin_interface/partners_list";
+
+/*************************************************** CRON INTRERFACE ***********************************************/
 
 $route['import-deliver-work'] 		= "cron_interface/import_deliver_work";
 $route['debitors-auto-blocking'] 	= "cron_interface/debitors_auto_blocking";

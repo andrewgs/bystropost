@@ -291,4 +291,5 @@ class Mdusers extends CI_Model{
 		if(count($data)) return $data;
 		return NULL;
 	}
+	
 }

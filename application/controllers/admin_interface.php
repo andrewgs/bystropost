@@ -1926,6 +1926,99 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
+	/***************************************************** partner program*************************************************/
+	
+	public function partner_program(){
+		
+		$from = intval($this->uri->segment(5));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Партнерская программа',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'webmasters'	=> $this->mdunion->parent_partners_list(10,$from),
+					'pages'			=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		/*for($i=0;$i<count($pagevar['webmasters']);$i++):
+			$pagevar['webmasters'][$i]['plaforms'] = count
+		endfor;*/
+		
+		$config['base_url'] 		= $pagevar['baseurl'].'admin-panel/actions/partner-program/from/';
+		$config['uri_segment'] 		= 5;
+		$config['total_rows'] 		= $this->mdunion->count_parent_partners();
+		$config['per_page'] 		= 10;
+		$config['num_links'] 		= 4;
+		$config['first_link']		= 'В начало';
+		$config['last_link'] 		= 'В конец';
+		$config['next_link'] 		= 'Далее &raquo;';
+		$config['prev_link'] 		= '&laquo; Назад';
+		$config['cur_tag_open']		= '<li class="active"><a href="#">';
+		$config['cur_tag_close'] 	= '</a></li>';
+		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
+		$config['full_tag_close'] 	= '</ul></div>';
+		$config['first_tag_open'] 	= '<li>';
+		$config['first_tag_close'] 	= '</li>';
+		$config['last_tag_open'] 	= '<li>';
+		$config['last_tag_close'] 	= '</li>';
+		$config['next_tag_open'] 	= '<li>';
+		$config['next_tag_close'] 	= '</li>';
+		$config['prev_tag_open'] 	= '<li>';
+		$config['prev_tag_close'] 	= '</li>';
+		$config['num_tag_open'] 	= '<li>';
+		$config['num_tag_close'] 	= '</li>';
+		
+		$this->pagination->initialize($config);
+		$pagevar['pages'] = $this->pagination->create_links();
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		
+		$this->load->view("admin_interface/partner-program",$pagevar);
+	}
+	
+	public function partners_list(){
+		
+		$partner = intval($this->uri->segment(5));
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Администрирование | Партнерская программа | Cписок приглашенных',
+					'baseurl' 		=> base_url(),
+					'userinfo'		=> $this->user,
+					'cntunit'		=> array(),
+					'webmasters'	=> $this->mdunion->partners_list($partner),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		
+		
+		$pagevar['cntunit']['users'] = $this->mdusers->count_all();
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_all();
+		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
+		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
+		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
+		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
+		
+		
+		$this->load->view("admin_interface/partners-list",$pagevar);
+	}
+	
+	
+	
 	/******************************************************** jobs ******************************************************/
 	
 	public function user_finished_jobs(){
@@ -2398,7 +2491,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	/******************************************************** other ******************************************************/
+	/********************************************************* other *******************************************************/
 	
 	public function sendind_registering_info(){
 		
@@ -3111,7 +3204,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	/******************************************************** API ******************************************************/
+	/*********************************************************** API *********************************************************/
 	
 	function actions_api(){
 		$mass_data = array();
@@ -3235,7 +3328,7 @@ class Admin_interface extends CI_Controller{
 		endif;
 	}
 	
-	/******************************************************** statistic ******************************************************/	
+	/******************************************************** statistic ******************************************************/
 	
 	public function actions_statistic(){
 		
@@ -3342,7 +3435,7 @@ class Admin_interface extends CI_Controller{
 		echo json_encode($statusval);
 	}
 
-	/******************************************************** functions ******************************************************/	
+	/******************************************************** functions ******************************************************/
 	
 	public function fileupload($userfile,$overwrite,$catalog){
 		
@@ -3522,7 +3615,7 @@ class Admin_interface extends CI_Controller{
 		
 	}
 	
-	/******************************************************** Расчет парсинга ПР и ТИЦ******************************************************/
+	/*********************************************** Расчет парсинга ПР и ТИЦ******************************************************/
 	
 	public function StrToNum($Str, $Check, $Magic){
 	

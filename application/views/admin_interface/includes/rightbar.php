@@ -10,6 +10,7 @@
 			<li num="types-of-work"><?=anchor('admin-panel/management/types-of-work','Типы работ ('.$cntunit['twork'].')');?></li>
 			<li num="ratings"><?=anchor('admin-panel/management/ratings/webmasters','Отзывы о системе');?></li>
 			<li num="events"><?=anchor('admin-panel/actions/events','Новости');?></li>
+			<li num="partner-program"><?=anchor('admin-panel/actions/partner-program','Партнерская программа');?></li>
 			<li class="nav-header">Сообщения</li>
 		<?php if($cntunit['mails']):?>
 			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<b>'.$cntunit['mails'].'</b>)');?></li>

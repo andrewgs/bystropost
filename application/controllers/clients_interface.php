@@ -383,7 +383,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['statistic']['partners'] = 0;
 		$works = $this->mdunion->count_summa_works_partners($this->user['uid']);
 		if($works):
-			$pagevar['statistic']['partners'] = floor($works['summa']*0.05);
+			$pagevar['statistic']['partners'] = round($works['summa']*0.05,2);
 		endif;
 		for($i=0;$i<count($pagevar['history']);$i++):
 			$pagevar['history'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['history'][$i]['date']);
@@ -1305,7 +1305,7 @@ class Clients_interface extends CI_Controller{
 							$this->mdusers->change_admins_balance($wprice-$mprice);
 							$this->mdfillup->insert_record($this->user['uid'],$wprice,'Оплата за выполненное задание ID='.$_POST['works'][$i],0,0);
 							if($this->user['partner'] > 0):
-								$pprice = floor($wprice*0.05);
+								$pprice = round($wprice*0.05,2);
 								$this->mdusers->change_user_balance($this->user['partner'],$pprice);
 								$this->mdfillup->insert_record($this->user['partner'],$pprice,'Средства по партнерской программе',0,1);
 							endif;
@@ -1513,7 +1513,7 @@ class Clients_interface extends CI_Controller{
 				$this->mdusers->change_admins_balance($works[$i]['wprice']-$works[$i]['mprice']);
 				$this->mdfillup->insert_record($this->user['uid'],$works[$i]['wprice'],'Оплата за выполненное задание ID='.$works[$i]['id'],0,0);
 				if($this->user['partner'] > 0):
-					$pprice = floor($works[$i]['wprice']*0.05);
+					$pprice = round($works[$i]['wprice']*0.05,2);
 					$this->mdusers->change_user_balance($this->user['partner'],$pprice);
 					$this->mdfillup->insert_record($this->user['partner'],$pprice,'Средства по партнерской программе',0,1);
 				endif;
@@ -2392,7 +2392,7 @@ class Clients_interface extends CI_Controller{
 		$pagevar['cnt']['platforms'] = $this->mdunion->count_platforms_partners($this->user['uid']);
 		$works = $this->mdunion->count_summa_works_partners($this->user['uid']);
 		if($works):
-			$pagevar['cnt']['summa'] = floor($works['summa']*0.05); // 5% от общей суммы всех закрытых работ
+			$pagevar['cnt']['summa'] = round($works['summa']*0.05,2); // 5% от общей суммы всех закрытых работ
 			$pagevar['cnt']['works'] = $works['works'];
 		endif;
 		

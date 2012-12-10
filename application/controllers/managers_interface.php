@@ -684,7 +684,7 @@ class Managers_interface extends CI_Controller{
 							$this->mdfillup->insert_record(0,$wprice-$mprice,'Начисление средств администратору при автоматической оплате (Ручной ввод)');
 							$this->mdlog->insert_record($webmaster,'Событие №11: Произведена оплата за выполненные работы');
 							if($user['partner_id']):
-								$pprice = floor($wprice*0.05);
+								$pprice = round($wprice*0.05,2);
 								$this->mdusers->change_user_balance($user['partner_id'],$pprice);
 								$this->mdfillup->insert_record($user['partner_id'],$pprice,'Средства по партнерской программе',0,1);
 							endif;
@@ -794,7 +794,7 @@ class Managers_interface extends CI_Controller{
 														$this->mdusers->change_admins_balance($new_work['wprice']-$new_work['mprice']);
 														$this->mdfillup->insert_record(0,$new_work['wprice']-$new_work['mprice'],'Начисление средств администратору при автоматической плате (Автоматический ввод)');
 														if($user['partner_id']):
-															$pprice = floor($new_work['wprice']*0.05);
+															$pprice = round($new_work['wprice']*0.05,2);
 															$this->mdusers->change_user_balance($user['partner_id'],$pprice);
 															$this->mdfillup->insert_record($user['partner_id'],$pprice,'Средства по партнерской программе',0,1);
 														endif;
