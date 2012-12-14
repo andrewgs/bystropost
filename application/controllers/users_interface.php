@@ -566,7 +566,7 @@ class Users_interface extends CI_Controller{
 			$this->form_validation->set_rules('login',' ','required|valid_email|trim');
 			$this->form_validation->set_rules('password',' ','required|trim');
 			$this->form_validation->set_rules('confpass',' ','required|trim');
-			$this->form_validation->set_rules('wmid',' ','required|trim');
+			$this->form_validation->set_rules('wmid',' ','required|integer|exact_length[12]|trim');
 			$this->form_validation->set_rules('knowus',' ','trim');
 			$this->form_validation->set_rules('promo',' ','trim');
 			if(!$this->form_validation->run()):
@@ -654,7 +654,7 @@ class Users_interface extends CI_Controller{
 		$this->load->view("users_interface/registering",$pagevar);
 	}
 
-	function viewimage(){
+	public function viewimage(){
 		
 		$section = $this->uri->segment(1);
 		$id = $this->uri->segment(3);

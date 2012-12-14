@@ -172,7 +172,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('oldpas',' ','trim');
 			$this->form_validation->set_rules('password',' ','trim');
 			$this->form_validation->set_rules('confpass',' ','trim');
-			$this->form_validation->set_rules('wmid',' ','required|numeric|exact_length[12]|trim');
+			$this->form_validation->set_rules('wmid',' ','required|integer|exact_length[12]|trim');
 			$this->form_validation->set_rules('phones',' ','trim');
 			$this->form_validation->set_rules('icq',' ','trim');
 			$this->form_validation->set_rules('skype',' ','trim');
