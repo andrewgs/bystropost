@@ -6,12 +6,18 @@ html, body { height: 100%; }
 .top-links a { font-family: arial,sans-serif;  font-size: 12px; text-decoration: underline; }
 #login-form { margin: 0 0 0 20px; }
 #login { margin: 0.5em 0 0; position: relative; }
-#login a { font-size: 0.9em; line-height: 1.25em; }
+#login a { font-size: 0.9em; line-height: 1.25em; border-bottom: 1px solid; }
 #login a:hover { text-decoration: none; border-bottom: 1px solid; }
-#login a.register-link { position: absolute; left: 0; top: 42px; color: #777; }
+#login a.register-link { position: absolute; left: 0; top: 42px; }
 #login a.restore-link { position: absolute; left: 92px; top: 42px; }
 #login .input { padding: 0.1em 0.5em; border-radius: 2px; width: 9.5em; }
 #login .go { margin-top: 7px; }
+
+#contact-info { padding: 12px 0; border-bottom: 1px dashed #ccc; margin: 0 0 0.5em; }
+.support { text-align: center; color: #999; }
+.consultant { color: #999; line-height: 3em; width: 200px; }
+.support span { color: #333; font-size: 1.2em; }
+.consultant span { color: #333; }
 
 #main-nav-wrapper { border-bottom: 1px dotted #C2E2E7; border-top: 1px dotted #C2E2E7;  margin: 1.5em 0; padding: 2em 0 0.4em; width: 100%; }
 #main-nav { list-style: none outside none; margin: 0; padding: 0; text-align: left; position: relative; }
@@ -21,7 +27,7 @@ html, body { height: 100%; }
 
 h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; margin: 0 0 1em; }
 h1 span { font-size: 48px; /*color: #00b6dc;*/ }
-h2 { color: #107CB1; font: italic 25px georgia,serif; margin-bottom: 0.5em; font-style: normal; }
+h2 { color: #444; font: 25px georgia,serif; margin: 1em 0 0.5em; font-style: normal; }
 
 #white_line { background: none; border: 1px solid #C2E2E7; border-style: dotted none none; float: left; height: 63px; margin: 3em 0 0 1.5em; padding: 1.25em 1em 1em 0.5em; width: 890px; }
 #white_line span { color: #4D4D4D; display: block; float: left; font-family: trebuchet ms,arial,sans-serif; font-size: 24px; font-weight: normal; margin-top: 15px; }
@@ -64,7 +70,7 @@ p.small { font-size: 0.8em; color: #999; width: 800px; }
 			box-shadow: 0 0 3px #C0C0C0;
 }
 .ErrImg { margin-bottom: 15px; margin-left: 10px; }
-#msgdealert { color: #B94A48; margin: 0 0 0 5px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); } 
+#msgdealert { color: #B94A48; margin: 0 0 0 85px; padding: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); } 
 #footer a, #footer a:hover {color: #fff; display: inline-block; font: 13px trebuchet ms,arial,sans-serif; margin: 1em 0.75em 0; }
 #white_line.no-margin { margin: 0 0 0.5em 1.5em; border: 0 none; }
 #register_tree.no-margin { margin: 1em 0 0; float: left; width: 440px; background-position: -63px 0; }
@@ -98,7 +104,8 @@ h1.whiteline { border: 0 none; }
 #navigation .top-main-nav a { display: inline-block; font: 12px/21px arial,sans-serif; margin: 0; padding: 0; text-decoration: underline; }
 
 .ml05 { margin-left: 0.5em; }
-#footer a.check-certificate { border-bottom: 1px dotted; display: inline-block; font-size: 10px; line-height: 1.25em; position: absolute; right: -12px; top: -21px; }
+#footer a.check-certificate { border-bottom: 1px dotted; display: inline-block; font-size: 10px; line-height: 1.25em; position: absolute; right: 0; top: -21px; }
+#footer .address { color: #fff; text-align: left; position: absolute; top: 42px; left: 30px; font-size: 13px; }
 
 .user-panel { margin: 1em 0 0; }
 .user-topblock {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em;}

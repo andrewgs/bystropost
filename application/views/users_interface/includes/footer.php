@@ -1,8 +1,13 @@
 <div id="footer_bg">
 	<div id="footer">
+		<div class="address">
+			ООО "Быстропост" &ndash; www.bystropost.ru <br/>
+			344032, г.Ростов-на-Дону <br/>
+			ул.16 линия, 16 «Б»
+		</div>
 		<!-- <?=anchor('support','Техподдержка');?> -->
 		<?=anchor('site-monetization','Монетизация сайта');?>
-		<?=anchor('additional-services','Дополнительные услуги');?>
+		<!--<?=anchor('additional-services','Дополнительные услуги');?>-->
 		<?=anchor('disclaimer','Уведомление об ответственности');?>
 		<?=anchor("site-map","Карта сайта");?>
 		<br />
