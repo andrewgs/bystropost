@@ -3612,10 +3612,12 @@ class Admin_interface extends CI_Controller{
 	
 	public function replace_a_tag($string){
 		
-		$pattern = "/(http:\/\/)(.+?)(\s+?)/i";
-		$replacement = "<a href=\"\$1\$2\">\$2</a>\$3";
-		return preg_replace($pattern, $replacement,$string);
+//		$pattern = "/(http:\/\/)(.+?)(\s+?)/i";
+//		$replacement = "<a href=\"\$1\$2\">\$2</a>\$3";
 		
+		$patterns[0] = "/&Prime;+?/";$patterns[1] = "/{+?/";$patterns[2] = "/}+?/";
+		$replacements[2] = "";$replacements[1] = "<";$replacements[0] = ">";
+		return preg_replace($patterns, $replacements, $string);
 	}
 	
 	/*********************************************** Расчет парсинга ПР и ТИЦ******************************************************/

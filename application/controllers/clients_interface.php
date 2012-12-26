@@ -1072,10 +1072,12 @@ class Clients_interface extends CI_Controller{
 		$market['password'] = $this->encrypt->decode($market['cryptpassword']);
 		$param = 'birzid='.$market['market'].'&accid='.$webmarket;
 		$platforms = $this->API('GetSitesFromAccount',$param);
-		$statusval['plload'] = count($platforms);
-		$imported = $this->load_platforms($platforms,$market);
-		$statusval['plcnt'] = $imported['import'];
-		$statusval['alien'] = $imported['alien'];
+		if(!isset($platforms['error'])):
+			$statusval['plload'] = count($platforms);
+			$imported = $this->load_platforms($platforms,$market);
+			$statusval['plcnt'] = $imported['import'];
+			$statusval['alien'] = $imported['alien'];
+		endif;
 		echo json_encode($statusval);
 	}
 	
@@ -2544,11 +2546,10 @@ class Clients_interface extends CI_Controller{
 	
 	private function load_platforms($platforms,$market){
 		
+		$cntpl['import'] = 0;
+		$cntpl['alien']	= array();
 		if($platforms):
 			$j = 0;
-			$cntpl['import'] = 0;
-			$cntpl['alien']	= array();
-			
 			$pl_data = array();
 			foreach($platforms as $key => $value):
 				$pl_data[$j] = $value;
@@ -2675,7 +2676,8 @@ class Clients_interface extends CI_Controller{
 			endfor;
 			return $cntpl;
 		else:
-			return 0;
+			$cntpl['alien'] = 0;
+			return $cntpl;
 		endif;
 	}
 	
