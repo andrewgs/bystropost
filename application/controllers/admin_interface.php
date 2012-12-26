@@ -3547,21 +3547,24 @@ class Admin_interface extends CI_Controller{
 			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
 			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
 			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
-			case 4 : show_404();break;
+			case 4 : return 'личный кабинет';break;
 			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			case 0 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
 			
 			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
 			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
 			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 14 : show_404();break;
+			case 14 : return 'личный кабинет';break;
 			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			case 10 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
 			
 			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
 			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
 			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 24 : show_404();break;
+			case 24 : return 'личный кабинет';break;
 			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			default: show_404(); break;
+			case 20 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: return 'личный кабинет';break;
 		endswitch;
 	}
 	

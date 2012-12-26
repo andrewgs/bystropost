@@ -31,7 +31,7 @@
 				<div class="control-group">
 					<label for="balance" class="control-label">Баланс: </label>
 					<div class="controls">
-						<input type="text" id="eBalance" class="input-xlarge euinput <?=($this->uri->segment(4)=='manegers')?'negative':'digital'?>" name="balance">
+						<input type="text" id="eBalance" class="input-xlarge euinput negative" name="balance">
 						<span class="help-inline" style="display:none;">&nbsp;</span>
 					</div>
 				</div>

@@ -29,7 +29,7 @@
 							<td><?=$webmasters[$i]['platforms'];?></td>
 							<td><?=$webmasters[$i]['works'];?></td>
 							<td><?=$webmasters[$i]['summa'];?> руб.</td>
-							<td><?=anchor('admin-panel/actions/partner-program/partner/'.$webmasters[$i]['id'],'<i class="icon-list-alt icon-white"></i>',array('class'=>'btn btn-success'));?></td>
+							<td class="span1"><?=anchor('admin-panel/actions/partner-program/partner/'.$webmasters[$i]['id'],'<i class="icon-list-alt icon-white"></i>',array('class'=>'btn btn-success'));?></td>
 						</tr>
 					<?php endfor; ?>
 					</tbody>

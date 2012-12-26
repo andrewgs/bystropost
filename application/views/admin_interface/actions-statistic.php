@@ -10,6 +10,10 @@
 					<li class="active">
 						<?=anchor('admin-panel/actions/statistic','Статистика долгов');?>
 					</li>
+					<li style="float:right;">
+						<?=anchor('users-sending-mail','Уведомить должников',array('class'=>'btn btn-inverse'));?>
+						<?=anchor('debitors-auto-blocking','Заблокировать должников',array('class'=>'btn btn-inverse'));?>
+					</li>
 				</ul>
 				<?php $this->load->view('alert_messages/alert-error');?>
 				<?php $this->load->view('alert_messages/alert-success');?>
@@ -19,55 +23,21 @@
 							<td class="w400">Задолженность 3 дня:</td>
 							<td class="w100"><?=$stat['to3days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to3days']['sum'];?>.00 руб.</td>
-							<td>
-							<?php if($stat['to3days']['cnt']):?>
-								<button class="btn btn-info AlertByDay" data-days="3" title="Уведомить о задолженности: 3 дня"><i class="icon-envelope icon-white"></i></button>
-							<?php else:?>
-								<button class="btn btn-success"><i class="icon-ok icon-white"></i></button>
-							<?php endif;?>
-							</td>
 						</tr>
 						<tr>
 							<td class="w400">Задолженность 4 дня:</td>
 							<td class="w100"><?=$stat['to4days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to4days']['sum'];?>.00 руб.</td>
-							<td>
-							<?php if($stat['to4days']['cnt']):?>
-								<button class="btn btn-warning AlertByDay" data-days="4" title="Уведомить о задолженности: 4 дня"><i class="icon-envelope icon-white"></i></button>
-							<?php else:?>
-								<button class="btn btn-success"><i class="icon-ok icon-white"></i></button>
-							<?php endif;?>
-							</td>
 						</tr>
 						<tr>
 							<td class="w400">Задолженность 5 дня:</td>
 							<td class="w100"><?=$stat['to5days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['to5days']['sum'];?>.00 руб.</td>
-							<td>
-							<?php if($stat['to5days']['cnt']):?>
-								<button class="btn btn-danger AlertByDay" data-days="5" title="Уведомить о задолженности: 5 дня"><i class="icon-envelope icon-white"></i></button>
-								<button class="btn btn-inverse Locked5Day" data-days="5" title="Заблокировать"><i class="icon-lock icon-white"></i></button>
-							<?php else:?>
-								<button class="btn btn-success"><i class="icon-ok icon-white"></i></button>
-							<?php endif;?>
-							</td>
 						</tr>
 						<tr>
 							<td class="w400">Задолженность более 5-х дней:</td>
 							<td class="w100"><?=$stat['from5days']['cnt'];?> записей</td>
 							<td class="w85"><?=$stat['from5days']['sum'];?>.00 руб.</td>
-							<td>
-							<?php if($stat['from5days']['cnt']):?>
-								<button class="btn btn-danger AlertByDay" data-days="6" title="Уведомить о задолженности более 5 дней"><i class="icon-envelope icon-white"></i></button>
-								<button class="btn btn-inverse Locked5Day" data-days="6" title="Заблокировать"><i class="icon-lock icon-white"></i></button>
-							<?php else:?>
-								<button class="btn btn-success"><i class="icon-ok icon-white"></i></button>
-							<?php endif;?>
-							</td>
-						</tr>
-						<tr>
-							<td class="w400">Статус:</td>
-							<td class="w195" colspan="3" id="Result">&nbsp;</td>
 						</tr>
 					</tbody>
 				</table>
@@ -78,46 +48,5 @@
 	</div>
 	<?php $this->load->view('admin_interface/includes/footer');?>
 	<?php $this->load->view('admin_interface/includes/scripts');?>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$("button").removeClass("disabled");
-			$("button").removeAttr("disabled");
-			
-			$(".AlertByDay").click(function(){
-				if(!confirm("Выслать уведомления")) return false;
-				var days = $(this).attr("data-days");
-				$(this).html('<i class="icon-time icon-white"></i>');
-				send_alert(days,this);
-			});
-			$(".Locked5Day").click(function(){
-				if(!confirm("Заблокировать должников")) return false;
-				var days = $(this).attr("data-days");
-				$(this).html('<i class="icon-time icon-white"></i>');
-				send_locked(days,this);
-			});
-			
-			function send_alert(days,object){
-				$.post("<?=$baseurl;?>admin-panel/actions/alert-debet",{'days':days},function(data){
-					if(data.status){
-						$(object).html('<i class="icon-ok icon-white"></i>');
-						$(object).addClass("disabled");
-						$(object).attr("disabled","disabled");
-						$("#Result").html('Отправлено уведомлений: '+data.count);
-					}
-				},"json");
-			}
-			
-			function send_locked(days,object){
-				$.post("<?=$baseurl;?>admin-panel/actions/locked-debet",{'days':days},function(data){
-					if(data.status){
-						$(object).html('<i class="icon-ok icon-white"></i>');
-						$(object).addClass("disabled");
-						$(object).attr("disabled","disabled");
-						$("#Result").html('Должников: '+data.debetors+". Заблокировано бирж: "+data.birzlock);
-					}
-				},"json");
-			}
-		});
-	</script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Clients_interface extends CI_Controller{
+
 	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE,'partner'=>0);
 	var $loginstatus = array('status'=>FALSE);
 	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
@@ -815,7 +816,7 @@ class Clients_interface extends CI_Controller{
 	/*************************************************** markets *********************************************************/	
 	
 	public function control_markets(){
-		
+
 		if(!$this->user['remote']):
 			show_404();
 		endif;
@@ -887,6 +888,7 @@ class Clients_interface extends CI_Controller{
 		
 		if($this->input->post('smsubmit')):
 			unset($_POST['smsubmit']);
+
 			$this->form_validation->set_rules('mid',' ','required|trim');
 			$this->form_validation->set_rules('market',' ','trim');
 			$this->form_validation->set_rules('login',' ','trim');
@@ -1490,6 +1492,45 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-finished-jobs",$pagevar);
 	}
 	
+	public function control_task_in_work(){
+
+		$pagevar = array(
+				'description'	=> '',
+				'author'		=> '',
+				'title'			=> 'Кабинет Вебмастера | Задания в работе',
+				'baseurl' 		=> base_url(),
+				'loginstatus'	=> $this->loginstatus['status'],
+				'userinfo'		=> $this->user,
+				'cntunit'		=> array(),
+				'pages'			=> array(),
+				'minprice'		=> 0,
+				'delivers'		=> array(),
+				'view'			=> FALSE,
+				'filter'		=> array('fpaid'=>1,'fnotpaid'=>1),
+				'cntwork'		=> 25,
+				'msgs'			=> $this->session->userdata('msgs'),
+				'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		// Получаем задния в работе
+		$param = 'userid='.$this->user['remoteid'];
+		$data = $this->API('GetTaskInWork',$param);
+		if(isset($data['status']) && (int)$data['status']==0) $pagevar['items'] = array();
+		else $pagevar['items'] = $data;
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
+		$pagevar['cntunit']['delivers']['totalsum'] = $totalsum['sum'];
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$this->load->view("clients_interface/control-task-in-work",$pagevar);
+	}
+	
+	
 	public function control_pay_all(){
 		
 		$balance = $this->mdusers->read_field($this->user['uid'],'balance');
@@ -1894,6 +1935,7 @@ class Clients_interface extends CI_Controller{
 			$this->form_validation->set_rules('imgheight',' ','trim');
 			$this->form_validation->set_rules('imgpos',' ','trim');
 			$this->form_validation->set_rules('requests',' ','trim');
+			$this->form_validation->set_rules('writer',' ','trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
@@ -1943,6 +1985,7 @@ class Clients_interface extends CI_Controller{
 							else:
 								$pl_data['param']['category'] = array();
 							endif;
+							$pl_data['writer'] = $new_platform['writer'];
 							$pl_data['info'] = $new_platform['requests'];
 							$pl_data['size'] = 0;
 							$param = 'siteid='.$new_platform['remoteid'].'&conf='.base64_encode(json_encode($pl_data));
@@ -2688,21 +2731,24 @@ class Clients_interface extends CI_Controller{
 			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
 			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
 			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
-			case 4 : show_404();break;
+			case 4 : return 'личный кабинет';break;
 			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			case 0 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
 			
 			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
 			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 14 : show_404();break;
+			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 14 : return 'личный кабинет';break;
 			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			case 10 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
 			
 			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
 			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
 			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 24 : show_404();break;
+			case 24 : return 'личный кабинет';break;
 			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			default: show_404(); break;
+			case 20 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: return 'личный кабинет';break;
 		endswitch;
 	}
 	

@@ -35,9 +35,9 @@ class Users_interface extends CI_Controller{
 	public function index(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост - система автоматической монетизации | Покупка статей | Комплексное продвижение сайта | Покупка ссылок, биржа копирайтинга | Написание статей для сайта',
+			'description'	=> 'Мы предлагаем помощь оптимизаторам и вебмастерам. Комплексное продвижение сайта. SEO копирайтинг, уникальный контент для web сайтов, размещение ссылок на качественных сайтах.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -86,9 +86,9 @@ class Users_interface extends CI_Controller{
 		endif;
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Восстановление пароля',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Восстановление пароля',
+			'description'	=> 'Восстановление пароля для возобновления доступа к системе автоматической монетизации Быстропост',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgs'			=> $this->session->userdata('msgs'),
 			'msgr'			=> $this->session->userdata('msgr'),
@@ -148,9 +148,9 @@ class Users_interface extends CI_Controller{
 		endif;
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Восстановление пароля',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Восстановление пароля',
+			'description'	=> 'Восстановление пароля для возобновления доступа к системе автоматической монетизации Быстропост',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgs'			=> $this->session->userdata('msgs'),
 			'msgr'			=> $this->session->userdata('msgr'),
@@ -167,21 +167,49 @@ class Users_interface extends CI_Controller{
 	public function markets_catalog(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Каталог бирж | ',
+			'title'			=> '',
 			'description'	=> '',
-			'author'		=> '',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
 		$this->session->unset_userdata('msgauth');
 		switch ($this->uri->segment(2)):
-			case 'gogetlinks' : $pagevar['title'] .='gogetlinks'; $this->load->view("users_interface/markets/market-gogetlinks",$pagevar); break;
-			case 'miralinks' : $pagevar['title'] .='miralinks'; $this->load->view("users_interface/markets/market-miralinks",$pagevar); break;
-			case 'getgoodlinks' : $pagevar['title'] .='getgoodlinks'; $this->load->view("users_interface/markets/market-getgoodlinks",$pagevar); break;
-			case 'blogocash' : $pagevar['title'] .='blogcash.ru'; $this->load->view("users_interface/markets/market-blogcash",$pagevar); break;
-			case 'prsape' : $pagevar['title'] .='pr.sape.ru'; $this->load->view("users_interface/markets/market-prsaperu",$pagevar); break;
-			case 'blogun' : $pagevar['title'] .='blogun.ru'; $this->load->view("users_interface/markets/market-blogun",$pagevar); break;
-			case 'rotapost' : $pagevar['title'] .='rotapost.ru'; $this->load->view("users_interface/markets/market-rotapost",$pagevar); break;
+			case 'gogetlinks' : 
+				$pagevar['title'] .= 'Биржа вечных ссылок GoGetLinks | Система взаимодействия между сайтами вебмастера и деньгами оптимизатора';
+				$pagevar['description'] .= 'Биржа вечных ссылок GoGetLinks, система взаимодействия между сайтами вебмастера и деньгами оптимизатора.'; 
+				$this->load->view("users_interface/markets/market-gogetlinks",$pagevar); 
+				break;
+			case 'miralinks' : 
+				$pagevar['title'] .= 'Биржа вечных статей Miralinks | Статейный маркетинг | Лучшая биржа статейного продвижения';
+				$pagevar['description'] .= 'Биржа вечных статей Miralinks, cтатейный маркетинг, лучшая биржа статейного продвижения.'; 
+				$this->load->view("users_interface/markets/market-miralinks",$pagevar); 
+				break;
+			case 'getgoodlinks' : 
+				$pagevar['title'] .= 'Биржа вечных ссылок GetGoodLinks | Продвижение в поисковой системе Google';
+				$pagevar['description'] .= 'Биржа вечных ссылок GetGoodLinks, продвижение в поисковой системе Google.'; 
+				$this->load->view("users_interface/markets/market-getgoodlinks",$pagevar); 
+				break;
+			case 'blogocash' : 
+				$pagevar['title'] .= 'Купить вечные ссылки | Продажа вечных ссылок | Биржа Блогокеш';
+				$pagevar['description'] .= 'Биржа вечных ссылок Блогокеш. Эффективная система купли/продажи вечных ссылок на любых сайтах. Заработок даже с тех сайтов, где владельцами вы не являетесь.'; 
+				$this->load->view("users_interface/markets/market-blogcash",$pagevar); 
+				break;
+			case 'prsape' : 
+				$pagevar['title'] .= 'Качественный сервис по размещению статей и ссылок | Контекстные ссылки, написание уникального контента | Размещение "навсегда" от PR.Sape';
+				$pagevar['description'] .= 'Pr.sape - качественный сервис по размещению статей и ссылок, контекстные ссылки, написание уникального контента, Размещение "навсегда" от PR.Sape.'; 
+				$this->load->view("users_interface/markets/market-prsaperu",$pagevar); 
+				break;
+			case 'blogun' : 
+				$pagevar['title'] .= 'Биржа постовых Blogun | Размещение постовых, покупка ссылок, реклама в социальных сетях, реклама в блоге';
+				$pagevar['description'] .= 'Биржа постовых Blogun, размещение постовых, покупка ссылок, реклама в социальных сетях, реклама в блоге.'; 
+				$this->load->view("users_interface/markets/market-blogun",$pagevar); 
+				break;
+			case 'rotapost' : 
+				$pagevar['title'] .= 'Эффективная реклама в блогах | Эффективный сервис для продвижения сайтов | Размещение ссылок навсегда RotaPost';
+				$pagevar['description'] .= 'Rotapost - купля/продажа вечных ссылок в новом контенте. Эффективная реклама в блогах, эффективный сервис для продвижения сайтов, размещение ссылок навсегда RotaPost.'; 
+				$this->load->view("users_interface/markets/market-rotapost",$pagevar); 
+				break;
 			default : redirect('/');
 		endswitch;
 	}
@@ -195,9 +223,9 @@ class Users_interface extends CI_Controller{
 		endswitch;
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Отзывы о системе',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Отзывы о системе | Отзывы от рекламодателей и вебмастеров о системе',
+			'description'	=> 'Полный список отзывов от рекламодателей и от вебмастеров по системе автоматической монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'ratings'		=> $this->mdratings->read_records($rtype),
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
@@ -209,9 +237,9 @@ class Users_interface extends CI_Controller{
 	public function reading_rating(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Отзывы о системе',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Отзывы о системе',
+			'description'	=> 'Список отзывов по системе автоматической монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'rating'		=> $this->mdratings->read_record($this->uri->segment(4)),
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
@@ -223,9 +251,9 @@ class Users_interface extends CI_Controller{
 	public function idea(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Ваши идеи',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Ваши идеи | Отзывы и предложения по системе автоматической монетизации Быстропост',
+			'description'	=> 'Отзывы и предложения по системе Быстропост, система автоматической монетизации.',
+			'author'		=> 'grapheme',
 			'rating'		=> $this->mdratings->read_record($this->uri->segment(4)),
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
@@ -237,9 +265,9 @@ class Users_interface extends CI_Controller{
 	public function about(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | О проекте',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Сайты заработка в интернете | Продвижение вечными ссылками | Биржа ссылок, биржа копирайтинга, seo копирайтинг | Биржа покупки ссылок',
+			'description'	=> 'Быстропост предлагает помощь вебмастерам и оптимизаторам - заработок с помощью сайта, профессиональный копирайтинг, размещение статей на качественных площадках. Работая с нами, вы экономите время и нервы.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -250,9 +278,9 @@ class Users_interface extends CI_Controller{
 	public function partners_program(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Партнерская программа',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Партнерская программа',
+			'description'	=> 'Теперь каждый может зарабатывать деньги через партнерскую программу. Условия просты, за каждую оплаченную заявку мы вам начисляем 5% от стоимости.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -263,9 +291,9 @@ class Users_interface extends CI_Controller{
 	public function webmasters(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Вебмастера',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Биржа вечных ссылок, продажа статей, размещение ссылок, написание текстов на сайт | Как продвигать сайт самостоятельно | Быстропост',
+			'description'	=> 'Помощь вебмастерам. Полная работа под ключ - мониторинг биржи, общение с оптимизаторами, выполнение заявок, написание уникального текста, публикация контента, сдача заявки в биржу.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -276,9 +304,9 @@ class Users_interface extends CI_Controller{
 	public function optimizers(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Оптимизаторам',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Продвижение статьями, рерайт текста | Заработок с помощью сайта, копирайтинг | Написание статей  для сайта, покупка статей | Быстропост',
+			'description'	=> 'Быстропост предлагает помощь оптимизаторам - заработок с помощью сайта, профессиональный копирайтинг, размещение статей на качественных площадках. Работая с нами, вы экономите время и нервы.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -289,9 +317,9 @@ class Users_interface extends CI_Controller{
 	public function faq(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Поддержка',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Часто задаваемые вопросы по системе Быстропост | Лучшая биржа для монетизации вашего ресурса',
+			'description'	=> 'Распространенные вопросы в системе Быстропост. Лучшая биржа для монетизации вашего ресурса.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -304,7 +332,7 @@ class Users_interface extends CI_Controller{
 		$pagevar = array(
 			'title'			=> 'Быстропост - система автоматической монетизации | Порядок оплаты',
 			'description'	=> '',
-			'author'		=> '',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -315,9 +343,9 @@ class Users_interface extends CI_Controller{
 	public function site_monetization(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Монетизация сайта',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Порядок оплаты | Система автоматической монетизации Быстропост',
+			'description'	=> 'Порядок оплаты по системе автоматической монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -328,9 +356,9 @@ class Users_interface extends CI_Controller{
 	public function additional_services(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Дополнительные услуги',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Дополнительные услуги',
+			'description'	=> 'Полный список дополнительных услуг, предоставляемых системой автоматический монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -341,9 +369,9 @@ class Users_interface extends CI_Controller{
 	public function disclaimer(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Уведомление об ответственности',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Уведомление об ответственности',
+			'description'	=> 'Мы являемся независимым предприятием, оказывающим услуги, и самостоятельно принимаем решения о ценах и предложениях.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -354,9 +382,9 @@ class Users_interface extends CI_Controller{
 	public function about_content(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | О контенте',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Биржа копирайтинга | Размещение статей, seo копирайтинг | Квечные ссылки, сайты заработка в интернете | Быстропост',
+			'description'	=> 'Быстропост предлагает услуги копирайтинга. Весь контент пишется людьми, у которых богатый опыт в написание контента любой сложности и тематики. Многолетний опыт работы.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -367,9 +395,9 @@ class Users_interface extends CI_Controller{
 	public function capabilities(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Наши возможности',
-			'description'	=> 'привет',
-			'author'		=> '',
+			'title'			=> 'Наши возможности | Сайты для размещения ссылок | Биржа покупки ссылок | Написание статей на сайт размещение статей | Контент для сайта',
+			'description'	=> 'Быстропост предлагает помощь вебмастерам и оптимизаторам - мгновенное выполнение заявок, написание уникального текста, публикация контента, сдача заявки в биржу. Качественная работа, качественные тексты, открывают дорогу вашему ресурсу в белые списки оптимизаторов.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -380,9 +408,9 @@ class Users_interface extends CI_Controller{
 	public function site_interface(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Интерфейс',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Интерфейс системы | Основные разделы',
+			'description'	=> 'Описание основных разделов системы автоматической монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -394,9 +422,9 @@ class Users_interface extends CI_Controller{
 		
 		$from = intval($this->uri->segment(3));
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Новости',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Новости системы | Обновления системы',
+			'description'	=> 'Последние новости о нововведениях и улучшениях в системе Быстропост. Новости о работе с биржами gogetlinks, miralinks, rotapost, sape.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'pages'			=> array(),
 			'events'		=> $this->mdevents->read_records_limit(5,$from),
@@ -445,9 +473,9 @@ class Users_interface extends CI_Controller{
 			redirect($this->session->userdata('backpath'));
 		endif;
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Новости',
+			'title'			=> '| Новости | Быстропост',
 			'description'	=> '',
-			'author'		=> '',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'pages'			=> array(),
 			'event'			=> $this->mdevents->read_record($nid),
@@ -456,16 +484,35 @@ class Users_interface extends CI_Controller{
 		$this->session->unset_userdata('msgauth');
 		
 		$pagevar['event']['date'] = $this->operation_date($pagevar['event']['date']);
+		$pagevar['title'] = $pagevar['event']['title']." | Новости | Быстропост"; 
 		
 		$this->load->view("users_interface/news-view",$pagevar);
+	}
+	
+	public function rss(){
+		
+		$pagevar = array(
+			'title'			=> 'Быстропост | RSS лента | Новости системы | Обновления системы',
+			'description'	=> 'Последние новости о нововведениях и улучшениях в системе Быстропост. Новости о работе с биржами gogetlinks, miralinks, rotapost, sape.',
+			'author'		=> 'grapheme',
+			'baseurl' 		=> base_url(),
+			'pages'			=> array(),
+			'events'		=> $this->mdevents->read_records_limit(50,0)
+		);
+		
+		for($i=0;$i<count($pagevar['events']);$i++):
+			$pagevar['events'][$i]['date'] = $this->operation_date($pagevar['events'][$i]['date']);
+		endfor;
+		
+		$this->load->view("users_interface/rss",$pagevar);
 	}
 	
 	public function contacts(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Контакты',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Система автоматической монетизации Быстропост | Контактная информация',
+			'description'	=> 'Контактная информация, адрес и телефоны системы Быстропост.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -476,9 +523,9 @@ class Users_interface extends CI_Controller{
 	public function prices(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Цены',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Цены на услуги | Продажа статей, покупка ссылок, написание текстов на сайт | Проверенные сайты заработка, размещение рекламы на сайте',
+			'description'	=> 'Каждый новый клиент Быстропост по умолчанию, имеет базовый комплект за 50 рублей: написание контента, публикация контента с загрузкой изображения на ваш хостинг. Мы стараемся найти индивидуальный подход к каждому клиенту.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -489,9 +536,9 @@ class Users_interface extends CI_Controller{
 	public function forum(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Форум',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Быстропост | Форум',
+			'description'	=> 'Обсуждения по системе автоматической монетизации Быстропост',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -502,9 +549,9 @@ class Users_interface extends CI_Controller{
 	public function site_map(){
 		
 		$pagevar = array(
-			'title'			=> 'Быстропост - система автоматической монетизации | Карта сайта',
-			'description'	=> '',
-			'author'		=> '',
+			'title'			=> 'Система автоматической монетизации Быстропост | Карта сайта',
+			'description'	=> 'Карта сайта. Система автоматической монетизации Быстропост.',
+			'author'		=> 'grapheme',
 			'baseurl' 		=> base_url(),
 			'msgauth'		=> $this->session->userdata('msgauth')
 		);
@@ -548,9 +595,9 @@ class Users_interface extends CI_Controller{
 			default			: 	redirect($redirect);break;
 		endswitch;
 		$pagevar = array(
-				'title'			=> 'Быстропост - система автоматической монетизации | Регистрация пользователей',
-				'description'	=> '',
-				'author'		=> '',
+				'title'			=> 'Cистема автоматической монетизации Быстропост | Регистрация пользователей',
+				'description'	=> 'Регистрация в системе автоматической монетизации Быстропост.',
+				'author'		=> 'grapheme',
 				'baseurl' 		=> base_url(),
 				'usertype'		=> $tutype,
 				'msgs'			=> $this->session->userdata('msgs'),

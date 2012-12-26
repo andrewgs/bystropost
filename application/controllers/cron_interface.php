@@ -239,6 +239,7 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$debetors = $this->mdunion->read_debetors($date,'<=',0);
+
 		//Автоматическая оплата
 		$summa = array('managers' => array(),'admin' => 0);
 		echo '<br/>Автоматическая оплата<br/>';
@@ -250,11 +251,13 @@ class Cron_interface extends CI_Controller{
 				echo "<hr/>Current webmaster = ".$debetors[$i]['webmaster']."<br/>";
 				echo "<hr/>Current manager = ".$debetors[$i]['manager']."<br/>";
 				$balance = $this->mdusers->read_field($debetors[$i]['webmaster'],'balance');
+
 				echo "Start Balance = $balance. ";
 				$minprice = $this->mdunion->min_price_debitors_works($debetors[$i]['webmaster'],$date,'<=');
 				if($balance >= $minprice):
 					echo "Balance >= $minprice (minimun price) <br/>";
 					$works = $this->mdunion->read_debitors_works($debetors[$i]['webmaster'],$date,'<=');
+		
 					for($j=0;$j<count($works);$j++):
 						echo "Delivers Work ID: ".$works[$j]['id']."<br/>";
 						echo "Price Work: ".$works[$j]['wprice'].". ";
@@ -264,7 +267,8 @@ class Cron_interface extends CI_Controller{
 							echo "Balance is small. Break webmaster.<br/>";
 							break;
 						endif;
-						if($balance >= $works[$j]['wprice']):
+
+						if((int)$balance >= (int)$works[$j]['wprice']):
 							echo "balance >= ".$works[$j]['wprice']."<br/>";
 							$this->mdusers->change_user_balance($debetors[$i]['webmaster'],-$works[$j]['wprice']);
 							echo "change webmaster balance= -".$works[$j]['wprice']."<br/>";
@@ -322,11 +326,13 @@ class Cron_interface extends CI_Controller{
 		echo '<hr/><hr/>';
 		//блокировка должников и их аккаунтов
 		echo '<br/>Блокировка должников и их аккаунтов<br/>';
+
 		$total = $this->mdunion->update_debetors_status($date,'<=',1);
 		echo "Total debetor: $total<br/>";
 		$birzlock = 0;
 		if($total):
 			$debetors = $this->mdunion->debetors_webmarkets();
+			
 			for($i=0;$i<count($debetors);$i++):
 				$param = 'accid='.$debetors[$i]['id'].'&birzid='.$debetors[$i]['market'].'&login='.$debetors[$i]['login'].'&pass='.base64_encode($this->encrypt->decode($debetors[$i]['cryptpassword'])).'&act=2';
 				$text = "Запрос: ".$param;
@@ -431,6 +437,7 @@ class Cron_interface extends CI_Controller{
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		$date = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date("Y")));
 		$debetors = $this->mdunion->debetors_for_checkout($date);
+
 		$count_invoice = 0;
 		$exec_time = round((microtime(true) - $start_time),2);
 		
@@ -460,14 +467,14 @@ class Cron_interface extends CI_Controller{
 		$start_time = microtime(true);
 		
 		$file_name = getcwd().'/documents/checkout_'.date("YmdHi").'.log';
-		$text = "Файл-лог автоматической проверки оплаты считов.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
+		$text = "Файл-лог автоматической проверки оплаты счетов.\nСоздан: ".$this->current_date_on_time(date("Y-m-d H:i:s"));
 		file_put_contents($file_name,mb_convert_encoding($text,'Windows-1251','utf-8')."\n\n");
 		$paid_invoice = $notpaid_invoice = 0;
 		$checkout = $this->mdcheckout->read_records();
 		$exec_time = round((microtime(true) - $start_time),2);
-		
+		include(getcwd()."/invoice/main/_header.php");
 		for($i=0;$i<count($checkout);$i++):
-			$result = $this->checkout_now($checkout[$i]['invoice'],$checkout[$i]['wmid']);
+			$result = $this->checkout_now($wmxi, $checkout[$i]['invoice'],$checkout[$i]['wmid']);
 			if($result):
 				$this->mdcheckout->update_field($checkout[$i]['id'],'paid',1);
 				$balance = $this->mdusers->read_field($checkout[$i]['webmaster'],'balance');
@@ -515,18 +522,27 @@ class Cron_interface extends CI_Controller{
 		endif;
 	} // функция выставления счета
 	
-	private function checkout_now($invoice,$wmid){
-	
-		include(getcwd()."/invoice/main/_header.php");
+	private function checkout_now($wmxi,$invoice,$wmid){
+		//include(getcwd()."/invoice/main/_header.php");
 		$res = $wmxi->X4(PRIMARY_PURSE,0,$invoice,date("Ymd H:i:s",mktime(date("H"),date("i"),date("s"),date("m"),date("d")-1,date("Y"))),date("Ymd H:i:s"));
+		//print_r($res);
 		//print_r($res->toObject());
 		$res_status = (string) $res->toObject()->retval;
-		if($res_status == 0):// получен ответ от webmoney
+		
+		// 0 - не оплачен
+		// 1 - оплачен по протекции
+		// 2 - оплачен окончательно
+		// 3 - отказан
+		if((int)$res_status == 0):// получен ответ от webmoney
 			$invoice_status = (string) $res->toObject()->outinvoices->outinvoice->state;
-			if($invoice_status == 0): // проверяем оплачен ли счет
+
+			if((int)$invoice_status == 2): // если счет оплачен
+				return true;
+			elseif((int)$invoice_status == 3): //если счет отменен удаляем эти счета
+				$this->mdcheckout->del_invoce($invoice);
 				return false;
 			else:
-				return true;
+				return false;
 			endif;
 		else:
 			return false;

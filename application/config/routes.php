@@ -289,8 +289,6 @@ $route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_inter
 $route['admin-panel/messages/tickets/hide-closed-tickets']				= "admin_interface/hide_closed_tickets";
 
 $route['admin-panel/actions/statistic']									= "admin_interface/actions_statistic";
-$route['admin-panel/actions/alert-debet']								= "admin_interface/alert_debet";
-$route['admin-panel/actions/locked-debet']								= "admin_interface/locked_debet";
 
 $route['admin-panel/actions/control/sendind-registering-info']			= "admin_interface/sendind_registering_info";
 $route['admin-panel/actions/partner-program']							= "admin_interface/partner_program";
@@ -305,4 +303,4 @@ $route['import-deliver-work'] 		= "cron_interface/import_deliver_work";
 $route['debitors-auto-blocking'] 	= "cron_interface/debitors_auto_blocking";
 $route['users-sending-mail'] 		= "cron_interface/users_sending_mail";
 $route['users-checkout'] 			= "cron_interface/users_checkout";
-$route['users-checkout-now'] 			= "cron_interface/users_checkout_now";
+$route['users-checkout-now'] 		= "cron_interface/users_checkout_now";

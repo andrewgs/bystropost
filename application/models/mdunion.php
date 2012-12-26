@@ -482,7 +482,7 @@ class Mdunion extends CI_Model{
 
 	function read_debetors_list($data,$znak){
 		
-		$query = "SELECT users.id AS uid, users.fio AS ufio, users.login AS ulogin FROM delivesworks INNER JOIN users ON delivesworks.webmaster=users.id WHERE delivesworks.date $znak '$data' AND status = 0 AND users.antihold = 0 GROUP BY users.id";
+		$query = "SELECT users.id AS uid, users.fio AS ufio, users.login AS ulogin FROM delivesworks INNER JOIN users ON delivesworks.webmaster=users.id WHERE delivesworks.date $znak '$data' AND delivesworks.status = 0 AND users.antihold = 0 GROUP BY users.id";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

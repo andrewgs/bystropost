@@ -84,8 +84,11 @@
 							<?php if($userinfo['uid']!=$users[$i]['id']):?>
 								<div id="params<?=$i;?>" style="display:none" data-uid="<?=$users[$i]['id'];?>" data-fio="<?=$users[$i]['fio'];?>" data-login="<?=$users[$i]['login'];?>" data-balance="<?=$users[$i]['balance'];?>" data-wmid="<?=$users[$i]['wmid'];?>" data-utype="<?=$users[$i]['type'];?>" data-manager="<?=$users[$i]['manager'];?>"></div>
 								<a class="btn btn-success editUser" data-param="<?=$i;?>" data-toggle="modal" href="#editUser" title="Редактировать пользователя"><nobr>&nbsp;&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<div style="height:3px;"> </div>
 								<a class="btn btn-info mailUser" data-param="<?=$i;?>" data-toggle="modal" href="#mailUser" title="Отправить письмо пользователю"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<div style="height:3px;"> </div>
 								<a class="btn btn-danger deleteUser" data-param="<?=$i;?>" data-toggle="modal" href="#deleteUser" title="Удалить пользователя"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+								<div style="height:3px;"> </div>
 							<?php endif;?>
 							<?php if($users[$i]['locked']):?>
 								<i class="icon-lock" title="Профиль заблокирован" style="float:left; margin-top:10px;"></i>
