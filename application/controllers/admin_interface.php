@@ -2010,6 +2010,8 @@ class Admin_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['webmasters']);$i++):
 			$pagevar['webmasters'][$i]['platforms'] = $this->mdplatforms->count_records_by_webmaster($pagevar['webmasters'][$i]['id']);
+			$pagevar['webmasters'][$i]['works']	= $this->mddelivesworks->count_records_by_webmaster_status($pagevar['webmasters'][$i]['id'],1);
+			$pagevar['webmasters'][$i]['summa'] = $this->mddelivesworks->sum_records_by_webmaster_status($pagevar['webmasters'][$i]['id'],1);
 			$pagevar['webmasters'][$i]['summa'] = round($pagevar['webmasters'][$i]['summa']*0.05,2);
 		endfor;
 		$pagevar['cntunit']['users'] = $this->mdusers->count_all();

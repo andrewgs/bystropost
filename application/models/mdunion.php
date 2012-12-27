@@ -724,7 +724,8 @@ class Mdunion extends CI_Model{
 	
 	function partners_list($partner){
 	
-		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users INNER JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY users.id ORDER BY users.login";
+//		$query = "SELECT users.id,users.login,0 AS platforms,COUNT(delivesworks.id) AS works,SUM(delivesworks.wprice) AS summa FROM users LEFT JOIN delivesworks ON users.id = delivesworks.webmaster WHERE users.partner_id = $partner AND delivesworks.status = 1 GROUP BY users.id ORDER BY users.login";
+		$query = "SELECT users.id,users.login,0 AS platforms,0 AS works,0 AS summa FROM users  WHERE users.partner_id = $partner GROUP BY users.id ORDER BY users.login";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
