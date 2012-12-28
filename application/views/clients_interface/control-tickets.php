@@ -8,41 +8,55 @@
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
-					<li class="active">
-						<?=anchor("webmaster-panel/actions/tickets","Все тикеты");?>
+					<li><a href="" class="none BtnInsertTicket" id="InsertTicket" role="button tooltip" data-original-title="CОЗДАТЬ НОВЫЙ ТИКЕТ">НОВЫЙ ТИКЕТ</a></li>
+					<li style="float:right; margin-top:-5px;">
+						<button type="button" id="ClosedToggle" class="btn btn-info" data-toggle="buttons-checkbox">Показывать закрытые</button>
 					</li>
 				</ul>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
 				<div class="clear"></div>
-				<div style="float: right;margin-bottom:10px;">
-					<input type="checkbox" id="hideClosed" name="hideticket" value="1" title="Скрыть закрытые тикеты" <?=($hidetikets)?'checked="checked"':'';?>/> Скрыть закрытые
+				<div id="frmInsTicket" style="display:none;">
+					<?php $this->load->view('forms/frmaddticket');?>
 				</div>
+				<div class="clear"></div>
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
 						<tr>
-							<th class="w195"><center>Тема тикета</center></th>
-							<th class="w500"><center><nobr>Последний ответ</nobr></center></th>
-							<th class="w50">Управл.</th>
+							<th class="span1">ID</th>
+							<th class="span1">&nbsp;</th>
+							<th class="span7">Тема</th>
+							<th class="span2">Посл. входящее</th>
+							<th class="span1">&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php for($i=0;$i<count($tickets);$i++):?>
-						<tr>
-							<td class="w195 ttpl">
-								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
-								(<b><?=$tickets[$i]['url'];?></b>)<br/><br/>
-								Направлено:<br/>
-								<b><?=$tickets[$i]['position'];?></b><br/>
-								<?=$tickets[$i]['date'];?>
-							</td>
-							<td class="w500"><?=$tickets[$i]['text'];?></td>
-							<td class="w50" style="text-align:center; vertical-align:middle;">
-								<div id="params<?=$i;?>" style="display:none" data-tid="<?=$tickets[$i]['id'];?>"></div>
-								<?=anchor('webmaster-panel/actions/tickets/view-ticket/'.$tickets[$i]['id'],'<nobr>&nbsp;&nbsp;<i class="icon-list-alt icon-white"></i>&nbsp;&nbsp;</nobr>',array('title'=>'Читать тикет','class'=>"btn btn-success"));?>
-								<a class="btn btn-danger deleteTicket" data-param="<?=$i;?>" data-toggle="modal" href="#deleteTicket" title="Удалить тикет"><nobr>&nbsp;&nbsp;<i class="icon-trash icon-white"></i>&nbsp;&nbsp;</nobr></a>
+						<tr <?=($tickets[$i]['status'] && !$hideticket)?'style="display:none;"':''?>>
+							<td><?=$tickets[$i]['id'];?></td>
+							<td>
 							<?php if($tickets[$i]['status']):?>
-								<i class="icon-lock" title="Закрыт" style="margin-top:10px;"></i>
+								<img src="<?=$baseurl;?>images/icons/message_lock.png" alt="" />
+							<?php elseif($tickets[$i]['answer'] && $tickets[$i]['reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_answer.png" alt="" />
+							<?php elseif(!$tickets[$i]['answer'] && !$tickets[$i]['reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_nowiew.png" alt="" />
+							<?php elseif(!$tickets[$i]['answer'] && $tickets[$i]['reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_noanswer.png" alt="" />
+							<?php endif;?>
+								
+							</td>
+							<td>
+								<?=anchor('webmaster-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
+								<br/>Площадка: <strong><?=$tickets[$i]['url'];?></strong><br/>
+								Направлено: <strong><?=$tickets[$i]['position'];?></strong> от <?=$tickets[$i]['date'];?>
+							</td>
+							<td><?=$tickets[$i]['msg_date'];?></td>
+							<td style="text-align:center; vertical-align:middle;">
+								<?=anchor('webmaster-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>"btn btn-success"));?>
+							<?php if($tickets[$i]['status']):?>
+								<div style="height:3px;"> </div>
+								<?=anchor('webmaster-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
 							<?php endif;?>
 							</td>
 						</tr>
@@ -52,75 +66,40 @@
 			<?php if($pages): ?>
 				<?=$pages;?>
 			<?php endif;?>
+				<div class="clear"></div>
+				<?=$this->load->view("alert_messages/icon-help");?>
 			</div>
 			<?php $this->load->view("clients_interface/includes/rightbar");?>
-			<div class="clear"></div>
-			<div class="span12">
-				<div id="frmInsTicket">
-					<?php $this->load->view('forms/frmaddticket');?>
-				</div>
-				<?=anchor($this->uri->uri_string(),'Создать',array('class'=>'btn btn-primary none','id'=>'InsTicket','style'=>'margin-top:20px;'));?>
-			</div>
-		<?php $this->load->view('clients_interface/modal/clients-mail-users');?>
-		<?php $this->load->view('clients_interface/modal/clients-delete-tickets');?>
 		</div>
 	</div>
 	<?php $this->load->view("clients_interface/includes/footer");?>
 	<?php $this->load->view("clients_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var tID = 0;
-			$("td[data-closed='closed']").each(function(e){
-				$(this).addClass('alert alert-info'); $(this).siblings('td').addClass('alert alert-info');
-			});
-			$("#hideClosed").click(function(){
-				var hideTicket = 0;
-				if($(this).attr('checked') == 'checked'){hideTicket = 1;}
+			var platforms = [<?php for($i=0;$i<count($platforms);$i++): ?>'<?=$platforms[$i];?>'<?php if(isset($platforms[$i+1])):?><?=',';?><?php endif;?><?php endfor; ?>];
+		<?php if($hideticket):?>
+			$("#ClosedToggle").button('toggle');
+		<?php endif;?>
+			$("#ClosedToggle").click(function(){
 				$.post("<?=$baseurl;?>webmaster-panel/actions/tickets/hide-closed-tickets",
-					{'hide':hideTicket},function(data){
-						window.location="<?=$baseurl;?>webmaster-panel/actions/tickets"
-				},"json");
+					{'toggle':true},function(data){window.location="<?=$baseurl;?>webmaster-panel/actions/tickets-outbox"},"json");
+			});
+			$("#InsertTicket").tooltip('show');
+			$(".btn-types").eq(0).button('toggle');
+			$(".btn-types").click(function(){$("#TicketType").val($(this).attr("data-value"));})
+			$("#PlatformTicket").typeahead({source: platforms});
+			$(".openTicket").click(function(){if(!confirm("Открыть тикет?")) return false;});
+			
+			$(".SubmitTicket").click(function(event){
+				var parentFrom = $(this).parents("form");
+				var err = false; $(parentFrom).find(".control-group").removeClass('error');$(parentFrom).find(".help-inline").hide();
+				$(parentFrom).find(".input-valid").each(function(i,element){if($(this).val()==''){$(this).parents(".control-group").addClass('error');$(this).attr('data-original-title','Поле не должно быть пустым').tooltip('show');err = true;}});
+				var platform = $.inArray($("#PlatformTicket").val(),platforms);
+				if((platform < 0) && !err){$("#PlatformTicket").attr('data-original-title','Не верно указана площадка').tooltip('show');err = true;}
+				if(err){event.preventDefault();}
 			});
 			
-			$("#InsTicket").click(function(){
-				$(".ErrImg").remove();
-				if($("#frmInsTicket").is(":hidden")){
-					$("#InsTicket").html('Отменить');
-					$("#InsTicket").removeClass('btn-primary');
-					$("#InsTicket").addClass('btn-inverse');
-					$("#frmInsTicket").slideDown("slow");
-					$("html, body").animate({scrollTop:'1500px'},"slow");
-					return false;
-				}else{
-					$("#frmInsTicket").slideUp("slow",function(){
-						$("#frmInsTicket").hide();
-						$("#InsTicket").html('Создать');
-						$("#InsTicket").removeClass('btn-inverse');
-						$("#InsTicket").addClass('btn-primary');
-						$("#TitleTicket").val('');
-						return false;
-					 });
-				}
-			});
-			$("#CreateTicket").click(function(event){
-				var err = false;
-				$("#TitleTicket").css('border-color','#CCCCCC');
-				$(".ErrImg").remove();
-				if($("#TitleTicket").val()==''){
-					$("#CreateTicket").after('<img class="ErrImg" src="<?=$baseurl;?>images/icons/exclamation.png" title="Тема тикета не может быть пуста">');
-					$("#TitleTicket").css('border-color','#ff8080');
-					$("#TitleTicket").focus();
-					event.preventDefault();
-				}
-				if($("#TextTicket").val()==''){
-					$("#CreateTicket").after('<img class="ErrImg" src="<?=$baseurl;?>images/icons/exclamation.png" title="Текс сообщения не может быть пустым">');
-					$("#TextTicket").focus();
-					event.preventDefault();
-				}
-			});
-			$("#InsTicket").click();
-			$(".deleteTicket").click(function(){var Param = $(this).attr('data-param'); tID = $("div[id = params"+Param+"]").attr("data-tid");});
-			$("#DelTicket").click(function(){location.href='<?=$baseurl;?>webmaster-panel/actions/tickets/delete/ticket-id/'+tID;});
+			$(".BtnInsertTicket").click(function(){$("#frmInsTicket").slideToggle(200);$("#InsertTicket").tooltip('destroy'); $(".input-valid").tooltip('destroy');});
 		});
 	</script>
 </body>

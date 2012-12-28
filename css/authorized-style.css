@@ -282,7 +282,7 @@ input.mt7 {margin-top: 7px;}
 .h35{height: 35px;}
 .h35{height: 35px;}
 
-.redactor{width: 95%;}
+.redactor, .write{width: 95%;}
 
 h1.admin-h1 { border-bottom: 4px solid #ccc; color: #4D4D4D; display: block; font: 23px/32px trebuchet ms,arial,sans-serif; margin: 0.35em 0 1em; padding-bottom: 3px; text-transform: none; 
 	font: 27px/32px georgia,serif;
@@ -322,7 +322,7 @@ footer .copy { padding: 0; }
 
 .pagination ul { margin: 0.5em 0 1em; padding: 0; }
 .pagination ul li.inactive, .pagination ul li.inactive:hover {color: #BABABA;cursor: default;}
-.pagination {height: 25px;width: 800px;}
+.pagination {width: 800px; margin-bottom:30px;}
 .pagination ul li {float: left;list-style: none outside none;margin: 0 0.5em 0 0;font-size: 1em;padding: 8px 0;line-height: 1em;}
 .pagination ul li:hover {cursor: pointer;}
 .pagination .curpage{border: 1px solid #999;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 30px;margin-top: 3px;padding: 4px 8px;cursor: default !important;-webkit-box-shadow: 0px 1px 7px #999;-moz-box-shadow: 0px 1px 7px #999;box-shadow: 0px 1px 7px #999;}

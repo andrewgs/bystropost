@@ -34,31 +34,10 @@ function isFindDomenToURL(platform,url){
 	$("#userRegister").click(function(event){
 		var err = false;
 		$(".ErrImg").remove();
-		$("#registration .inpval").each(function(i, element){
-			if($(this).val() == ''){
-				$(this).after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Поле не может быть пустым">');
-				err = true;
-			}
-		});
-		if(!err ){
-			if($("#registration #password").val() != $("#registration #confpass").val()){
-				$("#registration #password").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
-				$("#registration #confpass").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');
-				err = true;
-			}
-		};
-		if(!err){
-			if($("#wmid").val().length != 12){
-				$("#wmid").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Должно быть 12 цифр">');
-				err = true;
-			}
-		};
-		if(err){
-			event.preventDefault();
-		}else if(!isValidEmailAddress($("#email").val())){
-			$("#email").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Не верный адрес E-Mail">');
-			event.preventDefault();
-		};
+		$("#registration .inpval").each(function(i, element){if($(this).val() == ''){$(this).after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Поле не может быть пустым">');err = true;}});
+		if(!err ){if($("#registration #password").val() != $("#registration #confpass").val()){$("#registration #password").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');$("#registration #confpass").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Пароли не совпадают">');err = true;}};
+		if(!err){if($("#wmid").val().length != 12){$("#wmid").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Должно быть 12 цифр">');err = true;}};
+		if(err){event.preventDefault();}else if(!isValidEmailAddress($("#email").val())){$("#email").after('<img class="ErrImg" src="'+baseurl+'/images/icons/exclamation.png" title="Не верный адрес E-Mail">');event.preventDefault();};
 	});
 	
 	$("#btnRestore").click(function(event){

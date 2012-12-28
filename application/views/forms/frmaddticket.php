@@ -1,38 +1,48 @@
-<?=form_open($this->uri->uri_string(),array('id'=>'frmaddticket')); ?>
-
-	<table id="panel_table" cellpadding="0" cellspacing="1" class="sel">
-		<tr>
-			<td class="w100">Тема тикета:</td>
-			<td><input name="title" class="reg-form-input w775" id="TitleTicket" type="text" size="80" value="" placeholder="Введите тему тикета"></td>
-		</tr>
-	<?php if($userinfo['utype'] == 1):?>
-		<tr>
-			<td class="w100"><nobr>Тип тикета</nobr></td>
-			<td style="text-align:left;">
-				<input type="radio" name="type" value="1" checked="ckecked" style="vertical-align:middle;"><span style="margin-left: 10px;">Размещение заявок - вопросы, замечания по выполнению текущих заявок</span><br/>
-				<input type="radio" name="type" value="2" style="vertical-align:middle;"><span style="margin-left: 10px;">Вопросы по работе с <?=$_SERVER['SERVER_NAME'];?>. Связь с администрацией</span>
-			</td>
-		</tr>
-		<tr>
-			<td class="w100">Площадка</td>
-			<td style="text-align:left;">
-				<select class="reg-form-input w400 h30" name="platform" style="vertical-align:top;padding: 5px;">
-				<?php for($i=0;$i<count($platforms);$i++): ?>
-					<option value="<?=$platforms[$i]['id'];?>"><?=$platforms[$i]['url'];?></option>
-				<?php endfor; ?>
-				</select>
-			</td>
-		</tr>
-	<?php endif;?>
-		<tr>
-			<td class="w100"><nobr>Текст сообщения</nobr></td>
-			<td><textarea class="redactor" id="TextTicket" name="text" cols="79" rows="12"></textarea></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>
-				<input name="submit" class="btn btn-primary" id="CreateTicket" style="height: 40px; cursor:pointer;" type="submit" value="Создать">
-			</td>
-		</tr>
-	</table>
+<?=form_open($this->uri->uri_string(),array('id'=>'frmaddticket','class'=>'form-horizontal')); ?>
+	<input type="hidden" id="TicketType" name="type" value="1" />
+	<fieldset>
+		<legend>Воспользуйтесь формой для создания тикета</legend>
+		<ul id="ProductTab" class="nav nav-tabs">
+			<li class="active"><a href="#parameters" data-toggle="tab"><strong>Параметры тикета</strong></a></li>
+			<li><a href="#message" data-toggle="tab"><strong>ТЕКСТ ТИКЕТА</strong></a></li>
+		</ul>
+		<div id="ProductTabContent" class="tab-content">
+			<div class="tab-pane fade in active" id="parameters">
+				<div class="control-group warning">
+					<label for="login" class="control-label">Тема тикета:</label>
+					<div class="controls">
+						<input type="text" name="title" class="span6 input-valid" data-placement="bottom" role="tooltip" data-original-title="Поле не должно быть пустым" value="" autocomplete="off" placeholder="Введите тему тикета">
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="login" class="control-label">Тип тикета:</label>
+					<div class="controls">
+						<div class="btn-group" data-toggle="buttons-radio">
+							<button type="button" class="btn btn-types" data-value="1" autocomplete="off" title="Вопросы, замечания по выполнению текущих заявок">Размещение заявок</button>
+							<button type="button" class="btn btn-types" data-value="2" autocomplete="off" title="Связь с администрацией">Вопрос по работе с сервисом</button>
+						</div>
+					</div>
+				</div>
+				<div class="control-group warning">
+					<label for="login" class="control-label">Площадка:</label>
+					<div class="controls">
+						<input type="text" class="span6 input-valid" name="platform" data-provide="typeahead" id="PlatformTicket" autocomplete="off" data-placement="bottom" role="tooltip" data-original-title="Поле не должно быть пустым" placeholder="Введите URL площадки" >
+						<br/><span class="label label-info">Внимание! Нужно ввести полный URL площадки или "Без площадки".</span>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade in" id="message">
+				<div class="control-group warning">
+					<label for="login" class="control-label">Сообщение:</label>
+					<div class="controls">
+						<textarea class="span7 input-valid" data-provide="typeahead" autocomplete="off" data-placement="bottom" role="tooltip" data-original-title="Поле не должно быть пустым" name="text" rows="6"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<div class="form-actions">
+		<button class="btn btn-primary SubmitTicket" type="submit" name="insticket" value="submit">Создать</button>
+		<input class="btn btn-inverse BtnInsertTicket" type="button" value="Отменить">
+	</div>
 <?= form_close(); ?>

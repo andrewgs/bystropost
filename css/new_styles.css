@@ -25,7 +25,7 @@ html, body { height: 100%; }
 #main-nav li a { display: inline-block; font-family: trebuchet ms,arial,helvetica,sans-serif; font-size: 24px; margin: 0 1.4em 0 0; text-decoration: underline; color: #3995BF; }
 .banner-gogetlinks { position: absolute; right: 19px; top: -22px; }
 
-h1 { color: #107CB1; color: #4d4d4d;  font: 34px Georgia,serif; margin: 0 0 1em; }
+h1 { color: #107CB1; color: #4d4d4d;  font: 32px Georgia,serif; margin: 0 0 0.5em; }
 h1 span { font-size: 48px; /*color: #00b6dc;*/ }
 h2 { color: #444; font: 25px georgia,serif; margin: 1em 0 0.5em; font-style: normal; }
 
@@ -42,6 +42,8 @@ p.small { font-size: 0.8em; color: #999; width: 800px; }
 #registration { background: url("../images/tree.png") no-repeat scroll 500px 50px transparent; margin: 0; width: 100%; font: 13px trebuchet ms, sans-serif; }
 #registration h2 { font: 24px trebuchet ms,arial,sans-serif; margin: 0.25em 0 1em; }
 #registration input, #registration textarea { font: 13px/18px arial,sans-serif; padding: 0.5em; height: 24px; margin-bottom: 15px; color: #333; }
+#registration.main input[type=text], #registration.main input[type=password], #registration.main textarea { width: 280px; }
+#registration.main input[type=checkbox] { margin-right: 10px; position: relative; top: -2px; }
 #registration textarea { height: 100px; }
 #promo { width: 150px !important; } 
 #userRegister {
@@ -94,7 +96,7 @@ h1.whiteline { border: 0 none; }
 #stable .comment-body p a, #stable .comment-body p a:hover { font: 13px/27px trebuchet ms, sans-serif !important; color: #1983C6; }
 .comment-title { color: #999999; display: inline-block; font: bold 13px trebuchet ms,sans-serif; margin-bottom: 0.5em;} 
 #stable .span5 { width: 420px; }
-#content { background-position: 205px top; } 
+#content { background-position: 250px top; } 
 #webmaster { margin-left: 0; }
 #optimizator { margin-right: 25px }
 #footer .webmoney { background: #fff; -webkit-border-radius: 1px; -moz-border-radius: 1px; border-radius: 1px; color: #333; font-size: 11px; left: 9px; padding: 3px 1px 1px; position: absolute; top: -15px; width: 189px; }
@@ -108,14 +110,14 @@ h1.whiteline { border: 0 none; }
 #footer .address { color: #fff; text-align: left; position: absolute; top: 42px; left: 30px; font-size: 13px; }
 
 .user-panel { margin: 1em 0 0; }
-.user-topblock {font-size: 12px; border-bottom: 4px solid #CCCCCC; margin-bottom: 0.5em; padding: 0 0 0.5em;}
-.user-topblock a{font: 12px/21px arial,sans-serif;text-decoration: none;}
-.user-topblock a:hover{font: 12px/21px arial,sans-serif;text-decoration: none;}
+.user-topblock { font-size: 12px; border-bottom: 4px solid #ccc; margin-bottom: 0.5em; padding: 0 0 0.5em; }
+.user-topblock a { font: 12px/21px arial,sans-serif;text-decoration: none; }
+.user-topblock a:hover { font: 12px/21px arial,sans-serif;text-decoration: none; }
 
 /* news block */
 .news-title { margin: 0.5em 0 0.2em; font: 28px/1.4em 'trebuchet ms',arial,helvetica,sans-serif;  }
 .news-date { display: block; color: #999; margin: 0 0 1.5em; }
-.news-image { margin-bottom: 1em; display: block; }
+.news-image { margin-bottom: 24px; display: block; padding: 8px; background: #fff; border: 1px solid #e0e0e0; border-radius: 2px; box-shadow: 0 0 7px #ccc; }
 .news-share { margin: 1em 0 2em; } 
 #news-social-activity { margin-top: 2em; }
 
@@ -124,3 +126,5 @@ h1.whiteline { border: 0 none; }
 .interface h2 a { color: #00b5dc; text-decoration: none; }
 .interface h2::first-letter { color: #1c0e0e; }
 .span3.offset1 img { display: block; background: #fff; padding: 5px; border: 1px solid #ccc; margin: 0.9em 0; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+
+h2 a, h2 a:hover { text-decoration: none; color: #1983c6; font-size: 22px; line-height: 1em; border-top: 1px dotted #ccc; padding-top: 14px; display: block;  }

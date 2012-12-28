@@ -274,7 +274,7 @@ class Mdplatforms extends CI_Model{
 		$this->db->where('url',$url);
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();
-		if(count($data)) return TRUE;
+		if(count($data)) return $data[0]['id'];
 		return FALSE;
 	}
 	
@@ -309,9 +309,10 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
-	function read_records_by_webmaster_nolock($uid){
+	function read_records_by_webmaster_nolock($uid,$fields = '*',$order_field){
 		
-		$this->db->order_by('url','ASC');
+		$this->db->select($fields);
+		$this->db->order_by($order_field,'ASC');
 		$this->db->where('webmaster',$uid);
 		$this->db->or_where('id',0);
 		$this->db->where('locked',0);
@@ -407,7 +408,9 @@ class Mdplatforms extends CI_Model{
 	function ownew_platform($webmaster,$id){
 		
 		$this->db->where('id',$id);
-		$this->db->where('webmaster',$webmaster);
+		if($id > 0):
+			$this->db->where('webmaster',$webmaster);
+		endif;
 		$this->db->where('locked',0);
 		$this->db->where('status',1);
 		$query = $this->db->get('platforms',1);

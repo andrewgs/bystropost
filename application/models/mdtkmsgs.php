@@ -4,6 +4,7 @@ class Mdtkmsgs extends CI_Model{
 
 	var $id			= 0;
 	var $ticket		= 0;
+	var $main		= 0;
 	var $reply		= 0;
 	var $owner 		= 0;
 	var $sender		= 0;
@@ -15,16 +16,15 @@ class Mdtkmsgs extends CI_Model{
 		parent::__construct();
 	}
 	
-	function insert_record($uid,$ticket,$sender,$recipient,$reply,$text){
+	function insert_record($uid,$ticket,$sender,$recipient,$main,$text){
 			
 		$this->ticket 	= $ticket;
 		$this->owner 	= $uid;
+		$this->main 	= $main;
 		$this->sender	= $sender;
 		$this->recipient= $recipient;
-		$this->reply	= $reply;
 		$this->date 	= date("Y-m-d H:i:s");
-		$this->text 	= strip_tags(nl2br($text),'<br><a>');
-		
+		$this->text 	= nl2br($text);
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();
 	}
@@ -48,6 +48,20 @@ class Mdtkmsgs extends CI_Model{
 		$query = $this->db->get('tkmsgs',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0]['text'];
+		return '';
+	}
+	
+	function finish_message_date($owner,$ticket){
+		
+		$this->db->select('date');
+		$this->db->where('owner',$owner);
+		$this->db->where('ticket',$ticket);
+		$this->db->where('sender !=',$owner);
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['date'];
 		return '';
 	}
 	
@@ -189,6 +203,21 @@ class Mdtkmsgs extends CI_Model{
 		$query = $this->db->get('tkmsgs',1);
 		$data = $query->result_array();
 		if(count($data)) return TRUE;
+		return FALSE;
+	}
+
+	function main_message($id = FALSE,$owner = FALSE,$fields = '*'){
+		
+		$this->db->select($fields);
+		if($id):
+			$this->db->where('id',$id);
+		endif;
+		if($owner):
+			$this->db->where('owner',$owner);
+		endif;
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(count($data)) return $data[0];
 		return FALSE;
 	}
 }

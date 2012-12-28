@@ -10,9 +10,6 @@ a {
 	text-decoration: none;
 }
 a:hover {
-	FONT-FAMILY: Verdana;
-	FONT-SIZE: 14px;
-	COLOR: #000040;
 	text-decoration: underline;
 }
 img {
@@ -589,8 +586,6 @@ hr {
 #footer a:hover {
 	MARGIN-LEFT: 30px;
 	COLOR: #000040;
-	FONT-FAMILY: Verdana;
-	FONT-SIZE: 14px;
 	text-decoration: underline;
 }
 

@@ -1,33 +1,14 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Clients_interface extends CI_Controller{
+class Clients_interface extends MY_Controller{
 
 	var $user = array('uid'=>0,'uname'=>'','ulogin'=>'','utype'=>'','lock'=>0,'signdate'=>'','balance'=>0,'locked'=>FALSE,'debetor'=>FALSE,'remote'=>FALSE,'remoteid'=>0,'autopaid'=>FALSE,'antihold'=>FALSE,'partner'=>0);
 	var $loginstatus = array('status'=>FALSE);
-	var $months = array("01"=>"января","02"=>"февраля","03"=>"марта","04"=>"апреля","05"=>"мая","06"=>"июня","07"=>"июля","08"=>"августа","09"=>"сентября","10"=>"октября","11"=>"ноября","12"=>"декабря");
 	
 	function __construct(){
 		
 		parent::__construct();
-		$this->load->model('mdusers');
-		$this->load->model('mdunion');
-		$this->load->model('mdmessages');
-		$this->load->model('mdmarkets');
-		$this->load->model('mdplatforms');
-		$this->load->model('mdmkplatform');
-		$this->load->model('mdtickets');
-		$this->load->model('mdtkmsgs');
-		$this->load->model('mdtypeswork');
-		$this->load->model('mddelivesworks');
-		$this->load->model('mdservices');
-		$this->load->model('mdattachedservices');
-		$this->load->model('mdfillup');
-		$this->load->model('mdwebmarkets');
-		$this->load->model('mdlog');
-		$this->load->model('mdthematic');
-		$this->load->model('mdcms');
-		$this->load->model('mdvaluesrv');
-		
+
 		$cookieuid = $this->session->userdata('logon');
 		if(isset($cookieuid) and !empty($cookieuid)):
 			$this->user['uid'] = $this->session->userdata('userid');
@@ -70,12 +51,6 @@ class Clients_interface extends CI_Controller{
 				redirect('webmaster-panel/actions/profile');
 			endif;
 		endif;
-		/*if($segment != 'markets' && $segment != 'logoff'):
-			if(!count($this->mdwebmarkets->read_records($this->user['remoteid']))):
-				$this->session->set_userdata('markets',FALSE);
-				redirect('webmaster-panel/actions/markets');
-			endif;
-		endif;*/
 	}
 	
 	public function control_panel(){
@@ -1530,7 +1505,6 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-task-in-work",$pagevar);
 	}
 	
-	
 	public function control_pay_all(){
 		
 		$balance = $this->mdusers->read_field($this->user['uid'],'balance');
@@ -2086,7 +2060,120 @@ class Clients_interface extends CI_Controller{
 	
 	/******************************************************** tickets ******************************************************/	
 	
-	public function control_tickets(){
+	public function tickets_outbox(){
+		
+		$from = intval($this->uri->segment(5));
+		$hideticket = FALSE;
+		if($this->session->userdata('hideticket')):
+			$hideticket = TRUE;
+		endif;
+		$pagevar = array(
+					'description'	=> '',
+					'author'		=> '',
+					'title'			=> 'Кабинет Вебмастера | Исходящие тикеты',
+					'baseurl' 		=> base_url(),
+					'loginstatus'	=> $this->loginstatus['status'],
+					'userinfo'		=> $this->user,
+					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from,$hideticket),
+					'platforms'		=> array(),
+					'hideticket'	=> $hideticket,
+					'pages'			=> $this->pagination('webmaster-panel/actions/tickets-outbox',5,$this->mdunion->count_tickets_by_sender($this->user['uid'],$hideticket),5),
+					'cntunit'		=> array(),
+					'msgs'			=> $this->session->userdata('msgs'),
+					'msgr'			=> $this->session->userdata('msgr')
+			);
+		$this->session->unset_userdata('msgs');
+		$this->session->unset_userdata('msgr');
+		$platforms = $this->mdplatforms->read_records_by_webmaster_nolock($this->user['uid'],'id,url','id');
+		for($i=0;$i<count($platforms);$i++):
+			$pagevar['platforms'][] = $platforms[$i]['url'];
+		endfor;
+		if($this->input->post('insticket')):
+			unset($_POST['insticket']);
+			$this->form_validation->set_rules('title',' ','required|trim');
+			$this->form_validation->set_rules('text',' ','required|trim');
+			$this->form_validation->set_rules('type',' ','required|trim');
+			$this->form_validation->set_rules('platform',' ','required|trim');
+			if(!$this->form_validation->run()):
+				$this->session->set_userdata('msgr','Ошибка. Не заполены необходимые поля.');
+				redirect($this->uri->uri_string());
+			else:
+				$ticket_data = $this->input->post();
+				$recipient = 0;
+				$platform_id = $this->mdplatforms->exist_platform($ticket_data['platform']);
+				if($this->mdplatforms->ownew_platform($this->user['uid'],$platform_id)):
+					if($ticket_data['type'] == 1):
+						$manager = $this->webmaster_manager($this->user['uid'],$platform_id);
+						if($manager):
+							$recipient = $manager;
+						endif;
+					endif;
+					if($recipient):
+						ob_start();
+						?><img src="<?=base_url();?>images/logo.png" alt="" />
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
+						<p>У Вас новое сообщение через тикет-систему</p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($recipient);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($ticket_data['text'],$recipient);?><br/></p>
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p><?
+						$mailtext = ob_get_clean();
+						$this->send_mail($this->mdusers->read_field($recipient,'login'),'admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Новый тикет',$mailtext);
+						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
+					endif;
+					$ticket_data['platform'] = $platform_id;
+					$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$ticket_data);
+					if($ticket):
+						$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,1,$ticket_data['text']);
+						$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
+						$this->session->set_userdata('msgs','Тикет успешно создан.');
+						if($recipient):
+							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер создал тикет для менеджера');
+						else:
+							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Новое сообщение через тикет-систему');
+						endif;
+					endif;
+				else:
+					$this->session->set_userdata('msgr','Ошибка. Не верно указана площадка.');
+				endif;
+				redirect($this->uri->uri_string());
+			endif;
+		endif;
+		
+		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
+		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
+		$totalsum = $this->mddelivesworks->calc_webmaster_summ($this->user['uid'],'2012-01-01',0);
+		$pagevar['cntunit']['delivers']['totalsum'] = $totalsum['sum'];
+		$pagevar['cntunit']['platforms'] = $this->mdplatforms->count_records_by_webmaster($this->user['uid']);
+		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
+		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
+		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
+		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		
+		if($pagevar['userinfo']['remote']):
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		else:
+			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['platforms']):
+				$pagevar['userinfo']['locked'] = TRUE;
+			endif;
+		endif;
+		
+		for($i=0;$i<count($pagevar['tickets']);$i++):
+			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
+			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
+			if($pagevar['tickets'][$i]['recipient']):
+				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
+				$pagevar['tickets'][$i]['position'] .='у';
+			else:
+				$pagevar['tickets'][$i]['position'] = 'Администратору';
+			endif;
+		endfor;
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
+		$this->load->view("clients_interface/control-tickets",$pagevar);
+	}
+	
+	public function tickets_inbox(){
 		
 		$from = intval($this->uri->segment(5));
 		$hideticket = FALSE;
@@ -2102,7 +2189,7 @@ class Clients_interface extends CI_Controller{
 					'userinfo'		=> $this->user,
 					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from,$hideticket),
 					'platforms'		=> $this->mdplatforms->read_records_by_webmaster_nolock($this->user['uid']),
-					'hidetikets'	=> $hideticket,
+					'hideticket'	=> $hideticket,
 					'pages'			=> array(),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
@@ -2176,9 +2263,9 @@ class Clients_interface extends CI_Controller{
 			redirect($this->uri->uri_string());
 		endif;
 		
-		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/from/';
+		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets-outbox/from/';
 		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid'],$this->session->userdata('hideticket'));
+		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid'],$hideticket);
 		$config['per_page'] 	= 5;
 		$config['num_links'] 	= 4;
 		$config['first_link']		= 'В начало';
@@ -2225,7 +2312,7 @@ class Clients_interface extends CI_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
-			$pagevar['tickets'][$i]['text'] = $this->mdtkmsgs->read_finish_message($this->user['uid'],$pagevar['tickets'][$i]['id']);
+			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
 			else:
@@ -2235,24 +2322,33 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-tickets",$pagevar);
 	}
 	
-	public function control_view_ticket(){
+	public function read_ticket(){
 		
 		$ticket = $this->uri->segment(5);
-		if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
-			show_404();
-		endif;
 		$from = intval($this->uri->segment(7));
+		$valid_ticket = FALSE;
+		if($this->uri->segment(4) == 'tickets-outbox'):
+			if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
+				$valid_ticket = TRUE;
+			endif;
+		elseif($this->uri->segment(4) == 'tickets-inbox'):
+			if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
+				$valid_ticket = TRUE;
+			endif;
+		endif;
+		if($valid_ticket):
+			redirect('webmaster-panel/actions/control');
+		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Кабинет Вебмастера | Тикеты | Просмотр тикета',
+					'title'			=> 'Кабинет Вебмастера | Тикеты | Чтение тикета',
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
-					'tkmsgs'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
-					'count'			=> $this->mdunion->count_messages_by_ticket($ticket),
-					'pages'			=> array(),
+					'messages'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
+					'pages'			=> $this->pagination("webmaster-panel/actions/tickets-outbox/read-ticket-id/$ticket",5,$this->mdunion->count_messages_by_ticket($ticket),5),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -2289,72 +2385,43 @@ class Clients_interface extends CI_Controller{
 					$this->session->set_userdata('msgs','Сообщение отправлено');
 					if(isset($_POST['sendmail'])):
 						ob_start();
-						?>
-						<img src="<?=base_url();?>images/logo.png" alt="" />
+						?><img src="<?=base_url();?>images/logo.png" alt="" />
 						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
 						<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
 						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
 						<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
-						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
-						<?
+						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p><?
 						$mailtext = ob_get_clean();
-						
-						$this->email->clear(TRUE);
-						$config['smtp_host'] = 'localhost';
-						$config['charset'] = 'utf-8';
-						$config['wordwrap'] = TRUE;
-						$config['mailtype'] = 'html';
-						
-						$this->email->initialize($config);
-						$this->email->to($this->mdusers->read_field($_POST['recipient'],'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
-						$this->email->bcc('');
-						$this->email->subject('Bystropost.ru - Тикеты. Новое сообщение');
-						$this->email->message($mailtext);	
-						$this->email->send();
+						$this->send_mail($this->mdusers->read_field($_POST['recipient']),'admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Тикеты. Новое сообщение',$mailtext);
 					endif;
 				endif;
 			endif;
 			redirect($this->uri->uri_string());
 		endif;
-		for($i=0;$i<count($pagevar['tkmsgs']);$i++):
-			$pagevar['tkmsgs'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tkmsgs'][$i]['date']);
-			if($pagevar['tkmsgs'][$i]['sender'] != $this->user['uid']):
-				if($pagevar['tkmsgs'][$i]['sender']):
-					$pagevar['tkmsgs'][$i]['position'] = $this->mdusers->read_field($pagevar['tkmsgs'][$i]['sender'],'position');
-				else:
-					$pagevar['tkmsgs'][$i]['position'] = '<b>Администратор</b>';
-				endif;
+		
+		for($i=0;$i<count($pagevar['messages']);$i++):
+			$pagevar['messages'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['messages'][$i]['date']);
+			if($pagevar['messages'][$i]['sender']):
+				$sender_type = $this->mdusers->read_field($pagevar['messages'][$i]['sender'],'type');
+				switch($sender_type):
+					case 1:
+						$pagevar['messages'][$i]['position'] = 'Вебмастер';
+						$pagevar['messages'][$i]['ico']	= '<img src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
+						break;
+					case 2:
+						$pagevar['messages'][$i]['position'] = 'Менеджер';
+						$pagevar['messages'][$i]['ico']	= '<img src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
+						break;
+				endswitch;
+			else:
+				$pagevar['messages'][$i]['position'] = '<b>Администратор</b>';
+				$pagevar['messages'][$i]['ico']	= '<img class="img-circle" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 			endif;
 		endfor;
-		
-		$this->session->set_userdata('backpath',$this->uri->uri_string());
-		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets/view-ticket/'.$this->uri->segment(5).'/from/';
-		$config['uri_segment'] 	= 7;
-		$config['total_rows'] 	= $pagevar['count'];
-		$config['per_page'] 	= 5;
-		$config['num_links'] 	= 4;
-		$config['first_link']		= 'В начало';
-		$config['last_link'] 		= 'В конец';
-		$config['next_link'] 		= 'Далее &raquo;';
-		$config['prev_link'] 		= '&laquo; Назад';
-		$config['cur_tag_open']		= '<li class="active"><a href="#">';
-		$config['cur_tag_close'] 	= '</a></li>';
-		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
-		$config['full_tag_close'] 	= '</ul></div>';
-		$config['first_tag_open'] 	= '<li>';
-		$config['first_tag_close'] 	= '</li>';
-		$config['last_tag_open'] 	= '<li>';
-		$config['last_tag_close'] 	= '</li>';
-		$config['next_tag_open'] 	= '<li>';
-		$config['next_tag_close'] 	= '</li>';
-		$config['prev_tag_open'] 	= '<li>';
-		$config['prev_tag_close'] 	= '</li>';
-		$config['num_tag_open'] 	= '<li>';
-		$config['num_tag_close'] 	= '</li>';
-		
-		$this->pagination->initialize($config);
-		$pagevar['pages'] = $this->pagination->create_links();
+		$pagevar['ticket']['message'] = $this->mdtkmsgs->main_message($ticket,$this->user['uid'],'id,text,date');
+		$pagevar['ticket']['message']['date'] = $this->operation_dot_date_on_time($pagevar['ticket']['message']['date']);
+		$pagevar['ticket']['message']['position'] = 'Вебмастер';
+		$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -2379,38 +2446,31 @@ class Clients_interface extends CI_Controller{
 		$this->load->view("clients_interface/control-view-ticket",$pagevar);
 	}
 	
-	public function control_delete_tickets(){
+	public function control_open_ticket(){
 		
-		$ticket = $this->uri->segment(6);
+		$ticket = $this->uri->segment(5);
 		if($ticket):
-			if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
-				redirect($_SERVER['HTTP_REFERER']);
-			endif;
-			$result = $this->mdtickets->delete_record($ticket);
+			$result = $this->mdtickets->open_ticket($ticket,$this->user['uid']);
 			if($result):
-				$this->mdtkmsgs->delete_records($ticket);
-				$this->mdlog->insert_record($this->user['uid'],'Событие №20: Состояние тикета - удален');
-				$this->session->set_userdata('msgs','Тикет удален успешно');
-			else:
-				$this->session->set_userdata('msgr','Тикет не удален');
+				$this->session->set_userdata('msgs','Тикет открыт');
 			endif;
-			redirect($_SERVER['HTTP_REFERER']);
+			redirect($this->session->userdata('backpath'));
 		else:
-			show_404();
+			redirect('webmaster-panel/actions/control');
 		endif;
 	}
 
 	public function hide_closed_tickets(){
 		
-		$statusval = array('status'=>TRUE,'hideticket'=>FALSE);
-		$hide = trim($this->input->post('hide'));
-		$this->session->set_userdata('hideticket',$statusval['hideticket']);
-		if(!$hide):
+		$statusval = array('status'=>FALSE);
+		$toggle = trim($this->input->post('toggle'));
+		$hideticket = $this->session->userdata('hideticket');
+		if($hideticket):
 			$this->session->set_userdata('hideticket',FALSE);
 		else:
 			$this->session->set_userdata('hideticket',TRUE);
-			$statusval['hideticket'] = TRUE;
 		endif;
+		$statusval['status'] = $this->session->userdata('hideticket');
 		echo json_encode($statusval);
 	}
 	
@@ -2487,105 +2547,7 @@ class Clients_interface extends CI_Controller{
 		redirect('');
 	}
 
-	function viewimage(){
-		
-		$section = $this->uri->segment(1);
-		$id = $this->uri->segment(3);
-		switch ($section):
-			case 'markets'	:	$image = $this->mdmarkets->get_image($id); break;
-			default			: 	show_404();break;
-		endswitch;
-		header('Content-type: image/gif');
-		echo $image;
-	}
-	
 	/******************************************************** functions ******************************************************/	
-	
-	public function fileupload($userfile,$overwrite,$catalog){
-		
-		$config['upload_path'] 		= './documents/'.$catalog.'/';
-		$config['allowed_types'] 	= 'doc|docx|xls|xlsx|txt|pdf';
-		$config['remove_spaces'] 	= TRUE;
-		$config['overwrite'] 		= $overwrite;
-		
-		$this->load->library('upload',$config);
-		
-		if(!$this->upload->do_upload($userfile)):
-			return FALSE;
-		endif;
-		
-		return TRUE;
-	}
-
-	public function filedelete($file){
-		
-		if(is_file($file)):
-			@unlink($file);
-			return TRUE;
-		else:
-			return FALSE;
-		endif;
-	}
-
-	public function operation_date($field){
-			
-		$list = preg_split("/-/",$field);
-		$nmonth = $this->months[$list[1]];
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
-		$replacement = "\$5 $nmonth \$1 г."; 
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function operation_date_on_time($field){
-			
-		$list = preg_split("/-/",$field);
-		$nmonth = $this->months[$list[1]];
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
-		$replacement = "\$5 $nmonth \$1 г. \$6:\$8"; 
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function split_date($field){
-			
-		$list = preg_split("/-/",$field);
-		$nmonth = $this->months[$list[1]];
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
-		$replacement = "\$5 $nmonth \$1"; 
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function split_dot_date($field){
-			
-		$list = preg_split("/\./",$field);
-		$nmonth = $this->months[$list[1]];
-		$pattern = "/(\d+)(\.)(\w+)(\.)(\d+)/i";
-		$replacement = "\$1 $nmonth \$5"; 
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function operation_dot_date($field){
-			
-		$list = preg_split("/-/",$field);
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+)/i";
-		$replacement = "\$5.$3.\$1"; 
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function operation_dot_date_on_time($field){
-			
-		$list = preg_split("/-/",$field);
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
-		$replacement = "\$5.$3.\$1 \$6:\$8";
-		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function operation_dot_date_no_time($field){
-			
-		$list = preg_split("/-/",$field);
-		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
-		$replacement = "\$5.$3.\$1";
-		return preg_replace($pattern, $replacement,$field);
-	}
 	
 	private function load_platforms($platforms,$market){
 		
@@ -2721,214 +2683,6 @@ class Clients_interface extends CI_Controller{
 		else:
 			$cntpl['alien'] = 0;
 			return $cntpl;
-		endif;
-	}
-	
-	public function link_cabinet($uid,$plus=0){
-		
-		$utype = $this->mdusers->read_field($uid,'type');
-		switch ($utype+$plus):
-			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
-			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
-			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
-			case 4 : return 'личный кабинет';break;
-			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
-			case 0 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
-			
-			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 14 : return 'личный кабинет';break;
-			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
-			case 10 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
-			
-			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
-			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 24 : return 'личный кабинет';break;
-			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			case 20 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			default: return 'личный кабинет';break;
-		endswitch;
-	}
-	
-	public function sub_mailtext($text,$uid){
-		
-		$text = strip_tags($text);
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
-			$pos = mb_strrpos($text,' ',0,'UTF-8');
-			$text = mb_substr($text,0,$pos,'UTF-8');
-			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
-		endif;
-		return $text;
-	}
-
-	public function sub_tickettext($text,$uid){
-		
-		$text = strip_tags($text);
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
-			$pos = mb_strrpos($text,' ',0,'UTF-8');
-			$text = mb_substr($text,0,$pos,'UTF-8');
-			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
-		endif;
-		return $text;
-	}
-	
-	/******************************************************** Расчет парсинга ПР и ТИЦ ******************************************************/
-	
-	public function StrToNum($Str, $Check, $Magic){
-	
-		$Int32Unit = 4294967296;
-		$length = strlen($Str);
-		for($i=0;$i<$length;$i++):
-			$Check *= $Magic;
-			if($Check>=$Int32Unit):
-				$Check = ($Check-$Int32Unit*(int)($Check/$Int32Unit));
-				$Check = ($Check<-2147483648)?($Check+$Int32Unit):$Check;
-			endif;
-			$Check += ord($Str{$i});
-		endfor;
-		return $Check;
-	}
-
-	public function HashURL($String){
-	
-		$Check1 = $this->StrToNum($String,0x1505,0x21);
-		$Check2 = $this->StrToNum($String,0,0x1003F);
-		$Check1 >>= 2;
-		$Check1 = (($Check1 >> 4) & 0x3FFFFC0 ) | ($Check1 & 0x3F);
-		$Check1 = (($Check1 >> 4) & 0x3FFC00 ) | ($Check1 & 0x3FF);
-		$Check1 = (($Check1 >> 4) & 0x3C000 ) | ($Check1 & 0x3FFF);
-		
-		$T1 = (((($Check1 & 0x3C0) << 4) | ($Check1 & 0x3C)) <<2 ) | ($Check2 &	0xF0F );
-		$T2 = (((($Check1 & 0xFFFFC000) << 4) | ($Check1 & 0x3C00)) << 0xA) | ($Check2 & 0xF0F0000 );
-		return ($T1 | $T2);
-	}
-	
-	public function CheckHash($Hashnum){
-	
-		$CheckByte = 0;
-		$Flag = 0;
-		$HashStr = sprintf('%u', $Hashnum) ;
-		$length = strlen($HashStr);
-		for($i=$length-1;$i>=0;$i--):
-			$Re = $HashStr{$i};
-			if(1===($Flag % 2)):
-				$Re += $Re;
-				$Re = (int)($Re/10)+($Re%10);
-			endif;
-			$CheckByte += $Re;
-			$Flag++;
-		endfor;
-		$CheckByte %= 10;
-		if(0!== $CheckByte):
-			$CheckByte = 10 - $CheckByte;
-			if(1===($Flag%2)):
-				if(1===($CheckByte%2)):
-					$CheckByte += 9;
-				endif;
-				$CheckByte >>= 1;
-			endif;
-		endif;
-		
-		return '7'.$CheckByte.$HashStr;
-	}
-	
-	public function getpagerank($url){
-		
-		$pagerank = 0;
-		$fp = fsockopen("toolbarqueries.google.com", 80, $errno, $errstr, 30);
-		if(!$fp):
-			
-		else:
-			$out = "GET /tbr?features=Rank&sourceid=navclient-ff&client=navclient-auto-ff&ch=" .$this->CheckHash($this->HashURL($url)) . "&q=info:" . $url . " HTTP/1.1\r\n";
-			$out .= "Host: toolbarqueries.google.com\r\n";
-			$out .= "User-Agent: Mozilla/4.0 (compatible; GoogleToolbar 2.0.114-big;
-			Windows XP 5.1)\r\n";
-			$out .= "Connection: Close\r\n\r\n";
-			fwrite($fp, $out);
-			while(!feof($fp)):
-				$data = fgets($fp, 128);
-				$pos = strpos($data, "Rank_");
-				if($pos === false):
-					
-				else:
-					$pagerank = substr($data, $pos + 9);
-				endif;
-			endwhile;
-			fclose($fp);
-		endif;
-		return $pagerank;
-	}
-	
-	public function getTIC($url){
-		
-		$str = @file("http://bar-navig.yandex.ru/u?ver=2&show=32&url=".$url);
-		if($str == false):
-			$cy = false;
-		else:
-			$result = preg_match("/value=\"(.\d*)\"/", join("",$str), $tic);
-			if($result<1):
-				$cy = 0;
-			else:
-				$cy = $tic[1];
-			endif;
-		endif;
-		return $cy;
-	}
-	
-	public function SQL_TIC_PR($tic,$platform){
-	
-		$addwtic = $addmtic = 0;
-		if($tic >= 30):
-			$addwtic = 5;$addmtic = 2;
-		endif;
-		$sqlquery = "UPDATE platforms SET ";
-		$works = $this->mdtypeswork->read_records();
-		$arr_works = $this->mdtypeswork->read_ticpr_records();
-		foreach($arr_works AS $key=>$value):
-			$tic_array[] = $value['id'];
-		endforeach;
-		for($j=0;$j<count($works);$j++):
-			$wadd = $madd = 0;
-			if(in_array($works[$j]['id'],$tic_array)):
-				$wadd = $addwtic;
-				$madd = $addmtic;
-			endif;
-			$sqlquery .= 'c'.$works[$j]['nickname'].' = '.($works[$j]['wprice']+$wadd).', m'.$works[$j]['nickname'].' = '.($works[$j]['mprice']+$madd);
-			if(isset($works[$j+1])):
-				$sqlquery .= ', ';
-			endif;
-		endfor;
-		$sqlquery .= ' WHERE platforms.id = '.$platform;
-		return $sqlquery;
-	}
-	
-	/******************************************************** Функции API *******************************************************************/
-	
-	private function API($action,$param){
-	
-		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>$action,'param'=>$param);
-		$ch = curl_init();
-		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
-		curl_setopt($ch,CURLOPT_POST,1);
-		curl_setopt($ch,CURLOPT_POSTFIELDS,$post);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-		curl_setopt($ch,CURLOPT_TIMEOUT,30);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		 if($data!==false):
-			$res = json_decode($data, true);
-			if((int)$res['status']==1):
-				return $res['data'];
-			else:
-				return $res;
-//				return FALSE;
-			endif;
-		else:
-			return FALSE;
 		endif;
 	}
 }

@@ -8,57 +8,69 @@
 		<div class="row">
 			<div class="span9">
 				<ul class="breadcrumb">
-					<li>
-						<?=anchor("webmaster-panel/actions/tickets","Все сообщения");?><span class="divider">/</span>
-					</li>
-					<li class="active">
-						<?=anchor($this->uri->uri_string(),$ticket['title'].' (<b>'.$ticket['url'].'</b>)');?>
+					<li><?=anchor($this->session->userdata('backpath'),'<i class="icon-arrow-left"></i>&nbsp;&nbsp;Вернуться к списку');?></li>
+					<li class="pull-right muted">
+						Тикет №<?=$this->uri->segment(5);?>. Статус <span class="label label-success" style="font-size: 13px;"><?=($ticket['status'])?'ЗАКРЫТ':'ОТКРЫТ'?></span>
 					</li>
 				</ul>
+				<div class="clear"></div>
 				<?php $this->load->view("alert_messages/alert-error");?>
 				<?php $this->load->view("alert_messages/alert-success");?>
-				<table class="table table-bordered" style="width: 700px;">
-					<thead>
-						<tr>
-							<th class="w50"><center>№ ID</center></th>
-							<th class="w100"><center>Дата:</center></th>
-							<th class="w500"><center><nobr>Текст сообщения</nobr></center></th>
-							<th class="w50">Управл.</th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php for($i=0;$i<count($tkmsgs);$i++):?>
-						<tr>
-							<td style="text-align:center; vertical-align:middle;"><?=$tkmsgs[$i]['id'];?></td>
-							<td style="text-align:center; vertical-align:middle;">
-								<nobr><?=$tkmsgs[$i]['date'];?></nobr>
-							<?php if(isset($tkmsgs[$i]['position'])):?>
-								<br/><nobr><?=$tkmsgs[$i]['position'];?></nobr><br/>
-							<?php endif;?>
-							</td>
-						<?php if($tkmsgs[$i]['sender'] != $userinfo['uid']):?>
-							<td style="text-align:left;" data-incoming="incoming">
-						<?php else:?>
-							<td style="text-align:left;">
-						<?php endif;?>
-							<?php if($tkmsgs[$i]['reply']):?>
-								<strong>Ответ на сообщение: №<?=$tkmsgs[$i]['reply'];?></strong><br/>
-								<?=$tkmsgs[$i]['text'];?>
-								<div class="clear"></div>
-							<?php else:?>
-								<?=$tkmsgs[$i]['text'];?>
-							<?php endif;?>
-							</td>	
-							<td class="w50" style="text-align:center; vertical-align:middle;">
-							<?php if(($tkmsgs[$i]['sender'] != $userinfo['uid']) && !$ticket['status']):?>
-								<div id="params<?=$i;?>" style="display:none" data-mid="<?=$tkmsgs[$i]['id'];?>" data-uid="<?=$tkmsgs[$i]['sender'];?>" data-position="<?=$tkmsgs[$i]['position'];?>"></div>
-								<a class="btn btn-info mailTicket" data-param="<?=$i;?>" data-toggle="modal" href="#mailTicket" title="Ответить"><nobr>&nbsp;&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;&nbsp;</nobr></a>
-							<?php endif;?>
-							</td>
-						</tr>
-					<?php endfor; ?>
-					</tbody>
-				</table>
+				<div class="well">
+					<div class="page-header">
+						<span class="label label-info pull-right">Дата создания: <?=$ticket['message']['date'];?></span>
+						<h2 style="margin:0;">Тема: <small><?=$ticket['title'];?></small></h2>
+					</div>
+					<div class="pull-left" title="<?=$ticket['message']['position'];?>">
+						<?=$ticket['message']['ico'];?>
+					</div>
+					<div class="media-body">
+						<div class="media">
+							<?=$ticket['message']['text'];?>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<ul id="ActionTab" class="nav nav-tabs">
+					<li class="active"><a href="#all-messages" data-toggle="tab"><strong>Сообщения</strong></a></li>
+					<li><a href="#new-message" data-toggle="tab"><strong>Добавить сообщение</strong></a></li>
+				</ul>
+				<div id="ActinTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="all-messages">
+						<div class="media">
+					<?php if($messages):?>
+						<?php for($i=0;$i<count($messages);$i++):?>
+							<div class="well">
+								<div class="page-header">
+									<span class="label label-info pull-right">Дата создания: <?=$ticket['message']['date'];?></span>
+									<h2 style="margin:0;">Тема: <small><?=$ticket['title'];?></small></h2>
+								</div>
+								<div class="pull-left" title="<?=$ticket['message']['position'];?>">
+									<?=$ticket['message']['ico'];?>
+								</div>
+								<div class="media-body">
+									<div class="media">
+										<?=$ticket['message']['text'];?>
+									</div>
+								</div>
+							</div>
+						<?php endfor;?>
+					<?php else:?>
+							<div class="pull-left" title="<?=$ticket['message']['position'];?>">
+								<img class="img-polaroid" src="<?=$baseurl;?>images/icons/no-mail.png" alt="" />
+							</div>
+							<div class="media-body">
+								<div class="media">
+									<h1>Пока ответов нет</h1>
+								</div>
+							</div>
+					<?php endif;?>
+						</div>
+					</div>
+					<div class="tab-pane fade in" id="new-message">
+						<?php $this->load->view("forms/addtiketmessage")?>
+					</div>
+				</div>
 			<?php if($pages): ?>
 				<?=$pages;?>
 			<?php endif;?>

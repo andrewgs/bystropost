@@ -9,6 +9,8 @@ class Mdtickets extends CI_Model{
 	var $title 		= '';
 	var $date 		= '';
 	var $status 	= 0;
+	var $answer 	= 0;
+	var $reading 	= 0;
 	var $type 		= 1;
 	
 	function __construct(){
@@ -105,6 +107,17 @@ class Mdtickets extends CI_Model{
 	function update_field($id,$field,$value){
 			
 		$this->db->set($field,$value);
+		$this->db->where('id',$id);
+		$this->db->update('tickets');
+		return $this->db->affected_rows();
+	}
+	
+	function open_ticket($id,$sender = FALSE){
+			
+		$this->db->set('status',0);
+		if($sender):
+			$this->db->where('sender',$sender);
+		endif;
 		$this->db->where('id',$id);
 		$this->db->update('tickets');
 		return $this->db->affected_rows();

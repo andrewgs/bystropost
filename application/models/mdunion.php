@@ -186,6 +186,8 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
+	/**************************************************** tickets **************************************************/
+	//исходящие тикеты
 	function read_tickets_by_recipient($recipient,$count,$from,$filter = FALSE){
 		
 		$status = '0,1';
@@ -199,36 +201,36 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_tickets_by_sender($sender,$count,$from,$filter = FALSE){
-		
-		$status = '0,1';
-		if($filter):
-			$status = '0';
-		endif;
-		
-		$query = "SELECT tickets.*,	tkmsgs.text,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
-		$query = $this->db->query($query);
-		$data = $query->result_array();
-		if(count($data)) return $data;
-		return NULL;
-	}
-	
 	function view_ticket_info($id){
 		
-		$query = "SELECT tickets.*,platforms.url FROM tickets INNER JOIN platforms ON tickets.platform=platforms.id WHERE tickets.id = $id LIMIT 1";
+		$query = "SELECT tickets.*,platforms.url FROM tickets INNER JOIN platforms ON tickets.platform = platforms.id WHERE tickets.id = $id LIMIT 1";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0];
 		return NULL;
 	}
 	
+	function read_tickets_by_sender($sender,$count,$from,$filter = FALSE){
+		
+		$status = '0,1';
+		if(!$filter):
+			$status = '0';
+		endif;
+		
+		$query = "SELECT tickets.*,platforms.url FROM tickets LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function count_tickets_by_sender($sender,$filter = FALSE){
 		
 		$status = '0,1';
-		if($filter):
+		if(!$filter):
 			$status = '0';
 		endif;
-		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
+		$query = "SELECT tickets.*,platforms.url FROM tickets LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.sender = $sender AND tickets.status IN ($status) GROUP BY tickets.id";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
@@ -248,36 +250,18 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function read_mails_by_recipient_pages($recipient,$count,$from){
+	function read_messages_by_ticket_pages($ticket,$count,$from){
 		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
+		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket AND tkmsgs.main = 0 ORDER BY tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function count_mails_by_recipient_pages($recipient){
+	function count_messages_by_ticket($ticket){
 		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient";
-		$query = $this->db->query($query);
-		$data = $query->result_array();
-		if(count($data)) return count($data);
-		return NULL;
-	}
-	
-	function read_mails_admin_pages($recipient,$count,$from){
-		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
-		$query = $this->db->query($query);
-		$data = $query->result_array();
-		if(count($data)) return $data;
-		return NULL;
-	}
-	
-	function count_mails_admin_pages($recipient){
-		
-		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0)";
+		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
@@ -312,18 +296,40 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 
-	function read_messages_by_ticket_pages($ticket,$count,$from){
+	
+	
+	/*************************************************** end tickets ***********************************************/
+	
+	function read_mails_by_recipient_pages($recipient,$count,$from){
 		
-		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket ORDER BY tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
 		return NULL;
 	}
 	
-	function count_messages_by_ticket($ticket){
+	function count_mails_by_recipient_pages($recipient){
 		
-		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket";
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE messages.recipient = $recipient";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
+		return NULL;
+	}
+	
+	function read_mails_admin_pages($recipient,$count,$from){
+		
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0) ORDER BY messages.date DESC,messages.id DESC LIMIT $from,$count";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_mails_admin_pages($recipient){
+		
+		$query = "SELECT messages.*, users.id AS uid,users.fio,users.login,users.position FROM messages INNER JOIN users ON messages.sender=users.id WHERE (messages.recipient = $recipient OR messages.recipient = 0)";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
