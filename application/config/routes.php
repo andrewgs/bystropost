@@ -95,12 +95,18 @@ $route['webmaster-panel/actions/tickets-inbox/from']				= "clients_interface/tic
 $route['webmaster-panel/actions/tickets-inbox/from/:num']			= "clients_interface/tickets_inbox";
 
 $route['webmaster-panel/actions/tickets/hide-closed-tickets']		= "clients_interface/hide_closed_tickets";
+$route['webmaster-panel/actions/tickets/rating-ticket-message']		= "clients_interface/rating_ticket_message";
 $route['webmaster-panel/actions/tickets/open-ticket/:num']			= "clients_interface/control_open_ticket";
 
 $route['webmaster-panel/actions/tickets-outbox/read-ticket-id/:num']			= "clients_interface/read_ticket";
 $route['webmaster-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "clients_interface/read_ticket";
 $route['webmaster-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']	= "clients_interface/read_ticket";
-/******************************************************* tickets **********************************************
+
+$route['webmaster-panel/actions/tickets-inbox/read-ticket-id/:num']				= "clients_interface/read_ticket";
+$route['webmaster-panel/actions/tickets-inbox/read-ticket-id/:num/from']		= "clients_interface/read_ticket";
+$route['webmaster-panel/actions/tickets-inbox/read-ticket-id/:num/from/:num']	= "clients_interface/read_ticket";
+
+/******************************************************* mails **********************************************/
 
 $route['webmaster-panel/actions/mails']								= "clients_interface/control_mails";
 $route['webmaster-panel/actions/mails/from']						= "clients_interface/control_mails";

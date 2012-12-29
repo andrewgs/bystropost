@@ -16,8 +16,8 @@
 		<?php endif;?>
 			<!--<li num="forum"><?=anchor('#','Форум');?></li>-->
 			<li class="nav-header">Связь</li>
-			<li num="tickets-outbox"><?=anchor('webmaster-panel/actions/tickets-outbox','Исходящие тикеты ('.$cntunit['tickets'].')');?></li>
-			<li num="tickets-inbox"><?=anchor('webmaster-panel/actions/tickets-inbox','Входящие тикеты ('.$cntunit['tickets'].')');?></li>
+			<li num="tickets-outbox"><?=anchor('webmaster-panel/actions/tickets-outbox','Исходящие тикеты ('.$cntunit['tickets_outbox'].')');?></li>
+			<li num="tickets-inbox"><?=anchor('webmaster-panel/actions/tickets-inbox','Входящие тикеты ('.$cntunit['tickets_inbox'].')');?></li>
 			<li num="mails"><?=anchor('webmaster-panel/actions/mails','Почта (<b>'.$cntunit['mails']['new'].'</b>/'.$cntunit['mails']['total'].')');?></li>
 			<li class="nav-header">Финансы</li>
 			<li num="partner-program"><?=anchor('webmaster-panel/actions/partner-program','Партнерская программа');?></li>

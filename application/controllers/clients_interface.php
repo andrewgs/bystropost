@@ -82,7 +82,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
 				$pagevar['userinfo']['locked'] = TRUE;
@@ -262,7 +263,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -316,7 +318,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -400,7 +403,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -444,7 +448,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -485,7 +490,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -535,7 +541,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -630,7 +637,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if(!$pagevar['cntunit']['platforms']):
 			redirect('webmaster-panel/actions/control');
@@ -736,7 +744,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if(!$pagevar['cntunit']['platforms']):
 			redirect('webmaster-panel/actions/control');
@@ -920,7 +929,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
 			redirect('webmaster-panel/actions/control');
@@ -1162,7 +1172,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = 0;
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -1453,7 +1464,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		for($i=0;$i<count($pagevar['delivers']);$i++):
 			if(mb_strlen($pagevar['delivers'][$i]['ulrlink'],'UTF-8') > 15):
@@ -1501,7 +1513,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		$this->load->view("clients_interface/control-task-in-work",$pagevar);
 	}
 	
@@ -1699,7 +1712,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(!$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -2094,6 +2108,7 @@ class Clients_interface extends MY_Controller{
 			$this->form_validation->set_rules('text',' ','required|trim');
 			$this->form_validation->set_rules('type',' ','required|trim');
 			$this->form_validation->set_rules('platform',' ','required|trim');
+			$this->form_validation->set_rules('importance',' ','required|trim');
 			if(!$this->form_validation->run()):
 				$this->session->set_userdata('msgr','Ошибка. Не заполены необходимые поля.');
 				redirect($this->uri->uri_string());
@@ -2147,7 +2162,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -2161,7 +2177,7 @@ class Clients_interface extends MY_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
-			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
+			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->out_finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
 				$pagevar['tickets'][$i]['position'] .='у';
@@ -2170,7 +2186,7 @@ class Clients_interface extends MY_Controller{
 			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
-		$this->load->view("clients_interface/control-tickets",$pagevar);
+		$this->load->view("clients_interface/tickets/outbox",$pagevar);
 	}
 	
 	public function tickets_inbox(){
@@ -2183,112 +2199,19 @@ class Clients_interface extends MY_Controller{
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
-					'title'			=> 'Кабинет Вебмастера | Тикеты',
+					'title'			=> 'Кабинет Вебмастера | Входящие тикеты',
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_sender($this->user['uid'],5,$from,$hideticket),
-					'platforms'		=> $this->mdplatforms->read_records_by_webmaster_nolock($this->user['uid']),
+					'tickets'		=> $this->mdunion->read_tickets_by_recipient($this->user['uid'],5,$from,$hideticket),
 					'hideticket'	=> $hideticket,
-					'pages'			=> array(),
+					'pages'			=> $this->pagination('webmaster-panel/actions/tickets-inbox',5,$this->mdunion->count_tickets_by_recipient($this->user['uid'],$hideticket),5),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
 			);
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
-		
-		if($this->input->post('submit')):
-			$_POST['submit'] = NULL;
-			$this->form_validation->set_rules('title',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','required|trim');
-			$this->form_validation->set_rules('type',' ','required|trim');
-			$this->form_validation->set_rules('platform',' ','required|trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Ошибка при сохранении. Не заполены необходимые поля.');
-				redirect($this->uri->uri_string());
-			else:
-				$recipient = 0;
-				if($_POST['type'] == 1):
-					$man = 0;
-					$man = $this->mdplatforms->read_field($_POST['platform'],'manager');
-					if(!$man):
-						$man = $this->mdusers->read_field($this->user['uid'],'manager');
-					endif;
-					$recipient = $man;
-					if(!$recipient):
-						$recipient = 0;
-					else:
-						ob_start();
-						?>
-						<img src="<?=base_url();?>images/logo.png" alt="" />
-						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
-						<p>У Вас новое сообщение через тикет-систему</p>
-						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($recipient);?> и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$this->sub_tickettext($_POST['text'],$recipient);?><br/></p>
-						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p>
-						<?
-						$mailtext = ob_get_clean();
-						
-						$this->email->clear(TRUE);
-						$config['smtp_host'] = 'localhost';
-						$config['charset'] = 'utf-8';
-						$config['wordwrap'] = TRUE;
-						$config['mailtype'] = 'html';
-						
-						$this->email->initialize($config);
-						$this->email->to($this->mdusers->read_field($recipient,'login'));
-						$this->email->from('admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления');
-						$this->email->bcc('');
-						$this->email->subject('Bystropost.ru - Новый тикет');
-						$this->email->message($mailtext);
-						$this->email->send();
-						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
-					endif;
-				endif;
-				$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$_POST);
-				if($ticket):
-					$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$_POST['text']);
-					$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
-					$this->session->set_userdata('msgs','Тикет успешно создан.');
-					if($_POST['type'] == 1):
-						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер создал тикет для менеджера');
-					else:
-						$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Новое сообщение через тикет-систему');
-					endif;
-				else:
-					$this->session->set_userdata('msgr','Тикет не создан.');
-				endif;
-			endif;
-			redirect($this->uri->uri_string());
-		endif;
-		
-		$config['base_url'] 	= $pagevar['baseurl'].'webmaster-panel/actions/tickets-outbox/from/';
-		$config['uri_segment'] 	= 5;
-		$config['total_rows'] 	= $this->mdunion->count_tickets_by_sender($this->user['uid'],$hideticket);
-		$config['per_page'] 	= 5;
-		$config['num_links'] 	= 4;
-		$config['first_link']		= 'В начало';
-		$config['last_link'] 		= 'В конец';
-		$config['next_link'] 		= 'Далее &raquo;';
-		$config['prev_link'] 		= '&laquo; Назад';
-		$config['cur_tag_open']		= '<li class="active"><a href="#">';
-		$config['cur_tag_close'] 	= '</a></li>';
-		$config['full_tag_open'] 	= '<div class="pagination"><ul>';
-		$config['full_tag_close'] 	= '</ul></div>';
-		$config['first_tag_open'] 	= '<li>';
-		$config['first_tag_close'] 	= '</li>';
-		$config['last_tag_open'] 	= '<li>';
-		$config['last_tag_close'] 	= '</li>';
-		$config['next_tag_open'] 	= '<li>';
-		$config['next_tag_close'] 	= '</li>';
-		$config['prev_tag_open'] 	= '<li>';
-		$config['prev_tag_close'] 	= '</li>';
-		$config['num_tag_open'] 	= '<li>';
-		$config['num_tag_close'] 	= '</li>';
-		
-		$this->pagination->initialize($config);
-		$pagevar['pages'] = $this->pagination->create_links();
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -2298,7 +2221,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -2312,31 +2236,20 @@ class Clients_interface extends MY_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
-			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
-			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
-			else:
-				$pagevar['tickets'][$i]['position'] = 'Администратору';
+			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
+			if($pagevar['tickets'][$i]['sender']):
+				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
 			endif;
 		endfor;
-		$this->load->view("clients_interface/control-tickets",$pagevar);
+		$this->session->set_userdata('backpath',$this->uri->uri_string());
+		$this->load->view("clients_interface/tickets/inbox",$pagevar);
 	}
 	
 	public function read_ticket(){
 		
 		$ticket = $this->uri->segment(5);
 		$from = intval($this->uri->segment(7));
-		$valid_ticket = FALSE;
-		if($this->uri->segment(4) == 'tickets-outbox'):
-			if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
-				$valid_ticket = TRUE;
-			endif;
-		elseif($this->uri->segment(4) == 'tickets-inbox'):
-			if(!$this->mdtickets->ownew_ticket($this->user['uid'],$ticket)):
-				$valid_ticket = TRUE;
-			endif;
-		endif;
-		if($valid_ticket):
+		if(!$this->mdtickets->ownew_ticket_or_recipient($this->user['uid'],$ticket)):
 			redirect('webmaster-panel/actions/control');
 		endif;
 		$pagevar = array(
@@ -2347,8 +2260,8 @@ class Clients_interface extends MY_Controller{
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
-					'messages'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,5,$from),
-					'pages'			=> $this->pagination("webmaster-panel/actions/tickets-outbox/read-ticket-id/$ticket",5,$this->mdunion->count_messages_by_ticket($ticket),5),
+					'messages'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,7,$from),
+					'pages'			=> $this->pagination("webmaster-panel/actions/tickets-outbox/read-ticket-id/$ticket",7,$this->mdunion->count_messages_by_ticket($ticket),7),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -2356,43 +2269,42 @@ class Clients_interface extends MY_Controller{
 		$this->session->unset_userdata('msgs');
 		$this->session->unset_userdata('msgr');
 		
-		if($this->input->post('mtsubmit')):
-			$_POST['mtsubmit'] = NULL;
-			$this->form_validation->set_rules('mid',' ','required|trim');
-			$this->form_validation->set_rules('recipient',' ','required|trim');
-			$this->form_validation->set_rules('text',' ','trim');
-			if(!$this->form_validation->run()):
-				$this->session->set_userdata('msgr','Не заполены необходимые поля.');
-				redirect($this->uri->uri_string());
+		if($this->input->post('insticket')):
+			unset($_POST['insticket']);
+			
+			$message = $this->input->post();
+			$msgs = '';
+			if(isset($message['closeticket'])):
+				$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
+				$msgs .= '<span class="label label-important">Тикет закрыт</span><br/>';
+				$this->mdtickets->update_field($ticket,'status',1);
 			else:
-				$tuser = $this->mdusers->read_field($_POST['recipient'],'type');
-				switch($tuser):
-					case 1 : redirect($this->uri->uri_string()); break;
-					case 2 : TRUE; break;
-					case 3 : redirect($this->uri->uri_string()); break;
-					case 4 : redirect($this->uri->uri_string()); break;
-					case 5 : $_POST['recipient'] = 0; break;
-				endswitch;
-				if(isset($_POST['closeticket'])):
-					$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
-					$_POST['text'] .= ' Cпасибо за информацию. Тикет закрыт.';
-					$this->mdtickets->update_field($ticket,'status',1);
+				if(empty($message['text'])):
+					$this->session->set_userdata('msgr','Ошибка. Не заполены необходимые поля.');
+					redirect($this->uri->uri_string());
 				endif;
-				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$_POST['recipient'],$_POST['mid'],$_POST['text']);
+			endif;
+			if(!empty($message['text'])):
+				if($this->uri->segment(3) == 'tickets-outbox'):
+					$recipient = $pagevar['ticket']['recipient'];
+				elseif($this->uri->segment(3) == 'tickets-inbox'):
+					$recipient = $pagevar['ticket']['sender'];
+				endif;
+				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$message['text']);
 				if($result):
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
-					$this->mdmessages->send_noreply_message($this->user['uid'],$_POST['recipient'],2,2,'Новое сообщение через тикет-систему');
-					$this->session->set_userdata('msgs','Сообщение отправлено');
-					if(isset($_POST['sendmail'])):
+					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
+					$this->session->set_userdata('msgs',$msgs.' Сообщение отправлено');
+					if(isset($message['sendmail'])):
 						ob_start();
 						?><img src="<?=base_url();?>images/logo.png" alt="" />
-						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($_POST['recipient'],'fio');?></strong></p>
+						<p><strong>Здравствуйте, <?=$this->mdusers->read_field($recipient,'fio');?></strong></p>
 						<p>Получен ответ на Ваше сообщение. в тикет-системе.</p>
-						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($_POST['recipient']);?> и перейдите в раздел "Тикеты"</p>
-						<p><br/><?=$this->sub_tickettext($_POST['text'],$_POST['recipient']);?><br/></p>
+						<p>Что бы прочитать его войдите в <?=$this->link_cabinet($recipient);?> и перейдите в раздел "Тикеты"</p>
+						<p><br/><?=$this->sub_tickettext($message['text'],$recipient);?><br/></p>
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p><?
 						$mailtext = ob_get_clean();
-						$this->send_mail($this->mdusers->read_field($_POST['recipient']),'admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Тикеты. Новое сообщение',$mailtext);
+						$this->send_mail($this->mdusers->read_field($recipient,'login'),'admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Тикеты. Новое сообщение',$mailtext);
 					endif;
 				endif;
 			endif;
@@ -2402,15 +2314,16 @@ class Clients_interface extends MY_Controller{
 		for($i=0;$i<count($pagevar['messages']);$i++):
 			$pagevar['messages'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['messages'][$i]['date']);
 			if($pagevar['messages'][$i]['sender']):
+				$pagevar['messages'][$i]['email'] = $this->mdusers->read_field($pagevar['messages'][$i]['sender'],'login');
 				$sender_type = $this->mdusers->read_field($pagevar['messages'][$i]['sender'],'type');
 				switch($sender_type):
 					case 1:
 						$pagevar['messages'][$i]['position'] = 'Вебмастер';
-						$pagevar['messages'][$i]['ico']	= '<img src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
+						$pagevar['messages'][$i]['ico']	= '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
 						break;
 					case 2:
 						$pagevar['messages'][$i]['position'] = 'Менеджер';
-						$pagevar['messages'][$i]['ico']	= '<img src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
+						$pagevar['messages'][$i]['ico']	= '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
 						break;
 				endswitch;
 			else:
@@ -2418,10 +2331,23 @@ class Clients_interface extends MY_Controller{
 				$pagevar['messages'][$i]['ico']	= '<img class="img-circle" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 			endif;
 		endfor;
-		$pagevar['ticket']['message'] = $this->mdtkmsgs->main_message($ticket,$this->user['uid'],'id,text,date');
+		$pagevar['ticket']['message'] = $this->mdtkmsgs->main_message($ticket,FALSE,'id,text,date');
 		$pagevar['ticket']['message']['date'] = $this->operation_dot_date_on_time($pagevar['ticket']['message']['date']);
-		$pagevar['ticket']['message']['position'] = 'Вебмастер';
-		$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
+		$pagevar['ticket']['message']['position'] = $this->mdusers->read_field($pagevar['ticket']['sender'],'position');
+		$sender_type = $this->mdusers->read_field($pagevar['ticket']['sender'],'type');
+		if($sender_type == 1):
+			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
+		elseif($sender_type == 2):
+			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
+		elseif($sender_type == 5):
+			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
+		endif;
+		
+		if(!$pagevar['ticket']['reading']):
+			if($this->user['uid'] == $pagevar['ticket']['recipient']):
+				$this->mdtickets->update_field($pagevar['ticket']['id'],'reading',1);
+			endif;
+		endif;
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);
 		$pagevar['cntunit']['delivers']['total'] = $this->mddelivesworks->count_records_by_webmaster($this->user['uid']);
@@ -2431,7 +2357,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):
@@ -2442,15 +2369,14 @@ class Clients_interface extends MY_Controller{
 				$pagevar['userinfo']['locked'] = TRUE;
 			endif;
 		endif;
-		
-		$this->load->view("clients_interface/control-view-ticket",$pagevar);
+		$this->load->view("clients_interface/tickets/messages",$pagevar);
 	}
 	
 	public function control_open_ticket(){
 		
 		$ticket = $this->uri->segment(5);
 		if($ticket):
-			$result = $this->mdtickets->open_ticket($ticket,$this->user['uid']);
+			$result = $this->mdtickets->open_ticket($ticket);
 			if($result):
 				$this->session->set_userdata('msgs','Тикет открыт');
 			endif;
@@ -2471,6 +2397,22 @@ class Clients_interface extends MY_Controller{
 			$this->session->set_userdata('hideticket',TRUE);
 		endif;
 		$statusval['status'] = $this->session->userdata('hideticket');
+		echo json_encode($statusval);
+	}
+	
+	public function rating_ticket_message(){
+		
+		$statusval = array('status'=>FALSE,'newlink'=>'');
+		$message_id = trim($this->input->post('message_id'));
+		$message_rating = trim($this->input->post('message_rating'));
+		if(!$message_id || !$message_rating):
+			show_404();
+		endif;
+		$result = $this->mdtkmsgs->update_field($message_id,'rating',$message_rating);
+		if($result):
+			$statusval['status'] = TRUE;
+			$statusval['newlink'] = ($message_rating > 3)?'<span class="label label-success">Ваша оценка: '.$message_rating.'</span>':'<span class="label label-inverse">Ваша оценка: '.$message_rating.'</span>';
+		endif;
 		echo json_encode($statusval);
 	}
 	
@@ -2513,7 +2455,8 @@ class Clients_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdwebmarkets->count_records($this->user['remoteid']);
 		$pagevar['cntunit']['mails']['new'] = $this->mdmessages->count_records_by_recipient_new($this->user['uid'],$this->user['utype']);
 		$pagevar['cntunit']['mails']['total'] = $this->mdmessages->count_records_by_recipient($this->user['uid'],$this->user['utype'],$this->user['signdate']);
-		$pagevar['cntunit']['tickets'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender($this->user['uid']);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient($this->user['uid']);
 		
 		if($pagevar['userinfo']['remote']):
 			if(intval($pagevar['userinfo']['balance'])<500 && !$pagevar['cntunit']['markets'] && !$pagevar['cntunit']['platforms']):

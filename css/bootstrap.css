@@ -5052,7 +5052,7 @@ span.info {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
      -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	margin: 5px 10px 5px 5px;
+	margin: 5px 10px 0 5px;
 }
 
 .img-circle {

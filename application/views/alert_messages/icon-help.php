@@ -1,6 +1,6 @@
 <div class="">
 	<table class="table table-condensed">
-		<caption>Условные обозначения</caption
+		<caption>Условные обозначения</caption>
 		<tr class="info">
 			<td class="span1"><img src="<?=$baseurl;?>images/icons/message_answer.png" alt="" /></td>
 			<td class="span11"> &mdash; В тикете появился новый ответ</td>

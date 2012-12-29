@@ -343,6 +343,17 @@ a.attrPlatform:hover{
 	font: 12px/21px arial,sans-serif;text-decoration: none;
 }
 
-#ShowHistoryList{
-	margin-bottom: 15px;
-}
+#ShowHistoryList{margin-bottom: 15px;}
+.nomargin{margin: 0;}
+
+.message_rating{list-style:none; margin-top:20px;}
+.message_rating li{display:inline; float:left; }
+.message_rating li a{
+	display:block;
+	width:14px;
+	height:14px;
+	margin:2px;
+	border:1px solid #888;
+	background-color:#999;
+	text-indent:-9999px;
+	border-radius: 500px 500px 500px 500px;

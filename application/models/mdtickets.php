@@ -11,6 +11,7 @@ class Mdtickets extends CI_Model{
 	var $status 	= 0;
 	var $answer 	= 0;
 	var $reading 	= 0;
+	var $importance = 0;
 	var $type 		= 1;
 	
 	function __construct(){
@@ -23,6 +24,7 @@ class Mdtickets extends CI_Model{
 		$this->recipient	= $recipient;
 		$this->platform		= $data['platform'];
 		$this->title		= $data['title'];
+		$this->importance	= $data['importance'];
 		$this->date 		= date("Y-m-d H:i:s");
 		$this->type 		= $data['type'];
 		

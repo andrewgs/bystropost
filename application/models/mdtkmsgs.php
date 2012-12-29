@@ -10,7 +10,8 @@ class Mdtkmsgs extends CI_Model{
 	var $sender		= 0;
 	var $recipient 	= 0;
 	var $date 		= '';
-	var $text 		= 1;
+	var $text 		= '';
+	var $rating		= 0;
 	
 	function __construct(){
 		parent::__construct();
@@ -51,12 +52,26 @@ class Mdtkmsgs extends CI_Model{
 		return '';
 	}
 	
-	function finish_message_date($owner,$ticket){
+	function out_finish_message_date($owner,$ticket){
 		
 		$this->db->select('date');
 		$this->db->where('owner',$owner);
 		$this->db->where('ticket',$ticket);
 		$this->db->where('sender !=',$owner);
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['date'];
+		return '';
+	}
+	
+	function in_finish_message_date($recipient,$ticket){
+		
+		$this->db->select('date');
+		$this->db->where('recipient',$recipient);
+		$this->db->where('ticket',$ticket);
+		$this->db->where('sender !=',$recipient);
 		$this->db->order_by('date','DESC');
 		$this->db->order_by('id','DESC');
 		$query = $this->db->get('tkmsgs',1);
@@ -206,18 +221,27 @@ class Mdtkmsgs extends CI_Model{
 		return FALSE;
 	}
 
-	function main_message($id = FALSE,$owner = FALSE,$fields = '*'){
+	function main_message($ticket = FALSE,$owner = FALSE,$fields = '*'){
 		
 		$this->db->select($fields);
-		if($id):
-			$this->db->where('id',$id);
+		if($ticket):
+			$this->db->where('ticket',$ticket);
 		endif;
 		if($owner):
 			$this->db->where('owner',$owner);
 		endif;
+		$this->db->where('main',1);
 		$query = $this->db->get('tkmsgs',1);
 		$data = $query->result_array();
 		if(count($data)) return $data[0];
 		return FALSE;
+	}
+
+	function update_field($id,$field,$value){
+			
+		$this->db->set($field,$value);
+		$this->db->where('id',$id);
+		$this->db->update('tkmsgs');
+		return $this->db->affected_rows();
 	}
 }

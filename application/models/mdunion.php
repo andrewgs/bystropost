@@ -191,7 +191,7 @@ class Mdunion extends CI_Model{
 	function read_tickets_by_recipient($recipient,$count,$from,$filter = FALSE){
 		
 		$status = '0,1';
-		if($filter):
+		if(!$filter):
 			$status = '0';
 		endif;
 		$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
@@ -240,7 +240,7 @@ class Mdunion extends CI_Model{
 	function count_tickets_by_recipient($recipient,$filter = FALSE){
 		
 		$status = '0,1';
-		if($filter):
+		if(!$filter):
 			$status = '0';
 		endif;
 		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
@@ -261,7 +261,7 @@ class Mdunion extends CI_Model{
 	
 	function count_messages_by_ticket($ticket){
 		
-		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket";
+		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs INNER JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket AND tkmsgs.main = 0";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return count($data);
