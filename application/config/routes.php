@@ -86,17 +86,17 @@ $route['webmaster-panel/actions/platforms/edit-platform/:num']		= "clients_inter
 
 /******************************************************* tickets ***********************************************/
 
-$route['webmaster-panel/actions/tickets-outbox']					= "clients_interface/tickets_outbox";
-$route['webmaster-panel/actions/tickets-outbox/from']				= "clients_interface/tickets_outbox";
-$route['webmaster-panel/actions/tickets-outbox/from/:num']			= "clients_interface/tickets_outbox";
+$route['webmaster-panel/actions/tickets-outbox']								= "clients_interface/tickets_outbox";
+$route['webmaster-panel/actions/tickets-outbox/from']							= "clients_interface/tickets_outbox";
+$route['webmaster-panel/actions/tickets-outbox/from/:num']						= "clients_interface/tickets_outbox";
 
-$route['webmaster-panel/actions/tickets-inbox']						= "clients_interface/tickets_inbox";
-$route['webmaster-panel/actions/tickets-inbox/from']				= "clients_interface/tickets_inbox";
-$route['webmaster-panel/actions/tickets-inbox/from/:num']			= "clients_interface/tickets_inbox";
+$route['webmaster-panel/actions/tickets-inbox']									= "clients_interface/tickets_inbox";
+$route['webmaster-panel/actions/tickets-inbox/from']							= "clients_interface/tickets_inbox";
+$route['webmaster-panel/actions/tickets-inbox/from/:num']						= "clients_interface/tickets_inbox";
 
-$route['webmaster-panel/actions/tickets/hide-closed-tickets']		= "clients_interface/hide_closed_tickets";
-$route['webmaster-panel/actions/tickets/rating-ticket-message']		= "clients_interface/rating_ticket_message";
-$route['webmaster-panel/actions/tickets/open-ticket/:num']			= "clients_interface/control_open_ticket";
+$route['webmaster-panel/actions/tickets/hide-closed-tickets']					= "clients_interface/hide_closed_tickets";
+$route['webmaster-panel/actions/tickets/rating-ticket-message']					= "clients_interface/rating_ticket_message";
+$route['webmaster-panel/actions/tickets/open-ticket/:num']						= "clients_interface/control_open_ticket";
 
 $route['webmaster-panel/actions/tickets-outbox/read-ticket-id/:num']			= "clients_interface/read_ticket";
 $route['webmaster-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "clients_interface/read_ticket";
@@ -148,25 +148,25 @@ $route['manager-panel/actions/platforms/remote_deliver_work']	= "managers_interf
 
 $route['manager-panel/actions/platforms/search']				= "managers_interface/search_platforms";
 
-$route['manager-panel/actions/tickets/inbox']					= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/inbox/from']				= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/inbox/from/:num']			= "managers_interface/control_tickets_inbox";
-$route['manager-panel/actions/tickets/outbox']					= "managers_interface/control_tickets_outbox";
-$route['manager-panel/actions/tickets/outbox/from']				= "managers_interface/control_tickets_outbox";
-$route['manager-panel/actions/tickets/outbox/from/:num']		= "managers_interface/control_tickets_outbox";
+$route['manager-panel/actions/tickets-inbox']					= "managers_interface/tickets_inbox";
+$route['manager-panel/actions/tickets-inbox/from']				= "managers_interface/tickets_inbox";
+$route['manager-panel/actions/tickets-inbox/from/:num']			= "managers_interface/tickets_inbox";
+
+$route['manager-panel/actions/tickets-outbox']					= "managers_interface/tickets_outbox";
+$route['manager-panel/actions/tickets-outbox/from']				= "managers_interface/tickets_outbox";
+$route['manager-panel/actions/tickets-outbox/from/:num']		= "managers_interface/tickets_outbox";
 
 $route['manager-panel/actions/tickets/inbox/view-ticket/:num']				= "managers_interface/control_view_inbox_ticket";
 $route['manager-panel/actions/tickets/inbox/view-ticket/:num/from']			= "managers_interface/control_view_inbox_ticket";
 $route['manager-panel/actions/tickets/inbox/view-ticket/:num/from/:num']	= "managers_interface/control_view_inbox_ticket";
 
-$route['manager-panel/actions/tickets/outbox/view-ticket/:num']				= "managers_interface/control_view_outbox_ticket";
-$route['manager-panel/actions/tickets/outbox/view-ticket/:num/from']		= "managers_interface/control_view_outbox_ticket";
-$route['manager-panel/actions/tickets/outbox/view-ticket/:num/from/:num']	= "managers_interface/control_view_outbox_ticket";
+$route['manager-panel/actions/tickets-outbox/read-ticket-id/:num']			= "managers_interface/read_ticket";
+$route['manager-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "managers_interface/read_ticket";
+$route['manager-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']= "managers_interface/read_ticket";
 
 $route['manager-panel/actions/tickets/delete/ticket-id/:num']				= "managers_interface/control_delete_tickets";
 
-$route['manager-panel/actions/tickets/inbox/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
-$route['manager-panel/actions/tickets/outbox/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
+$route['manager-panel/actions/tickets/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
 
 $route['manager-panel/actions/mails']								= "managers_interface/control_mails";
 $route['manager-panel/actions/mails/from']							= "managers_interface/control_mails";

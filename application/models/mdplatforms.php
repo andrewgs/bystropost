@@ -333,6 +333,19 @@ class Mdplatforms extends CI_Model{
 		return 0;
 	}
 	
+	function platforms_by_manager($uid,$fields = '*',$order_field){
+		
+		$this->db->select($fields);
+		$this->db->where('manager',$uid);
+		$this->db->where('status',1);
+		$this->db->where('locked',0);
+		$this->db->order_by($order_field,'ASC');
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_records_by_manager($uid,$count,$from){
 		
 		$this->db->order_by('date');

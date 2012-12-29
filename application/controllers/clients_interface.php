@@ -2292,6 +2292,15 @@ class Clients_interface extends MY_Controller{
 				endif;
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$message['text']);
 				if($result):
+					if($this->user['uid'] == $pagevar['ticket']['recipient']):
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_answer',1);
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_answer',0);
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_reading',0);
+					elseif($this->user['uid'] == $pagevar['ticket']['sender']):
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_answer',1);
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_answer',0);
+						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_reading',0);
+					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
 					$this->session->set_userdata('msgs',$msgs.' Сообщение отправлено');
@@ -2342,11 +2351,10 @@ class Clients_interface extends MY_Controller{
 		elseif($sender_type == 5):
 			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 		endif;
-		
-		if(!$pagevar['ticket']['reading']):
-			if($this->user['uid'] == $pagevar['ticket']['recipient']):
-				$this->mdtickets->update_field($pagevar['ticket']['id'],'reading',1);
-			endif;
+		if($this->user['uid'] == $pagevar['ticket']['recipient']):
+			$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_reading',1);
+		elseif($this->user['uid'] == $pagevar['ticket']['sender']):
+			$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_reading',1);
 		endif;
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);

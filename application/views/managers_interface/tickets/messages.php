@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view("clients_interface/includes/head");?>
-
+<?php $this->load->view('managers_interface/includes/head');?>
 <body>
-	<?php $this->load->view("clients_interface/includes/header");?>
+	<?php $this->load->view('managers_interface/includes/header');?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
@@ -14,8 +13,8 @@
 					</li>
 				</ul>
 				<div class="clear"></div>
-				<?php $this->load->view("alert_messages/alert-error");?>
-				<?php $this->load->view("alert_messages/alert-success");?>
+				<?php $this->load->view('alert_messages/alert-error');?>
+				<?php $this->load->view('alert_messages/alert-success');?>
 				<div class="well">
 					<div class="page-header">
 						<h2 style="margin:0;">Тема: <small><?=$ticket['title'];?></small></h2>
@@ -69,23 +68,6 @@
 								<?=$messages[$i]['text'];?>
 							</div>
 						</div>
-						<div style="height:15px;"></div>
-						<div class="pull-right rating_block">
-					<?php if($this->user['uid'] == $messages[$i]['recipient']):?>
-						<?php if(!$messages[$i]['rating']):?>
-							<div class="badge pull-right">оцените ответ</div>
-							<ul class="message_rating" data-message="<?=$messages[$i]['id'];?>">
-								<li><a title="Очень плохо: оценка 1" href="#">1</a></li>
-								<li><a title="Плохо: оценка 2" href="#">2</a></li>
-								<li><a title="Средненько: оценка 3" href="#">3</a></li>
-								<li><a title="Хорошо: оценка 4" href="#">4</a></li>
-								<li><a title="Очень хорошо: оценка 5" href="#">5</a></li>
-							</ul>
-						<?php else:?>
-						<?=($messages[$i]['rating']>3)?'<span class="label label-success">Ваша оценка: '.$messages[$i]['rating'].'</span>':'<span class="label label-inverse">Ваша оценка: '.$messages[$i]['rating'].'</span>'?>
-						<?php endif;?>
-					<?php endif;?>
-						</div>
 						<div class="clear"></div>
 					</div>
 				<?php endfor;?>
@@ -104,23 +86,16 @@
 				</div>
 				<div class="clear"></div>
 				<div style="height:15px;"></div>
-			<?php if($pages): ?>
-				<?=$pages;?>
-			<?php endif;?>
+				<?php if($pages): ?>
+					<?=$pages;?>
+				<?php endif;?>
 			</div>
-			<?php $this->load->view("clients_interface/includes/rightbar");?>
+		<?php $this->load->view('managers_interface/includes/rightbar');?>
 		</div>
 	</div>
-	<?php $this->load->view("clients_interface/includes/footer");?>
-	<?php $this->load->view("clients_interface/includes/scripts");?>
-	<script type="text/javascript" src="<?=$baseurl;?>javascript/rating/jquery.color.js"></script>
+	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var animationTime = 200;
-			var colours = ["bd2c33", "e49420", "ecdb00", "3bad54", "1b7db9"];
-			var colourizeRatings = function(msgRtBlock,nrOfRatings){$(msgRtBlock).find('a').each(function(){if($(this).parent().index() <= nrOfRatings) {
-				$(this).stop().animate({ backgroundColor : "#" + colours[nrOfRatings] } , animationTime);}});
-			};
 			$(".SubmitMessage").click(function(event){
 				if($("#closeTicket:checked").size() == 1) return true;
 				var parentFrom = $(this).parents("form");
@@ -129,19 +104,6 @@
 				if(err){event.preventDefault();}
 			});
 			$(".BtnInsertMessage").click(function(){$("#frmInsMessage").slideToggle(200); $("#InsMeg").button('toggle'); $(".input-valid").tooltip('destroy');});
-			$(".message_rating li a").hover(function(){
-				colourizeRatings($(this).parents("ul"),$(this).parent().index());
-				},function(){$(".message_rating li a").stop().animate({ backgroundColor : "#999" } , animationTime);
-			});
-			$(".message_rating li a").click(function(event){
-				event.preventDefault();
-				var RtBlock = $(this).parents('.rating_block');
-				var msgID = $(this).parents('ul').attr('data-message'); var msgRaring = $(this).parent().index()+1;
-				$.post("<?=$baseurl;?>webmaster-panel/actions/tickets/rating-ticket-message",
-					{'message_id':msgID,'message_rating':msgRaring},
-					function(data){if(data.status){$(RtBlock).html(data.newlink);}},"json");
-			});
-		
 		});
 	</script>
 </body>

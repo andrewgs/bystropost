@@ -22,7 +22,7 @@
 				<label for="login" class="control-label">Площадка:</label>
 				<div class="controls">
 					<input type="text" class="span6 input-valid" name="platform" data-provide="typeahead" id="PlatformTicket" autocomplete="off" data-placement="bottom" role="tooltip" data-original-title="Поле не должно быть пустым" placeholder="Введите URL площадки" >
-					<br/><span class="label label-info">Внимание! Нужно ввести полный URL площадки или "Без площадки".</span>
+					<br/><span class="label label-info">Внимание! Нужно ввести полный URL площадки<?=($this->user['utype'] == 1)?' или "Без площадки"':'';?></span>
 				</div>
 			</div>
 			<div class="control-group">

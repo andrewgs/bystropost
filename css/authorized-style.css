@@ -357,3 +357,9 @@ a.attrPlatform:hover{
 	background-color:#999;
 	text-indent:-9999px;
 	border-radius: 500px 500px 500px 500px;
+}
+.green-block{
+	height:28px;
+	background-color:#dbdbdb;
+	border-radius: 500px 500px 500px 500px;
+}

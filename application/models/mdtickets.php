@@ -9,8 +9,10 @@ class Mdtickets extends CI_Model{
 	var $title 		= '';
 	var $date 		= '';
 	var $status 	= 0;
-	var $answer 	= 0;
-	var $reading 	= 0;
+	var $sender_answer 	= 0;
+	var $recipient_answer 	= 0;
+	var $sender_reading 	= 0;
+	var $recipient_reading 	= 0;
 	var $importance = 0;
 	var $type 		= 1;
 	

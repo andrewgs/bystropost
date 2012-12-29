@@ -32,13 +32,15 @@
 							<td><?=$tickets[$i]['id'];?></td>
 							<td>
 							<?php if($tickets[$i]['status']):?>
-								<img src="<?=$baseurl;?>images/icons/message_lock.png" alt="" />
-							<?php elseif($tickets[$i]['answer'] && $tickets[$i]['reading']):?>
-								<img src="<?=$baseurl;?>images/icons/message_answer.png" alt="" />
-							<?php elseif(!$tickets[$i]['answer'] && !$tickets[$i]['reading']):?>
-								<img src="<?=$baseurl;?>images/icons/message_nowiew.png" alt="" />
-							<?php elseif(!$tickets[$i]['answer'] && $tickets[$i]['reading']):?>
-								<img src="<?=$baseurl;?>images/icons/message_noanswer.png" alt="" />
+								<img src="<?=$baseurl;?>images/icons/message_lock.png" alt="Тикет зарыт" />
+							<?php elseif($tickets[$i]['sender_answer'] && $tickets[$i]['sender_reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_answer.png" alt="В тикете появился новый ответ" />
+							<?php elseif(!$tickets[$i]['recipient_answer'] && !$tickets[$i]['recipient_reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_noview.png" alt="Тикет не просмотрен Вами" />
+							<?php elseif(!$tickets[$i]['recipient_answer'] && $tickets[$i]['recipient_reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_in.png" alt="Тикет просмотрен Вами" />
+							<?php elseif($tickets[$i]['recipient_answer'] && $tickets[$i]['recipient_reading']):?>
+								<img src="<?=$baseurl;?>images/icons/message_out.png" alt="Тикет просмотрен и отвечен Вами" />
 							<?php endif;?>
 							</td>
 							<td>

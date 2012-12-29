@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view("clients_interface/includes/head");?>
+<?php $this->load->view("managers_interface/includes/head");?>
 
 <body>
-	<?php $this->load->view("clients_interface/includes/header");?>
+	<?php $this->load->view("managers_interface/includes/header");?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
@@ -46,7 +46,7 @@
 							<?php endif;?>
 							</td>
 							<td>
-								<?=anchor('webmaster-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
+								<?=anchor('manager-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
 								<br/>Площадка: <strong><?=$tickets[$i]['url'];?></strong><br/>
 								Кому: <strong><?=$tickets[$i]['position'];?></strong> от <?=$tickets[$i]['date'];?>
 								<div class="pull-right muted">
@@ -62,7 +62,7 @@
 							</td>
 							<td><?=$tickets[$i]['msg_date'];?></td>
 							<td style="text-align:center; vertical-align:middle;">
-								<?=anchor('webmaster-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
+								<?=anchor('manager-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
 							<?php if($tickets[$i]['status']):?>
 								<div style="height:3px;"> </div>
 								<?=anchor('webmaster-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
@@ -78,11 +78,11 @@
 				<div class="clear"></div>
 				<?=$this->load->view("alert_messages/icon-help");?>
 			</div>
-			<?php $this->load->view("clients_interface/includes/rightbar");?>
+			<?php $this->load->view("managers_interface/includes/rightbar");?>
 		</div>
 	</div>
-	<?php $this->load->view("clients_interface/includes/footer");?>
-	<?php $this->load->view("clients_interface/includes/scripts");?>
+	<?php $this->load->view("managers_interface/includes/footer");?>
+	<?php $this->load->view("managers_interface/includes/scripts");?>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var platforms = [<?php for($i=0;$i<count($platforms);$i++): ?>'<?=$platforms[$i];?>'<?php if(isset($platforms[$i+1])):?><?=',';?><?php endif;?><?php endfor; ?>];
@@ -90,8 +90,8 @@
 			$("#ClosedToggle").button('toggle');
 		<?php endif;?>
 			$("#ClosedToggle").click(function(){
-				$.post("<?=$baseurl;?>webmaster-panel/actions/tickets/hide-closed-tickets",
-					{'toggle':true},function(data){window.location="<?=$baseurl;?>webmaster-panel/actions/tickets-outbox"},"json");
+				$.post("<?=$baseurl;?>manager-panel/actions/tickets/hide-closed-tickets",
+					{'toggle':true},function(data){window.location="<?=$baseurl;?>manager-panel/actions/tickets-outbox"},"json");
 			});
 			$("#InsertTicket").tooltip('show');
 			$(".btn-importance").eq(0).button('toggle');
