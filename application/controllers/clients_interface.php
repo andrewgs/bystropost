@@ -2133,7 +2133,6 @@ class Clients_interface extends MY_Controller{
 						<br/><br/><p><a href="http://www.bystropost.ru/">С уважением, www.Bystropost.ru</a></p><?
 						$mailtext = ob_get_clean();
 						$this->send_mail($this->mdusers->read_field($recipient,'login'),'admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Новый тикет',$mailtext);
-						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
 					endif;
 					$ticket_data['platform'] = $platform_id;
 					$ticket = $this->mdtickets->insert_record($this->user['uid'],$recipient,$ticket_data);
@@ -2141,6 +2140,7 @@ class Clients_interface extends MY_Controller{
 						$this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,1,$ticket_data['text']);
 						$this->mdlog->insert_record($this->user['uid'],'Событие №17: Состояние тикета - создан');
 						$this->session->set_userdata('msgs','Тикет успешно создан.');
+						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,$this->mdusers->read_field($recipient,'type'),'Новое сообщение через тикет-систему. Тикет ID: '.$ticket);
 						if($recipient):
 							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер создал тикет для менеджера');
 						else:
@@ -2239,6 +2239,8 @@ class Clients_interface extends MY_Controller{
 			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['sender']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
+			else:
+				$pagevar['tickets'][$i]['position'] = 'Администратор';
 			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -2304,7 +2306,7 @@ class Clients_interface extends MY_Controller{
 						$this->mdtickets->update_field($ticket,'recipient_reading',0);
 					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
-					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
+					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,$this->mdusers->read_field($recipient,'type'),'Новое сообщение через тикет-систему. Тикет ID: '.$ticket);
 					$this->session->set_userdata('msgs',$msgs.' Сообщение отправлено');
 					if(isset($message['sendmail'])):
 						ob_start();
@@ -2342,19 +2344,24 @@ class Clients_interface extends MY_Controller{
 						break;
 				endswitch;
 			else:
-				$pagevar['messages'][$i]['position'] = '<b>Администратор</b>';
-				$pagevar['messages'][$i]['ico']	= '<img class="img-circle" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
+				$pagevar['messages'][$i]['email'] = 'Администратор';
+				$pagevar['messages'][$i]['position'] = 'Администратор';
+				$pagevar['messages'][$i]['ico']	= '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 			endif;
 		endfor;
+		
 		$pagevar['ticket']['message'] = $this->mdtkmsgs->main_message($ticket,FALSE,'id,text,date');
 		$pagevar['ticket']['message']['date'] = $this->operation_dot_date_on_time($pagevar['ticket']['message']['date']);
 		$pagevar['ticket']['message']['position'] = $this->mdusers->read_field($pagevar['ticket']['sender'],'position');
-		$sender_type = $this->mdusers->read_field($pagevar['ticket']['sender'],'type');
-		if($sender_type == 1):
-			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
-		elseif($sender_type == 2):
-			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
-		elseif($sender_type == 5):
+		if($pagevar['ticket']['sender']):
+			$sender_type = $this->mdusers->read_field($pagevar['ticket']['sender'],'type');
+			if($sender_type == 1):
+				$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/webmaster.png" alt="" />';
+			elseif($sender_type == 2):
+				$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/manager.png" alt="" />';
+			endif;
+		else:
+			$pagevar['ticket']['message']['position'] = 'Администратор';
 			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 		endif;
 		if($this->user['uid'] == $pagevar['ticket']['recipient']):

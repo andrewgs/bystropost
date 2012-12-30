@@ -11,12 +11,11 @@
 			<li num="ratings"><?=anchor('admin-panel/management/ratings/webmasters','Отзывы о системе');?></li>
 			<li num="events"><?=anchor('admin-panel/actions/events','Новости');?></li>
 			<li num="partner-program"><?=anchor('admin-panel/actions/partner-program','Партнерская программа');?></li>
-			<li class="nav-header">Сообщения</li>
-		<?php if($cntunit['mails']):?>
+			<li class="nav-header">Связь</li>
+			<li num="tickets-outbox"><?=anchor('admin-panel/actions/tickets-outbox','Исходящие тикеты ('.$cntunit['tickets_outbox'].')');?></li>
+			<li num="tickets-inbox"><?=anchor('admin-panel/actions/tickets-inbox','Входящие тикеты ('.$cntunit['tickets_inbox'].')');?></li>
+			
 			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<b>'.$cntunit['mails'].'</b>)');?></li>
-		<?php else:?>
-			<li num="private-messages"><?=anchor('admin-panel/management/mails','Почта');?></li>
-		<?php endif;?>
 			<li num="tickets"><?=anchor('admin-panel/messages/tickets','Тикеты');?></li>
 			<li num="system-message"><?=anchor('admin-panel/messages/system-message','Рассылка');?></li>
 			<li class="nav-header">Действия</li>

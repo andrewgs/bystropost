@@ -13,8 +13,8 @@
 				<label for="login" class="control-label">Тип тикета:</label>
 				<div class="controls">
 					<div class="btn-group" data-toggle="buttons-radio">
-						<button type="button" class="btn btn-types" data-value="1" autocomplete="off" title="Вопросы, замечания по выполнению текущих заявок">Размещение заявок</button>
-						<button type="button" class="btn btn-types" data-value="2" autocomplete="off" title="Связь с администрацией">Вопрос по работе с сервисом</button>
+						<button type="button" class="btn btn-types" data-value="1" autocomplete="off" title="Тикет будет создан для вебмастера">Для вебмастера</button>
+						<button type="button" class="btn btn-types" data-value="2" autocomplete="off" title="Тикет будет создан для менеджера">Для менеджера</button>
 					</div>
 				</div>
 			</div>

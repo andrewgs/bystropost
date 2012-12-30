@@ -23,7 +23,7 @@
 				<div class="alert alert-info" id="msdownloading" style="display:none;">
 					<h3>Ожидайте!</h3>Производится импорт выполненных работ. Это может занять некоторое время...
 				</div>
-				<div style="float:right;">
+				<div class="pull-right">
 				<?=form_open($this->uri->uri_string(),array('class'=>'bs-docs-example form-search')); ?>
 					<input type="hidden" id="srplid" name="srplid" value="">
 					<input type="text" class="span4 search-query" id="srplurl" name="srplurl" value="" autocomplete="off" placeholder="Поиск от 2-х символов">
@@ -45,36 +45,37 @@
 					<tbody>
 					<?php for($i=0;$i<count($platforms);$i++):?>
 						<tr>
-							<td class="w275 ttpl">
+							<td class="span5 ttpl">
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/view-platform/'.$platforms[$i]['id'],$platforms[$i]['url'],array('title'=>'Просмотреть площадку'));?>
 							<?php else:?>
-								<?=anchor($this->uri->uri_string(),$platforms[$i]['url'],array('class'=>'none'));?>
+								<?=anchor($this->uri->uri_string(),$platforms[$i]['url'],array('class'=>'none muted'));?>
 							<?php endif;?>
-							</td>
-							<td class="w85"><center><?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?></center></td>
-						<?php if(!$platforms[$i]['status']):?>
-							<td class="w85" data-status="noactive">
-						<?php elseif($platforms[$i]['locked']):?>
-							<td class="w85" data-locked="locked">
-						<?php else:?>
-							<td class="w85">
-						<?php endif;?>
-								<center><nobr><?=$platforms[$i]['date'];?></nobr></center>
-							</td>
-							<td class="w130" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['status']):?>
 								<i class="icon-exclamation-sign" title="Не активна"></i>
 							<?php endif;?>
 							<?php if($platforms[$i]['locked']):?>
 								<i class="icon-lock" title="Заблокирована"></i>
 							<?php endif;?>
+							</td>
+							<td class="span2"><center><?=$platforms[$i]['tic'];?> / <?=$platforms[$i]['pr'];?></center></td>
+						<?php if(!$platforms[$i]['status']):?>
+							<td class="span2" data-status="noactive">
+						<?php elseif($platforms[$i]['locked']):?>
+							<td class="span2" data-locked="locked">
+						<?php else:?>
+							<td class="span2">
+						<?php endif;?>
+								<center><nobr><?=$platforms[$i]['date'];?></nobr></center>
+							</td>
+							<td class="span2" style="text-align: center; vertical-align: middle;">
 							<?php if(!$platforms[$i]['locked'] && $platforms[$i]['status']):?>
 								<?=anchor('manager-panel/actions/platforms/edit-platform/'.$platforms[$i]['id'],'&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success '));?>
-								<?=anchor('manager-panel/actions/platforms/'.$platforms[$i]['id'].'/deliver-work','&nbsp;<i class="icon-briefcase icon-white"></i>&nbsp',array('class'=>'btn btn-primary DeliverWork','title'=>'Сдать задание'));?>
+							<?php else:?>
+								<?=anchor('','&nbsp;<i class="icon-pencil icon-white"></i>&nbsp;',array('title'=>'Редактировать площадку','class'=>'btn btn-success disabled none'));?>
 							<?php endif;?>
 							<?php if(!$platforms[$i]['locked']):?>
-								<a class="btn btn-info mailUser" data-pid="<?=$platforms[$i]['id'];?>" data-toggle="modal" href="#mailUser" title="Отправить письмо владельцу">&nbsp;<i class="icon-envelope icon-white"></i>&nbsp;</a>
+								<?=anchor('manager-panel/actions/create-ticket/platform-id/'.$platforms[$i]['id'],'&nbsp;<i class="icon-tags icon-white"></i>&nbsp;',array('title'=>'Создать тикет','class'=>'btn btn-info'));?>
 							<?php endif;?>
 							</td>
 						</tr>

@@ -39,6 +39,28 @@ class Mdtkmsgs extends CI_Model{
 		return NULL;
 	}
 	
+	function ticket_messages_pages($ticket,$count,$from){
+		
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$this->db->where('ticket',$ticket);
+		$this->db->limit($count,$from);
+		$query = $this->db->get('tkmsgs');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_ticket_messages($ticket){
+		
+		$this->db->select('COUNT(*) AS cnt');
+		$this->db->where('ticket',$ticket);
+		$query = $this->db->get('tkmsgs');
+		$data = $query->result_array();
+		if(count($data)) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_finish_message($owner,$ticket){
 		
 		$this->db->select('text');

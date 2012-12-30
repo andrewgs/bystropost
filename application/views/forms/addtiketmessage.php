@@ -11,7 +11,7 @@
 				<label class="checkbox span1">
 					<input id="closeTicket" name="closeticket" type="checkbox" autocomplete="off" value="1"><span class="label label-warning">ЗАКРЫТЬ ТИКЕТ</span>
 				</label>
-			<?php if($ticket['recipient']):?>
+			<?php if(($ticket['recipient'] && $ticket['sender']) OR ($this->user['utype'] == 5) ):?>
 				<div class="clear"></div>
 				<label class="checkbox span3">
 					<input id="sendMail" name="sendmail" type="checkbox" autocomplete="off" value="1"><span class="label label-inverse">Уведомить получателя по почте</span>

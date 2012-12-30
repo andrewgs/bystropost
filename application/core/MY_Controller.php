@@ -167,6 +167,14 @@ class MY_Controller extends CI_Controller{
 		$replacement = "\$5.$3.\$1 \$6:\$8";
 		return preg_replace($pattern, $replacement,$field);
 	}
+
+	public function operation_dot_date_not_time($field){
+			
+		$list = preg_split("/-/",$field);
+		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
+		$replacement = "\$5.$3.\$1";
+		return preg_replace($pattern, $replacement,$field);
+	}
 	
 	public function randomPassword($length,$allow="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789"){
 	

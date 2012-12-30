@@ -346,6 +346,19 @@ class Mdplatforms extends CI_Model{
 		return NULL;
 	}
 	
+	function platforms_by_admin($fields = '*',$order_field){
+		
+		$this->db->select($fields);
+		$this->db->where('status',1);
+		$this->db->where('locked',0);
+		$this->db->where('id !=',0);
+		$this->db->order_by($order_field,'ASC');
+		$query = $this->db->get('platforms');
+		$data = $query->result_array();
+		if(count($data)) return $data;
+		return NULL;
+	}
+	
 	function read_records_by_manager($uid,$count,$from){
 		
 		$this->db->order_by('date');
@@ -442,11 +455,11 @@ class Mdplatforms extends CI_Model{
 		return FALSE;
 	}
 
-	function ownew_manager_platform($manager,$id){
+	function ownew_manager_platform($manager,$id,$status = 1){
 		
 		$this->db->where('id',$id);
 		$this->db->where('manager',$manager);
-		$this->db->where('status',1);
+		$this->db->where_in('status',$status);
 		$this->db->where('locked',0);
 		$query = $this->db->get('platforms',1);
 		$data = $query->result_array();

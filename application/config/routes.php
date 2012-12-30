@@ -148,6 +148,8 @@ $route['manager-panel/actions/platforms/remote_deliver_work']	= "managers_interf
 
 $route['manager-panel/actions/platforms/search']				= "managers_interface/search_platforms";
 
+$route['manager-panel/actions/create-ticket/platform-id/:num']	= "managers_interface/ticket_create";
+
 $route['manager-panel/actions/tickets-inbox']					= "managers_interface/tickets_inbox";
 $route['manager-panel/actions/tickets-inbox/from']				= "managers_interface/tickets_inbox";
 $route['manager-panel/actions/tickets-inbox/from/:num']			= "managers_interface/tickets_inbox";
@@ -291,16 +293,32 @@ $route['admin-panel/messages/system-message']			= "admin_interface/messages_syst
 
 $route['admin-panel/messages/private-messages/delete-mail/mailid/:num']	= "admin_interface/messages_private_delete";
 
-$route['admin-panel/messages/tickets']									= "admin_interface/messages_tickets";
-$route['admin-panel/messages/tickets/from']								= "admin_interface/messages_tickets";
-$route['admin-panel/messages/tickets/from/:num']						= "admin_interface/messages_tickets";
+/*************************************************** tickets***********************************************/
 
-$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num']		= "admin_interface/messages_view_ticket";
-$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from']	= "admin_interface/messages_view_ticket";
-$route['admin-panel/messages/tickets/view-ticket/ticket-id/:num/from/:num']	= "admin_interface/messages_view_ticket";
-$route['admin-panel/messages/tickets/delete-mail/mail-id/:num']			= "admin_interface/control_delete_msg_ticket";
+$route['admin-panel/actions/create-ticket/platform-id/:num']	= "admin_interface/ticket_create";
 
-$route['admin-panel/messages/tickets/hide-closed-tickets']				= "admin_interface/hide_closed_tickets";
+$route['admin-panel/actions/tickets-inbox']						= "admin_interface/tickets_inbox";
+$route['admin-panel/actions/tickets-inbox/from']				= "admin_interface/tickets_inbox";
+$route['admin-panel/actions/tickets-inbox/from/:num']			= "admin_interface/tickets_inbox";
+
+$route['admin-panel/actions/tickets-outbox']					= "admin_interface/tickets_outbox";
+$route['admin-panel/actions/tickets-outbox/from']				= "admin_interface/tickets_outbox";
+$route['admin-panel/actions/tickets-outbox/from/:num']			= "admin_interface/tickets_outbox";
+
+$route['admin-panel/actions/tickets-inbox/read-ticket-id/:num']				= "admin_interface/read_ticket";
+$route['admin-panel/actions/tickets-inbox/read-ticket-id/:num/from']		= "admin_interface/read_ticket";
+$route['admin-panel/actions/tickets-inbox/read-ticket-id/:num/from/:num']	= "admin_interface/read_ticket";
+
+$route['admin-panel/actions/tickets-outbox/read-ticket-id/:num']			= "admin_interface/read_ticket";
+$route['admin-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "admin_interface/read_ticket";
+$route['admin-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']= "admin_interface/read_ticket";
+
+$route['admin-panel/actions/tickets/delete/ticket-id/:num']		= "admin_interface/control_delete_tickets";
+
+$route['admin-panel/actions/tickets/open-ticket/:num']			= "admin_interface/control_open_ticket";
+$route['admin-panel/actions/tickets/hide-closed-tickets']		= "admin_interface/hide_closed_tickets";
+
+/*************************************************** end tickets***********************************************/
 
 $route['admin-panel/actions/statistic']									= "admin_interface/actions_statistic";
 

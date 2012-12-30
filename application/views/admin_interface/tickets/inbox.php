@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $this->load->view("managers_interface/includes/head");?>
-
+<?php $this->load->view('admin_interface/includes/head');?>
 <body>
-	<?php $this->load->view("managers_interface/includes/header");?>
+	<?php $this->load->view('admin_interface/includes/header');?>
 	<div class="container">
 		<div class="row">
 			<div class="span9">
@@ -13,8 +12,8 @@
 					</li>
 					<div class="clear"></div>
 				</ul>
-				<?php $this->load->view("alert_messages/alert-error");?>
-				<?php $this->load->view("alert_messages/alert-success");?>
+				<?php $this->load->view('alert_messages/alert-error');?>
+				<?php $this->load->view('alert_messages/alert-success');?>
 				<div class="clear"></div>
 				<table class="table table-bordered" style="width: 700px;">
 					<thead>
@@ -76,11 +75,11 @@
 				<div class="clear"></div>
 				<?=$this->load->view("alert_messages/icon-help");?>
 			</div>
-		<?php $this->load->view("managers_interface/includes/rightbar");?>
+		<?php $this->load->view('admin_interface/includes/rightbar');?>
 		</div>
 	</div>
-	<?php $this->load->view("managers_interface/includes/footer");?>
-	<?php $this->load->view("managers_interface/includes/scripts");?>
+	<?php $this->load->view('admin_interface/includes/footer');?>
+	<?php $this->load->view('admin_interface/includes/scripts');?>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			<?php if($hideticket):?>

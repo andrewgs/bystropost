@@ -121,14 +121,6 @@
 			var colourizeRatings = function(msgRtBlock,nrOfRatings){$(msgRtBlock).find('a').each(function(){if($(this).parent().index() <= nrOfRatings) {
 				$(this).stop().animate({ backgroundColor : "#" + colours[nrOfRatings] } , animationTime);}});
 			};
-			$(".SubmitMessage").click(function(event){
-				if($("#closeTicket:checked").size() == 1) return true;
-				var parentFrom = $(this).parents("form");
-				var err = false; $(parentFrom).find(".control-group").removeClass('error');$(parentFrom).find(".help-inline").hide();
-				$(parentFrom).find(".input-valid").each(function(i,element){if($(this).val()==''){$(this).parents(".control-group").addClass('error');$(this).attr('data-original-title','Поле не должно быть пустым').tooltip('show');err = true;}});
-				if(err){event.preventDefault();}
-			});
-			$(".BtnInsertMessage").click(function(){$("#frmInsMessage").slideToggle(200); $("#InsMeg").button('toggle'); $(".input-valid").tooltip('destroy');});
 			$(".message_rating li a").hover(function(){
 				colourizeRatings($(this).parents("ul"),$(this).parent().index());
 				},function(){$(".message_rating li a").stop().animate({ backgroundColor : "#999" } , animationTime);
@@ -141,7 +133,14 @@
 					{'message_id':msgID,'message_rating':msgRaring},
 					function(data){if(data.status){$(RtBlock).html(data.newlink);}},"json");
 			});
-		
+			$(".SubmitMessage").click(function(event){
+				if($("#closeTicket:checked").size() == 1) return true;
+				var parentFrom = $(this).parents("form");
+				var err = false; $(parentFrom).find(".control-group").removeClass('error');$(parentFrom).find(".help-inline").hide();
+				$(parentFrom).find(".input-valid").each(function(i,element){if($(this).val()==''){$(this).parents(".control-group").addClass('error');$(this).attr('data-original-title','Поле не должно быть пустым').tooltip('show');err = true;}});
+				if(err){event.preventDefault();}
+			});
+			$(".BtnInsertMessage").click(function(){$("#frmInsMessage").slideToggle(200); $("#InsMeg").button('toggle'); $(".input-valid").tooltip('destroy');});
 		});
 	</script>
 </body>
