@@ -311,7 +311,7 @@ $route['admin-panel/actions/tickets-inbox/read-ticket-id/:num/from/:num']	= "adm
 
 $route['admin-panel/actions/tickets-outbox/read-ticket-id/:num']			= "admin_interface/read_ticket";
 $route['admin-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "admin_interface/read_ticket";
-$route['admin-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']= "admin_interface/read_ticket";
+$route['admin-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']	= "admin_interface/read_ticket";
 
 $route['admin-panel/actions/tickets/delete/ticket-id/:num']		= "admin_interface/control_delete_tickets";
 

@@ -43,9 +43,10 @@
 							<?php endif;?>
 							</td>
 							<td>
-								<?=anchor('webmaster-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
+								<?=anchor('admin-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
 								<br/>Площадка: <strong><?=$tickets[$i]['url'];?></strong><br/>
-								От кого: <strong><?=$tickets[$i]['position'];?></strong> от <?=$tickets[$i]['date'];?>
+								От кого: <strong><?=$tickets[$i]['position_send'];?></strong> от <?=$tickets[$i]['date'];?>.
+								Кому: <strong><?=$tickets[$i]['position_to'];?></strong>
 								<div class="pull-right muted">
 									Срочность:
 								<?php if($tickets[$i]['importance'] == 1):?>
@@ -59,10 +60,10 @@
 							</td>
 							<td><?=$tickets[$i]['msg_date'];?></td>
 							<td style="text-align:center; vertical-align:middle;">
-								<?=anchor('manager-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
+								<?=anchor('admin-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
 							<?php if($tickets[$i]['status']):?>
 								<div style="height:3px;"> </div>
-								<?=anchor('manager-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
+								<?=anchor('admin-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
 							<?php endif;?>
 							</td>
 						</tr>
@@ -86,8 +87,8 @@
 			$("#ClosedToggle").button('toggle');
 		<?php endif;?>
 			$("#ClosedToggle").click(function(){
-				$.post("<?=$baseurl;?>manager-panel/actions/tickets/hide-closed-tickets",
-					{'toggle':true},function(data){window.location="<?=$baseurl;?>manager-panel/actions/tickets-inbox"},"json");
+				$.post("<?=$baseurl;?>admin-panel/actions/tickets/hide-closed-tickets",
+					{'toggle':true},function(data){window.location="<?=$baseurl;?>admin-panel/actions/tickets-inbox"},"json");
 			});
 			$(".openTicket").click(function(){if(!confirm("Открыть тикет?")) return false;});
 			$(".BtnInsertTicket").click(function(){$("#frmInsTicket").slideToggle(200);$("#InsertTicket").tooltip('destroy').button('toggle'); $(".input-valid").tooltip('destroy');});

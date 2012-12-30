@@ -1009,7 +1009,7 @@ class Managers_interface extends MY_Controller{
 						$this->session->set_userdata('msgs','Тикет успешно создан.');
 						$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,$this->mdusers->read_field($recipient,'type'),'Новое сообщение через тикет-систему. Тикет ID: '.$ticket);
 						if($recipient):
-							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Вебмастер создал тикет для вебмастера');
+							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Менеджер создал тикет для вебмастера');
 						else:
 							$this->mdmessages->send_noreply_message($this->user['uid'],0,2,5,'Новое сообщение через тикет-систему');
 						endif;

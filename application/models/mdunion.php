@@ -194,10 +194,31 @@ class Mdunion extends CI_Model{
 		if(!$filter):
 			$status = '0';
 		endif;
-		$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		if($recipient):
+			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		else:
+			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		endif;
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;
+		return NULL;
+	}
+	
+	function count_tickets_by_recipient($recipient,$filter = FALSE){
+		
+		$status = '0,1';
+		if(!$filter):
+			$status = '0';
+		endif;
+		if($recipient):
+			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id";
+		else:
+			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.status IN ($status) GROUP BY tickets.id";
+		endif;
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(count($data)) return count($data);
 		return NULL;
 	}
 	
@@ -237,18 +258,6 @@ class Mdunion extends CI_Model{
 		return NULL;
 	}
 	
-	function count_tickets_by_recipient($recipient,$filter = FALSE){
-		
-		$status = '0,1';
-		if(!$filter):
-			$status = '0';
-		endif;
-		$query = "SELECT tickets.*,tkmsgs.text FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC";
-		$query = $this->db->query($query);
-		$data = $query->result_array();
-		if(count($data)) return count($data);
-		return NULL;
-	}
 	
 	function read_messages_by_ticket_pages($ticket,$count,$from){
 		

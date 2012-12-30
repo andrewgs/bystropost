@@ -74,7 +74,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/control-panel",$pagevar);
@@ -133,7 +133,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/control-log",$pagevar);
@@ -214,7 +214,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['user']['signdate'] = $this->operation_date($pagevar['user']['signdate']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/admin-profile",$pagevar);
@@ -277,7 +277,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -329,7 +329,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/control-add-events",$pagevar);
@@ -386,7 +386,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/control-edit-events",$pagevar);
@@ -609,7 +609,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -716,7 +716,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['user']['signdate'] = $this->operation_dot_date_not_time($pagevar['user']['signdate']);
 		$pagevar['user']['oldpassword'] = $this->encrypt->decode($pagevar['user']['cryptpassword']);
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/admin-profile",$pagevar);
@@ -814,7 +814,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/webmaster-webmarkets-list",$pagevar);
@@ -1125,7 +1125,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/webmaster-platforms-list",$pagevar);
@@ -1420,7 +1420,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -1820,7 +1820,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/management-markets",$pagevar);
@@ -1937,7 +1937,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/management-promocode",$pagevar);
@@ -2020,7 +2020,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -2055,7 +2055,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -2164,7 +2164,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/user-finished-jobs",$pagevar);
@@ -2271,7 +2271,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/platform-finished-jobs",$pagevar);
@@ -2452,7 +2452,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/management-types-work",$pagevar);
@@ -2524,7 +2524,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/management-ratings",$pagevar);
@@ -2647,7 +2647,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
@@ -2692,14 +2692,19 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date(0,$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['sender']):
-				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
+				$pagevar['tickets'][$i]['position_send'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
+			endif;
+			if($pagevar['tickets'][$i]['recipient']):
+				$pagevar['tickets'][$i]['position_to'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
+			else:
+				$pagevar['tickets'][$i]['position_to'] = 'Администратор';
 			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -2710,9 +2715,6 @@ class Admin_interface extends MY_Controller{
 		
 		$ticket = $this->uri->segment(5);
 		$from = intval($this->uri->segment(7));
-		if(!$this->mdtickets->ownew_ticket_or_recipient(0,$ticket)):
-			redirect('admin-panel/management/users/webmasters');
-		endif;
 		$pagevar = array(
 					'description'	=> '',
 					'author'		=> '',
@@ -2755,14 +2757,18 @@ class Admin_interface extends MY_Controller{
 				endif;
 				$result = $this->mdtkmsgs->insert_record(0,$ticket,0,$recipient,0,$message['text']);
 				if($result):
-					if(!$pagevar['ticket']['recipient']):
+					if(!$pagevar['ticket']['recipient'] && $pagevar['ticket']['sender']):
 						$this->mdtickets->update_field($ticket,'recipient_answer',1);
 						$this->mdtickets->update_field($ticket,'sender_answer',0);
 						$this->mdtickets->update_field($ticket,'sender_reading',0);
-					elseif(!$pagevar['ticket']['sender']):
+					elseif($pagevar['ticket']['recipient'] && !$pagevar['ticket']['sender']):
 						$this->mdtickets->update_field($ticket,'sender_answer',1);
 						$this->mdtickets->update_field($ticket,'recipient_answer',0);
 						$this->mdtickets->update_field($ticket,'recipient_reading',0);
+					else:
+						$this->mdtickets->update_field($ticket,'recipient_answer',1);
+						$this->mdtickets->update_field($ticket,'sender_answer',0);
+						$this->mdtickets->update_field($ticket,'sender_reading',0);
 					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,$this->mdusers->read_field($recipient,'type'),'Новое сообщение через тикет-систему. Тикет ID: '.$ticket);
@@ -2828,9 +2834,10 @@ class Admin_interface extends MY_Controller{
 			$pagevar['ticket']['message']['position'] = 'Администратор';
 			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 		endif;
-		if($this->user['uid'] == $pagevar['ticket']['recipient']):
+		
+		if(!$pagevar['ticket']['recipient']):
 			$this->mdtickets->update_field($ticket,'recipient_reading',1);
-		elseif($this->user['uid'] == $pagevar['ticket']['sender']):
+		elseif(!$pagevar['ticket']['sender']):
 			$this->mdtickets->update_field($ticket,'sender_reading',1);
 		endif;
 		
@@ -2840,7 +2847,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/tickets/messages",$pagevar);
@@ -2939,7 +2946,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/actions-forum",$pagevar);
@@ -2972,7 +2979,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/actions-balance",$pagevar);
@@ -3046,7 +3053,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/messages-system",$pagevar);
@@ -3149,7 +3156,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['markets'] = $this->mdmarkets->count_all();
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/messages-private",$pagevar);
@@ -3255,7 +3262,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/reading-users-messages",$pagevar);
@@ -3382,7 +3389,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/management-services",$pagevar);
@@ -3540,7 +3547,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['cntunit']['services'] = $this->mdservices->count_all();
 		$pagevar['cntunit']['twork'] = $this->mdtypeswork->count_all();
 		$pagevar['cntunit']['mails'] = $this->mdmessages->count_records_by_admin_new($this->user['uid']);
-		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_records_by_recipient(0);
+		$pagevar['cntunit']['tickets_inbox'] = $this->mdtickets->count_all_records(0);
 		$pagevar['cntunit']['tickets_outbox'] = $this->mdtickets->count_records_by_sender(0);
 		
 		$this->load->view("admin_interface/actions-statistic",$pagevar);

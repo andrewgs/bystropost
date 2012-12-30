@@ -44,7 +44,7 @@
 							<?php endif;?>
 							</td>
 							<td>
-								<?=anchor('webmaster-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
+								<?=anchor('manager-panel/actions/tickets-inbox/read-ticket-id/'.$tickets[$i]['id'],$tickets[$i]['title'],array('title'=>'Читать тикет'));?>
 								<br/>Площадка: <strong><?=$tickets[$i]['url'];?></strong><br/>
 								От кого: <strong><?=$tickets[$i]['position'];?></strong> от <?=$tickets[$i]['date'];?>
 								<div class="pull-right muted">

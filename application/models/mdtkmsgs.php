@@ -91,7 +91,9 @@ class Mdtkmsgs extends CI_Model{
 	function in_finish_message_date($recipient,$ticket){
 		
 		$this->db->select('date');
-		$this->db->where('recipient',$recipient);
+		if($recipient):
+			$this->db->where('recipient',$recipient);
+		endif;
 		$this->db->where('ticket',$ticket);
 		$this->db->where('sender !=',$recipient);
 		$this->db->order_by('date','DESC');

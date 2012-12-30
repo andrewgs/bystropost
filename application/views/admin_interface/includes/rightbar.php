@@ -14,9 +14,7 @@
 			<li class="nav-header">Связь</li>
 			<li num="tickets-outbox"><?=anchor('admin-panel/actions/tickets-outbox','Исходящие тикеты ('.$cntunit['tickets_outbox'].')');?></li>
 			<li num="tickets-inbox"><?=anchor('admin-panel/actions/tickets-inbox','Входящие тикеты ('.$cntunit['tickets_inbox'].')');?></li>
-			
 			<li num="mails"><?=anchor('admin-panel/management/mails','Почта (<b>'.$cntunit['mails'].'</b>)');?></li>
-			<li num="tickets"><?=anchor('admin-panel/messages/tickets','Тикеты');?></li>
 			<li num="system-message"><?=anchor('admin-panel/messages/system-message','Рассылка');?></li>
 			<li class="nav-header">Действия</li>
 			<li num="statistic"><?=anchor('admin-panel/actions/statistic','Статистика долгов');?></li>

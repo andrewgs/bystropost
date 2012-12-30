@@ -71,6 +71,15 @@ class Mdtickets extends CI_Model{
 		return 0;
 	}
 	
+	function count_all_records(){
+		
+		$query = "SELECT COUNT(*) AS cnt FROM tickets";
+		$query = $this->db->query($query);
+		$data = $query->result_array();
+		if(isset($data[0]['cnt'])) return $data[0]['cnt'];
+		return 0;
+	}
+	
 	function read_records_by_recipient($recipient){
 		
 		$this->db->where('recipient',$recipient);
