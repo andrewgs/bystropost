@@ -156,16 +156,17 @@ $route['manager-panel/actions/tickets-outbox']					= "managers_interface/tickets
 $route['manager-panel/actions/tickets-outbox/from']				= "managers_interface/tickets_outbox";
 $route['manager-panel/actions/tickets-outbox/from/:num']		= "managers_interface/tickets_outbox";
 
-$route['manager-panel/actions/tickets/inbox/view-ticket/:num']				= "managers_interface/control_view_inbox_ticket";
-$route['manager-panel/actions/tickets/inbox/view-ticket/:num/from']			= "managers_interface/control_view_inbox_ticket";
-$route['manager-panel/actions/tickets/inbox/view-ticket/:num/from/:num']	= "managers_interface/control_view_inbox_ticket";
+$route['manager-panel/actions/tickets-inbox/read-ticket-id/:num']			= "managers_interface/read_ticket";
+$route['manager-panel/actions/tickets-inbox/read-ticket-id/:num/from']		= "managers_interface/read_ticket";
+$route['manager-panel/actions/tickets-inbox/read-ticket-id/:num/from/:num']	= "managers_interface/read_ticket";
 
 $route['manager-panel/actions/tickets-outbox/read-ticket-id/:num']			= "managers_interface/read_ticket";
 $route['manager-panel/actions/tickets-outbox/read-ticket-id/:num/from']		= "managers_interface/read_ticket";
 $route['manager-panel/actions/tickets-outbox/read-ticket-id/:num/from/:num']= "managers_interface/read_ticket";
 
-$route['manager-panel/actions/tickets/delete/ticket-id/:num']				= "managers_interface/control_delete_tickets";
+$route['manager-panel/actions/tickets/delete/ticket-id/:num']		= "managers_interface/control_delete_tickets";
 
+$route['manager-panel/actions/tickets/open-ticket/:num']			= "managers_interface/control_open_ticket";
 $route['manager-panel/actions/tickets/hide-closed-tickets']			= "managers_interface/hide_closed_tickets";
 
 $route['manager-panel/actions/mails']								= "managers_interface/control_mails";

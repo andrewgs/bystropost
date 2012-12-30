@@ -2177,7 +2177,7 @@ class Clients_interface extends MY_Controller{
 		
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
-			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->out_finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
+			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date($this->user['uid'],$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['recipient']):
 				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
 				$pagevar['tickets'][$i]['position'] .='у';
@@ -2278,6 +2278,8 @@ class Clients_interface extends MY_Controller{
 				$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
 				$msgs .= '<span class="label label-important">Тикет закрыт</span><br/>';
 				$this->mdtickets->update_field($ticket,'status',1);
+				$this->mdtickets->update_field($ticket,'sender_answer',0);
+				$this->mdtickets->update_field($ticket,'recipient_answer',0);
 			else:
 				if(empty($message['text'])):
 					$this->session->set_userdata('msgr','Ошибка. Не заполены необходимые поля.');
@@ -2293,13 +2295,13 @@ class Clients_interface extends MY_Controller{
 				$result = $this->mdtkmsgs->insert_record($this->user['uid'],$ticket,$this->user['uid'],$recipient,0,$message['text']);
 				if($result):
 					if($this->user['uid'] == $pagevar['ticket']['recipient']):
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_answer',1);
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_answer',0);
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_reading',0);
+						$this->mdtickets->update_field($ticket,'recipient_answer',1);
+						$this->mdtickets->update_field($ticket,'sender_answer',0);
+						$this->mdtickets->update_field($ticket,'sender_reading',0);
 					elseif($this->user['uid'] == $pagevar['ticket']['sender']):
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_answer',1);
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_answer',0);
-						$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_reading',0);
+						$this->mdtickets->update_field($ticket,'sender_answer',1);
+						$this->mdtickets->update_field($ticket,'recipient_answer',0);
+						$this->mdtickets->update_field($ticket,'recipient_reading',0);
 					endif;
 					$this->mdlog->insert_record($this->user['uid'],'Событие №19: Состояние тикета - новое сообщение');
 					$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,2,'Новое сообщение через тикет-систему');
@@ -2317,7 +2319,11 @@ class Clients_interface extends MY_Controller{
 					endif;
 				endif;
 			endif;
-			redirect($this->uri->uri_string());
+			if(isset($message['closeticket'])):
+				redirect($this->session->userdata('backpath'));
+			else:
+				redirect($this->uri->uri_string());
+			endif;
 		endif;
 		
 		for($i=0;$i<count($pagevar['messages']);$i++):
@@ -2352,9 +2358,10 @@ class Clients_interface extends MY_Controller{
 			$pagevar['ticket']['message']['ico'] = '<img class="img-polaroid" src="'.$pagevar['baseurl'].'images/icons/administrator.png" alt="" />';
 		endif;
 		if($this->user['uid'] == $pagevar['ticket']['recipient']):
-			$this->mdtickets->update_field($pagevar['ticket']['id'],'recipient_reading',1);
+			$this->mdtickets->update_field($ticket,'recipient_reading',1);
+			$this->mdtickets->update_field($ticket,'sender_answer',0);
 		elseif($this->user['uid'] == $pagevar['ticket']['sender']):
-			$this->mdtickets->update_field($pagevar['ticket']['id'],'sender_reading',1);
+			$this->mdtickets->update_field($ticket,'sender_reading',1);
 		endif;
 		
 		$pagevar['cntunit']['delivers']['notpaid'] = $this->mddelivesworks->count_records_by_webmaster_status($this->user['uid'],0);

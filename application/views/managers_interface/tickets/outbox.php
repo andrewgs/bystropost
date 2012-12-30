@@ -65,7 +65,7 @@
 								<?=anchor('manager-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
 							<?php if($tickets[$i]['status']):?>
 								<div style="height:3px;"> </div>
-								<?=anchor('webmaster-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
+								<?=anchor('manager-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
 							<?php endif;?>
 							</td>
 						</tr>
