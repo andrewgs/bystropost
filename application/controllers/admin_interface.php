@@ -2571,11 +2571,11 @@ class Admin_interface extends MY_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_sender(0,5,$from,$hideticket),
+					'tickets'		=> $this->mdunion->read_tickets_by_sender(0,15,$from,$hideticket),
 					'platforms'		=> array(),
 					'create_ticket'	=> $this->session->flashdata('platform_ticket'),
 					'hideticket'	=> $hideticket,
-					'pages'			=> $this->pagination('manager-panel/actions/tickets-outbox',5,$this->mdunion->count_tickets_by_sender(0,$hideticket),5),
+					'pages'			=> $this->pagination('manager-panel/actions/tickets-outbox',5,$this->mdunion->count_tickets_by_sender(0,$hideticket),15),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -2676,9 +2676,9 @@ class Admin_interface extends MY_Controller{
 					'baseurl' 		=> base_url(),
 					'loginstatus'	=> $this->loginstatus['status'],
 					'userinfo'		=> $this->user,
-					'tickets'		=> $this->mdunion->read_tickets_by_recipient(0,5,$from,$hideticket),
+					'tickets'		=> $this->mdunion->read_tickets_by_recipient(0,15,$from,$hideticket),
 					'hideticket'	=> $hideticket,
-					'pages'			=> $this->pagination('manager-panel/actions/tickets-inbox',5,$this->mdunion->count_tickets_by_recipient(0,$hideticket),5),
+					'pages'			=> $this->pagination('admin-panel/actions/tickets-inbox',5,$this->mdunion->count_tickets_by_recipient(0,$hideticket),15),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -2702,9 +2702,9 @@ class Admin_interface extends MY_Controller{
 				$pagevar['tickets'][$i]['position_send'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
 			endif;
 			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['position_to'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
+				$pagevar['tickets'][$i]['position_to'] = '<span class="label label-info">'.$this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position').'</span>';
 			else:
-				$pagevar['tickets'][$i]['position_to'] = 'Администратор';
+				$pagevar['tickets'][$i]['position_to'] = '<span class="label label-warning">Администратор</span>';
 			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -3420,10 +3420,20 @@ class Admin_interface extends MY_Controller{
 	/*********************************************************** API *********************************************************/
 	
 	function actions_api(){
-		$mass_data = array();
-		/*======================== Загрузка вебмастеров ============================*/
-//		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetAllUser','param'=>'');
-	/*======================== Загрузка аккаунтов на биржах ========================*/
+	
+		$query = "select id from tkmsgs group by ticket order by date desc";
+		$message = $this->mdtkmsgs->query_execute($query,TRUE);
+		$query = '';
+		for($i=0;$i<count($message);$i++):
+			$query .= (string)$message[$i]['id'];
+			if($i+1<count($message)):
+				$query.=',';
+			endif;
+		endfor;
+		$query_update = 'update tkmsgs set main = 1 where id IN ('.$query.')';
+		$this->mdtkmsgs->query_execute($query_update,FALSE);
+		print_r($query_update);
+		/*$mass_data = array();
 		$post = array('hash'=>'fe162efb2429ef9e83e42e43f8195148','action'=>'GetSitesFromAccount','param'=>'birzid=2&accid=76');
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL,'http://megaopen.ru/api.php');
@@ -3445,7 +3455,7 @@ class Admin_interface extends MY_Controller{
 		endif;
 		print_r($mass_data);
 		echo '<br/>Количество: '.count($mass_data).'<br/><br/>';
-		/*$publication = 'По теме';
+		$publication = 'По теме';
 		$mrs = $mass_data[746]['param']['category'];
 		foreach($mrs AS $key=>$mr):
 			$publication = $mr;

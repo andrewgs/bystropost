@@ -17,6 +17,19 @@ class Mdtkmsgs extends CI_Model{
 		parent::__construct();
 	}
 	
+	function query_execute($query,$status = TRUE){
+		
+		if(empty($query)):
+			return NULL;
+		endif;
+		$result = $this->db->query($query);
+		if($status):
+			$data = $result->result_array();
+			if(count($data)) return $data;
+			return NULL;
+		endif;
+	}
+	
 	function insert_record($uid,$ticket,$sender,$recipient,$main,$text){
 			
 		$this->ticket 	= $ticket;

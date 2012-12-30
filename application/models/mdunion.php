@@ -197,7 +197,7 @@ class Mdunion extends CI_Model{
 		if($recipient):
 			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.recipient = $recipient AND tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		else:
-			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.status IN ($status) GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+			$query = "SELECT tickets.*,tkmsgs.text,platforms.id AS plid,platforms.url FROM tickets LEFT JOIN tkmsgs ON tickets.id=tkmsgs.ticket LEFT JOIN platforms ON tickets.platform=platforms.id WHERE tickets.status IN ($status) AND tickets.sender !=0 GROUP BY tickets.id ORDER BY tickets.date DESC,tickets.id DESC,tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
 		endif;
 		$query = $this->db->query($query);
 		$data = $query->result_array();
