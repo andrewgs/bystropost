@@ -57,6 +57,8 @@ class MY_Controller extends CI_Controller{
 		return $this->pagination->create_links();
 	}
 	
+	/****************************************************** MESSAGES ******************************************************/
+	
 	public function send_mail($to,$from_mail,$from_name,$subject,$text){
 		
 		$this->email->clear(TRUE);
@@ -77,6 +79,82 @@ class MY_Controller extends CI_Controller{
 			return FALSE;
 		endif;
 	}
+	
+	public function admin_ticket_mail($sender_name,$ticket_id){
+		
+		ob_start();
+		?><img src="<?=base_url();?>images/logo.png" alt="" />
+		<p>Новое сообщение через тикет-систему</p>
+		<p>ID тикета: <?=$ticket_id;?></p>
+		<p>Отправитель: <?=$sender_name;?></p>
+		<p>Что бы прочитать его войдите в раздел <?=anchor('admin-panel/actions/tickets-inbox','Входящие тикеты');?></p><?
+		$mailtext = ob_get_clean();
+		$this->send_mail('admin@bystropost.ru','admin@bystropost.ru','Bystropost.ru - Система мониторинга и управления','Bystropost.ru - Новый тикет',$mailtext);
+	}
+	
+	public function link_cabinet($uid,$plus=0){
+		
+		$utype = $this->mdusers->read_field($uid,'type');
+		switch ($utype+$plus):
+			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
+			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
+			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
+			case 4 : return 'личный кабинет';break;
+			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			case 0 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
+			
+			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
+			case 14 : return 'личный кабинет';break;
+			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			case 10 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
+			
+			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
+			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
+			case 24 : return 'личный кабинет';break;
+			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			case 20 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
+			default: return 'личный кабинет';break;
+		endswitch;
+	}
+	
+	public function sub_mailtext($text,$uid){
+		
+		$text = strip_tags(nl2br($text),'<br>');
+		$text = $this->replace_href_tag($text);
+		if(mb_strlen($text,'UTF-8') > 150):
+			$text = mb_substr($text,0,150,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
+		endif;
+		return $text;
+	}
+
+	public function sub_tickettext($text,$uid){
+		
+		$text = $this->replace_href_tag($text);
+		if(mb_strlen($text,'UTF-8') > 350):
+			$text = mb_substr($text,0,350,'UTF-8');
+			$pos = mb_strrpos($text,' ',0,'UTF-8');
+			$text = mb_substr($text,0,$pos,'UTF-8');
+			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
+		endif;
+		return $text;
+	}
+	
+	public function replace_href_tag($string){
+	
+		$string = strip_tags(nl2br($string),'<br>');
+		$string = preg_replace("/(^|[\n ])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is", "$1$2<a href=\"$3\" >$3</a>", $string);
+		$string = preg_replace("/(^|[\n ])([\w]*?)((www|ftp)\.[^ \,\"\t\n\r<]*)/is", "$1$2<a href=\"http://$3\" >$3</a>", $string);
+		$string = preg_replace("/(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1<a href=\"mailto:$2@$3\">$2@$3</a>", $string);
+		return($string);
+	}
+	
+	/****************************************************** OTHER ******************************************************/
 	
 	public function viewimage(){
 		
@@ -115,7 +193,78 @@ class MY_Controller extends CI_Controller{
 			return FALSE;
 		endif;
 	}
+	
+	public function randomPassword($length,$allow="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789"){
+	
+		$i = 1;
+		$ret = '';
+		while($i<=$length):
+			$max   = strlen($allow)-1;
+			$num   = rand(0, $max);
+			$temp  = substr($allow, $num, 1);
+			$ret  .= $temp;
+			$i++;
+		endwhile;
+		return $ret;
+	}
+	
+	public function translite($string){
+		
+		$rus = array("1","2","3","4","5","6","7","8","9","0","ё","й","ю","ь","ч","щ","ц","у","к","е","н","г","ш","з","х","ъ","ф","ы","в","а","п","р","о","л","д","ж","э","я","с","м","и","т","б","Ё","Й","Ю","Ч","Ь","Щ","Ц","У","К","Е","Н","Г","Ш","З","Х","Ъ","Ф","Ы","В","А","П","Р","О","Л","Д","Ж","Э","Я","С","М","И","Т","Б"," ");
+		$eng = array("1","2","3","4","5","6","7","8","9","0","yo","iy","yu","","ch","sh","c","u","k","e","n","g","sh","z","h","","f","y","v","a","p","r","o","l","d","j","е","ya","s","m","i","t","b","Yo","Iy","Yu","CH","","SH","C","U","K","E","N","G","SH","Z","H","","F","Y","V","A","P","R","O","L","D","J","E","YA","S","M","I","T","B","-");
+		$string = str_replace($rus,$eng,$string);
+		if(!empty($string)):
+			$string = preg_replace('/[^a-z0-9,-]/','',strtolower($string));
+			$string = preg_replace('/[-]+/','-',$string);
+			$string = preg_replace('/[\.\?\!\)\(\,\:\;]/','',$string);
+			return $string;
+		else:
+			return FALSE;
+		endif;
+	}
 
+	public function english_symbol($string){
+		
+		if(!empty($string)):
+			$string = preg_replace('/[ ]+/','-',strtolower($string));
+			$string = preg_replace('/[^a-z,-]/','',$string);
+			$string = preg_replace('/[-]+/','-',$string);
+			return $string;
+		else:
+			return FALSE;
+		endif;
+	}
+	
+	public function valid_url_symbol($string){
+		
+		if(!empty($string)):
+			$string = preg_replace('/[ ]+/','-',strtolower($string));
+			$string = preg_replace('/[^a-z0-9,-\/\?\&\$\#\@]/','',strtolower($string));
+			$string = preg_replace('/[-]+/','-',$string);
+			$string = preg_replace('/[\.\?\!\)\(\,\:\;]/','',$string);
+			return $string;
+		else:
+			return FALSE;
+		endif;
+	}
+	
+	public function webmaster_manager($webmaster = FALSE,$platform = FALSE){
+		
+		$manager = $user_manager = $platform_manager = FALSE;
+		if($webmaster):
+			$user_manager = $this->mdusers->read_field($webmaster,'manager');
+		endif;
+		if($platform):
+			$platform_manager = $this->mdplatforms->read_field($platform,'manager');
+		endif;
+		if($user_manager || $platform_manager):
+			$manager = ($platform_manager)?$platform_manager:$user_manager;
+		endif;
+		return $manager;
+	}
+	
+	/******************************************************* DATE ******************************************************/
+	
 	public function operation_date($field){
 			
 		$list = preg_split("/-/",$field);
@@ -174,127 +323,6 @@ class MY_Controller extends CI_Controller{
 		$pattern = "/(\d+)(-)(\w+)(-)(\d+) (\d+)(:)(\d+)(:)(\d+)/i";
 		$replacement = "\$5.$3.\$1";
 		return preg_replace($pattern, $replacement,$field);
-	}
-	
-	public function randomPassword($length,$allow="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789"){
-	
-		$i = 1;
-		$ret = '';
-		while($i<=$length):
-			$max   = strlen($allow)-1;
-			$num   = rand(0, $max);
-			$temp  = substr($allow, $num, 1);
-			$ret  .= $temp;
-			$i++;
-		endwhile;
-		return $ret;
-	}
-	
-	public function translite($string){
-		
-		$rus = array("1","2","3","4","5","6","7","8","9","0","ё","й","ю","ь","ч","щ","ц","у","к","е","н","г","ш","з","х","ъ","ф","ы","в","а","п","р","о","л","д","ж","э","я","с","м","и","т","б","Ё","Й","Ю","Ч","Ь","Щ","Ц","У","К","Е","Н","Г","Ш","З","Х","Ъ","Ф","Ы","В","А","П","Р","О","Л","Д","Ж","Э","Я","С","М","И","Т","Б"," ");
-		$eng = array("1","2","3","4","5","6","7","8","9","0","yo","iy","yu","","ch","sh","c","u","k","e","n","g","sh","z","h","","f","y","v","a","p","r","o","l","d","j","е","ya","s","m","i","t","b","Yo","Iy","Yu","CH","","SH","C","U","K","E","N","G","SH","Z","H","","F","Y","V","A","P","R","O","L","D","J","E","YA","S","M","I","T","B","-");
-		$string = str_replace($rus,$eng,$string);
-		if(!empty($string)):
-			$string = preg_replace('/[^a-z0-9,-]/','',strtolower($string));
-			$string = preg_replace('/[-]+/','-',$string);
-			$string = preg_replace('/[\.\?\!\)\(\,\:\;]/','',$string);
-			return $string;
-		else:
-			return FALSE;
-		endif;
-	}
-
-	public function english_symbol($string){
-		
-		if(!empty($string)):
-			$string = preg_replace('/[ ]+/','-',strtolower($string));
-			$string = preg_replace('/[^a-z,-]/','',$string);
-			$string = preg_replace('/[-]+/','-',$string);
-			return $string;
-		else:
-			return FALSE;
-		endif;
-	}
-	
-	public function valid_url_symbol($string){
-		
-		if(!empty($string)):
-			$string = preg_replace('/[ ]+/','-',strtolower($string));
-			$string = preg_replace('/[^a-z0-9,-\/\?\&\$\#\@]/','',strtolower($string));
-			$string = preg_replace('/[-]+/','-',$string);
-			$string = preg_replace('/[\.\?\!\)\(\,\:\;]/','',$string);
-			return $string;
-		else:
-			return FALSE;
-		endif;
-	}
-
-	public function link_cabinet($uid,$plus=0){
-		
-		$utype = $this->mdusers->read_field($uid,'type');
-		switch ($utype+$plus):
-			case 1 : return '<a href="'.base_url().'webmaster-panel/actions/control">личный кабинет</a>';break;
-			case 2 : return '<a href="'.base_url().'manager-panel/actions/control">личный кабинет</a>';break;
-			case 3 : return '<a href="'.base_url().'optimizator-panel/actions/control">личный кабинет</a>';break;
-			case 4 : return 'личный кабинет';break;
-			case 5 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
-			case 0 : return '<a href="'.base_url().'admin-panel/management/users/all">личный кабинет</a>';break;
-			
-			case 11 : return '<a href="'.base_url().'webmaster-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 12 : return '<a href="'.base_url().'manager-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 13 : return '<a href="'.base_url().'optimizator-panel/actions/mails">Читать сообщение &raquo;</a>';break;
-			case 14 : return 'личный кабинет';break;
-			case 15 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
-			case 10 : return '<a href="'.base_url().'admin-panel/management/mails">Читать сообщение &raquo;</a>';break;
-			
-			case 21 : return '<a href="'.base_url().'webmaster-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 22 : return '<a href="'.base_url().'manager-panel/actions/tickets/inbox">Читать сообщение &raquo;</a>';break;
-			case 23 : return '<a href="'.base_url().'optimizator-panel/actions/tickets">Читать сообщение &raquo;</a>';break;
-			case 24 : return 'личный кабинет';break;
-			case 25 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			case 20 : return '<a href="'.base_url().'admin-panel/messages/tickets">Читать сообщение &raquo;</a>';break;
-			default: return 'личный кабинет';break;
-		endswitch;
-	}
-	
-	public function sub_mailtext($text,$uid){
-		
-		$text = strip_tags($text);
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
-			$pos = mb_strrpos($text,' ',0,'UTF-8');
-			$text = mb_substr($text,0,$pos,'UTF-8');
-			$text .= ' ...<br/>'.$this->link_cabinet($uid,10);
-		endif;
-		return $text;
-	}
-
-	public function sub_tickettext($text,$uid){
-		
-		$text = strip_tags($text);
-		if(mb_strlen($text,'UTF-8') > 150):
-			$text = mb_substr($text,0,150,'UTF-8');
-			$pos = mb_strrpos($text,' ',0,'UTF-8');
-			$text = mb_substr($text,0,$pos,'UTF-8');
-			$text .= ' ...<br/>'.$this->link_cabinet($uid,20);
-		endif;
-		return $text;
-	}
-	
-	public function webmaster_manager($webmaster = FALSE,$platform = FALSE){
-		
-		$manager = $user_manager = $platform_manager = FALSE;
-		if($webmaster):
-			$user_manager = $this->mdusers->read_field($webmaster,'manager');
-		endif;
-		if($platform):
-			$platform_manager = $this->mdplatforms->read_field($platform,'manager');
-		endif;
-		if($user_manager || $platform_manager):
-			$manager = ($platform_manager)?$platform_manager:$user_manager;
-		endif;
-		return $manager;
 	}
 	
 	/******************************************************** Расчет парсинга ПР и ТИЦ ******************************************************/

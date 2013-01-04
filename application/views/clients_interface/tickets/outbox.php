@@ -60,12 +60,12 @@
 								<?php endif;?>
 								</div>
 							</td>
-							<td><?=$tickets[$i]['msg_date'];?></td>
+							<td><?=$tickets[$i]['msg_date'];?><br/><?=$tickets[$i]['msg_sender'];?></td>
 							<td style="text-align:center; vertical-align:middle;">
 								<?=anchor('webmaster-panel/actions/tickets-outbox/read-ticket-id/'.$tickets[$i]['id'],'<i class="icon-comment icon-white"></i>',array('title'=>'Читать тикет','class'=>'btn btn-success'));?>
 							<?php if($tickets[$i]['status']):?>
 								<div style="height:3px;"> </div>
-								<?=anchor('webmaster-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Читать тикет','class'=>"btn openTicket"));?>
+								<?=anchor('webmaster-panel/actions/tickets/open-ticket/'.$tickets[$i]['id'],'<img src="'.$baseurl.'images/icons/unlocked.png" alt="" />',array('title'=>'Открыть тикет','class'=>"btn openTicket"));?>
 							<?php endif;?>
 							</td>
 						</tr>

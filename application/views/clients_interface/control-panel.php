@@ -48,7 +48,7 @@
 						</div>
 					<?php endif;?>
 						<div class="panel_segment">
-							<big><?=anchor('webmaster-panel/actions/tickets-inbox','Тикеты ('.$cntunit['tickets_inbox'].')');?></big>
+							<big><?=anchor('webmaster-panel/actions/tickets-inbox','Входящие тикеты ('.$cntunit['tickets_inbox'].')');?></big>
 							<img src="<?=$baseurl;?>images/panel_pic3.jpg">
 							<div class="text">
 								Система взаимодействия между клиентом и системой быстропост. Обсуждение вопросов по работе.

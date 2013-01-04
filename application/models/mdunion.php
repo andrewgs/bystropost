@@ -261,7 +261,7 @@ class Mdunion extends CI_Model{
 	
 	function read_messages_by_ticket_pages($ticket,$count,$from){
 		
-		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs LEFT JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket AND tkmsgs.main = 0 ORDER BY tkmsgs.date DESC,tkmsgs.id DESC LIMIT $from,$count";
+		$query = "SELECT tkmsgs.*, users.id AS uid,users.fio,users.login,users.position FROM tkmsgs LEFT JOIN users ON tkmsgs.sender=users.id WHERE tkmsgs.ticket = $ticket AND tkmsgs.main = 0 ORDER BY tkmsgs.date ASC,tkmsgs.id ASC LIMIT $from,$count";
 		$query = $this->db->query($query);
 		$data = $query->result_array();
 		if(count($data)) return $data;

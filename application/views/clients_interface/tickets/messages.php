@@ -59,7 +59,7 @@
 					<div class="well">
 						<div class="page-header">
 							<span class="label pull-right"><?=$messages[$i]['date'];?></span>
-							<h2 style="margin:0;">От: <small><?=$messages[$i]['email'];?></small></h2>
+							<h2 style="margin:0;">От: <small><?=$messages[$i]['position'];?></small></h2>
 						</div>
 						<div class="pull-left" title="<?=$messages[$i]['position'];?>">
 							<?=$messages[$i]['ico'];?>

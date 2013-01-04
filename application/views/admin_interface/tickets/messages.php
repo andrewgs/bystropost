@@ -23,6 +23,7 @@
 					</div>
 					<div class="media-body">
 						<div class="media">
+							<span class="label label-info" style="font-size: 13px;"><?=$ticket['message']['email'];?></span><br/>
 							<?=$ticket['message']['text'];?>
 						</div>
 						<div style="height:15px;"></div>
@@ -70,7 +71,7 @@
 					<?php if($messages[$i]['rating']):?>
 						<div style="height:15px;"></div>
 						<div class="pull-right rating_block">
-							<?=($messages[$i]['rating']>3)?'<span class="label label-success">Ваша оценка: '.$messages[$i]['rating'].'</span>':'<span class="label label-inverse">Ваша оценка: '.$messages[$i]['rating'].'</span>'?>
+							<?=($messages[$i]['rating']>3)?'<span class="label label-success">Оценка: '.$messages[$i]['rating'].'</span>':'<span class="label label-inverse">Оценка: '.$messages[$i]['rating'].'</span>'?>
 						</div>
 					<?php endif;?>
 						<div class="clear"></div>

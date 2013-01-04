@@ -38,7 +38,7 @@ class Mdtkmsgs extends CI_Model{
 		$this->sender	= $sender;
 		$this->recipient= $recipient;
 		$this->date 	= date("Y-m-d H:i:s");
-		$this->text 	= nl2br($text);
+		$this->text 	= $text;
 		$this->db->insert('tkmsgs',$this);
 		return $this->db->insert_id();
 	}
@@ -114,6 +114,22 @@ class Mdtkmsgs extends CI_Model{
 		$query = $this->db->get('tkmsgs',1);
 		$data = $query->result_array();
 		if(isset($data[0])) return $data[0]['date'];
+		return '';
+	}
+	
+	function in_finish_message_sender($recipient,$ticket){
+		
+		$this->db->select('sender');
+		if($recipient):
+			$this->db->where('recipient',$recipient);
+		endif;
+		$this->db->where('ticket',$ticket);
+		$this->db->where('sender !=',$recipient);
+		$this->db->order_by('date','DESC');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('tkmsgs',1);
+		$data = $query->result_array();
+		if(isset($data[0])) return $data[0]['sender'];
 		return '';
 	}
 	

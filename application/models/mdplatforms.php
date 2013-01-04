@@ -351,7 +351,6 @@ class Mdplatforms extends CI_Model{
 		$this->db->select($fields);
 		$this->db->where('status',1);
 		$this->db->where('locked',0);
-		$this->db->where('id !=',0);
 		$this->db->order_by($order_field,'ASC');
 		$query = $this->db->get('platforms');
 		$data = $query->result_array();

@@ -2585,7 +2585,7 @@ class Admin_interface extends MY_Controller{
 		
 		$platforms = $this->mdplatforms->platforms_by_admin('id,url','id');
 		for($i=0;$i<count($platforms);$i++):
-			$pagevar['platforms'][] = $platforms[$i]['url'];
+			$pagevar['platforms'][] = mb_strtolower($platforms[$i]['url'],'UTF-8');
 		endfor;
 		if($this->input->post('insticket')):
 			unset($_POST['insticket']);
@@ -2653,9 +2653,16 @@ class Admin_interface extends MY_Controller{
 		for($i=0;$i<count($pagevar['tickets']);$i++):
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date(0,$pagevar['tickets'][$i]['id']));
+			$finish_sender = $this->mdtkmsgs->in_finish_message_sender(0,$pagevar['tickets'][$i]['id']);
+			if($finish_sender):
+				$pagevar['tickets'][$i]['msg_sender'] = $this->mdusers->read_field($finish_sender,'position');
+			elseif($finish_sender == '0'):
+				$pagevar['tickets'][$i]['msg_sender'] = 'Администратор';
+			else:
+				$pagevar['tickets'][$i]['msg_sender'] = 'Без ответа';
+			endif;
 			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position');
-				$pagevar['tickets'][$i]['position'] .='у';
+				$pagevar['tickets'][$i]['position'] = $this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'login');
 			endif;
 		endfor;
 		$this->session->set_userdata('backpath',$this->uri->uri_string());
@@ -2699,10 +2706,18 @@ class Admin_interface extends MY_Controller{
 			$pagevar['tickets'][$i]['date'] = $this->operation_dot_date_on_time($pagevar['tickets'][$i]['date']);
 			$pagevar['tickets'][$i]['msg_date'] = $this->operation_dot_date_on_time($this->mdtkmsgs->in_finish_message_date(0,$pagevar['tickets'][$i]['id']));
 			if($pagevar['tickets'][$i]['sender']):
-				$pagevar['tickets'][$i]['position_send'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'position');
+				$pagevar['tickets'][$i]['position_send'] = $this->mdusers->read_field($pagevar['tickets'][$i]['sender'],'login');
+			endif;
+			$finish_sender = $this->mdtkmsgs->in_finish_message_sender(0,$pagevar['tickets'][$i]['id']);
+			if($finish_sender):
+				$pagevar['tickets'][$i]['msg_sender'] = $this->mdusers->read_field($finish_sender,'position');
+			elseif($finish_sender == '0'):
+				$pagevar['tickets'][$i]['msg_sender'] = 'Администратор';
+			else:
+				$pagevar['tickets'][$i]['msg_sender'] = 'Без ответа';
 			endif;
 			if($pagevar['tickets'][$i]['recipient']):
-				$pagevar['tickets'][$i]['position_to'] = '<span class="label label-info">'.$this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'position').'</span>';
+				$pagevar['tickets'][$i]['position_to'] = '<span class="label label-info">'.$this->mdusers->read_field($pagevar['tickets'][$i]['recipient'],'login').'</span>';
 			else:
 				$pagevar['tickets'][$i]['position_to'] = '<span class="label label-warning">Администратор</span>';
 			endif;
@@ -2724,7 +2739,7 @@ class Admin_interface extends MY_Controller{
 					'userinfo'		=> $this->user,
 					'ticket'		=> $this->mdunion->view_ticket_info($ticket),
 					'messages'		=> $this->mdunion->read_messages_by_ticket_pages($ticket,7,$from),
-					'pages'			=> $this->pagination("admin-panel/actions/tickets-outbox/read-ticket-id/$ticket",7,$this->mdunion->count_messages_by_ticket($ticket),7),
+					'pages'			=> $this->pagination("admin-panel/actions/".$this->uri->segment(3)."/read-ticket-id/$ticket",7,$this->mdunion->count_messages_by_ticket($ticket),7),
 					'cntunit'		=> array(),
 					'msgs'			=> $this->session->userdata('msgs'),
 					'msgr'			=> $this->session->userdata('msgr')
@@ -2737,12 +2752,18 @@ class Admin_interface extends MY_Controller{
 			
 			$message = $this->input->post();
 			$msgs = '';
+			if($this->uri->segment(3) == 'tickets-outbox'):
+				$recipient = $pagevar['ticket']['recipient'];
+			elseif($this->uri->segment(3) == 'tickets-inbox'):
+				$recipient = $pagevar['ticket']['sender'];
+			endif;
 			if(isset($message['closeticket'])):
 				$this->mdlog->insert_record($this->user['uid'],'Событие №18: Состояние тикета - закрыт');
 				$msgs .= '<span class="label label-important">Тикет закрыт</span><br/>';
 				$this->mdtickets->update_field($ticket,'status',1);
 				$this->mdtickets->update_field($ticket,'sender_answer',0);
 				$this->mdtickets->update_field($ticket,'recipient_answer',0);
+				$this->mdmessages->send_noreply_message($this->user['uid'],$recipient,2,$this->mdusers->read_field($recipient,'type'),'Администратор закрыл тикет ID: '.$ticket);
 			else:
 				if(empty($message['text'])):
 					$this->session->set_userdata('msgr','Ошибка. Не заполены необходимые поля.');
@@ -2823,6 +2844,7 @@ class Admin_interface extends MY_Controller{
 		$pagevar['ticket']['message'] = $this->mdtkmsgs->main_message($ticket,FALSE,'id,text,date');
 		$pagevar['ticket']['message']['date'] = $this->operation_dot_date_on_time($pagevar['ticket']['message']['date']);
 		$pagevar['ticket']['message']['position'] = $this->mdusers->read_field($pagevar['ticket']['sender'],'position');
+		$pagevar['ticket']['message']['email'] = $this->mdusers->read_field($pagevar['ticket']['sender'],'login');
 		if($pagevar['ticket']['sender']):
 			$sender_type = $this->mdusers->read_field($pagevar['ticket']['sender'],'type');
 			if($sender_type == 1):
